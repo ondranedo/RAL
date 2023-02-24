@@ -1,4 +1,4 @@
-#include <iostream>hkhjk
+#include <iostream>
 
 int main()
 {
