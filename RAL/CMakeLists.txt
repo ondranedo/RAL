@@ -1,0 +1,1 @@
+add_library(ral STATIC "src/app.cpp" "src/app.h")
