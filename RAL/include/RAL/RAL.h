@@ -1,6 +1,6 @@
 #ifndef RAL_H
 #define RAL_H
 
-#include "../../src/app.h"
+#include "../../src/log.h"
 
 #endif

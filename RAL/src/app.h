@@ -1,5 +1,7 @@
 #pragma once
+namespace RAL {
+	void init();
+	void start();
+	void release();
+};
 
-void init();
-void start();
-void release();

@@ -1,18 +1,20 @@
 #include "app.h"
-#include <iostream>
 
-void init()
-{
-	std::cout << "Game started" << std::endl;
-}
+void game();
 
-void start()
-{
-	std::cout << "Game running" << std::endl;
-}
+namespace RAL {
+	void init()
+	{
 
-void release()
-{
-	std::cout << "Game stopped" << std::endl;
-}
+	}
+
+	void start()
+	{
+		game();
+	}
+	void release()
+	{
+
+	}
+};
 
