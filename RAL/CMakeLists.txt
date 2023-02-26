@@ -1,1 +1,1 @@
-add_library(ral STATIC "src/app.cpp" "src/app.h" "src/main.cpp"  )
+add_library(ral STATIC   "src/main.cpp"  "include/RAL/RAL.h")
