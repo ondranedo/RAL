@@ -7,6 +7,7 @@ int main(){
 	auto ral = new RAL::Engine;
 
 	ral->init();
+	ral->init();
 
 	ral->run();
 
