@@ -15,9 +15,3 @@ using u64_t = unsigned long long;	//8B
 using f32_t = float;				//4B
 
 using f64_t = double;				//8B
-
-
-
-
-
-
