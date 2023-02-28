@@ -1,10 +1,12 @@
 #pragma once
 #include <stdio.h>
 #include <mutex>
+#include "types.h"
 
 // TODO:
 //	- MUTEX
 //	- Platform layer
+//  - Assertions
 
 namespace RAL
 {
@@ -19,89 +21,73 @@ namespace RAL
 		};
 	private:
 		//Priority variable is set to 'Info' by default
-		static Priority priority;
+		static Priority s_priority;
 		//static std::mutex log_mutex;
+		static FILE* s_file;
+		static const char* s_filepath;
+		static bool s_fileDumpEnabled;
 	public:
 
 		//Allows user to change priority.
 		static inline void setPriority(Priority new_priority)
 		{
-			Logger::priority = new_priority;
+			Logger::s_priority = new_priority;
 		}
-		
+		template<typename... Args> static void log(const char* message_priority_str, Logger::Priority message_priority, const char* message, Args... args)
+		{
+			if (Logger::s_priority <= message_priority)
+			{
+				printf(message_priority_str);
+				printf(message, args...);
+				printf("\n");
+			}
+			if (Logger::s_file != 0 && Logger::s_fileDumpEnabled)
+			{
+				fprintf_s(Logger::s_file, message_priority_str);
+				fprintf_s(Logger::s_file, message, args...);
+				fprintf_s(Logger::s_file, "\n");
+			}
+		}
 		//Functions for each priority.
-		template<typename... Args> static void Trace(const char* message, Args... args);
-		template<typename... Args> static void Debug(const char* message, Args... args);
-		template<typename... Args> static void Info(const char* message, Args... args);
-		template<typename... Args> static void Warning(const char* message, Args... args);
-		template<typename... Args> static void Error(const char* message, Args... args);
-		template<typename... Args> static void Critical(const char* message, Args... args);
+		template<typename... Args> inline static void Trace(const char* message, Args... args);
+		template<typename... Args> inline static void Debug(const char* message, Args... args);
+		template<typename... Args> inline static void Info(const char* message, Args... args);
+		template<typename... Args> inline static void Warning(const char* message, Args... args);
+		template<typename... Args> inline static void Error(const char* message, Args... args);
+		template<typename... Args> inline static void Critical(const char* message, Args... args);
+
+		static void dumpFile(const char* filepath);
+		static void endDumpFile();
 	};
 
-	template<typename... Args> static void Logger::Trace(const char* message, Args... args)
+	template<typename... Args> inline static void  Logger::Trace(const char* message, Args... args)
 	{
-		if (Logger::priority <= Priority::Trace)
-		{
-			//std::scoped_lock lock(Logger::log_mutex);
-			printf("[Trace]\t");
-			printf(message, args...);
-			printf("\n");
-		}
+		Logger::log("[Trace]\t", Logger::Priority::Critical, message, args...);
 	}
 
-	template<typename... Args> static void Logger::Debug(const char* message, Args... args)
+	template<typename... Args> inline static void  Logger::Debug(const char* message, Args... args)
 	{
-		if (Logger::priority <= Priority::Debug)
-		{
-			//std::scoped_lock lock(Logger::log_mutex);
-			printf("[Debug]\t");
-			printf(message, args...);
-			printf("\n");
-		}
+		Logger::log("[Debug]\t", Logger::Priority::Debug, message, args...);
 	}
 
-	template<typename... Args> static void Logger::Info(const char* message, Args... args)
+	template<typename... Args> inline static void Logger::Info(const char* message, Args... args)
 	{
-		if (Logger::priority <= Priority::Info)
-		{
-			//std::scoped_lock lock(Logger::log_mutex);
-			printf("[Info]\t");
-			printf(message, args...);
-			printf("\n");
-		}
+		Logger::log("[Info]\t", Logger::Priority::Info, message, args...);
 	}
 
 	template<typename... Args> static void Logger::Warning(const char* message, Args... args)
 	{
-		if (Logger::priority <= Priority::Warning)
-		{
-			//std::scoped_lock lock(Logger::log_mutex);
-			printf("[Warning]\t");
-			printf(message, args...);
-			printf("\n");
-		}
+		Logger::log("[Warning]\t", Logger::Priority::Warning, message, args...);
 	}
 
-	template<typename... Args> static void Logger::Error(const char* message, Args... args)
+	template<typename... Args> inline static void  Logger::Error(const char* message, Args... args)
 	{
-		if (Logger::priority <= Priority::Error)
-		{
-			//std::scoped_lock lock(Logger::log_mutex);
-			printf("[Error]\t");
-			printf(message, args...);
-			printf("\n");
-		}
+		Logger::log("[Error]\t", Logger::Priority::Error, message, args...);
 	}
 
-	template<typename... Args> static void Logger::Critical(const char* message, Args... args)
+	template<typename... Args> inline static void  Logger::Critical(const char* message, Args... args)
 	{
-		if (Logger::priority <= Priority::Critical)
-		{
-			//std::scoped_lock lock(Logger::log_mutex);
-			printf("[Crtitical]\t");
-			printf(message, args...);
-			printf("\n");
-		}
+		log("[Critical]\t", Logger::Priority::Critical, message, args...);
 	}
 };
 #ifdef RAL_DEBUG
