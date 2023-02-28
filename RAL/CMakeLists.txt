@@ -1,1 +1,1 @@
-add_library(ral STATIC   "include/RAL/RAL.h"  "src/ral.cpp" "src/ral.h")
+add_library(ral STATIC   "include/RAL/RAL.h"  "src/ral.cpp" "src/ral.h" "src/asserts.h "src/asserts.cpp")
