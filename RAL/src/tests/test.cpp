@@ -12,7 +12,7 @@ namespace RAL {
 	// Testing linkage
 	RAL_API void test_linkage()
 	{
-		RAL_LOG_DEBUG("Testing rala linkage");
+		RAL_LOG_DEBUG("[TEST] RAL linkage");
 	}
 }
 
