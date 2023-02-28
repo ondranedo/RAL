@@ -10,12 +10,17 @@ namespace RAL
 	void Logger::dumpFile(const char* filepath)
 	{
 		if (Logger::s_file != nullptr) fclose(Logger::s_file);
-		fopen_s(&s_file, filepath, "w");
+		fopen_s(&s_file, filepath, "a");
 		if (!s_file) printf("Failed to open file: %s", filepath);
 		else s_fileDumpEnabled = true;
 	}
 
-	void Logger::endDumpFile()
+	void Logger::continueDumpFile()
+	{
+		s_fileDumpEnabled = true;
+	}
+
+	void Logger::stopDumpFile()
 	{
 		s_fileDumpEnabled = false;
 	}
