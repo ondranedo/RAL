@@ -15,9 +15,14 @@ namespace RAL
 		else s_fileDumpEnabled = true;
 	}
 
-	void Logger::endDumpFile()
+	void Logger::stopDumpFile()
 	{
 		s_fileDumpEnabled = false;
+	}
+
+	void Logger::continueDumpFile()
+	{
+		s_fileDumpEnabled = true;
 	}
 
 }

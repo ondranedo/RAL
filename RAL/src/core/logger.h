@@ -57,7 +57,8 @@ namespace RAL
 		template<typename... Args> inline static void Critical(const char* message, Args... args);
 
 		static void dumpFile(const char* filepath);
-		static void endDumpFile();
+		static void stopDumpFile();
+		static void continueDumpFile();
 	};
 
 	template<typename... Args> inline static void  Logger::Trace(const char* message, Args... args)
@@ -113,3 +114,6 @@ namespace RAL
 #define RAL_LOG_PRIORITY_ERROR() RAL::Logger::setPriority(RAL::Logger::Priority::Error);
 #define RAL_LOG_PRIORITY_CRITICAL() RAL::Logger::setPriority(RAL::Logger::Priority::Critical);
 
+#define RAL_LOG_CREATEDUMPFILE(path) RAL::Logger::dumpFile(path);
+#define RAL_LOG_STOPDUMPFILE() RAL::Logger::stopDumpFile();
+#define RAL_LOG_CONTINUEDUMPFILE() RAL::Logger::continueDumpFile();
