@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <mutex>
 #include "types.h"
+#include "core/defines.h"
 
 // TODO:
 //	- MUTEX
@@ -9,9 +10,8 @@
 //  - Assertions
 
 namespace RAL
-{
-	
-	class Logger
+{	
+	class RAL_API Logger
 	{
 	public:
 		//types of priorities

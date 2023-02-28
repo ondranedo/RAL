@@ -13,13 +13,16 @@ add_library(ral SHARED
 "include/RAL/RAL.h"
 
 #test files
-"src/ral.cpp"
-"src/ral.h")
+"src/tests/test.cpp"
+"src/tests/test.h"
 
 #core files
-"src/types.h"
-"src/logger.h"
-"src/logger.cpp"
- "src/defines.h"
+"src/core/types.h"
+"src/core/logger.h"
+"src/core/logger.cpp"
+"src/core/defines.h")
+
+target_include_directories(ral PUBLIC "${PROJECT_SOURCE_DIR}/RAL/src")
 
 install(TARGETS ral)
+
