@@ -1,4 +1,7 @@
 #pragma once
 
-// Testin linkage
-void test_ral();
+
+#include "defines.h"
+
+// Testing linkage
+RAL_API void test_ral();

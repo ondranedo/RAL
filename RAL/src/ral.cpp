@@ -1,6 +1,8 @@
+#include "ral.h"
+
 #include <iostream>
 
-void test_ral()
+RAL_API void test_ral()
 {
 	std::cout << "RALA LINKED" << std::endl;
 }
