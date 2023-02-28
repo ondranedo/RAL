@@ -22,7 +22,10 @@ namespace Logger
 	public:
 
 		//Allows user to change priority.
-		inline void setPriority(LogPriority new_priority);
+		static inline void setPriority(LogPriority new_priority)
+		{
+			Logg::priority = new_priority;
+		}
 		
 		//Functions for each priority.
 		template<typename... Args> static void Trace(const char* message, Args... args);
@@ -32,11 +35,6 @@ namespace Logger
 		template<typename... Args> static void Error(const char* message, Args... args);
 		template<typename... Args> static void Critical(const char* message, Args... args);
 	};
-	
-	inline void Logg::setPriority(LogPriority new_priority)
-	{
-		Logg::priority = new_priority;
-	}
 
 	template<typename... Args> static void Logg::Trace(const char* message, Args... args)
 	{
