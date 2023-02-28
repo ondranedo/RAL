@@ -102,3 +102,21 @@ namespace Logger
 		}
 	}
 };
+#ifdef RAL_DEBUG
+#define RAL_LOG_TRACE(message,...) Logger::Logg::Trace(message,__VA_ARGS__);
+#define RAL_LOG_DEBUG(message,...) Logger::Logg::Debug(message,__VA_ARGS__);
+#define RAL_LOG_INFO(message,...) Logger::Logg::Info(message,__VA_ARGS__);
+#define RAL_LOG_WARN(message,...) Logger::Logg::Warning(message,__VA_ARGS__);
+#define RAL_LOG_ERROR(message,...) Logger::Logg::Error(message,__VA_ARGS__);
+#define RAL_LOG_CRIT(message,...) Logger::Logg::Critical(message,__VA_ARGS__);
+#endif
+
+#ifdef RAL_RELEASE
+#define RAL_LOG_TRACE(message,...)
+#define RAL_LOG_DEBUG(message,...)
+#define RAL_LOG_INFO(message,...) Logger::Logg::Info(message,__VA_ARGS__);
+#define RAL_LOG_WARN(message,...) Logger::Logg::Warning(message,__VA_ARGS__);
+#define RAL_LOG_ERROR(message,...) Logger::Logg::Error(message,__VA_ARGS__);
+#define RAL_LOG_CRIT(message,...) Logger::Logg::Critical(message,__VA_ARGS__);
+#endif
+
