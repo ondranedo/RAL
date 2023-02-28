@@ -22,23 +22,21 @@ namespace Logger
 	public:
 
 		//Allows user to change priority.
-		void setPriority(LogPriority new_priority);
+		static inline void setPriority(LogPriority new_priority)
+		{
+			Logg::priority = new_priority;
+		}
 		
 		//Functions for each priority.
-		template<typename... Args> void Trace(const char* message, Args... args);
-		template<typename... Args> void Debug(const char* message, Args... args);
-		template<typename... Args> void Info(const char* message, Args... args);
-		template<typename... Args> void Warning(const char* message, Args... args);
-		template<typename... Args> void Error(const char* message, Args... args);
-		template<typename... Args> void Critical(const char* message, Args... args);
+		template<typename... Args> static void Trace(const char* message, Args... args);
+		template<typename... Args> static void Debug(const char* message, Args... args);
+		template<typename... Args> static void Info(const char* message, Args... args);
+		template<typename... Args> static void Warning(const char* message, Args... args);
+		template<typename... Args> static void Error(const char* message, Args... args);
+		template<typename... Args> static void Critical(const char* message, Args... args);
 	};
 
-	void Logg::setPriority(LogPriority new_priority)
-	{
-		Logg::priority = new_priority;
-	}
-
-	template<typename... Args> void Logg::Trace(const char* message, Args... args)
+	template<typename... Args> static void Logg::Trace(const char* message, Args... args)
 	{
 		if (Logg::priority <= LogPriority::Trace)
 		{
@@ -49,7 +47,7 @@ namespace Logger
 		}
 	}
 
-	template<typename... Args> void Logg::Debug(const char* message, Args... args)
+	template<typename... Args> static void Logg::Debug(const char* message, Args... args)
 	{
 		if (Logg::priority <= LogPriority::Debug)
 		{
@@ -60,7 +58,7 @@ namespace Logger
 		}
 	}
 
-	template<typename... Args> void Logg::Info(const char* message, Args... args)
+	template<typename... Args> static void Logg::Info(const char* message, Args... args)
 	{
 		if (Logg::priority <= LogPriority::Info)
 		{
@@ -71,7 +69,7 @@ namespace Logger
 		}
 	}
 
-	template<typename... Args> void Logg::Warning(const char* message, Args... args)
+	template<typename... Args> static void Logg::Warning(const char* message, Args... args)
 	{
 		if (Logg::priority <= LogPriority::Warning)
 		{
@@ -82,7 +80,7 @@ namespace Logger
 		}
 	}
 
-	template<typename... Args> void Logg::Error(const char* message, Args... args)
+	template<typename... Args> static void Logg::Error(const char* message, Args... args)
 	{
 		if (Logg::priority <= LogPriority::Error)
 		{
@@ -93,7 +91,7 @@ namespace Logger
 		}
 	}
 
-	template<typename... Args> void Logg::Critical(const char* message, Args... args)
+	template<typename... Args> static void Logg::Critical(const char* message, Args... args)
 	{
 		if (Logg::priority <= LogPriority::Critical)
 		{
@@ -104,3 +102,21 @@ namespace Logger
 		}
 	}
 };
+#ifdef RAL_DEBUG
+#define RAL_LOG_TRACE(message,...) Logger::Logg::Trace(message,__VA_ARGS__);
+#define RAL_LOG_DEBUG(message,...) Logger::Logg::Debug(message,__VA_ARGS__);
+#define RAL_LOG_INFO(message,...) Logger::Logg::Info(message,__VA_ARGS__);
+#define RAL_LOG_WARN(message,...) Logger::Logg::Warning(message,__VA_ARGS__);
+#define RAL_LOG_ERROR(message,...) Logger::Logg::Error(message,__VA_ARGS__);
+#define RAL_LOG_CRIT(message,...) Logger::Logg::Critical(message,__VA_ARGS__);
+#endif
+
+#ifdef RAL_RELEASE
+#define RAL_LOG_TRACE(message,...)
+#define RAL_LOG_DEBUG(message,...)
+#define RAL_LOG_INFO(message,...) Logger::Logg::Info(message,__VA_ARGS__);
+#define RAL_LOG_WARN(message,...) Logger::Logg::Warning(message,__VA_ARGS__);
+#define RAL_LOG_ERROR(message,...) Logger::Logg::Error(message,__VA_ARGS__);
+#define RAL_LOG_CRIT(message,...) Logger::Logg::Critical(message,__VA_ARGS__);
+#endif
+
