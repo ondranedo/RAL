@@ -25,12 +25,12 @@ namespace Logger
 		inline void setPriority(LogPriority new_priority);
 		
 		//Functions for each priority.
-		template<typename... Args> void Trace(const char* message, Args... args);
-		template<typename... Args> void Debug(const char* message, Args... args);
-		template<typename... Args> void Info(const char* message, Args... args);
-		template<typename... Args> void Warning(const char* message, Args... args);
-		template<typename... Args> void Error(const char* message, Args... args);
-		template<typename... Args> void Critical(const char* message, Args... args);
+		template<typename... Args> static void Trace(const char* message, Args... args);
+		template<typename... Args> static void Debug(const char* message, Args... args);
+		template<typename... Args> static void Info(const char* message, Args... args);
+		template<typename... Args> static void Warning(const char* message, Args... args);
+		template<typename... Args> static void Error(const char* message, Args... args);
+		template<typename... Args> static void Critical(const char* message, Args... args);
 	};
 	
 	inline void Logg::setPriority(LogPriority new_priority)
@@ -38,7 +38,7 @@ namespace Logger
 		Logg::priority = new_priority;
 	}
 
-	template<typename... Args> void Logg::Trace(const char* message, Args... args)
+	template<typename... Args> static void Logg::Trace(const char* message, Args... args)
 	{
 		if (Logg::priority <= LogPriority::Trace)
 		{
@@ -49,7 +49,7 @@ namespace Logger
 		}
 	}
 
-	template<typename... Args> void Logg::Debug(const char* message, Args... args)
+	template<typename... Args> static void Logg::Debug(const char* message, Args... args)
 	{
 		if (Logg::priority <= LogPriority::Debug)
 		{
@@ -60,7 +60,7 @@ namespace Logger
 		}
 	}
 
-	template<typename... Args> void Logg::Info(const char* message, Args... args)
+	template<typename... Args> static void Logg::Info(const char* message, Args... args)
 	{
 		if (Logg::priority <= LogPriority::Info)
 		{
@@ -71,7 +71,7 @@ namespace Logger
 		}
 	}
 
-	template<typename... Args> void Logg::Warning(const char* message, Args... args)
+	template<typename... Args> static void Logg::Warning(const char* message, Args... args)
 	{
 		if (Logg::priority <= LogPriority::Warning)
 		{
@@ -82,7 +82,7 @@ namespace Logger
 		}
 	}
 
-	template<typename... Args> void Logg::Error(const char* message, Args... args)
+	template<typename... Args> static void Logg::Error(const char* message, Args... args)
 	{
 		if (Logg::priority <= LogPriority::Error)
 		{
@@ -93,7 +93,7 @@ namespace Logger
 		}
 	}
 
-	template<typename... Args> void Logg::Critical(const char* message, Args... args)
+	template<typename... Args> static void Logg::Critical(const char* message, Args... args)
 	{
 		if (Logg::priority <= LogPriority::Critical)
 		{
