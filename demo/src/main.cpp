@@ -2,5 +2,5 @@
 
 int main()
 {
-	test_ral();
+	RAL::test_all();
 }
