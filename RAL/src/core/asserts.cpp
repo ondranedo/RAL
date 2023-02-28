@@ -1,11 +1,12 @@
-/*
-	function will print the line number, file and a custom message
-	can change const char if necessary
-*/
+#pragma once
+#include "logger.h"
 
-#include <stdio.h>
+namespace RAL {
+	namespace asserts {
+		void msg(const char* message) {
 
-void info(const char* message){
-	
-	printf("File: %s Line: %s | %s", __FILE__, __LINE__, message);
+			RAL_LOG_CRIT("%s : %d", __FILE__, __LINE__);
+			RAL_LOG_CRIT(message);
+		}
+	}
 }
