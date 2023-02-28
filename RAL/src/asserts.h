@@ -11,6 +11,7 @@
 #define RAL_ASSERT_UNREACHABLE() assert(0)
 #define RAL_ASSERT_NEGATIVE(point) assert(point >= 0)
 #define RAL_ASSERT(expr) assert(expr != NULL)
+#define RAL_ASSERT_DATA_TYPE_SIZE_EQUALS(_t,_t_size) static_assert(sizeof(_t) == _t_size);
 
 #endif
 #ifdef RAL_RELEASE
@@ -18,5 +19,6 @@
 #define RAL_ASSERT_UNREACHABLE()
 #define RAL_ASSERT_NEGATIVE()
 #define RAL_ASSERT(expr)
+#define RAL_ASSERT_DATA_TYPE_SIZE_EQUALS(_t,_t_size)
 
 #endif
