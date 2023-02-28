@@ -20,7 +20,10 @@ add_library(ral SHARED
 "src/core/types.h"
 "src/core/logger.h"
 "src/core/logger.cpp"
-"src/core/defines.h")
+"src/core/defines.h"
+"src/asserts.h
+"src/asserts.cpp"
+)
 
 target_include_directories(ral PUBLIC "${PROJECT_SOURCE_DIR}/RAL/src")
 
