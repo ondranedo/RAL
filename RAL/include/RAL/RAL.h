@@ -1,7 +1,9 @@
 #ifndef RAL_H
 #define RAL_H
 
-#include "../../src/ral.h"
-#include "../../src/types.h"
+#include "../../src/core/asserts.h"
+#include "../../src/core/logger.h"
+#include "../../src/core/types.h"
+#include "../../src/tests/test.h"
 
 #endif
