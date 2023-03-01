@@ -27,5 +27,5 @@ add_library(ral SHARED
 
 target_include_directories(ral PUBLIC "${PROJECT_SOURCE_DIR}/RAL/src")
 
-install(TARGETS ral)
+install(TARGETS ral DESTINATION ${CMAKE_INSTALL_PREFIX})
 
