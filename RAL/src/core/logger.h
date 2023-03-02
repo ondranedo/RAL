@@ -92,28 +92,28 @@ namespace RAL
 	}
 };
 #ifdef RAL_DEBUG
-#define RAL_LOG_TRACE(message,...) RAL::Logger::Trace(message,__VA_ARGS__);
-#define RAL_LOG_DEBUG(message,...) RAL::Logger::Debug(message,__VA_ARGS__);
+#define RAL_LOG_TRACE(...) RAL::Logger::Trace(__VA_ARGS__);
+#define RAL_LOG_DEBUG(...) RAL::Logger::Debug(__VA_ARGS__);
 #define RAL_LOG_PRIORITY_TRACE() RAL::Logger::setPriority(RAL::Logger::Priority::Trace);
 #define RAL_LOG_PRIORITY_DEBUG() RAL::Logger::setPriority(RAL::Logger::Priority::Debug);
 #endif
 
 #ifdef RAL_RELEASE
-#define RAL_LOG_TRACE(message,...)
-#define RAL_LOG_DEBUG(message,...)
+#define RAL_LOG_TRACE(...)
+#define RAL_LOG_DEBUG(...)
 #define RAL_LOG_PRIORITY_TRACE()
 #define RAL_LOG_PRIORITY_DEBUG()
 #endif
 
-#define RAL_LOG_INFO(message,...) RAL::Logger::Info(message,__VA_ARGS__);
-#define RAL_LOG_WARN(message,...) RAL::Logger::Warning(message,__VA_ARGS__);
-#define RAL_LOG_ERROR(message,...) RAL::Logger::Error(message,__VA_ARGS__);
-#define RAL_LOG_CRIT(message,...) RAL::Logger::Critical(message,__VA_ARGS__);
-#define RAL_LOG_PRIORITY_INFO() RAL::Logger::setPriority(RAL::Logger::Priority::Info);
-#define RAL_LOG_PRIORITY_WARN() RAL::Logger::setPriority(RAL::Logger::Priority::Warning);
-#define RAL_LOG_PRIORITY_ERROR() RAL::Logger::setPriority(RAL::Logger::Priority::Error);
-#define RAL_LOG_PRIORITY_CRITICAL() RAL::Logger::setPriority(RAL::Logger::Priority::Critical);
+#define RAL_LOG_INFO(...) RAL::Logger::Info(__VA_ARGS__)
+#define RAL_LOG_WARN(...) RAL::Logger::Warning(__VA_ARGS__)
+#define RAL_LOG_ERROR(...) RAL::Logger::Error(__VA_ARGS__)
+#define RAL_LOG_CRIT(...) RAL::Logger::Critical(__VA_ARGS__)
+#define RAL_LOG_PRIORITY_INFO() RAL::Logger::setPriority(RAL::Logger::Priority::Info)
+#define RAL_LOG_PRIORITY_WARN() RAL::Logger::setPriority(RAL::Logger::Priority::Warning)
+#define RAL_LOG_PRIORITY_ERROR() RAL::Logger::setPriority(RAL::Logger::Priority::Error)
+#define RAL_LOG_PRIORITY_CRITICAL() RAL::Logger::setPriority(RAL::Logger::Priority::Critical)
 
-#define RAL_LOG_CREATEDUMPFILE(path) RAL::Logger::dumpFile(path);
-#define RAL_LOG_STOPDUMPFILE() RAL::Logger::stopDumpFile();
-#define RAL_LOG_CONTINUEDUMPFILE() RAL::Logger::continueDumpFile();
+#define RAL_LOG_CREATEDUMPFILE(path) RAL::Logger::dumpFile(path)
+#define RAL_LOG_STOPDUMPFILE() RAL::Logger::stopDumpFile()
+#define RAL_LOG_CONTINUEDUMPFILE() RAL::Logger::continueDumpFile()
