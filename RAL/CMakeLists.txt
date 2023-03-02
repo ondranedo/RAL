@@ -1,3 +1,4 @@
+
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 	add_compile_definitions(RAL_DEBUG)
 endif("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
@@ -8,21 +9,14 @@ endif(${CMAKE_BUILD_TYPE} STREQUAL "RelWithDebInfo")
 
 add_compile_definitions(RAL_EXPORT)
 
-add_library(ral SHARED
-#main include file
-"include/RAL/RAL.h"
+set(SUBDIRS "src/core" "src/tests")
 
-#test files
-"src/tests/test.cpp"
-"src/tests/test.h"
-
-#core files
-"src/core/types.h"
-"src/core/logger.h"
-"src/core/logger.cpp"
-"src/core/defines.h"
-"src/core/asserts.h"
-)
+add_library(ral SHARED)
+foreach(SUBDIR ${SUBDIRS})
+    add_subdirectory(${SUBDIR})
+    file(GLOB SUBDIR_SOURCES ${SUBDIR}/*.cpp)
+    target_sources(ral PRIVATE ${SUBDIR_SOURCES})
+endforeach()
 
 target_include_directories(ral PUBLIC "${PROJECT_SOURCE_DIR}/RAL/src")
 
