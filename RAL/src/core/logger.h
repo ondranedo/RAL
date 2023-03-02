@@ -22,6 +22,7 @@ namespace RAL
 	private:
 		//Priority variable is set to 'Info' by default
 		Priority m_priority;
+		Priority m_prevPriority;
 		//static std::mutex log_mutex;
 		FILE* m_file;
 		bool m_fileDumpEnabled;
@@ -48,11 +49,9 @@ namespace RAL
 		~LoggerClass();
 
 		//Allows user to change priority.
-		inline void setPriority(Priority new_priority)
-		{
-			m_priority = new_priority;
-		}
-		
+		inline void setPriority(Priority new_priority);
+		inline void setPriorityPrev();
+
 		//Functions for each priority.
 		template<typename... Args> inline void trace(const char* message, Args... args) const;
 		template<typename... Args> inline void debug(const char* message, Args... args) const;
@@ -120,6 +119,7 @@ namespace RAL
 #define RAL_LOG_PRIORITY_WARN()  RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Warning);
 #define RAL_LOG_PRIORITY_ERROR()  RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Error);
 #define RAL_LOG_PRIORITY_CRITICAL()  RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Critical);
+#define RAL_LOG_PRIORITY_PREVIOUS()  RAL::mainLogger.setPriorityPrev();
 
 #define RAL_LOG_CREATEDUMPFILE(path)  RAL::mainLogger.dumpFile(path);
 #define RAL_LOG_STOPDUMPFILE() RAL::mainLogger.stopDumpFile();

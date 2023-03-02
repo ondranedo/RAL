@@ -5,16 +5,27 @@ namespace RAL
 {
 	RAL_API LoggerClass mainLogger;
 
-	LoggerClass::LoggerClass():
+	LoggerClass::LoggerClass() :
 		m_file(nullptr),
 		m_fileDumpEnabled(false),
-		m_priority(LoggerClass::Priority::Info)
+		m_priority(LoggerClass::Priority::Info),
+		m_prevPriority(LoggerClass::Priority::Info)
 	{
 		RAL_LOG_TRACE("Logger initialized");
 	}
 	LoggerClass::~LoggerClass()
 	{
 		RAL_LOG_TRACE("Logger released");
+	}
+
+	inline void LoggerClass::setPriority(Priority new_priority)
+	{
+		m_prevPriority = m_priority;
+		m_priority = new_priority;
+	}
+	inline void LoggerClass::setPriorityPrev()
+	{
+		m_priority = m_prevPriority;
 	}
 
 	void LoggerClass::dumpFile(const char* filepath)
