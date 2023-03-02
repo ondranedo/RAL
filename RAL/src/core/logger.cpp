@@ -15,6 +15,8 @@ namespace RAL
 	}
 	LoggerClass::~LoggerClass()
 	{
+		if (m_file != nullptr) fclose(m_file);
+
 		RAL_LOG_TRACE("Logger released");
 	}
 
