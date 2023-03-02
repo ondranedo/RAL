@@ -11,6 +11,7 @@ namespace RAL {
 		RAL_LOG_PRIORITY_DEBUG();
 		test_linkage();
 		test_data_types();
+		RAL_LOG_PRIORITY_PREVIOUS();
 #endif //RAL_DEBUG
 	}
 
