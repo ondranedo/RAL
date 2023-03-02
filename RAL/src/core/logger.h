@@ -71,7 +71,7 @@ namespace RAL
 	{
 		log("[Trace]\t", LoggerClass::Priority::Critical, message, args...);
 	}
-
+  
 	template<typename... Args> inline void LoggerClass::debug(const char* message, Args... args) const
 	{
 		log("[Debug]\t", LoggerClass::Priority::Debug, message, args...);
@@ -86,12 +86,12 @@ namespace RAL
 	{
 		log("[Warning]\t", LoggerClass::Priority::Warning, message, args...);
 	}
-
+  
 	template<typename... Args> inline void LoggerClass::error(const char* message, Args... args) const
 	{
 		log("[Error]\t", LoggerClass::Priority::Error, message, args...);
 	}
-
+  
 	template<typename... Args> inline void LoggerClass::critical(const char* message, Args... args) const
 	{
 		log("[Critical]\t", LoggerClass::Priority::Critical, message, args...);
