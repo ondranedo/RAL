@@ -1,4 +1,5 @@
 #include "logger.h"
+#include "asserts.h"
 
 namespace RAL 
 {
@@ -11,8 +12,8 @@ namespace RAL
 	{
 		if (Logger::s_file != nullptr) fclose(Logger::s_file);
 		fopen_s(&s_file, filepath, "w");
-		if (!s_file) printf("Failed to open file: %s", filepath);
-		else s_fileDumpEnabled = true;
+		RAL_ASSERT_NULL(s_file, "Failed to open file: %s", filepath);
+		if (!s_file) s_fileDumpEnabled = true;
 	}
 
 	void Logger::stopDumpFile()
