@@ -22,7 +22,6 @@ add_library(ral SHARED
 "src/core/logger.cpp"
 "src/core/defines.h"
 "src/core/asserts.h"
-"src/core/asserts.cpp"
 )
 
 target_include_directories(ral PUBLIC "${PROJECT_SOURCE_DIR}/RAL/src")
