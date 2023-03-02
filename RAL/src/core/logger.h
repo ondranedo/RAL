@@ -99,23 +99,23 @@ namespace RAL
 	}
 };
 #ifdef RAL_DEBUG
-#define RAL_LOG_TRACE(message,...) RAL::mainLogger.trace(message,__VA_ARGS__);
-#define RAL_LOG_DEBUG(message,...)  RAL::mainLogger.debug(message,__VA_ARGS__);
+#define RAL_LOG_TRACE(...) RAL::mainLogger.trace(__VA_ARGS__);
+#define RAL_LOG_DEBUG(...) RAL::mainLogger.debug(__VA_ARGS__);
 #define RAL_LOG_PRIORITY_TRACE()  RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Trace);
 #define RAL_LOG_PRIORITY_DEBUG()  RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Debug);
 #endif
 
 #ifdef RAL_RELEASE
-#define RAL_LOG_TRACE(message,...)
-#define RAL_LOG_DEBUG(message,...)
+#define RAL_LOG_TRACE(...)
+#define RAL_LOG_DEBUG(...)
 #define RAL_LOG_PRIORITY_TRACE()
 #define RAL_LOG_PRIORITY_DEBUG()
 #endif
 
-#define RAL_LOG_INFO(message,...)  RAL::mainLogger.info(message,__VA_ARGS__);
-#define RAL_LOG_WARN(message,...)  RAL::mainLogger.warning(message,__VA_ARGS__);
-#define RAL_LOG_ERROR(message,...)  RAL::mainLogger.error(message,__VA_ARGS__);
-#define RAL_LOG_CRIT(message,...) RAL::mainLogger.critical(message,__VA_ARGS__);
+#define RAL_LOG_INFO(...)  RAL::mainLogger.info(__VA_ARGS__);
+#define RAL_LOG_WARN(...)  RAL::mainLogger.warning(__VA_ARGS__);
+#define RAL_LOG_ERROR(...)  RAL::mainLogger.error(__VA_ARGS__);
+#define RAL_LOG_CRIT(...) RAL::mainLogger.critical(__VA_ARGS__);
 #define RAL_LOG_PRIORITY_INFO()  RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Info);
 #define RAL_LOG_PRIORITY_WARN()  RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Warning);
 #define RAL_LOG_PRIORITY_ERROR()  RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Error);
