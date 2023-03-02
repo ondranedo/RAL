@@ -61,32 +61,32 @@ namespace RAL
 		static void continueDumpFile();
 	};
 
-	template<typename... Args> inline static void  Logger::Trace(const char* message, Args... args)
+	template<typename... Args> inline void  Logger::Trace(const char* message, Args... args)
 	{
 		Logger::log("[Trace]\t", Logger::Priority::Critical, message, args...);
 	}
 
-	template<typename... Args> inline static void  Logger::Debug(const char* message, Args... args)
+	template<typename... Args> inline void  Logger::Debug(const char* message, Args... args)
 	{
 		Logger::log("[Debug]\t", Logger::Priority::Debug, message, args...);
 	}
 
-	template<typename... Args> inline static void Logger::Info(const char* message, Args... args)
+	template<typename... Args> inline void Logger::Info(const char* message, Args... args)
 	{
 		Logger::log("[Info]\t", Logger::Priority::Info, message, args...);
 	}
 
-	template<typename... Args> static void Logger::Warning(const char* message, Args... args)
+	template<typename... Args>inline void Logger::Warning(const char* message, Args... args)
 	{
 		Logger::log("[Warning]\t", Logger::Priority::Warning, message, args...);
 	}
 
-	template<typename... Args> inline static void  Logger::Error(const char* message, Args... args)
+	template<typename... Args> inline void  Logger::Error(const char* message, Args... args)
 	{
 		Logger::log("[Error]\t", Logger::Priority::Error, message, args...);
 	}
 
-	template<typename... Args> inline static void  Logger::Critical(const char* message, Args... args)
+	template<typename... Args> inline void  Logger::Critical(const char* message, Args... args)
 	{
 		log("[Critical]\t", Logger::Priority::Critical, message, args...);
 	}
