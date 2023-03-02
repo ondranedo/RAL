@@ -1,3 +1,4 @@
+#define RAL_DEBUG
 #include <RAL/RAL.h>
 
 int main()

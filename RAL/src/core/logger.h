@@ -97,14 +97,13 @@ namespace RAL
 		log("[Critical]\t", LoggerClass::Priority::Critical, message, args...);
 	}
 };
+
 #ifdef RAL_DEBUG
 #define RAL_LOG_TRACE(...) RAL::mainLogger.trace(__VA_ARGS__);
 #define RAL_LOG_DEBUG(...) RAL::mainLogger.debug(__VA_ARGS__);
 #define RAL_LOG_PRIORITY_TRACE()  RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Trace);
 #define RAL_LOG_PRIORITY_DEBUG()  RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Debug);
-#endif
-
-#ifdef RAL_RELEASE
+#else
 #define RAL_LOG_TRACE(...)
 #define RAL_LOG_DEBUG(...)
 #define RAL_LOG_PRIORITY_TRACE()

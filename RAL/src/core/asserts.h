@@ -10,11 +10,12 @@
 
 #include <cassert>
 #include "defines.h"
+#include "logger.h"
 
 namespace RAL {
 	namespace ASSERTS {
 		template<typename ...Args>
-		RAL_API void msg(Args... args) {
+		void msg(Args... args) {
 			RAL_LOG_CRIT("ASSERTION AT %s:%d ", __FILE__, __LINE__);
 			RAL_LOG_CRIT(args...);
 		}
@@ -37,9 +38,7 @@ namespace RAL {
 #define RAL_ASSERT_DATA_TYPE(_t,_t_size) static_assert(sizeof(_t) == _t_size)
 
 #endif
-
-#endif
-#ifdef RAL_RELEASE
+#else
 
 #define RAL_ASSERT_UNREACHABLE(message)
 #define RAL_ASSERT_NEGATIVE(point, message)
