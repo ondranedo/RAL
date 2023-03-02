@@ -11,7 +11,7 @@
 
 namespace RAL
 {	
-	class RAL_API Logger
+	class RAL_API LoggerClass
 	{
 	public:
 		//types of priorities
@@ -21,81 +21,88 @@ namespace RAL
 		};
 	private:
 		//Priority variable is set to 'Info' by default
-		static Priority s_priority;
+		Priority m_priority;
 		//static std::mutex log_mutex;
-		static FILE* s_file;
-		static const char* s_filepath;
-		static bool s_fileDumpEnabled;
-	public:
+		FILE* m_file;
+		bool m_fileDumpEnabled;
 
-		//Allows user to change priority.
-		static inline void setPriority(Priority new_priority)
+	private:
+		template<typename... Args> void log(const char* message_priority_str, LoggerClass::Priority message_priority, const char* message, Args... args) const
 		{
-			Logger::s_priority = new_priority;
-		}
-		template<typename... Args> static void log(const char* message_priority_str, Logger::Priority message_priority, const char* message, Args... args)
-		{
-			if (Logger::s_priority <= message_priority)
+			if (m_priority <= message_priority)
 			{
 				printf(message_priority_str);
 				printf(message, args...);
 				printf("\n");
 			}
-			if (Logger::s_file != 0 && Logger::s_fileDumpEnabled)
+			if (m_file != 0 && m_fileDumpEnabled)
 			{
-				fprintf_s(Logger::s_file, message_priority_str);
-				fprintf_s(Logger::s_file, message, args...);
-				fprintf_s(Logger::s_file, "\n");
+				fprintf_s(m_file, message_priority_str);
+				fprintf_s(m_file, message, args...);
+				fprintf_s(m_file, "\n");
 			}
 		}
-		//Functions for each priority.
-		template<typename... Args> inline static void Trace(const char* message, Args... args);
-		template<typename... Args> inline static void Debug(const char* message, Args... args);
-		template<typename... Args> inline static void Info(const char* message, Args... args);
-		template<typename... Args> inline static void Warning(const char* message, Args... args);
-		template<typename... Args> inline static void Error(const char* message, Args... args);
-		template<typename... Args> inline static void Critical(const char* message, Args... args);
 
-		static void dumpFile(const char* filepath);
-		static void stopDumpFile();
-		static void continueDumpFile();
+	public:
+		LoggerClass();
+		~LoggerClass();
+
+		//Allows user to change priority.
+		inline void setPriority(Priority new_priority)
+		{
+			m_priority = new_priority;
+		}
+		
+		//Functions for each priority.
+		template<typename... Args> inline void trace(const char* message, Args... args) const;
+		template<typename... Args> inline void debug(const char* message, Args... args) const;
+		template<typename... Args> inline void info(const char* message, Args... args) const;
+		template<typename... Args> inline void warning(const char* message, Args... args) const;
+		template<typename... Args> inline void error(const char* message, Args... args) const;
+		template<typename... Args> inline void critical(const char* message, Args... args) const;
+
+		void dumpFile(const char* filepath);
+		void stopDumpFile();
+		void continueDumpFile();
 	};
 
-	template<typename... Args> inline static void  Logger::Trace(const char* message, Args... args)
+	extern RAL_API LoggerClass mainLogger;
+
+	template<typename... Args> inline void LoggerClass::trace(const char* message, Args... args) const
 	{
-		Logger::log("[Trace]\t", Logger::Priority::Critical, message, args...);
+		log("[Trace]\t", LoggerClass::Priority::Critical, message, args...);
 	}
 
-	template<typename... Args> inline static void  Logger::Debug(const char* message, Args... args)
+	template<typename... Args> inline void LoggerClass::debug(const char* message, Args... args) const
 	{
-		Logger::log("[Debug]\t", Logger::Priority::Debug, message, args...);
+		log("[Debug]\t", LoggerClass::Priority::Debug, message, args...);
 	}
 
-	template<typename... Args> inline static void Logger::Info(const char* message, Args... args)
+	template<typename... Args> inline void LoggerClass::info(const char* message, Args... args) const
 	{
-		Logger::log("[Info]\t", Logger::Priority::Info, message, args...);
+		log("[Info]\t", LoggerClass::Priority::Info, message, args...);
 	}
 
-	template<typename... Args> static void Logger::Warning(const char* message, Args... args)
+	template<typename... Args> inline void LoggerClass::warning(const char* message, Args... args) const
 	{
-		Logger::log("[Warning]\t", Logger::Priority::Warning, message, args...);
+		log("[Warning]\t", LoggerClass::Priority::Warning, message, args...);
 	}
 
-	template<typename... Args> inline static void  Logger::Error(const char* message, Args... args)
+	template<typename... Args> inline void LoggerClass::error(const char* message, Args... args) const
 	{
-		Logger::log("[Error]\t", Logger::Priority::Error, message, args...);
+		log("[Error]\t", LoggerClass::Priority::Error, message, args...);
 	}
 
-	template<typename... Args> inline static void  Logger::Critical(const char* message, Args... args)
+	template<typename... Args> inline void LoggerClass::critical(const char* message, Args... args) const
 	{
-		log("[Critical]\t", Logger::Priority::Critical, message, args...);
+		log("[Critical]\t", LoggerClass::Priority::Critical, message, args...);
 	}
 };
 #ifdef RAL_DEBUG
-#define RAL_LOG_TRACE(message,...) RAL::Logger::Trace(message,__VA_ARGS__);
-#define RAL_LOG_DEBUG(message,...) RAL::Logger::Debug(message,__VA_ARGS__);
-#define RAL_LOG_PRIORITY_TRACE() RAL::Logger::setPriority(RAL::Logger::Priority::Trace);
-#define RAL_LOG_PRIORITY_DEBUG() RAL::Logger::setPriority(RAL::Logger::Priority::Debug);
+#define RAL_LOG_TRACE(message,...) RAL::mainLogger.trace(message,__VA_ARGS__);
+#define RAL_LOG_DEBUG(message,...)  RAL::mainLogger.debug(message,__VA_ARGS__);
+#define RAL_LOG_PRIORITY_TRACE()  RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Trace);
+#define RAL_LOG_PRIORITY_DEBUG()  RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Debug);
 #endif
 
 #ifdef RAL_RELEASE
@@ -105,15 +112,15 @@ namespace RAL
 #define RAL_LOG_PRIORITY_DEBUG()
 #endif
 
-#define RAL_LOG_INFO(message,...) RAL::Logger::Info(message,__VA_ARGS__);
-#define RAL_LOG_WARN(message,...) RAL::Logger::Warning(message,__VA_ARGS__);
-#define RAL_LOG_ERROR(message,...) RAL::Logger::Error(message,__VA_ARGS__);
-#define RAL_LOG_CRIT(message,...) RAL::Logger::Critical(message,__VA_ARGS__);
-#define RAL_LOG_PRIORITY_INFO() RAL::Logger::setPriority(RAL::Logger::Priority::Info);
-#define RAL_LOG_PRIORITY_WARN() RAL::Logger::setPriority(RAL::Logger::Priority::Warning);
-#define RAL_LOG_PRIORITY_ERROR() RAL::Logger::setPriority(RAL::Logger::Priority::Error);
-#define RAL_LOG_PRIORITY_CRITICAL() RAL::Logger::setPriority(RAL::Logger::Priority::Critical);
+#define RAL_LOG_INFO(message,...)  RAL::mainLogger.info(message,__VA_ARGS__);
+#define RAL_LOG_WARN(message,...)  RAL::mainLogger.warning(message,__VA_ARGS__);
+#define RAL_LOG_ERROR(message,...)  RAL::mainLogger.error(message,__VA_ARGS__);
+#define RAL_LOG_CRIT(message,...) RAL::mainLogger.critical(message,__VA_ARGS__);
+#define RAL_LOG_PRIORITY_INFO()  RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Info);
+#define RAL_LOG_PRIORITY_WARN()  RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Warning);
+#define RAL_LOG_PRIORITY_ERROR()  RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Error);
+#define RAL_LOG_PRIORITY_CRITICAL()  RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Critical);
 
-#define RAL_LOG_CREATEDUMPFILE(path) RAL::Logger::dumpFile(path);
-#define RAL_LOG_STOPDUMPFILE() RAL::Logger::stopDumpFile();
-#define RAL_LOG_CONTINUEDUMPFILE() RAL::Logger::continueDumpFile();
+#define RAL_LOG_CREATEDUMPFILE(path)  RAL::mainLogger.dumpFile(path);
+#define RAL_LOG_STOPDUMPFILE() RAL::mainLogger.stopDumpFile();
+#define RAL_LOG_CONTINUEDUMPFILE()  RAL::mainLogger.continueDumpFile();

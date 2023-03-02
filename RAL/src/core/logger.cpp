@@ -3,28 +3,36 @@
 
 namespace RAL 
 {
-	Logger::Priority Logger::s_priority = Logger::Priority::Info;
-	FILE* Logger::s_file = nullptr;
-	bool Logger::s_fileDumpEnabled = false;
-	//std::mutex Logg::log_mutex;
+	RAL_API LoggerClass mainLogger;
 
-	void Logger::dumpFile(const char* filepath)
+	LoggerClass::LoggerClass():
+		m_file(nullptr),
+		m_fileDumpEnabled(false),
+		m_priority(LoggerClass::Priority::Info)
 	{
-		if (Logger::s_file != nullptr) fclose(Logger::s_file);
-		fopen_s(&s_file, filepath, "w");
-		RAL_ASSERT_NULL(s_file, "Failed to open file: %s", filepath);
-		if (!s_file) s_fileDumpEnabled = true;
+		RAL_LOG_TRACE("Logger initialized");
+	}
+	LoggerClass::~LoggerClass()
+	{
+		RAL_LOG_TRACE("Logger released");
 	}
 
-	void Logger::stopDumpFile()
+	void LoggerClass::dumpFile(const char* filepath)
 	{
-		s_fileDumpEnabled = false;
+		if (m_file != nullptr) fclose(m_file);
+		fopen_s(&m_file, filepath, "w");
+		RAL_ASSERT_NULL(m_file, "Failed to open file: %s", filepath);
+		if (!m_file) m_fileDumpEnabled = true;
 	}
 
-	void Logger::continueDumpFile()
+	void LoggerClass::stopDumpFile()
 	{
-		s_fileDumpEnabled = true;
+		m_fileDumpEnabled = false;
 	}
 
+	void LoggerClass::continueDumpFile()
+	{
+		m_fileDumpEnabled = true;
+	}
 }
 
