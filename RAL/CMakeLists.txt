@@ -11,7 +11,7 @@ add_compile_definitions(RAL_EXPORT)
 
 set(SUBDIRS "src/core" "src/tests")
 
-add_library(ral SHARED)
+add_library(ral)
 foreach(SUBDIR ${SUBDIRS})
     add_subdirectory(${SUBDIR})
     file(GLOB SUBDIR_SOURCES ${SUBDIR}/*.cpp)

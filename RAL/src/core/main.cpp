@@ -1,13 +1,15 @@
-#include "core/defines.h"
+#include "defines.h"
 #include "tests/test.h"
 #include "application.h"
-#include "core/logger.h"
-
-#include <memory>
+#include "logger.h"
+#include "baseGame.h"
 
 RAL_API int main()
 {
-	auto app = std::make_unique<RAL::Application>();
+	RAL_LOG_PRIORITY_TRACE();
+	RAL::test_all();
 
-
+	auto app = RAL::createBaseGame();
+	app->call();
+	delete app;
 }
