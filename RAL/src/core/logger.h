@@ -6,8 +6,7 @@
 
 // TODO:
 //	- MUTEX
-//	- Platform layer
-//  - Assertions
+//  - Custom format
 
 namespace RAL
 {	
@@ -32,12 +31,14 @@ namespace RAL
 		{
 			if (m_priority <= message_priority)
 			{
+				// TODO: Should use platform layer
 				printf(message_priority_str);
 				printf(message, args...);
 				printf("\n");
 			}
 			if (m_file != 0 && m_fileDumpEnabled)
 			{
+				// TODO: Should use platform layer
 				fprintf_s(m_file, message_priority_str);
 				fprintf_s(m_file, message, args...);
 				fprintf_s(m_file, "\n");
@@ -49,8 +50,8 @@ namespace RAL
 		~LoggerClass();
 
 		//Allows user to change priority.
-		inline void setPriority(Priority new_priority);
-		inline void setPriorityPrev();
+		void setPriority(Priority new_priority);
+		void setPriorityPrev();
 
 		//Functions for each priority.
 		template<typename... Args> inline void trace(const char* message, Args... args) const;
@@ -99,10 +100,10 @@ namespace RAL
 };
 
 #ifdef RAL_DEBUG
-#define RAL_LOG_TRACE(...) RAL::mainLogger.trace(__VA_ARGS__);
-#define RAL_LOG_DEBUG(...) RAL::mainLogger.debug(__VA_ARGS__);
-#define RAL_LOG_PRIORITY_TRACE()  RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Trace);
-#define RAL_LOG_PRIORITY_DEBUG()  RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Debug);
+#define RAL_LOG_TRACE(...)            RAL::mainLogger.trace(__VA_ARGS__);
+#define RAL_LOG_DEBUG(...)            RAL::mainLogger.debug(__VA_ARGS__);
+#define RAL_LOG_PRIORITY_TRACE()      RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Trace);
+#define RAL_LOG_PRIORITY_DEBUG()      RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Debug);
 #else
 #define RAL_LOG_TRACE(...)
 #define RAL_LOG_DEBUG(...)
@@ -110,16 +111,17 @@ namespace RAL
 #define RAL_LOG_PRIORITY_DEBUG()
 #endif
 
-#define RAL_LOG_INFO(...)  RAL::mainLogger.info(__VA_ARGS__);
-#define RAL_LOG_WARN(...)  RAL::mainLogger.warning(__VA_ARGS__);
-#define RAL_LOG_ERROR(...)  RAL::mainLogger.error(__VA_ARGS__);
-#define RAL_LOG_CRIT(...) RAL::mainLogger.critical(__VA_ARGS__);
-#define RAL_LOG_PRIORITY_INFO()  RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Info);
-#define RAL_LOG_PRIORITY_WARN()  RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Warning);
-#define RAL_LOG_PRIORITY_ERROR()  RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Error);
-#define RAL_LOG_PRIORITY_CRITICAL()  RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Critical);
-#define RAL_LOG_PRIORITY_PREVIOUS()  RAL::mainLogger.setPriorityPrev();
+#define RAL_LOG_INFO(...)			  RAL::mainLogger.info(__VA_ARGS__);
+#define RAL_LOG_WARN(...)			  RAL::mainLogger.warning(__VA_ARGS__);
+#define RAL_LOG_ERROR(...)			  RAL::mainLogger.error(__VA_ARGS__);
+#define RAL_LOG_CRIT(...)			  RAL::mainLogger.critical(__VA_ARGS__);
+
+#define RAL_LOG_PRIORITY_INFO()       RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Info);
+#define RAL_LOG_PRIORITY_WARN()       RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Warning);
+#define RAL_LOG_PRIORITY_ERROR()      RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Error);
+#define RAL_LOG_PRIORITY_CRITICAL()   RAL::mainLogger.setPriority(RAL::LoggerClass::Priority::Critical);
+#define RAL_LOG_PRIORITY_PREVIOUS()   RAL::mainLogger.setPriorityPrev();
 
 #define RAL_LOG_CREATEDUMPFILE(path)  RAL::mainLogger.dumpFile(path);
-#define RAL_LOG_STOPDUMPFILE() RAL::mainLogger.stopDumpFile();
-#define RAL_LOG_CONTINUEDUMPFILE()  RAL::mainLogger.continueDumpFile();
+#define RAL_LOG_STOPDUMPFILE()        RAL::mainLogger.stopDumpFile();
+#define RAL_LOG_CONTINUEDUMPFILE()    RAL::mainLogger.continueDumpFile();

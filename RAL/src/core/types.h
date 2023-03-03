@@ -13,3 +13,6 @@ using u64_t = unsigned long long;
 using f32_t = float;
 
 using f64_t = double;
+
+// TODO: Each data type has associated ENUM  
+// TODO: ENUM to string, ENUM to size on bytes

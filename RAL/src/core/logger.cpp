@@ -11,21 +11,18 @@ namespace RAL
 		m_priority(LoggerClass::Priority::Info),
 		m_prevPriority(LoggerClass::Priority::Info)
 	{
-		RAL_LOG_TRACE("Logger initialized");
 	}
 	LoggerClass::~LoggerClass()
 	{
 		if (m_file != nullptr) fclose(m_file);
-
-		RAL_LOG_TRACE("Logger released");
 	}
 
-	inline void LoggerClass::setPriority(Priority new_priority)
+	void LoggerClass::setPriority(Priority new_priority)
 	{
 		m_prevPriority = m_priority;
 		m_priority = new_priority;
 	}
-	inline void LoggerClass::setPriorityPrev()
+	void LoggerClass::setPriorityPrev()
 	{
 		m_priority = m_prevPriority;
 	}
