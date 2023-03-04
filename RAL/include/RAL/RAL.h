@@ -6,5 +6,6 @@
 #include "../../src/core/logger.h"
 #include "../../src/core/types.h"
 #include "../../src/core/baseGame.h"
+#include "platformLayer/memory/memory.h"
 
 #endif
