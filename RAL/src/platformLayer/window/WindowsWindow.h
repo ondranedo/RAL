@@ -11,6 +11,7 @@ namespace RAL
 		void init();
 		void Destroy();
 		void MakeContextCurrent();
+		void SwapBuffers();
 	private:
 		GLFWwindow* m_window;
 	};

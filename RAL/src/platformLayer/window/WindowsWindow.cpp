@@ -17,4 +17,9 @@ namespace RAL
 	{
 		glfwMakeContextCurrent(m_window);
 	}
+
+	void WindowsWindow::SwapBuffers()
+	{
+		glfwSwapBuffers(m_window);
+	}
 }
