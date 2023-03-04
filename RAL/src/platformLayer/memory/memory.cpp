@@ -6,31 +6,45 @@ namespace RAL {
 	Memory::Memory() {
 
 		RAL_LOG_TRACE("Memory tracker/allocator created");
-		alloced = 0;
+		nOfBytes = 0;
+		nOfBlocks = 0;
 	}
 
 	Memory::~Memory() {
 
-		if (alloced != 0)
+		if (nOfBytes != 0)
 			RAL_LOG_ERROR("Memory leak detected!");
+		if(nOfBlocks != 0)
+			RAL_LOG_CRIT("Memory corrupted!");
 
 		RAL_LOG_TRACE("Memory tracker/allocator destroyed");
 	}
 
 	void* Memory::allocate(size_t bytes) {
 
-		alloced += bytes;
+#ifdef RAL_DEBUG
+
+#else
+		nOfBytes += bytes;
+		nOfBlocks += 1;
 		return malloc(bytes);
+#endif
 	}
 
 	void Memory::release(void* block) {
 
-		alloced -= sizeof(block);
+		nOfBytes -= _msize(block);
+		nOfBlocks -= 1;
 		free(block);
 	}
 
 	i64_t Memory::allocated() {
 		
-		return alloced;
+		return nOfBytes;
+	}
+
+	i64_t Memory::blocks() {
+
+		return nOfBlocks;
 	}
 }
