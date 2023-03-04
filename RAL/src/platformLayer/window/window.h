@@ -3,28 +3,24 @@
 
 namespace RAL
 {
-	struct WindowData
-	{
-		const i8_t* Title;
-		u32_t Width;
-		u32_t Height;
-		WindowData(const i8_t* title = "RAL",
-			u32_t width = 1280,
-			u32_t height = 720,
-			)
-			: Title(title), Width(width), Height(height) {}
-	};
-	class RAL_API Window
+	class Window
 	{
 	public:
-		virtual ~Window() {};
+		void getWidth(u32_t new_Width);
+		void getHeight(u32_t new_Height);
 
-		virtual u32_t getWidth() = 0;
-		virtual u32_t getHeight() = 0;
+	protected:
+		struct Config
+		{
+			u32_t m_Width;
+			u32_t m_Height;
+			const i8_t* m_Title;
 
-		virtual void SetVSync(bool enabled) = 0;
-		virtual bool IsVSync() = 0;
-
-		static Window* Create(WindowData& data = WindowData());
+			Config(u32_t width = 1280,
+				u32_t height = 720,
+				const i8_t title = "RAL")
+				: m_Width(width), m_Height(height), m_Title(title) {}
+		};
+		Config m_config;
 	};
 }
