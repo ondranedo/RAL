@@ -1,5 +1,5 @@
 #pragma once
-#include "types.h"
+#include "../../core/types.h"
 
 namespace RAL
 {
@@ -14,11 +14,11 @@ namespace RAL
 		{
 			u32_t m_Width;
 			u32_t m_Height;
-			const i8_t* m_Title;
+			const char* m_Title;
 
 			Config(u32_t width = 1280,
 				u32_t height = 720,
-				const i8_t title = "RAL")
+				const char* title = "RAL")
 				: m_Width(width), m_Height(height), m_Title(title) {}
 		};
 		Config m_config;

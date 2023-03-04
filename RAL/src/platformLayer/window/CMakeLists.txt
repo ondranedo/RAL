@@ -1,2 +1,4 @@
+file(GLOB file_platform_window
+"*.h" "*.cpp"
+)
 
-add_subdirectory(${PROJECT_SOURCE_DIR}/RAL/vendor/glfw/include)

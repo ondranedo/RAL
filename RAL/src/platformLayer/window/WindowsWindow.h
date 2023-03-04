@@ -1,6 +1,6 @@
 #pragma once
 #include <GLFW/glfw3.h>
-#include "types.h"
+#include "../../core/types.h"
 #include "window.h"
 
 namespace RAL 
@@ -8,10 +8,10 @@ namespace RAL
 	class WindowsWindow : public Window
 	{
 	public:
-		void Init(Window window);
-		void Destroy(Window window);
+		void init();
+		void Destroy();
 		void MakeContextCurrent();
 	private:
-		GLFWwindow m_window;
+		GLFWwindow* m_window;
 	};
 }
