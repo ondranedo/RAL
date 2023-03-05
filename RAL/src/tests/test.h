@@ -2,6 +2,7 @@
 
 #include "core/defines.h"
 
+// TODO: Should be a stand alone class
 namespace RAL {
 	RAL_API void test_all();
 
