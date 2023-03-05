@@ -17,7 +17,13 @@ if(MSVC)
 	set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
 endif()
 
-set(SUBDIRS "src/core" "src/tests" "src/platformLayer/console")
+set(SUBDIRS 
+"src/core" 
+"src/tests" 
+"src/containers"
+"src/platformLayer/memory"
+"src/platformLayer/console"
+)
 
 add_library(ral)
 foreach(SUBDIR ${SUBDIRS})
