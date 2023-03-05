@@ -5,7 +5,8 @@
 namespace RAL {
 	class RAL_API Application {
 	public:
-		Application();
+		Application(int argc, char** argv);
 		~Application();
+		void run();
 	};
 }

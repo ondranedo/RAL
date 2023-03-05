@@ -1,11 +1,11 @@
-#include "defines.h"
-#include "tests/test.h"
 #include "application.h"
-#include "logger.h"
-#include "baseGame.h"
 
-int main()
+int main(int argc, char** argv)
 {	
-	RAL_LOG_PRIORITY_TRACE();
-	RAL::test_all();
+	// TODO: memory class
+	auto engine = new RAL::Application(argc, argv);
+
+	engine->run();
+
+	delete engine;
 }
