@@ -12,7 +12,9 @@ endif(${CMAKE_BUILD_TYPE} STREQUAL "RelWithDebInfo")
 set(SUBDIRS 
 "src/core" 
 "src/tests" 
-"src/containers")
+"src/containers"
+"src/platformLayer/memory"
+)
 
 add_library(ral)
 foreach(SUBDIR ${SUBDIRS})
