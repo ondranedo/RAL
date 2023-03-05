@@ -10,10 +10,10 @@ class WConsole : public RAL::Console
 public:
 	WConsole();
 	~WConsole();
-	void setTitle(const char* title) override;
-	void log(const char* msg, ColourBackground background, ColourForeground text) override;
-	void log(const char* msg, ColourForeground text, ColourBackground background) override;
-	void log(const char* msg) override;
+	void setTitle(const RAL::String& title) override;
+	void log(const RAL::String& msg, ColourBackground background, ColourForeground text) override;
+	void log(const RAL::String& msg, ColourForeground text, ColourBackground background) override;
+	void log(const RAL::String& msg) override;
 	void clear() override;
 	void pause() override;
 private:

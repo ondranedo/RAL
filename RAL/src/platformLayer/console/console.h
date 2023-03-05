@@ -2,6 +2,7 @@
 #include "../../core/logger.h"
 #include "../../core/asserts.h"
 #include "../../core/defines.h"
+#include "../../containers/string.h"
 
 namespace RAL
 {
@@ -47,10 +48,10 @@ namespace RAL
 			WHITE = 15
 		};
 
-		virtual void setTitle(const char* title) = 0;
-		virtual void log(const char* msg, ColourBackground background, ColourForeground text = ColourForeground::WHITE) = 0;
-		virtual void log(const char* msg, ColourForeground text, ColourBackground background = ColourBackground::BLACK) = 0;
-		virtual void log(const char* msg) = 0;
+		virtual void setTitle(const RAL::String& title) = 0;
+		virtual void log(const RAL::String& msg, ColourBackground background, ColourForeground text = ColourForeground::WHITE) = 0;
+		virtual void log(const RAL::String& msg, ColourForeground text, ColourBackground background = ColourBackground::BLACK) = 0;
+		virtual void log(const RAL::String& msg) = 0;
 		virtual void clear() = 0;
 		virtual void pause() = 0;
 		virtual ~Console();
