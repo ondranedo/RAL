@@ -13,8 +13,8 @@ namespace RAL
 		void MakeContextCurrent();
 		void SwapBuffers();
 
-		void getWidth(u32_t new_Width);
-		void getHeight(u32_t new_Height);
+		int getWidth();
+		int getHeight();
 
 		void VSyncenable();
 		void VSyncdisable();

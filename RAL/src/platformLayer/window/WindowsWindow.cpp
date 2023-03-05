@@ -17,11 +17,13 @@ namespace RAL
 			if (!m_window) RAL_LOG_ERROR("Windows window cant be opened");
 		}
 
+		//GLFW callbacks
+
 	}
 
 	void WindowsWindow::Destroy()
 	{
-		glfwTerminate();
+		glfwDestroyWindow(m_window);
 	}
 
 	void WindowsWindow::MakeContextCurrent()
@@ -34,14 +36,14 @@ namespace RAL
 		glfwSwapBuffers(m_window);
 	}
 
-	void WindowsWindow::getWidth(u32_t new_Width)
+	int WindowsWindow::getWidth()
 	{
-		m_config.m_Width = new_Width;
+		return m_config.m_Width;
 	}
 
-	void WindowsWindow::getHeight(u32_t new_Height)
+	int WindowsWindow::getHeight()
 	{
-		m_config.m_Height = new_Height;
+		return m_config.m_Height;
 	}
 
 	void WindowsWindow::VSyncenable()
