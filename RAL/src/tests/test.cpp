@@ -43,7 +43,8 @@ namespace RAL {
 	{	
 		RAL::Console* console = RAL::ConsoleFacotry::createConsole();
 		console->setTitle("Test");
-		console->log("Ahojda",Console::BG_YELLOW,Console::FG_BLUE);
+		console->log("Neco", Console::BG_PURPLE, Console::FG_BLUE);
+		console->log("Necasdasdo", Console::BG_PURPLE, Console::FG_BLUE);
 	}
 
 }

@@ -46,11 +46,11 @@ namespace RAL
 			FG_YELLOW = 14,
 			FG_WHITE = 15
 		};
-		/* API
-			Windows->https://learn.microsoft.com/en-us/windows/console/console-functions
-		*/
 		virtual void setTitle(const char* title) = 0;
 		virtual void log(const char* msg, ConsoleColourBackground background=BG_BLACK, ConsoleColourText text=FG_WHITE) = 0;
+		virtual void log(const char* msg, ConsoleColourText text = FG_WHITE,ConsoleColourBackground background = BG_BLACK) = 0;
+		virtual void clear() = 0;
+		virtual void pause() = 0;
 		virtual ~Console();
 	};
 };
