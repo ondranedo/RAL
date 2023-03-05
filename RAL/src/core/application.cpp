@@ -2,7 +2,7 @@
 #include "core/logger.h"
 
 namespace RAL {
-	Application::Application()
+	Application::Application(int argc, char** argv)
 	{
 		RAL_LOG_TRACE("Application created");
 	}
@@ -10,5 +10,10 @@ namespace RAL {
 	Application::~Application()
 	{
 		RAL_LOG_TRACE("Application destroyed");
+	}
+
+	void Application::run()
+	{
+
 	}
 };
