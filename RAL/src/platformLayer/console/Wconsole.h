@@ -1,6 +1,8 @@
 #pragma once
-
 #include "console.h"
+
+#ifdef RAL_WINDOWS
+
 #include <windows.h>
 
 class WConsole : public RAL::Console
@@ -8,10 +10,10 @@ class WConsole : public RAL::Console
 public:
 	WConsole();
 	~WConsole();
-	void setTitle(const char* title) override;
-	void log(const char* msg, ConsoleColourBackground background, ConsoleColourText text) override;
-	void log(const char* msg, ConsoleColourText text, ConsoleColourBackground background) override;
-	void log(const char* msg) override;
+	void setTitle(const RAL::String& title) override;
+	void log(const RAL::String& msg, ColourBackground background, ColourForeground text) override;
+	void log(const RAL::String& msg, ColourForeground text, ColourBackground background) override;
+	void log(const RAL::String& msg) override;
 	void clear() override;
 	void pause() override;
 private:
@@ -21,3 +23,5 @@ private:
 	COORD topLeft = { 0, 0 };
 	INPUT_RECORD input;
 };
+
+#endif

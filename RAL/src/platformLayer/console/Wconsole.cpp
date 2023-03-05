@@ -1,4 +1,6 @@
 #include "Wconsole.h"
+
+#ifdef RAL_WINDOWS
 #include <iostream>
 
 WConsole::WConsole()
@@ -16,27 +18,27 @@ WConsole::~WConsole()
 	FreeConsole();
 }
 
-void WConsole::setTitle(const char* title)
+void WConsole::setTitle(const RAL::String& title)
 {
-	SetConsoleTitle(title);
+	SetConsoleTitle(title.c_str());
 }
 
-void WConsole::log(const char* msg, ConsoleColourBackground background, ConsoleColourText text)
+void WConsole::log(const RAL::String& msg, ColourBackground background, ColourForeground text)
 {
 	SetConsoleTextAttribute(console, background | text);
-	printf("%s\n", msg);
+	printf("%s\n", msg.c_str());
 }
 
-void WConsole::log(const char* msg, ConsoleColourText text, ConsoleColourBackground background)
+void WConsole::log(const RAL::String& msg, ColourForeground text, ColourBackground background)
 {
 	SetConsoleTextAttribute(console, text | background);
-	printf("%s\n",msg);
+	printf("%s\n",msg.c_str());
 }
 
-void WConsole::log(const char* msg)
+void WConsole::log(const RAL::String& msg)
 {
-	SetConsoleTextAttribute(console, Console::BG_BLACK | Console::FG_WHITE);
-	printf("%s\n", msg);
+	SetConsoleTextAttribute(console, ColourBackground::BLACK | ColourForeground::WHITE);
+	printf("%s\n", msg.c_str());
 }
 
 void WConsole::clear()
@@ -54,7 +56,8 @@ void WConsole::clear()
 
 void WConsole::pause()
 {	
-	SetConsoleTextAttribute(console, Console::BG_BLACK | Console::FG_LIGHTRED);
+	SetConsoleTextAttribute(console, ColourBackground::BLACK | ColourForeground::LIGHTRED);
 	printf("Console paused! Press any key to continue");
 	std::cin.get();
 }
+#endif
