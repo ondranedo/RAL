@@ -1,6 +1,7 @@
 #pragma once
 
-/*TODO: pointer validation
+/*TODO: memory allocator in main
+*		pointer validation
 *		documentation (wiki)
 *		runtime checks
 *		add more guard bytes
@@ -33,6 +34,7 @@ namespace RAL {
 
 		virtual void* allocate(size_t bytes) = 0;
 		virtual void release(void* block) = 0;
+		virtual void* reallocate(void* block, size_t newSize) = 0;
 		i64_t allocated();
 		i64_t blocks();
 	};
@@ -42,5 +44,6 @@ namespace RAL {
 	public:
 		void* allocate(size_t bytes);
 		void release(void* block);
+		void* reallocate(void* block, size_t newSize);
 	};
 }
