@@ -46,35 +46,53 @@ namespace RAL {
 		return reinterpret_cast<const char*>(m_ptr);
 	}
 
-	String& String::operator+(const String& str)
+	String String::operator+(const String& str)
 	{
-		this->m_size += str.m_size;
-		// TODO: memory class
-		m_ptr = reinterpret_cast<char*>(realloc(m_ptr, m_size + 1));
+		String retstr;
+		retstr.recreate(*this);
+		retstr.m_size += str.m_size;
+		retstr.m_ptr = reinterpret_cast<char*>(realloc(retstr.m_ptr, retstr.m_size + 1));
 
-		strcat(this->m_ptr, str.m_ptr);
-		return *this;
+		// TODO: memory class
+		strcat(retstr.m_ptr, str.m_ptr);
+		return retstr;
 	}
 
-	String& String::operator+(const char* msg)
+	String String::operator+(const char* msg)
 	{
-		this->m_size += strlen(msg);
-		// TODO: memory class
-		m_ptr = reinterpret_cast<char*>(realloc(m_ptr, m_size + 1));
+		String retstr;
+		retstr.recreate(*this);
+		retstr.m_size += strlen(msg);
+		retstr.m_ptr = reinterpret_cast<char*>(realloc(retstr.m_ptr, retstr.m_size + 1));
 
-		strcat(this->m_ptr, msg);
-		return *this;
+		// TODO: memory class
+		strcat(retstr.m_ptr, msg);
+		return retstr;
 	}
 
-	RAL::String& String::operator+(char c)
+	RAL::String String::operator+(char c)
 	{
-		this->m_size++;
+		String retstr;
+		retstr.recreate(*this);
+		retstr.m_size++;
 		// TODO: memory class
-		m_ptr = reinterpret_cast<char*>(realloc(m_ptr, m_size + 1));
+		retstr.m_ptr = reinterpret_cast<char*>(realloc(retstr.m_ptr, retstr.m_size + 1));
 
-		m_ptr[m_size-1] = c;
-		m_ptr[m_size  ] = '\0';
-		return *this;
+		retstr.m_ptr[retstr.m_size-1] = c;
+		retstr.m_ptr[retstr.m_size  ] = '\0';
+		return retstr;
+	}
+
+	RAL::String operator+(const char* msg, const String& str)
+	{
+		String retstr;
+		retstr.recreate(msg);
+		retstr.m_size+=str.m_size;
+
+		// TODO: memory class
+		retstr.m_ptr = reinterpret_cast<char*>(realloc(retstr.m_ptr, retstr.m_size + 1));
+		strcat(retstr.m_ptr, str.m_ptr);
+		return retstr;
 	}
 
 	char String::operator[](const size_t& index)
@@ -157,6 +175,46 @@ namespace RAL {
 		memcpy(m_ptr, str, m_size + 1);
 	}
 
+	void String::recreate(char c)
+	{
+		clear();
+
+		m_size = 1;
+
+		// TODO: memory class
+		m_ptr = reinterpret_cast<char*>(malloc(2));
+		m_ptr[0] = c;
+		m_ptr[1] = '\0';
+	}
+
+	String& String::operator=(const String& str)
+	{
+		recreate((const String&)str);
+
+		return *this;
+	}
+
+	String& String::operator=(const char* str)
+	{
+		recreate((const char*)str);
+
+		return *this;
+	}
+
+	String& String::operator=(char c)
+	{
+		recreate((char)c);
+
+		return *this;
+	}
+
+	String& String::operator=(String&& str)
+	{
+		recreate((String&&)str);
+
+		return *this;
+	}
+
 	char* String::begin()
 	{
 		return m_ptr;
@@ -177,5 +235,4 @@ namespace RAL {
 			free(m_ptr);
 		m_size = 0;
 	}
-
 }

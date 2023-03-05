@@ -18,26 +18,31 @@ namespace RAL {
 		u64_t size() const;
 		const String& get() const;
 
-		// Supporitng fucnitons
+		// Supporting functions
 		void toLower();
 		void toUpper();
 		void for_each(void(*function)(char c));
 
-		// Mem. functions
+		// Memory functions
 		void flush();
 		void recreate(String&& str);
 		void recreate(const String& str);
 		void recreate(const char* c_str);
+		void recreate(char c);
 
 		// for C sup. functions
 		char* c_cpy() const;
 		const char* c_str() const;
 
-		String& operator+(const String& str);
-		String& operator+(const char* msg);
-		String& operator+(char c);
+		String operator+(const String& str);
+		String operator+(const char* msg);
+		String operator+(char c);
+		friend 	String operator+(const char* msg, const String& str);
 		char operator[](const size_t& index);
-
+		String& operator=(const String& str);
+		String& operator=(String&& str);
+		String& operator=(const char* str);
+		String& operator=(char c);
 		// Iterators
 		char* begin();
 		char* end();
