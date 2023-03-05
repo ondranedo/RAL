@@ -5,10 +5,9 @@
 #include "baseGame.h"
 
 int main()
-{
+{	
 	RAL_LOG_PRIORITY_TRACE();
 	RAL::test_all();
-
 	auto app = RAL::createBaseGame();
 	app->call();
 	delete app;

@@ -9,7 +9,7 @@ endif(${CMAKE_BUILD_TYPE} STREQUAL "RelWithDebInfo")
 
 #add_compile_definitions(RAL_EXPORT) #for shared only
 
-set(SUBDIRS "src/core" "src/tests")
+set(SUBDIRS "src/core" "src/tests" "src/platformLayer/console")
 
 add_library(ral)
 foreach(SUBDIR ${SUBDIRS})

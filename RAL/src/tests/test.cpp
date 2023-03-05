@@ -3,13 +3,15 @@
 #include "core/logger.h"
 #include "core/types.h"
 #include "core/asserts.h"
-
+#include "platformLayer/console/console.h"
+#define RAL_DEBUG
 namespace RAL {
 	void test_all()
 	{
 #ifdef RAL_DEBUG
 		RAL_LOG_PRIORITY_DEBUG();
 		test_linkage();
+		RAL::Console* console = RAL::ConsoleFacotry::createConsole();
 		test_data_types();
 		RAL_LOG_PRIORITY_PREVIOUS();
 #endif //RAL_DEBUG
