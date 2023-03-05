@@ -10,6 +10,4 @@ namespace RAL {
 	RAL_API void test_linkage();
 
 	RAL_API void test_data_types();
-
-	RAL_API void test_console();
 }
