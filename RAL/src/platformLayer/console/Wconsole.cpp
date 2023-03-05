@@ -40,32 +40,32 @@ void WConsole::setWindowInfo()
 
 }
 
-void WConsole::SetConsoleMode()
+void WConsole::setConsoleMode()
 {
 
 }
 
-void WConsole::SetConsoleHistoryInfo()
+void WConsole::setConsoleHistoryInfo()
 {
 
 }
 
-void WConsole::SetConsoleDisplayMode()
+void WConsole::setConsoleDisplayMode()
 {
 
 }
 
-void WConsole::SetConsoleCursorPosition()
+void WConsole::setConsoleCursorPosition()
 {
 
 }
 
-void WConsole::SetConsoleCursorInfo()
+void WConsole::setConsoleCursorInfo()
 {
 
 }
 
-void WConsole::SetConsoleActiveScreenBuffer()
+void WConsole::setConsoleActiveScreenBuffer()
 {
 
 }

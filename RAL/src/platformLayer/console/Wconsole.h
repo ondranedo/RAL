@@ -13,10 +13,10 @@ public:
 	virtual void setScreenBufferSize() override;
 	virtual void setCurrentFontEx() override;
 	virtual void setWindowInfo() override;
-	virtual void SetConsoleMode() override;
-	virtual void SetConsoleHistoryInfo() override;
-	virtual void SetConsoleDisplayMode() override;
-	virtual void SetConsoleCursorPosition() override;
-	virtual void SetConsoleCursorInfo() override;
-	virtual void SetConsoleActiveScreenBuffer() override;
+	virtual void setConsoleMode() override;
+	virtual void setConsoleHistoryInfo() override;
+	virtual void setConsoleDisplayMode() override;
+	virtual void setConsoleCursorPosition() override;
+	virtual void setConsoleCursorInfo() override;
+	virtual void setConsoleActiveScreenBuffer() override;
 };
