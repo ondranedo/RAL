@@ -10,9 +10,9 @@ namespace RAL {
 	{
 #ifdef RAL_DEBUG
 		RAL_LOG_PRIORITY_DEBUG();
+		test_console();
 		test_linkage();
-		RAL::Console* console = RAL::ConsoleFacotry::createConsole();
-		test_data_types();
+		system("pause");
 		RAL_LOG_PRIORITY_PREVIOUS();
 #endif //RAL_DEBUG
 	}
@@ -37,6 +37,13 @@ namespace RAL {
 		RAL_ASSERT_DATA_TYPE(f32_t, 4);
 		RAL_ASSERT_DATA_TYPE(f64_t, 8);
 		RAL_LOG_DEBUG("[TEST] Data types - excepted size");
+	}
+
+	void test_console()
+	{	
+		RAL::Console* console = RAL::ConsoleFacotry::createConsole();
+		console->setTitle("Test");
+		console->log("Ahojda",Console::BG_YELLOW,Console::FG_BLUE);
 	}
 
 }
