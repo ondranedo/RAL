@@ -1,8 +1,6 @@
 #pragma once
 
-/*TODO: memory allocator in main
-*		pointer validation
-*		documentation (wiki)
+/*TODO: pointer validation
 *		runtime checks
 *		add more guard bytes
 *		add constants to make adding more guard bytes easier
