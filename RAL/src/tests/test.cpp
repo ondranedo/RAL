@@ -39,13 +39,5 @@ namespace RAL {
 		RAL_ASSERT_DATA_TYPE(f64_t, 8);
 		RAL_LOG_DEBUG("[TEST] Data types - excepted size");
 	}
-
-	void test_console()
-	{	
-		RAL::Console* console = RAL::ConsoleFacotry::createConsole();
-		console->setTitle("Test");
-		console->log("Neco", Console::FG_BLUE);
-	}
-
 }
 
