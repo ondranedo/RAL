@@ -1,59 +1,63 @@
 #pragma once
-#include "core/logger.h"
-#include "core/asserts.h"
-#define RAL_WINDOWS
+#include "../../core/logger.h"
+#include "../../core/asserts.h"
+#include "../../core/defines.h"
 
 namespace RAL
 {
 	class Console
 	{
 	public:
-		enum ConsoleColourBackground
+		enum class ColourBackground : u8_t
 		{
-			BG_BLACK = 0,
-			BG_NAVYBLUE = 16,
-			BG_GREEN = 32,
-			BG_TEAL = 48,
-			BG_MAROON = 64,
-			BG_PURPLE = 80,
-			BG_OLIVE = 96,
-			BG_SILVER = 112,
-			BG_GRAY = 128,
-			BG_BLUE = 144,
-			BG_LIME = 160,
-			BG_CYAN = 176,
-			BG_RED = 192,
-			BG_MAGENTA = 208,
-			BG_YELLOW = 224,
-			BG_WHITE = 240
+			BLACK = 0,
+			NAVYBLUE = 16,
+			GREEN = 32,
+			TEAL = 48,
+			MAROON = 64,
+			PURPLE = 80,
+			OLIVE = 96,
+			SILVER = 112,
+			GRAY = 128,
+			BLUE = 144,
+			LIME = 160,
+			CYAN = 176,
+			RED = 192,
+			MAGENTA = 208,
+			YELLOW = 224,
+			WHITE = 240
 		};
-		enum ConsoleColourText
+		enum class ColourForeground : u8_t
 		{
-			FG_BLACK = 0,
-			FG_BLUE = 1,
-			FG_GREEN = 2,
-			FG_CYAN = 3,
-			FG_RED = 4,
-			FG_MAGENTA = 5,
-			FG_BROWN = 6,
-			FG_LIGHTGRAY = 7,
-			FG_GRAY = 8,
-			FG_LIGHTBLUE = 9,
-			FG_LIGHTGREEN = 10,
-			FG_LIGHTCYAN = 11,
-			FG_LIGHTRED = 12,
-			FG_LIGHTMAGENTA = 13,
-			FG_YELLOW = 14,
-			FG_WHITE = 15
+			BLACK = 0,
+			BLUE = 1,
+			GREEN = 2,
+			CYAN = 3,
+			RED = 4,
+			MAGENTA = 5,
+			BROWN = 6,
+			LIGHTGRAY = 7,
+			GRAY = 8,
+			LIGHTBLUE = 9,
+			LIGHTGREEN = 10,
+			LIGHTCYAN = 11,
+			LIGHTRED = 12,
+			LIGHTMAGENTA = 13,
+			YELLOW = 14,
+			WHITE = 15
 		};
+
 		virtual void setTitle(const char* title) = 0;
-		virtual void log(const char* msg, ConsoleColourBackground background, ConsoleColourText text=FG_WHITE) = 0;
-		virtual void log(const char* msg, ConsoleColourText text,ConsoleColourBackground background = BG_BLACK) = 0;
+		virtual void log(const char* msg, ColourBackground background, ColourForeground text = ColourForeground::WHITE) = 0;
+		virtual void log(const char* msg, ColourForeground text, ColourBackground background = ColourBackground::BLACK) = 0;
 		virtual void log(const char* msg) = 0;
 		virtual void clear() = 0;
 		virtual void pause() = 0;
 		virtual ~Console();
 	};
+
+	u8_t operator|(Console::ColourForeground foreground, Console::ColourBackground background);
+	u8_t operator|(Console::ColourBackground background, Console::ColourForeground foreground);
 };
 
 #ifdef RAL_WINDOWS
