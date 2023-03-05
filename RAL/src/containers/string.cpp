@@ -1,0 +1,153 @@
+#include "string.h"
+
+#include "../core/logger.h"
+
+// TODO: memory classs
+#include <stdlib.h>
+#include <string.h>
+#include <algorithm>
+
+namespace RAL {
+	String::~String()
+	{
+		RAL_LOG_TRACE("DESTROY");
+		clear();
+	}
+
+	String::String() :
+		m_ptr(nullptr),
+		m_size(0l)
+	{
+		RAL_LOG_TRACE("NULL");
+	}
+
+	String::String(const char* c_str) :
+		m_ptr(nullptr),
+		m_size(strlen(c_str))
+	{
+		RAL_LOG_TRACE("COPY");
+
+		// TODO: memory class
+		m_ptr = reinterpret_cast<char*>(malloc(m_size + 1));
+		memcpy(m_ptr, c_str, m_size + 1);
+	}
+
+
+	String::String(const String& str) :
+		m_size(str.size()),
+		m_ptr(reinterpret_cast<char*>(str.c_cpy()))
+	{
+		RAL_LOG_TRACE("COPY");
+	}
+
+	String::String(String&& str) :
+		m_size(str.m_size),
+		m_ptr(str.m_ptr)
+	{
+		RAL_LOG_TRACE("MOVE");
+	}
+
+	const char* String::c_str() const
+	{
+		return reinterpret_cast<const char*>(m_ptr);
+	}
+
+	u64_t String::size() const
+	{
+		return m_size;
+	}
+
+	void String::flush()
+	{
+		clear();
+	}
+
+	const RAL::String& String::get() const
+	{
+		return *this;
+	}
+
+	void String::toLower()
+	{
+		strlwr(m_ptr);
+	}
+
+	void String::toUpper()
+	{
+		strupr(m_ptr);
+	}
+
+	void String::for_each(void(*function)(char c))
+	{
+		for (char c : *this)
+			function(c);
+	}
+
+	char* String::c_cpy() const
+	{
+		// TODO: memory class
+		char* ptr = reinterpret_cast<char*>(malloc(m_size + 1));
+		memcpy(ptr, m_ptr, m_size + 1);
+		return ptr;
+	}
+
+	void String::recreate(String&& str)
+	{
+		RAL_LOG_TRACE("MOVE");
+
+		clear();
+
+		m_ptr  = str.m_ptr;
+		m_size = str.m_size;
+		str.m_ptr = nullptr;
+		str.m_size = 0;
+	}
+
+	void String::recreate(const String& str)
+	{
+		RAL_LOG_TRACE("COPY");
+
+		clear();
+
+		m_size = str.m_size;
+
+		// TODO: memory class
+		m_ptr = reinterpret_cast<char*>(malloc(m_size + 1));
+		memcpy(m_ptr, str.m_ptr, m_size + 1);
+	}
+
+	void String::recreate(const char* str)
+	{
+		RAL_LOG_TRACE("COPY");
+
+		clear();
+
+		m_size = strlen(str);
+
+		// TODO: memory class
+		m_ptr = reinterpret_cast<char*>(malloc(m_size + 1));
+		memcpy(m_ptr, str, m_size + 1);
+	}
+
+	char* String::begin()
+	{
+		return m_ptr;
+	}
+
+	char* String::end()
+	{
+		if (m_ptr)
+			return &m_ptr[m_size];
+		else
+			return nullptr;
+	}
+
+	void String::clear()
+	{
+		if (m_ptr)
+			// TODO: memory class
+			free(m_ptr);
+		m_size = 0;
+	}
+
+}
