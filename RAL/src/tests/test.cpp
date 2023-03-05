@@ -14,7 +14,6 @@ namespace RAL {
 		RAL_LOG_PRIORITY_DEBUG();
 		test_console();
 		test_linkage();
-		system("pause");
 		RAL_LOG_PRIORITY_PREVIOUS();
 #endif //RAL_DEBUG
 	}
@@ -45,6 +44,7 @@ namespace RAL {
 	{	
 		RAL::Console* console = RAL::ConsoleFacotry::createConsole();
 		console->setTitle("Test");
+		console->log("Neco", Console::FG_BLUE);
 	}
 
 }

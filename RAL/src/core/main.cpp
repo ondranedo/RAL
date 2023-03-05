@@ -11,4 +11,5 @@ int main()
 	auto app = RAL::createBaseGame();
 	app->call();
 	delete app;
+	system("pause");
 }
