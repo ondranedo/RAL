@@ -27,7 +27,7 @@ namespace RAL {
 		RAL_LOG_TRACE("Memory tracker/allocator destroyed");
 	}
 
-	void* Memory::allocate(size_t bytes) {
+	void* WinMemory::allocate(size_t bytes) {
 
 		nOfBytes += bytes;
 		nOfBlocks += 1;
@@ -58,7 +58,7 @@ namespace RAL {
 #endif
 	}
 
-	void Memory::release(void* block) {
+	void WinMemory::release(void* block) {
 
 #ifdef RAL_DEBUG
 		/*shifting back to access the guard bytes*/

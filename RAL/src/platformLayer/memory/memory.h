@@ -2,7 +2,6 @@
 
 /*TODO: pointer validation
 *		documentation (wiki)
-*		change to a interface, create a class for windows
 *		runtime checks
 *		add more guard bytes
 *		add constants to make adding more guard bytes easier
@@ -21,7 +20,7 @@ namespace RAL {
 
 	class Memory {
 
-	private:
+	protected:
 		i64_t nOfBytes;
 #ifdef RAL_DEBUG
 		i64_t nOfGuards;
@@ -32,9 +31,16 @@ namespace RAL {
 		Memory();
 		~Memory();
 
-		void* allocate(size_t bytes);
-		void release(void* block);
+		virtual void* allocate(size_t bytes) = 0;
+		virtual void release(void* block) = 0;
 		i64_t allocated();
 		i64_t blocks();
+	};
+
+	class WinMemory: public Memory {
+
+	public:
+		void* allocate(size_t bytes);
+		void release(void* block);
 	};
 }
