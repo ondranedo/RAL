@@ -5,20 +5,25 @@
 
 namespace RAL 
 {
+
 	class WindowsWindow : public Window
 	{
 	public:
-		void init();
-		void Destroy();
-		void MakeContextCurrent();
-		void SwapBuffers();
+		WindowsWindow();
+		virtual ~WindowsWindow();
+		void init() override;
+		void Destroy() override;
+		void MakeContextCurrent() override;
+		void onUpdate() override;
 
-		int getWidth();
-		int getHeight();
+		void setWidth(i32_t new_width) override;
+		void setHeight(i32_t new_width) override;
 
-		void VSyncenable();
-		void VSyncdisable();
+		void VSyncenable() override;
+		void VSyncdisable() override;
 	private:
 		GLFWwindow* m_window;
 	};
+	
+
 }

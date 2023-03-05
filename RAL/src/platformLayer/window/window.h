@@ -1,12 +1,26 @@
 #pragma once
 #include "../../core/types.h"
 
+//TO DO:
+//	-MUTEX lock
+//	-
+
 namespace RAL
 {
 	class Window
 	{
 	public:
+		virtual ~Window();
+		virtual void init() = 0;
+		virtual void Destroy() = 0;
+		virtual void MakeContextCurrent() = 0;
+		virtual void onUpdate() = 0;
 
+		virtual void setWidth(i32_t new_width) = 0;
+		virtual void setHeight(i32_t new_width) = 0;
+
+		virtual void VSyncenable() = 0;
+		virtual void VSyncdisable() = 0;
 	protected:
 		struct Config
 		{
@@ -20,5 +34,6 @@ namespace RAL
 				: m_Width(width), m_Height(height), m_Title(title) {}
 		};
 		Config m_config;
-	};
+	};	
 }
+
