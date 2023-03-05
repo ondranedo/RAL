@@ -10,7 +10,6 @@
 namespace RAL {
 	String::~String()
 	{
-		RAL_LOG_TRACE("DESTROY");
 		clear();
 	}
 
@@ -18,15 +17,12 @@ namespace RAL {
 		m_ptr(nullptr),
 		m_size(0l)
 	{
-		RAL_LOG_TRACE("NULL");
 	}
 
 	String::String(const char* c_str) :
 		m_ptr(nullptr),
 		m_size(strlen(c_str))
 	{
-		RAL_LOG_TRACE("COPY");
-
 		// TODO: memory class
 		m_ptr = reinterpret_cast<char*>(malloc(m_size + 1));
 		memcpy(m_ptr, c_str, m_size + 1);
@@ -37,14 +33,12 @@ namespace RAL {
 		m_size(str.size()),
 		m_ptr(reinterpret_cast<char*>(str.c_cpy()))
 	{
-		RAL_LOG_TRACE("COPY");
 	}
 
 	String::String(String&& str) :
 		m_size(str.m_size),
 		m_ptr(str.m_ptr)
 	{
-		RAL_LOG_TRACE("MOVE");
 	}
 
 	const char* String::c_str() const
@@ -133,8 +127,6 @@ namespace RAL {
 
 	void String::recreate(String&& str)
 	{
-		RAL_LOG_TRACE("MOVE");
-
 		clear();
 
 		m_ptr  = str.m_ptr;
@@ -145,8 +137,6 @@ namespace RAL {
 
 	void String::recreate(const String& str)
 	{
-		RAL_LOG_TRACE("COPY");
-
 		clear();
 
 		m_size = str.m_size;
@@ -158,8 +148,6 @@ namespace RAL {
 
 	void String::recreate(const char* str)
 	{
-		RAL_LOG_TRACE("COPY");
-
 		clear();
 
 		m_size = strlen(str);
