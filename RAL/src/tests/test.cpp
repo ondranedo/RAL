@@ -3,14 +3,17 @@
 #include "core/logger.h"
 #include "core/types.h"
 #include "core/asserts.h"
+#include "platformLayer/console/console.h"
+
+#define RAL_DEBUG
 
 namespace RAL {
 	void test_all()
 	{
 #ifdef RAL_DEBUG
 		RAL_LOG_PRIORITY_DEBUG();
+		test_console();
 		test_linkage();
-		test_data_types();
 		RAL_LOG_PRIORITY_PREVIOUS();
 #endif //RAL_DEBUG
 	}
@@ -35,6 +38,13 @@ namespace RAL {
 		RAL_ASSERT_DATA_TYPE(f32_t, 4);
 		RAL_ASSERT_DATA_TYPE(f64_t, 8);
 		RAL_LOG_DEBUG("[TEST] Data types - excepted size");
+	}
+
+	void test_console()
+	{	
+		RAL::Console* console = RAL::ConsoleFacotry::createConsole();
+		console->setTitle("Test");
+		console->log("Neco", Console::FG_BLUE);
 	}
 
 }
