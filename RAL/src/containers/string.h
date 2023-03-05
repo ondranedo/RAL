@@ -33,10 +33,7 @@ namespace RAL {
 		char* c_cpy() const;
 		const char* c_str() const;
 
-		String& operator+(const String& str);
-		String& operator+(const char* msg);
-		String& operator+(char c);
-		char operator[](const size_t& index);
+		// TODO: Operators
 
 		// Iterators
 		char* begin();
