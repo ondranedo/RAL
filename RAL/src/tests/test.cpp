@@ -12,7 +12,7 @@ namespace RAL {
 	{
 #ifdef RAL_DEBUG
 		RAL_LOG_PRIORITY_DEBUG();
-		test_linkage();]
+		test_linkage();
 		test_linkage();
 		RAL_LOG_PRIORITY_PREVIOUS();
 #endif //RAL_DEBUG
