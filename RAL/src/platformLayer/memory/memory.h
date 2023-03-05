@@ -1,11 +1,12 @@
 #pragma once
 
-/*TODO: check methods, headers and cmake
-*		guard bytes
-*		pointer validation
+/*TODO: pointer validation
 *		documentation (wiki)
 *		change to a interface, create a class for windows
 *		runtime checks
+*		add more guard bytes
+*		add constants to make adding more guard bytes easier
+*		add asserts for out of bounds access
 */
 
 #include <stdlib.h>
@@ -13,8 +14,7 @@
 
 #ifdef RAL_DEBUG
 
-#define GUARD_TWO 0xFACC
-#define GUARD_FOUR 0xC0CCD1CC
+#define GUARD_ONE 0xB0
 #endif
 
 namespace RAL {
