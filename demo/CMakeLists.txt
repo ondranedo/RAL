@@ -1,4 +1,4 @@
-add_executable(demo "src/main.cpp")
+add_executable(demo "src/demo.cpp")
 
 target_link_libraries(demo PRIVATE ral)
 
