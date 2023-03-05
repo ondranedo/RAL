@@ -52,6 +52,46 @@ namespace RAL {
 		return reinterpret_cast<const char*>(m_ptr);
 	}
 
+	String& String::operator+(const String& str)
+	{
+		this->m_size += str.m_size;
+		// TODO: memory class
+		m_ptr = reinterpret_cast<char*>(realloc(m_ptr, m_size + 1));
+
+		strcat(this->m_ptr, str.m_ptr);
+		return *this;
+	}
+
+	String& String::operator+(const char* msg)
+	{
+		this->m_size += strlen(msg);
+		// TODO: memory class
+		m_ptr = reinterpret_cast<char*>(realloc(m_ptr, m_size + 1));
+
+		strcat(this->m_ptr, msg);
+		return *this;
+	}
+
+	RAL::String& String::operator+(char c)
+	{
+		this->m_size++;
+		// TODO: memory class
+		m_ptr = reinterpret_cast<char*>(realloc(m_ptr, m_size + 1));
+
+		m_ptr[m_size-1] = c;
+		m_ptr[m_size  ] = '\0';
+		return *this;
+	}
+
+	char String::operator[](const size_t& index)
+	{
+		if (index < m_size)
+			return m_ptr[index];
+		
+		RAL_LOG_WARN("Referencing index out of string's scope");
+		return '\0';
+	}
+
 	u64_t String::size() const
 	{
 		return m_size;
