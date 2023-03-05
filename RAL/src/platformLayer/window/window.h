@@ -6,8 +6,6 @@ namespace RAL
 	class Window
 	{
 	public:
-		void getWidth(u32_t new_Width);
-		void getHeight(u32_t new_Height);
 
 	protected:
 		struct Config
