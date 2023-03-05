@@ -1,11 +1,10 @@
 #define RAL_DEBUG
 #include <RAL/RAL.h>
-
 class Demo : public RAL::BaseGame {
 
 public:
 	void call() override
-	{
+	{	
 		RAL_LOG_INFO("Calling into demo game");
 	}
 };
