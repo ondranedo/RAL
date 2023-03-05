@@ -4,7 +4,9 @@
 #include "core/types.h"
 #include "core/asserts.h"
 #include "platformLayer/console/console.h"
+
 #define RAL_DEBUG
+
 namespace RAL {
 	void test_all()
 	{
@@ -43,9 +45,6 @@ namespace RAL {
 	{	
 		RAL::Console* console = RAL::ConsoleFacotry::createConsole();
 		console->setTitle("Test");
-		console->log("Neco", Console::BG_PURPLE, Console::FG_BLUE);
-		console->pause();
-		console->log("Necasdasdo", Console::BG_LIME, Console::FG_LIGHTCYAN);
 	}
 
 }

@@ -3,7 +3,6 @@
 
 WConsole::WConsole()
 {	
-	FreeConsole();
 	AllocConsole();
 	console = GetStdHandle(STD_OUTPUT_HANDLE);
 	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
@@ -14,7 +13,7 @@ WConsole::WConsole()
 
 WConsole::~WConsole()
 {
-
+	FreeConsole();
 }
 
 void WConsole::setTitle(const char* title)
@@ -32,6 +31,12 @@ void WConsole::log(const char* msg, ConsoleColourText text, ConsoleColourBackgro
 {
 	SetConsoleTextAttribute(console, text | background);
 	printf("%s\n",msg);
+}
+
+void WConsole::log(const char* msg)
+{
+	SetConsoleTextAttribute(console, Console::BG_BLACK | Console::FG_WHITE);
+	printf("%s\n", msg);
 }
 
 void WConsole::clear()
