@@ -44,7 +44,8 @@ namespace RAL {
 		RAL::Console* console = RAL::ConsoleFacotry::createConsole();
 		console->setTitle("Test");
 		console->log("Neco", Console::BG_PURPLE, Console::FG_BLUE);
-		console->log("Necasdasdo", Console::BG_PURPLE, Console::FG_BLUE);
+		console->pause();
+		console->log("Necasdasdo", Console::BG_LIME, Console::FG_LIGHTCYAN);
 	}
 
 }

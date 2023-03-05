@@ -1,4 +1,5 @@
 #include "Wconsole.h"
+#include <iostream>
 
 WConsole::WConsole()
 {	
@@ -47,30 +48,8 @@ void WConsole::clear()
 }
 
 void WConsole::pause()
-{
-	GetConsoleMode(console, &mode);
-	SetConsoleMode(console, mode & ~(ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT));
-
-	while (true)
-	{
-		ReadConsoleInput(console, &input, 1, &count);
-		if (input.EventType == KEY_EVENT && input.Event.KeyEvent.bKeyDown)
-		{
-			if (input.Event.KeyEvent.wVirtualKeyCode == VK_ESCAPE)
-			{
-				break;
-			}
-			else
-			{
-				break;
-			}
-		}
-		else
-		{
-			break;
-		}
-	}
-
-	SetConsoleMode(console, mode);
-	return;
+{	
+	SetConsoleTextAttribute(console, Console::BG_BLACK | Console::FG_LIGHTRED);
+	printf("Console paused! Press any key to continue");
+	std::cin.get();
 }
