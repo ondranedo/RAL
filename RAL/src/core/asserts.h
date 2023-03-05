@@ -25,16 +25,16 @@ namespace RAL {
 
 #define RAL_ASSERT_UNREACHABLE(...) RAL::ASSERTS::msg(__VA_ARGS__); __debugbreak()
 #define RAL_ASSERT_NEGATIVE(point,...) if(((int)point)<0) {RAL::ASSERTS::msg(__VA_ARGS__); __debugbreak();}
-#define RAL_ASSERT_NULL(point,...) if(((int)point)==0) {RAL::ASSERTS::msg(__VA_ARGS__); __debugbreak();}
-#define RAL_ASSERT(expr, ...)) if(!(expr)) {RAL::ASSERTS::msg(__VA_ARGS__); __debugbreak();}
+#define RAL_ASSERT_NULL(point,...) if(point==NULL) {RAL::ASSERTS::msg(__VA_ARGS__); __debugbreak();}
+#define RAL_ASSERT(expr, ...) if(!(expr)) {RAL::ASSERTS::msg(__VA_ARGS__); __debugbreak();}
 #define RAL_ASSERT_DATA_TYPE(_t,_t_size) static_assert(sizeof(_t) == _t_size)
 
 #else
 
 #define RAL_ASSERT_UNREACHABLE(...) RAL::ASSERTS::msg(__VA_ARGS__); 
 #define RAL_ASSERT_NEGATIVE(point,...) if(((int)point)<0) {RAL::ASSERTS::msg(__VA_ARGS__);}
-#define RAL_ASSERT_NULL(point,...) if((reinterpret_cast<void*>(point))==0) {RAL::ASSERTS::msg(__VA_ARGS__);}
-#define RAL_ASSERT(expr, ...)) if(!(expr)) {RAL::ASSERTS::msg(__VA_ARGS__);}
+#define RAL_ASSERT_NULL(point,...) if(point==NULL) {RAL::ASSERTS::msg(__VA_ARGS__);}
+#define RAL_ASSERT(expr, ...) if(!(expr)) {RAL::ASSERTS::msg(__VA_ARGS__);}
 #define RAL_ASSERT_DATA_TYPE(_t,_t_size) static_assert(sizeof(_t) == _t_size)
 
 #endif

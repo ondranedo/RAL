@@ -7,9 +7,23 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "RelWithDebInfo")
 add_compile_definitions(RAL_RELEASE)
 endif(${CMAKE_BUILD_TYPE} STREQUAL "RelWithDebInfo")
 
-add_compile_definitions(RAL_EXPORT)
+#add_compile_definitions(RAL_EXPORT) #for shared only
 
-set(SUBDIRS "src/core" "src/tests")
+if(MSVC)
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+endif()
+
+if(MSVC)
+	set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+endif()
+
+set(SUBDIRS 
+"src/core" 
+"src/tests" 
+"src/containers"
+"src/platformLayer/memory"
+"src/platformLayer/console"
+)
 
 add_library(ral)
 foreach(SUBDIR ${SUBDIRS})

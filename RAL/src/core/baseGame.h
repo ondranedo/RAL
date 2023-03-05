@@ -8,5 +8,6 @@ namespace RAL {
 		virtual void call() = 0;
 	};
 
+	// TODO: Custom class
 	extern BaseGame* createBaseGame();
 }
