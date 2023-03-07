@@ -1,4 +1,3 @@
-#define RAL_DEBUG
 #include <RAL/RAL.h>
 class Demo : public RAL::BaseGame {
 

@@ -116,6 +116,7 @@ namespace RAL {
 			return temp;
 		}
 #endif
+        return nullptr;
 	}
 
 	i64_t Memory::allocated() {

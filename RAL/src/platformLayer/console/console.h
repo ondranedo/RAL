@@ -1,8 +1,5 @@
 #pragma once
-#include "../../core/logger.h"
-#include "../../core/asserts.h"
-#include "../../core/defines.h"
-#include "../../containers/string.h"
+#include "../../pch.h"
 
 namespace RAL
 {

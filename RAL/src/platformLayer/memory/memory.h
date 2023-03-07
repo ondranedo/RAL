@@ -1,4 +1,5 @@
 #pragma once
+#include "../../pch.h"
 
 /*TODO: pointer validation
 *		runtime checks
@@ -7,8 +8,7 @@
 *		add asserts for out of bounds access
 */
 
-#include <stdlib.h>
-#include "core/types.h"
+#include <cstdlib>
 
 #ifdef RAL_DEBUG
 
