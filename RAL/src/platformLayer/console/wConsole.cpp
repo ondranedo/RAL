@@ -1,4 +1,4 @@
-#include "Wconsole.h"
+#include "wConsole.h"
 
 #ifdef RAL_WINDOWS
 #include <iostream>

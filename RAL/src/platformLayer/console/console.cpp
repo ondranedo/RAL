@@ -11,13 +11,9 @@ namespace RAL {
 		//TODO: Memory management
 	#ifdef RAL_WINDOWS
 		return new WConsole();
-	#endif
-	#ifdef RAL_LINUX
-		return new LConsole();
-	#endif
-	#ifdef RAL_MAC
-		return new MConsole();
-	#endif
+    #else
+        return nullptr;
+    #endif
 	}
 
 	u8_t operator|(Console::ColourForeground foreground, Console::ColourBackground background)
