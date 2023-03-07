@@ -6,7 +6,7 @@
 
 namespace RAL
 {
-	class Console
+	class ConsoleInterpreter
 	{
 	public:
 		enum class ColourBackground : u8_t
@@ -54,28 +54,28 @@ namespace RAL
 		virtual void log(const RAL::String& msg) = 0;
 		virtual void clear() = 0;
 		virtual void pause() = 0;
-		virtual ~Console();
+		virtual ~ConsoleInterpreter();
 	};
 
-	u8_t operator|(Console::ColourForeground foreground, Console::ColourBackground background);
-	u8_t operator|(Console::ColourBackground background, Console::ColourForeground foreground);
-};
+	u8_t operator|(ConsoleInterpreter::ColourForeground foreground, ConsoleInterpreter::ColourBackground background);
+	u8_t operator|(ConsoleInterpreter::ColourBackground background, ConsoleInterpreter::ColourForeground foreground);
+}
 
 #ifdef RAL_WINDOWS
 #include "Wconsole.h"
-#endif // _DEBUG
+#endif // RAL_WINDOWS
 #ifdef RAL_LINUX
 #include "Lconsole.h"
-#endif // _DEBUG
+#endif // RAL_LINUX
 #ifdef RAL_MAC
 #include "Mconsole.h"
 #endif // _DEBUG
 
 namespace RAL
 {
-	class ConsoleFacotry
+	class ConsoleInterpreterFactory
 	{
 	public:
-		static Console* createConsole();
+		static ConsoleInterpreter* createConsole();
 	};
 }
