@@ -27,7 +27,7 @@ namespace RAL {
 		RAL_LOG_TRACE("Memory tracker/allocator destroyed");
 	}
 
-	void* Memory::allocate(size_t bytes) {
+	void* WinMemory::allocate(size_t bytes) {
 
 		nOfBytes += bytes;
 		nOfBlocks += 1;
@@ -58,7 +58,7 @@ namespace RAL {
 #endif
 	}
 
-	void Memory::release(void* block) {
+	void WinMemory::release(void* block) {
 
 #ifdef RAL_DEBUG
 		/*shifting back to access the guard bytes*/
@@ -78,6 +78,44 @@ namespace RAL {
 			RAL_LOG_CRIT("Out of bounds access detected!");
 #endif
 		free(block);
+	}
+
+	void* WinMemory::reallocate(void* block, size_t newSize) {
+
+#ifdef RAL_DEBUG
+		/*shifting back to access the guard bytes*/
+		block = reinterpret_cast<u8_t*>(block) - 1;
+#endif
+		nOfBytes -= _msize(block);
+#ifdef RAL_DEBUG
+		if (reinterpret_cast<u8_t*>(block)[0] != (u8_t)GUARD_ONE) {
+			RAL_LOG_CRIT("Out of bounds access detected!");
+		}
+		else if (reinterpret_cast<u8_t*>(block)[_msize(block) - 1] != (u8_t)GUARD_ONE)
+			RAL_LOG_CRIT("Out of bounds access detected!");
+		
+		/*adding back the accessible bytes and the new size*/
+		nOfBytes += 2 + newSize;
+
+		void* temp = realloc(block, newSize + 2);
+		if (temp == NULL) {
+			RAL_LOG_ERROR("Not enough memory!");
+			return temp;
+		}
+
+		/*assigning guard bytes*/
+		reinterpret_cast<u8_t*>(temp)[1 + newSize] = (u8_t)GUARD_ONE;
+
+		/*shifting bytes so that the first index is writable*/
+		temp = reinterpret_cast<u8_t*>(temp) + 1;
+		return reinterpret_cast<void*>(temp);
+#else
+		void* temp = realloc(block, newSize);
+		if (temp == NULL) {
+			RAL_LOG_ERROR("Not enough memory!");
+			return temp;
+		}
+#endif
 	}
 
 	i64_t Memory::allocated() {
