@@ -1,13 +1,12 @@
 #pragma once
-
-#include "core/defines.h"
+#include "../pch.h"
 
 // TODO: Should be a stand alone class
 namespace RAL {
-	RAL_API void test_all();
+	void test_all();
 
 	// Testing linkage
-	RAL_API void test_linkage();
+	void test_linkage();
 
-	RAL_API void test_data_types();
+	void test_data_types();
 }

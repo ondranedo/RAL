@@ -1,9 +1,11 @@
 #include "logger.h"
+
+#include "../pch.h"
 #include "asserts.h"
 
 namespace RAL 
 {
-	RAL_API LoggerClass mainLogger;
+	LoggerClass mainLogger;
 
 	LoggerClass::LoggerClass() :
 		m_file(nullptr),

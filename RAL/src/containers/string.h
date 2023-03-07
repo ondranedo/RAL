@@ -1,7 +1,6 @@
 #pragma once
-
-#include "../core/types.h"
-
+#include "../pch.h"
+#include <ctype.h>
 namespace RAL {
 	class String {
 		char* m_ptr;

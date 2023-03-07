@@ -1,11 +1,10 @@
 #include "string.h"
 
-#include "../core/logger.h"
-
 // TODO: memory classs
-#include <stdlib.h>
-#include <string.h>
-#include <algorithm>
+
+#include <cstdio>
+#include <cstring>
+#include <cstdlib>
 
 namespace RAL {
 	String::~String()

@@ -1,5 +1,4 @@
 #include "application.h"
-#include "core/logger.h"
 
 namespace RAL {
 	Application::Application(int argc, char** argv)

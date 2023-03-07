@@ -1,9 +1,8 @@
 #pragma once
-
-#include "core/defines.h"
+#include "../pch.h"
 
 namespace RAL {
-	class RAL_API Application {
+	class Application {
 	public:
 		Application(int argc, char** argv);
 		~Application();
