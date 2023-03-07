@@ -23,6 +23,7 @@ set(SUBDIRS
 "src/containers"
 "src/platformLayer/memory"
 "src/platformLayer/console"
+"src/platformLayer/fileIO"
 )
 
 add_library(ral)
