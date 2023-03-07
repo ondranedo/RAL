@@ -37,3 +37,7 @@ target_include_directories(ral PUBLIC "${PROJECT_SOURCE_DIR}/RAL/src")
 
 install(TARGETS ral DESTINATION ${CMAKE_INSTALL_PREFIX})
 
+target_include_directories(ral PRIVATE "${CMAKE_SOURCE_DIR}/RAL/vendor/glfw/include")
+add_subdirectory("${CMAKE_SOURCE_DIR}/RAL/vendor/glfw")
+target_link_libraries(ral glfw)
+
