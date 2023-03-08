@@ -1,4 +1,4 @@
-set(file_containers            src/containers/string.cpp src/containers/string.h)
+set(file_containers            src/containers/string.cpp src/containers/string.h src/containers/vector.h)
 set(file_core                  src/core/application.cpp src/core/application.h src/core/baseGame.cpp src/core/defines.h src/core/logger.cpp src/core/main.cpp)
 set(file_platformLayer_memory  src/platformLayer/memory/memory.cpp src/platformLayer/memory/memory.h)
 set(file_platformLayer_console src/platformLayer/console/consoleInterpreter.cpp src/platformLayer/console/consoleInterpreter.h src/platformLayer/console/wConsoleInterpreter.cpp src/platformLayer/console/wConsoleInterpreter.h)
@@ -11,6 +11,8 @@ add_library(ral ${src})
 
 ########################################################################################################################
 
+set(GLFW_BUILD_EXAMPLES false)
+set(GLFW_BUILD_DOCS false)
 target_include_directories(ral PRIVATE "${CMAKE_SOURCE_DIR}/RAL/vendor/glfw/include")
 add_subdirectory("${CMAKE_SOURCE_DIR}/RAL/vendor/glfw")
 target_link_libraries(ral glfw)
