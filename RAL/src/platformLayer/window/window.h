@@ -1,5 +1,6 @@
 #pragma once
 #include "../../pch.h"
+#include "../../containers/string.h"
 
 //TO DO:
 //	-MUTEX lock
@@ -10,8 +11,9 @@ namespace RAL
     class Window
     {
     public:
+        Window();
         virtual ~Window();
-        virtual void init() = 0;
+        virtual void Init() = 0;
         virtual void Destroy() = 0;
         virtual void MakeContextCurrent() = 0;
         virtual void onUpdate() = 0;
@@ -21,17 +23,8 @@ namespace RAL
         virtual void VSyncenable() = 0;
         virtual void VSyncdisable() = 0;
     protected:
-        struct Config
-        {
-            u32_t m_width;
-            u32_t m_height;
-            const char* m_title;
-
-            Config(u32_t width = 1280,
-                   u32_t height = 720,
-                   const char* title = "RAL")
-                    : m_width(width), m_height(height), m_title(title) {}
-        };
-        Config m_config;
+        u32_t m_width;
+        u32_t m_height;
+        RAL::String m_title;
     };
 }
