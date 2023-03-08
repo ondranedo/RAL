@@ -4,7 +4,7 @@
 
 namespace RAL
 {
-    class windowFactory
+    class WindowFactory
     {
     public:
         static i32_t getWindowCount();

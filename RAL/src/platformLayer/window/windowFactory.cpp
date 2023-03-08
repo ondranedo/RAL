@@ -2,14 +2,14 @@
 
 namespace RAL
 {
-		i32_t windowFactory::windowcount = 0;
+		i32_t WindowFactory::windowcount = 0;
 
-		Window* windowFactory::createWindow()
+		Window* WindowFactory::createWindow()
 		{
 			return new WindowsWindow();
 		}
 
-		i32_t windowFactory::getWindowCount()
+		i32_t WindowFactory::getWindowCount()
 		{
 			return windowcount;
 		}

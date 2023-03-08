@@ -11,7 +11,7 @@ namespace RAL {
 
         virtual ~WindowsWindow();
 
-        void init() override;
+        void Init() override;
 
         void Destroy() override;
 
