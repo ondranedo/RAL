@@ -7,3 +7,4 @@
 
 #include "containers/string.h"
 #include "containers/pair.h"
+#include "containers/vector.h"

@@ -5,9 +5,9 @@
 namespace RAL {
     template<typename T>
     class Vector{
-        const u32_t m_allocScale = 2;
-        u32_t m_maxCount;
-        u32_t m_count;
+        const uint64_t m_allocScale = 2;
+        uint64_t m_maxCount;
+        uint64_t m_count;
         T* m_first;
 
     public:
@@ -36,13 +36,8 @@ namespace RAL {
         Vector<T> pop_nback(const size_t& count);
         void clear();
 
-        [[nodiscrad]] u32_t size() const {
-            return m_count;
-        }
-
-        [[nodiscard]] u32_t capacity() const {
-            return m_maxCount;
-        }
+        [[nodiscrad]] const uint64_t size() const;
+        [[nodiscard]] const uint64_t capacity() const;
 
         [[nodiscard]] const T* c_cpy() const;
         void for_each(void(*function)(const T& val)) const;
@@ -63,6 +58,16 @@ namespace RAL {
         void realloc();
         void dealloc();
     };
+
+    template<typename T>
+    const uint64_t Vector<T>::size() const {
+        return m_count;
+    }
+
+    template<typename T>
+    const uint64_t Vector<T>::capacity() const {
+        return m_maxCount;
+    }
 
     template<typename T>
     Vector<T> Vector<T>::pop_nback(const size_t& count) {
@@ -222,7 +227,7 @@ namespace RAL {
         else  m_maxCount *= m_allocScale;
         // TODO: memory class
         T* tmp = static_cast<T*>(std::malloc(m_maxCount*sizeof(T)));
-        std::memcpy(tmp, m_first, m_count*sizeof(T));
+        memcpy(tmp, m_first, m_count*sizeof(T));
         // TODO: memory class
         std::free(m_first);
         m_first = tmp;
@@ -240,7 +245,7 @@ namespace RAL {
         m_maxCount /= m_allocScale;
         // TODO: memory class
         T* tmp = static_cast<T*>(std::malloc(m_maxCount*sizeof(T)));
-        std::memcpy(tmp, m_first, m_count*sizeof(T));
+        memcpy(tmp, m_first, m_count*sizeof(T));
         // TODO: memory class
         std::free(m_first);
         m_first = tmp;
@@ -250,7 +255,7 @@ namespace RAL {
     const T *Vector<T>::c_cpy() const {
         // TODO: memory class
         T* ret = reinterpret_cast<T*>(std::malloc(m_maxCount * sizeof(T)));
-        std::memcpy(ret, m_first,m_maxCount * sizeof(T));
+        memcpy(ret, m_first,m_maxCount * sizeof(T));
         return ret;
     }
 
