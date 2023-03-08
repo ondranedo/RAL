@@ -17,7 +17,7 @@
 
 /*		refactor to Memory once platformLayer is complete
  *		potentially more overrides for println
- *		switch to pointers at objects and check for memory leaks
+ *		something to not repeat code when doing so
  *		refactor to whatever fileIO["text"] is
  *		switch to safer functions like fscanf_s if recommended
 */
@@ -32,9 +32,9 @@ namespace RAL {
 		void open(RAL::String path, RAL::String alias, RAL::String mode);
 		void close(RAL::String alias);
 
-		void println(const i8_t* string);
-		void println(i32_t num);
-		void println(f32_t num);
+		void println(RAL::String alias, RAL::String string);
+		void println(RAL::String alias, i64_t num);
+		void println(RAL::String alias, f64_t num);
 
 		RAL::String readln(RAL::String alias);
 
@@ -48,5 +48,6 @@ namespace RAL {
         RAL_FILE_ENTRY* files;
 
         bool stringCompare(RAL::String a, RAL::String b);
+        i16_t findIndex(RAL::String alias);
 	};
 }
