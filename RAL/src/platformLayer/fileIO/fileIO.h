@@ -15,12 +15,10 @@
 
 #define RAL_FILE_ENTRY RAL::Pair<RAL::Pair<RAL::String, RAL::String>, RAL::Pair<RAL::String, FILE*>>
 
-/*		refactor to Memory once platformLayer is complete
- *		potentially more overrides for println
- *		something to not repeat code when doing so^^^
- *		refactor to whatever fileIO["text"] is
- *		switch to safer functions like fscanf_s if recommended
- *		wiki
+/* TODO: 
+*		use String once it has been documented
+*		refactor to Memory once platformLayer is complete
+*		potentially more overrides for println
 */
 
 namespace RAL {
@@ -33,11 +31,11 @@ namespace RAL {
 		void open(RAL::String path, RAL::String alias, RAL::String mode);
 		void close(RAL::String alias);
 
-		void println(RAL::String alias, RAL::String string);
-		void println(RAL::String alias, i64_t num);
-		void println(RAL::String alias, f64_t num);
+		void println(const i8_t* string);
+		void println(i32_t num);
+		void println(f32_t num);
 
-		RAL::String readln(RAL::String alias);
+		i8_t* readln();
 
 		void printFileUsage();
 		
@@ -47,8 +45,5 @@ namespace RAL {
 
 		i16_t openFiles;
         RAL_FILE_ENTRY* files;
-
-        bool stringCompare(RAL::String a, RAL::String b);
-        i16_t findIndex(RAL::String alias);
 	};
 }
