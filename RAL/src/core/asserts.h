@@ -17,7 +17,7 @@
 
 #define RAL_ASSERT_UNREACHABLE(...) RAL_ASSERT_MSG(__VA_ARGS__)
 #define RAL_ASSERT_NEGATIVE(point,...) if(((int)point)<0) {RAL_ASSERT_MSG(__VA_ARGS__);}
-#define RAL_ASSERT_NULL(point,...) if(point==NULL) {RAL_ASSERT_MSG(__VA_ARGS__);}
+#define RAL_ASSERT_NULL(point,...) if(reinterpret_cast<void*>(point)==static_cast<void*>(0)) {RAL_ASSERT_MSG(__VA_ARGS__);}
 #define RAL_ASSERT(expr, ...) if(!(expr)) {RAL_ASSERT_MSG(__VA_ARGS__);}
 #define RAL_ASSERT_DATA_TYPE(_t,_t_size) static_assert(sizeof(_t) == _t_size)
 

@@ -1,8 +1,11 @@
 #pragma once
 #include "../pch.h"
-#include <ctype.h>
+
 namespace RAL {
 	class String {
+        using u64_t = unsigned long long;
+        using size_t = u64_t;
+
 		char* m_ptr;
 		u64_t m_size;
 

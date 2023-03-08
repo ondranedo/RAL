@@ -44,7 +44,6 @@ namespace RAL
 			YELLOW = 14,
 			WHITE = 15
 		};
-
 		virtual void setTitle(const RAL::String& title) = 0;
 		virtual void log(const RAL::String& msg, ColourBackground background, ColourForeground text = ColourForeground::WHITE) = 0;
 		virtual void log(const RAL::String& msg, ColourForeground text, ColourBackground background = ColourBackground::BLACK) = 0;
@@ -59,14 +58,8 @@ namespace RAL
 }
 
 #ifdef RAL_WINDOWS
-#include "Wconsole.h"
-#endif // RAL_WINDOWS
-#ifdef RAL_LINUX
-#include "Lconsole.h"
-#endif // RAL_LINUX
-#ifdef RAL_MAC
-#include "Mconsole.h"
-#endif // _DEBUG
+#include "wConsoleInterpreter.h"
+#endif //!RAL_WINDOWS
 
 namespace RAL
 {
@@ -76,3 +69,5 @@ namespace RAL
 		static ConsoleInterpreter* createConsole();
 	};
 }
+
+

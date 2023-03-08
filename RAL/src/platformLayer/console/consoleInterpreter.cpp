@@ -1,4 +1,4 @@
-#include "console.h"
+#include "consoleInterpreter.h"
 
 namespace RAL {
 	ConsoleInterpreter::~ConsoleInterpreter()
@@ -10,10 +10,10 @@ namespace RAL {
 	{
 		//TODO: Memory management
 	#ifdef RAL_WINDOWS
-		return new WConsole();
-    #else
-        return nullptr;
+		return new WConsoleInterpreter();
     #endif
+
+        return nullptr;
 	}
 
 	u8_t operator|(ConsoleInterpreter::ColourForeground foreground, ConsoleInterpreter::ColourBackground background)

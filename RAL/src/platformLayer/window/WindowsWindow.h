@@ -3,27 +3,29 @@
 #include "../../core/types.h"
 #include "window.h"
 
-namespace RAL 
-{
+namespace RAL {
 
-	class WindowsWindow : public Window
-	{
-	public:
-		WindowsWindow();
-		virtual ~WindowsWindow();
-		void init() override;
-		void Destroy() override;
-		void MakeContextCurrent() override;
-		void onUpdate() override;
+    class WindowsWindow : public Window {
+    public:
+        WindowsWindow();
 
-		void setWidth(i32_t new_width) override;
-		void setHeight(i32_t new_width) override;
+        virtual ~WindowsWindow();
 
-		void VSyncenable() override;
-		void VSyncdisable() override;
-	private:
-		GLFWwindow* m_window;
-	};
-	
+        void init() override;
 
-}
+        void Destroy() override;
+
+        void MakeContextCurrent() override;
+
+        void onUpdate() override;
+
+        void setDims(const RAL::Pair<u8_t, u8_t>& dimsWH) override;
+
+        void VSyncenable() override;
+
+        void VSyncdisable() override;
+
+    private:
+        GLFWwindow *m_window;
+    };
+};

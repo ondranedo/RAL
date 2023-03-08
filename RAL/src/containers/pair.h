@@ -26,7 +26,6 @@ namespace RAL {
         Pair(TL&& first, const TR& second) noexcept;
         Pair(TL&& first, TR&& second) noexcept;
 
-        freind std::ostream& operator<<(std::ostream& left, const std::tuple& pair);
         // iterator
         //TL* begin();
 

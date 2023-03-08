@@ -15,19 +15,18 @@ namespace RAL
 	}
 	void WindowsWindow::init()
 	{
-		RAL_LOG_INFO("Initializing GLFW");
+
 		if (RAL::windowFactory::windowcount == 0)
 		{
-			if(!glfwInit()) RAL_LOG_ERROR("GLFW cant be initialized");
+            RAL_LOG_INFO("Initializing GLFW");
+			RAL_ASSERT_NULL(glfwInit(),"GLFW cant be initialized");
 		}
 
-		RAL_LOG_INFO("Creating windows window. Width: %d, Height: %d Title: %s", m_config.m_Width, m_config.m_Height, m_config.m_Title);
-		m_window = glfwCreateWindow(m_config.m_Width, m_config.m_Height, m_config.m_Title, NULL, NULL);
-		if (!m_window)
-		{
-			RAL_LOG_ERROR("Windows window cant be opened");
-		}
-		else RAL::windowFactory::windowcount++;
+		RAL_LOG_INFO("Creating windows window. Width: %d, Height: %d Title: %s", m_config.m_width, m_config.m_height, m_config.m_title);
+		m_window = glfwCreateWindow(m_config.m_width, m_config.m_height, m_config.m_title, NULL, NULL);
+        RAL_ASSERT_NULL(m_window, "Windows window cant be opened");
+
+		if(m_window) RAL::windowFactory::windowcount++;
 
 		//GLFW callbacks
 
@@ -54,14 +53,10 @@ namespace RAL
 		glfwSwapBuffers(m_window);
 	}
 
-	void WindowsWindow::setWidth(i32_t new_width)
+	void WindowsWindow::setDims(const RAL::Pair<u8_t, u8_t>& dimsWH)
 	{
-		m_config.m_Width = new_width;
-	}
-
-	void WindowsWindow::setHeight(i32_t new_height)
-	{
-		m_config.m_Height = new_height;
+		m_config.m_width = dimsWH.first;
+		m_config.m_height = dimsWH.second;
 	}
 
 	void WindowsWindow::VSyncenable()

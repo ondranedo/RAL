@@ -2,5 +2,5 @@
 
 namespace RAL
 {
-	Window::~Window() {}
+    Window::~Window() {}
 }

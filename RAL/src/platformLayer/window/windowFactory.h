@@ -4,14 +4,14 @@
 
 namespace RAL
 {
-	class windowFactory
-	{
-	public:
-		static i32_t getWindowCount();
-		static i32_t windowcount;
-		static Window* createWindow();
-	private:
-	};
+    class windowFactory
+    {
+    public:
+        static i32_t getWindowCount();
+        static i32_t windowcount;
+        static Window* createWindow();
+    private:
+    };
 }
 
 //#ifdef RAL_PLATFORM_WINDOWS
