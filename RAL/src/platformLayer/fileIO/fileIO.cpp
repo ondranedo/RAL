@@ -13,6 +13,10 @@ namespace RAL {
 
 	fileIO::~fileIO() {
 
+        for(i16_t i = 0; i < openFiles; i++){
+            fclose(files[i].y.y);
+        }
+        free(files);
 		RAL_LOG_TRACE("File I/O destroyed");
 	}
 
@@ -71,6 +75,30 @@ namespace RAL {
             return true;
         }
         return false;
+    }
+
+    RAL::String fileIO::readln(RAL::String alias){
+
+        char* buf;
+        RAL::String buf2 = RAL::String();
+
+        for(i16_t i = 0; i < openFiles; i++){
+            if(stringCompare(alias, files[i].x.y)){
+                if(files[i].y.x.c_str()[1] == 'b'){
+
+                }
+                else{
+                    // change to a better solution than this
+                    buf = reinterpret_cast<char*>(malloc(1024));
+                    fscanf(files[i].y.y, "%s\n", buf);
+
+                    buf2.recreate(buf);
+                    free(buf);
+                    return buf2;
+                }
+            }
+        }
+        RAL_LOG_ERROR("File alias not found!");
     }
 
 	void fileIO::maxFile(i16_t count) {
