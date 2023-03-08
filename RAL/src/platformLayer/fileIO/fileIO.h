@@ -18,6 +18,8 @@
 /*		refactor to Memory once platformLayer is complete
  *		potentially more overrides for println
  *		switch to pointers at objects and check for memory leaks
+ *		refactor to whatever fileIO["text"] is
+ *		switch to safer functions like fscanf_s if recommended
 */
 
 namespace RAL {
@@ -34,7 +36,7 @@ namespace RAL {
 		void println(i32_t num);
 		void println(f32_t num);
 
-		i8_t* readln();
+		RAL::String readln(RAL::String alias);
 
 		void printFileUsage();
 		
