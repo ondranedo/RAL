@@ -11,11 +11,11 @@ namespace RAL {
 		String();
 		String(const char* c_str);
 		String(const String& str);
-		String(String&& str);
+		String(String&& str) noexcept;
 
 		// getters
-		u64_t size() const;
-		const String& get() const;
+        [[nodiscard]] u64_t size() const;
+        [[nodiscard]] const String& get() const;
 
 		// Supporting functions
 		void toLower();
@@ -24,14 +24,14 @@ namespace RAL {
 
 		// Memory functions
 		void flush();
-		void recreate(String&& str);
+		void recreate(String&& str) noexcept;
 		void recreate(const String& str);
 		void recreate(const char* c_str);
 		void recreate(char c);
 
 		// for C sup. functions
-		char* c_cpy() const;
-		const char* c_str() const;
+        [[nodiscard]] char* c_cpy() const;
+		[[nodiscard]] const char* c_str() const;
 
 		String operator+(const String& str);
 		String operator+(const char* msg);
@@ -39,7 +39,7 @@ namespace RAL {
 		friend 	String operator+(const char* msg, const String& str);
 		char operator[](const size_t& index);
 		String& operator=(const String& str);
-		String& operator=(String&& str);
+		String& operator=(String&& str) noexcept;
 		String& operator=(const char* str);
 		String& operator=(char c);
 		// Iterators
