@@ -1,6 +1,7 @@
 #pragma once
 
-#include "../../core/types.h"
+#include "pch.h"
+#include <cstdio>
 
 // constants for open modes
 #define TXT_READ "r"
@@ -11,6 +12,8 @@
 #define BIN_WRITE "wb"
 #define BIN_APPEND "ab"
 #define BIN_READ_WRITE "rb+"
+
+#define RAL_FILE_ENTRY RAL::Pair<RAL::Pair<RAL::String, RAL::String>, RAL::Pair<RAL::String, FILE*>>
 
 /* TODO: 
 *		use String once it has been documented
@@ -25,8 +28,8 @@ namespace RAL {
 		fileIO();
 		~fileIO();
 
-		void open(const i8_t* path, const i8_t* alias, const i8_t* mode);
-		void close(const i8_t* alias);
+		void open(RAL::String path, RAL::String alias, RAL::String mode);
+		void close(RAL::String alias);
 
 		void println(const i8_t* string);
 		void println(i32_t num);
@@ -36,10 +39,11 @@ namespace RAL {
 
 		void printFileUsage();
 		
-		void maxFile(u16_t count);
+		void maxFile(i16_t count);
 
 	private:
 
-		u16_t openFiles;
+		i16_t openFiles;
+        RAL_FILE_ENTRY* files;
 	};
 }
