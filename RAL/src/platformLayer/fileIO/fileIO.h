@@ -15,10 +15,9 @@
 
 #define RAL_FILE_ENTRY RAL::Pair<RAL::Pair<RAL::String, RAL::String>, RAL::Pair<RAL::String, FILE*>>
 
-/* TODO: 
-*		use String once it has been documented
-*		refactor to Memory once platformLayer is complete
-*		potentially more overrides for println
+/*		refactor to Memory once platformLayer is complete
+ *		potentially more overrides for println
+ *		switch to pointers at objects and check for memory leaks
 */
 
 namespace RAL {
@@ -45,5 +44,7 @@ namespace RAL {
 
 		i16_t openFiles;
         RAL_FILE_ENTRY* files;
+
+        bool stringCompare(RAL::String a, RAL::String b);
 	};
 }
