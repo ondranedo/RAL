@@ -1,7 +1,6 @@
 #include "fileIO.h"
 
 #include <utility>
-#include "../../core/logger.h"
 
 namespace RAL {
 
@@ -19,6 +18,17 @@ namespace RAL {
 
 	void fileIO::open(RAL::String path, RAL::String alias, RAL::String mode) {
 
+        for(i16_t i = 0; i < openFiles; i++){
+            if(stringCompare(path, files[i].x.x)){
+                RAL_LOG_ERROR("This path is already open!");
+                return;
+            }
+            if(stringCompare(alias, files[i].x.y)){
+                RAL_LOG_ERROR("This alias is already used!");
+                return;
+            }
+        }
+
         if(openFiles == _getmaxstdio()){
             RAL_LOG_ERROR("Open file limit reached!");
             return;
@@ -33,12 +43,43 @@ namespace RAL {
 
     void fileIO::close(RAL::String alias) {
 
+        for(i16_t i = 0; i < openFiles; i++){
+            if(stringCompare(alias, files[i].x.y)){
+                fclose(files[i].y.y);
 
+                files[i].x.x = files[openFiles - 1].x.x;
+                files[i].x.y = files[openFiles - 1].x.y;
+                files[i].y.x = files[openFiles - 1].y.x;
+                files[i].y.y = files[openFiles - 1].y.y;
+
+                files = reinterpret_cast<RAL_FILE_ENTRY*>(realloc(files, sizeof(RAL_FILE_ENTRY) * (openFiles - 1)));
+                openFiles -= 1;
+                return;
+            }
+        }
+        RAL_LOG_ERROR("File alias not found!");
+    }
+
+    bool fileIO::stringCompare(RAL::String a, RAL::String b) {
+
+        /* three levels of nesting is fine ~1nome */
+        if(a.size() == b.size()){
+            for(u32_t i = 0; i < a.size(); i++){
+                if(a.c_str()[i] != a.c_str()[i])
+                    return false;
+            }
+            return true;
+        }
+        return false;
     }
 
 	void fileIO::maxFile(i16_t count) {
 
-		RAL_LOG_TRACE("Maximum number of open files changed to %hu", count);
+        if(count < openFiles) {
+            RAL_LOG_ERROR("Cant decrease the maximum number of open files now! Need to close some prior to decreasing.");
+            return;
+        }
+        RAL_LOG_TRACE("Maximum number of open files changed to %h", count);
 		_setmaxstdio(count);
 	}
 }
