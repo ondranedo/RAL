@@ -17,9 +17,10 @@
 
 /*		refactor to Memory once platformLayer is complete
  *		potentially more overrides for println
- *		something to not repeat code when doing so
+ *		something to not repeat code when doing so^^^
  *		refactor to whatever fileIO["text"] is
  *		switch to safer functions like fscanf_s if recommended
+ *		wiki
 */
 
 namespace RAL {
