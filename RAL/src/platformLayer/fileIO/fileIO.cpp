@@ -139,6 +139,34 @@ namespace RAL {
         fprintf(files[i].y.y, "%lf", num);
     }
 
+    void fileIO::printFileUsage(){
+
+        u32_t maxAliasSize = 0, maxPathSize = 0;
+        RAL::String line;
+
+        RAL_FILE_SCANTHRU{
+
+            if(files[i].x.x.size() > maxPathSize)
+                maxPathSize = files[i].x.x.size();
+            if(files[i].x.y.size() > maxAliasSize)
+                maxAliasSize = files[i].x.y.size();
+        }
+
+        RAL_FILE_SCANTHRU{
+
+            line.recreate(files[i].x.x);
+            while (line.size() < maxPathSize + 1)
+                line = line + " ";
+
+            line = line + files[i].x.y;
+            while(line.size() < maxPathSize + maxAliasSize + 2)
+                line = line + " ";
+
+            line = line + files[i].y.x;
+            RAL_LOG_INFO("%s\n", line);
+        }
+    }
+
 	void fileIO::maxFile(i16_t count) {
 
         if(count < openFiles) {
