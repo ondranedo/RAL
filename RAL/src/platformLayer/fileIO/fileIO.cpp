@@ -34,11 +34,11 @@ namespace RAL {
                 return;
             }
         }
-
         if(openFiles == _getmaxstdio()){
             RAL_LOG_ERROR("Open file limit reached!");
             return;
         }
+
         files = reinterpret_cast<RAL_FILE_ENTRY*>(realloc(files, sizeof(RAL_FILE_ENTRY) * (openFiles + 1)));
 		files[openFiles].y.y = fopen(path.c_str(), mode.c_str());
         files[openFiles].x.x = path;
@@ -95,7 +95,7 @@ namespace RAL {
         i16_t i = findIndex(alias);
         if(i == -1){
             RAL_LOG_ERROR("File alias not found!");
-            return RAL::String(nullptr);
+            return RAL::String();
         }
         if(files[i].y.x.c_str()[1] == 'b'){
 
