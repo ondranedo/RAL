@@ -57,17 +57,4 @@ namespace RAL
 	u8_t operator|(ConsoleInterpreter::ColourBackground background, ConsoleInterpreter::ColourForeground foreground);
 }
 
-#ifdef RAL_WINDOWS
-#include "wConsoleInterpreter.h"
-#endif //!RAL_WINDOWS
-
-namespace RAL
-{
-	class ConsoleInterpreterFactory
-	{
-	public:
-		static ConsoleInterpreter* createConsole();
-	};
-}
-
 

@@ -2,6 +2,7 @@
 #include "../platformLayer/window/window.h"
 #include "../platformLayer/window/windowFactory.h"
 #include "../platformLayer/console/consoleInterpreter.h"
+#include "../platformLayer/console/consoleInterpreterFactory.h"
 
 namespace RAL {
 	Application::Application(int argc, char** argv)
