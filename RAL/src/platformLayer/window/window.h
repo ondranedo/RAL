@@ -13,15 +13,16 @@ namespace RAL
     public:
         Window();
         virtual ~Window();
-        virtual void Init() = 0;
-        virtual void Destroy() = 0;
-        virtual void MakeContextCurrent() = 0;
+        virtual void init() = 0;
+        virtual void destroy() = 0;
+        virtual void makeContextCurrent() = 0;
         virtual void onUpdate() = 0;
+        virtual void setEvenCallBack() = 0;
 
         virtual void setDims(const RAL::Pair<u8_t, u8_t>& dimsWH) = 0;
 
-        virtual void VSyncenable() = 0;
-        virtual void VSyncdisable() = 0;
+        virtual void vSyncEnable() = 0;
+        virtual void vSyncDisable() = 0;
     protected:
         u32_t m_width;
         u32_t m_height;

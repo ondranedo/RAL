@@ -6,7 +6,6 @@ namespace RAL
 {
     WindowsWindow::WindowsWindow()
     {
-
     }
 
     WindowsWindow::~WindowsWindow()
@@ -14,9 +13,8 @@ namespace RAL
 		glfwTerminate();
 	}
 
-	void WindowsWindow::Init()
+	void WindowsWindow::init()
 	{
-
 		if (RAL::WindowFactory::windowcount == 0)
 		{
             RAL_LOG_INFO("Initializing GLFW");
@@ -30,10 +28,9 @@ namespace RAL
 		if(m_window) RAL::WindowFactory::windowcount++;
 
 		//GLFW callbacks
-
 	}
 
-	void WindowsWindow::Destroy()
+	void WindowsWindow::destroy()
 	{
 		glfwDestroyWindow(m_window);
 		RAL::WindowFactory::windowcount--;
@@ -43,7 +40,7 @@ namespace RAL
 		}
 	}
 
-	void WindowsWindow::MakeContextCurrent()
+	void WindowsWindow::makeContextCurrent()
 	{
 		glfwMakeContextCurrent(m_window);
 	}
@@ -60,12 +57,12 @@ namespace RAL
 		m_height = dimsWH.second;
 	}
 
-	void WindowsWindow::VSyncenable()
+	void WindowsWindow::vSyncEnable()
 	{
 		glfwSwapInterval(1);
 	}
 
-	void WindowsWindow::VSyncdisable()
+	void WindowsWindow::vSyncDisable()
 	{
 		glfwSwapInterval(0);
 	}
