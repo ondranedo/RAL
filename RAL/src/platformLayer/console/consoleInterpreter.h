@@ -50,6 +50,7 @@ namespace RAL
 		virtual void log(const RAL::String& msg) = 0;
 		virtual void clear() = 0;
 		virtual void pause() = 0;
+        virtual void unpause() = 0;
 		virtual ~ConsoleInterpreter();
 	};
 

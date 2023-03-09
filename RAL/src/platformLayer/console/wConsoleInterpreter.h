@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../../pch.h"
 
 #include "consoleInterpreter.h"
@@ -7,8 +8,10 @@
 
 #include <windows.h>
 
-namespace RAL {
-    class WConsoleInterpreter final : public ConsoleInterpreter {
+namespace RAL
+{
+    class WConsoleInterpreter final : public ConsoleInterpreter
+    {
     public:
         WConsoleInterpreter();
 
@@ -26,7 +29,10 @@ namespace RAL {
 
         void pause() override;
 
+        void unpause() override;
+
     private:
+        bool m_pause = false;
         HANDLE console;
         CONSOLE_SCREEN_BUFFER_INFO screen{};
         DWORD written{}, mode{}, count{};

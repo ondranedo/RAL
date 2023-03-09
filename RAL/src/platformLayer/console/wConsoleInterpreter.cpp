@@ -1,10 +1,13 @@
 #include "wConsoleInterpreter.h"
 
 #ifdef RAL_WINDOWS
+
 #include <iostream>
 
-namespace RAL {
-    WConsoleInterpreter::WConsoleInterpreter() {
+namespace RAL
+{
+    WConsoleInterpreter::WConsoleInterpreter()
+    {
         FreeConsole();
         AllocConsole();
         console = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -14,33 +17,48 @@ namespace RAL {
         RAL_LOG_DEBUG("Console constructed on Windows platform");
     }
 
-    WConsoleInterpreter::~WConsoleInterpreter() {
+    WConsoleInterpreter::~WConsoleInterpreter()
+    {
         FreeConsole();
     }
 
-    void WConsoleInterpreter::setTitle(const RAL::String &title) {
+    void WConsoleInterpreter::setTitle(const RAL::String &title)
+    {
         SetConsoleTitle(title.c_str());
     }
 
     void WConsoleInterpreter::log(const RAL::String &msg, RAL::ConsoleInterpreter::ColourBackground background,
-                       RAL::ConsoleInterpreter::ColourForeground text) {
-        SetConsoleTextAttribute(console, background | text);
-        printf("%s\n", msg.c_str());
+                                  RAL::ConsoleInterpreter::ColourForeground text)
+    {
+        if (m_pause == FALSE)
+        {
+            SetConsoleTextAttribute(console, background | text);
+            printf("%s\n", msg.c_str());
+        }
     }
 
     void WConsoleInterpreter::log(const RAL::String &msg, RAL::ConsoleInterpreter::ColourForeground text,
-                       RAL::ConsoleInterpreter::ColourBackground background) {
-        SetConsoleTextAttribute(console, text | background);
-        printf("%s\n", msg.c_str());
+                                  RAL::ConsoleInterpreter::ColourBackground background)
+    {
+        if (m_pause == FALSE)
+        {
+            SetConsoleTextAttribute(console, text | background);
+            printf("%s\n", msg.c_str());
+        }
     }
 
-    void WConsoleInterpreter::log(const RAL::String &msg) {
-        SetConsoleTextAttribute(console, RAL::ConsoleInterpreter::ColourBackground::BLACK |
-                                         RAL::ConsoleInterpreter::ColourForeground::WHITE);
-        printf("%s\n", msg.c_str());
+    void WConsoleInterpreter::log(const RAL::String &msg)
+    {
+        if (m_pause == FALSE)
+        {
+            SetConsoleTextAttribute(console, RAL::ConsoleInterpreter::ColourBackground::BLACK |
+                                             RAL::ConsoleInterpreter::ColourForeground::WHITE);
+            printf("%s\n", msg.c_str());
+        }
     }
 
-    void WConsoleInterpreter::clear() {
+    void WConsoleInterpreter::clear()
+    {
         GetConsoleScreenBufferInfo(console, &screen);
         FillConsoleOutputCharacterA(
                 console, ' ', screen.dwSize.X * screen.dwSize.Y, topLeft, &written
@@ -52,11 +70,20 @@ namespace RAL {
         SetConsoleCursorPosition(console, topLeft);
     }
 
-    void WConsoleInterpreter::pause() {
+    void WConsoleInterpreter::pause()
+    {
+        m_pause = TRUE;
         SetConsoleTextAttribute(console, RAL::ConsoleInterpreter::ColourBackground::BLACK |
                                          RAL::ConsoleInterpreter::ColourForeground::LIGHTRED);
-        printf("Console paused! Press any key to continue");
-        std::cin.get();
+        printf("Console paused!\n");
+    }
+
+    void WConsoleInterpreter::unpause()
+    {
+        m_pause = FALSE;
+        SetConsoleTextAttribute(console, RAL::ConsoleInterpreter::ColourBackground::BLACK |
+                                         RAL::ConsoleInterpreter::ColourForeground::LIGHTRED);
+        printf("Console unpaused!\n");
     }
 }
 #endif
