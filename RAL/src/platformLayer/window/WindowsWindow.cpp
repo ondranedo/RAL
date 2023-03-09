@@ -66,4 +66,9 @@ namespace RAL
 	{
 		glfwSwapInterval(0);
 	}
+
+    void WindowsWindow::setEvenCallBack()
+    {
+
+    }
 }
