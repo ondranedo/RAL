@@ -224,8 +224,10 @@ namespace RAL {
 
 	void String::clear()
 	{
-		if (m_ptr)
+		if (m_ptr) {
             mainMemory.release(m_ptr);
+            m_ptr = nullptr;
+        }
 		m_size = 0;
 	}
 }
