@@ -1,6 +1,9 @@
 #include "memory.h"
 
 namespace RAL{
+    Memory::Memory(){
+
+    }
 
     Memory::~Memory(){
 
