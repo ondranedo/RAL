@@ -1,11 +1,11 @@
 #include "string.h"
 
-// TODO: memory classs
-
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
 #include <memory>
+
+#include "../core/allocator.h"
 
 namespace RAL {
 	String::~String()
@@ -24,7 +24,7 @@ namespace RAL {
 		m_size(std::strlen(c_str))
 	{
 		// TODO: memory class
-		m_ptr = reinterpret_cast<char*>(std::malloc(m_size + 1));
+		m_ptr = mainMemory.allocn<char>(m_size + 1);
 		std::memcpy(m_ptr, c_str, m_size + 1);
 	}
 
@@ -53,9 +53,8 @@ namespace RAL {
 		String retstr;
 		retstr.recreate(*this);
 		retstr.m_size += str.m_size;
-		retstr.m_ptr = reinterpret_cast<char*>(std::realloc(retstr.m_ptr, retstr.m_size + 1));
+		retstr.m_ptr = reinterpret_cast<char*>(mainMemory.reallocate(retstr.m_ptr,retstr.m_size + 1));
 
-		// TODO: memory class
 		std::strcat(retstr.m_ptr, str.m_ptr);
 		return retstr;
 	}
@@ -65,9 +64,8 @@ namespace RAL {
 		String retstr;
 		retstr.recreate(*this);
 		retstr.m_size += std::strlen(msg);
-		retstr.m_ptr = reinterpret_cast<char*>(std::realloc(retstr.m_ptr, retstr.m_size + 1));
+		retstr.m_ptr = reinterpret_cast<char*>(mainMemory.reallocate(retstr.m_ptr,retstr.m_size + 1));
 
-		// TODO: memory class
 		std::strcat(retstr.m_ptr, msg);
 		return retstr;
 	}
@@ -77,8 +75,7 @@ namespace RAL {
 		String retstr;
 		retstr.recreate(*this);
 		retstr.m_size++;
-		// TODO: memory class
-		retstr.m_ptr = reinterpret_cast<char*>(std::realloc(retstr.m_ptr, retstr.m_size + 1));
+		retstr.m_ptr = reinterpret_cast<char*>(mainMemory.reallocate(retstr.m_ptr,retstr.m_size + 1));
 
 		retstr.m_ptr[retstr.m_size-1] = c;
 		retstr.m_ptr[retstr.m_size  ] = '\0';
@@ -91,8 +88,7 @@ namespace RAL {
 		retstr.recreate(msg);
 		retstr.m_size+=str.m_size;
 
-		// TODO: memory class
-		retstr.m_ptr = reinterpret_cast<char*>(std::realloc(retstr.m_ptr, retstr.m_size + 1));
+		retstr.m_ptr = reinterpret_cast<char*>(mainMemory.reallocate(retstr.m_ptr, retstr.m_size + 1));
 		std::strcat(retstr.m_ptr, str.m_ptr);
 		return retstr;
 	}
@@ -138,9 +134,8 @@ namespace RAL {
 	}
 
 	char* String::c_cpy() const
-	{
-		// TODO: memory class
-		char* ptr = reinterpret_cast<char*>(std::malloc(m_size + 1));
+    {
+		char* ptr = mainMemory.allocn<char>(m_size + 1);
 		std::memcpy(ptr, m_ptr, m_size + 1);
 		return ptr;
 	}
@@ -161,8 +156,7 @@ namespace RAL {
 
 		m_size = str.m_size;
 
-		// TODO: memory class
-		m_ptr = reinterpret_cast<char*>(std::malloc(m_size + 1));
+		m_ptr = mainMemory.allocn<char>(m_size + 1);
 		std::memcpy(m_ptr, str.m_ptr, m_size + 1);
 	}
 
@@ -172,8 +166,7 @@ namespace RAL {
 
 		m_size = std::strlen(str);
 
-		// TODO: memory class
-		m_ptr = reinterpret_cast<char*>(malloc(m_size + 1));
+		m_ptr = mainMemory.allocn<char>(m_size + 1);
 		std::memcpy(m_ptr, str, m_size + 1);
 	}
 
@@ -183,8 +176,7 @@ namespace RAL {
 
 		m_size = 1;
 
-		// TODO: memory class
-		m_ptr = reinterpret_cast<char*>(malloc(2));
+		m_ptr = mainMemory.allocn<char>(2);
 		m_ptr[0] = c;
 		m_ptr[1] = '\0';
 	}
@@ -233,8 +225,7 @@ namespace RAL {
 	void String::clear()
 	{
 		if (m_ptr)
-			// TODO: memory class
-			std::free(m_ptr);
+            mainMemory.release(m_ptr);
 		m_size = 0;
 	}
 }
