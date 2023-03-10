@@ -6,7 +6,7 @@
 
 namespace RAL
 {
-    Application::Application(int argc, char **argv)
+    Application::Application(const Memory& mem)
     {
         RAL_LOG_TRACE("Application created");
 // setMem(mem)
@@ -31,4 +31,9 @@ namespace RAL
 	{
 		RAL_LOG_TRACE("Application destroyed");
 	}
+
+    void Application::run()
+    {
+        RAL_LOG_TRACE("Application running");
+    }
 };

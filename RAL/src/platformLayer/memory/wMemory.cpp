@@ -120,14 +120,5 @@ namespace RAL {
 #endif
         return nullptr;
 	}
-
-    fallocate WinMemory::getfAllocate() const {
-        fallocate fun = &WinMemory::allocate;
-        return fun;
-    }
-    ffree WinMemory::getfDellocate() const {
-        ffree fun = &WinMemory::free;
-        return fun;
-    }
 }
 #endif
