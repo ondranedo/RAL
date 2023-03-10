@@ -8,16 +8,17 @@ int main(int argc, char** argv)
     RAL_LOG_PRIORITY_TRACE();
 
 #ifdef RAL_WINDOWS
-    RAL::WinMemory mem;
+    RAL::Memory* mem = new RAL::WinMemory;
 #endif
+    RAL::mainMemory.bindToMemory(*mem);
 
-    RAL::mainMemory.bindToMemory(mem);
+// Engine
+    auto obj = RAL::mainMemory.alloc<RAL::Application>(mem);
 
-    RAL::Application* app = (RAL::Application*)malloc(sizeof(RAL::Application));
+	obj->run();
 
-	auto engine = RAL::mainMemory.alloc<RAL::Application>();
+    RAL::mainMemory.release(obj);
+//~Engine
 
-	engine->run();
-
-    RAL::mainMemory.release(engine);
+    delete mem;
 }

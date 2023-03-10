@@ -4,15 +4,27 @@
 
 namespace RAL{
     struct Allocator{
-        template<typename T>
-        T* alloc()
+        template<typename T, typename... Args>
+        T* alloc(Args... args)
         {
-            if(m_memory)
-                return (T*)(m_memory->*(&Memory::allocate))(sizeof(T));
+            if(m_memory){
+                T* ptr = (T*)(m_memory->*(&Memory::allocate))(sizeof(T));
+                new (ptr) T(args...);
+                return ptr;
+            }
             std::cerr<<"Allocator unset\n";
             return nullptr;
         }
-        void release(void* mem);
+        template<typename T>
+        void release(T* mem)
+        {
+            if(m_memory){
+                (m_memory->*(&Memory::release))(mem);
+                mem->~T();
+            }
+            else
+                std::cerr<<"Allocator unset\n";
+        }
         void bindToMemory(Memory& mem);
         void* reallocate(void* mem, size_t size);
 

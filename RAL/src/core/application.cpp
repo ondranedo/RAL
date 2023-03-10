@@ -6,7 +6,7 @@
 
 namespace RAL
 {
-    Application::Application(const Memory& mem)
+    Application::Application(Memory* mem)
     {
         RAL_LOG_TRACE("Application created");
 // setMem(mem)

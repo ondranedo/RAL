@@ -3,14 +3,6 @@
 namespace RAL{
     Allocator mainMemory;
 
-    void Allocator::release(void* mem)
-    {
-        if(m_memory)
-            (m_memory->*(&Memory::release))(mem);
-        else
-            std::cerr<<"Allocator unset\n";
-    }
-
     void  Allocator::bindToMemory(Memory& mem)
     {
         m_memory = &mem;

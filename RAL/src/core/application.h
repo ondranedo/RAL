@@ -5,7 +5,7 @@
 namespace RAL {
 	class Application {
 	public:
-		Application(const Memory& mem);
+		Application(Memory* mem);
 		~Application();
 		void run();
 	};
