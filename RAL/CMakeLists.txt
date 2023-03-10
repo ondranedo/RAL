@@ -1,6 +1,6 @@
 set(file_containers            src/containers/string.cpp src/containers/string.h src/containers/vector.h src/containers/pair.h)
 set(file_core                  src/core/application.cpp src/core/application.h src/core/baseGame.cpp src/core/defines.h src/core/logger.cpp src/core/main.cpp)
-set(file_platformLayer_memory src/platformLayer/memory/wMemory.cpp src/platformLayer/memory/wMemory.h src/platformLayer/memory/memory.cpp src/platformLayer/memory/memory.h src/platformLayer/memory/memoryFactory.h src/platformLayer/memory/memoryFactory.cpp)
+set(file_platformLayer_memory  src/platformLayer/memory/wMemory.cpp src/platformLayer/memory/wMemory.h src/platformLayer/memory/memory.cpp src/platformLayer/memory/memory.h src/platformLayer/memory/memoryFactory.h src/platformLayer/memory/memoryFactory.cpp)
 set(file_platformLayer_console src/platformLayer/console/consoleInterpreter.cpp src/platformLayer/console/consoleInterpreter.h src/platformLayer/console/wConsoleInterpreter.cpp src/platformLayer/console/wConsoleInterpreter.h src/platformLayer/console/consoleInterpreterFactory.cpp src/platformLayer/console/consoleInterpreterFactory.h)
 set(file_platformLayer_window  src/platformLayer/window/window.cpp src/platformLayer/window/windowFactory.cpp src/platformLayer/window/WindowsWindow.cpp)
 set(file_test                  src/tests/test.cpp src/tests/test.h)
