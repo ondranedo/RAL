@@ -4,11 +4,11 @@
 
 namespace RAL{
     struct Allocator{
-        template<typename T, typename... Args>
+        template<typename T, size_t S = 1, typename... Args>
         T* alloc(Args... args)
         {
             if(m_memory){
-                T* ptr = (T*)(m_memory->*(&Memory::allocate))(sizeof(T));
+                T* ptr = (T*)(m_memory->*(&Memory::allocate))(sizeof(T)*S);
                 new (ptr) T(args...);
                 return ptr;
             }
