@@ -1,47 +1,32 @@
 #pragma once
+
 #include "../../pch.h"
-
-/*TODO: pointer validation
-*		runtime checks
-*		add more guard bytes
-*		add constants to make adding more guard bytes easier
-*		add asserts for out of bounds access
-*/
-
-#include <cstdlib>
-
-#ifdef RAL_DEBUG
-
-#define GUARD_ONE 0xB0
-#endif
-
 namespace RAL {
+    class Memory {
 
-	class Memory {
-
-	protected:
-		i64_t nOfBytes;
+    protected:
+        int64_t nOfBytes;
 #ifdef RAL_DEBUG
-		i64_t nOfGuards;
+        int64_t nOfGuards;
 #endif
-		i64_t nOfBlocks;
+        int64_t nOfBlocks;
 
-	public:
-		Memory();
-		~Memory();
+    public:
+        Memory();
 
-		virtual void* allocate(size_t bytes) = 0;
-		virtual void release(void* block) = 0;
-		virtual void* reallocate(void* block, size_t newSize) = 0;
-		i64_t allocated();
-		i64_t blocks();
-	};
+        virtual ~Memory();
 
-	class WinMemory: public Memory {
+        virtual void *allocate(size_t bytes) = 0;
 
-	public:
-		void* allocate(size_t bytes);
-		void release(void* block);
-		void* reallocate(void* block, size_t newSize);
-	};
-}
+        virtual void release(void *block) = 0;
+
+        virtual void *reallocate(void *block, size_t newSize) = 0;
+
+        int64_t allocated();
+        int64_t blocks();
+    };
+
+    typedef void* (Memory::*fallocate)(size_t);
+    typedef void  (Memory::*frelease)(void*);
+    typedef void* (Memory::*freallocate)(void*,size_t);
+};

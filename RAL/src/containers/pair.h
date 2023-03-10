@@ -26,11 +26,27 @@ namespace RAL {
         Pair(TL&& first, const TR& second) noexcept;
         Pair(TL&& first, TR&& second) noexcept;
 
-        // iterator
-        //TL* begin();
-
-        //TR* end();
+        Pair<TL,TR>& operator=(const Pair<TL,TR>& other);
+        Pair<TL,TR>& operator=(Pair<TL,TR> &&other) noexcept;
     };
+
+    template<typename TL, typename TR>
+    Pair<TL, TR> &Pair<TL, TR>::operator=(const Pair<TL,TR> &other) {
+        this->x = other.x;
+        this->y = other.y;
+        return *this;
+    }
+
+
+    template<typename TL, typename TR>
+    Pair<TL,TR>& Pair<TL, TR>::operator=(Pair<TL,TR> &&other) noexcept {
+        this->x = std::move(other.x);
+        this->y = std::move(other.y);
+        memset(&x,0, sizeof(x));
+        memset(&y,0, sizeof(y));
+
+        return *this;
+    }
 
     template<typename TL, typename TR>
     Pair<TL, TR>::Pair():
@@ -48,7 +64,10 @@ namespace RAL {
     Pair<TL, TR>::Pair(Pair &&other)  noexcept:
             x(std::move(other.x)),
             y(std::move(other.y))
-    {}
+    {
+        other.x = 0;
+        other.y = 0;
+    }
 
     template<typename TL, typename TR>
     Pair<TL, TR>::Pair(const TL& first, const TR& second):
@@ -60,7 +79,8 @@ namespace RAL {
     Pair<TL, TR>::Pair(const TL &first, TR &&second) noexcept:
             x(first),
             y(std::move(second))
-    {}
+    {
+    }
 
     template<typename TL, typename TR>
     Pair<TL, TR>::Pair(TL&& first, TR &&second) noexcept:
@@ -72,5 +92,6 @@ namespace RAL {
     Pair<TL, TR>::Pair(TL&& first, const TR& second) noexcept:
             x(std::move(first)),
             y(second)
-    {}
+    {
+    }
 };
