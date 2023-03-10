@@ -42,8 +42,8 @@ namespace RAL {
     Pair<TL,TR>& Pair<TL, TR>::operator=(Pair<TL,TR> &&other) noexcept {
         this->x = std::move(other.x);
         this->y = std::move(other.y);
-        std::memset(&x,0, sizeof(x));
-        std::memset(&y,0, sizeof(y));
+        memset(&x,0, sizeof(x));
+        memset(&y,0, sizeof(y));
 
         return *this;
     }

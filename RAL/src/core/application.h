@@ -1,11 +1,13 @@
 #pragma once
 #include "../pch.h"
+#include "../platformLayer/memory/memory.h"
 
 namespace RAL {
 	class Application {
 	public:
-		Application(int argc, char** argv);
+		Application(Memory* mem);
 		~Application();
 		void run();
 	};
+
 }
