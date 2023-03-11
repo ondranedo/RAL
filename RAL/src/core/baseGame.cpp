@@ -1,5 +1,4 @@
 #include "baseGame.h"
-#include "logger.h"
 
 namespace RAL
 {

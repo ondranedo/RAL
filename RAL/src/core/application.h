@@ -1,12 +1,14 @@
 #pragma once
 
-#include "core/defines.h"
+#include "../platformLayer/memory/memory.h"
 
 namespace RAL {
-	class RAL_API Application {
+	class Application {
+        Memory* m_memory;
 	public:
-		Application(int argc, char** argv);
+		Application(Memory* mem);
 		~Application();
 		void run();
 	};
+
 }

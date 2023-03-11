@@ -1,11 +1,24 @@
 #include "application.h"
+#include "allocator.h"
+
+#include "../platformLayer/memory/WMemory.h"
 
 int main(int argc, char** argv)
-{	
-	// TODO: memory class
-	auto engine = new RAL::Application(argc, argv);
+{
+    RAL_LOG_PRIORITY_TRACE();
 
-	engine->run();
+#ifdef RAL_WINDOWS
+    RAL::Memory* mem = new RAL::WinMemory;
+#endif
+    RAL::mainMemory.bindToMemory(*mem);
 
-	delete engine;
+// Engine
+    auto obj = RAL::mainMemory.alloc<RAL::Application>(mem);
+
+	obj->run();
+
+    RAL::mainMemory.release(obj);
+//~Engine
+
+    delete mem;
 }

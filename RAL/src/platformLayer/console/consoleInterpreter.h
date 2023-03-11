@@ -1,12 +1,11 @@
 #pragma once
-#include "../../core/logger.h"
-#include "../../core/asserts.h"
-#include "../../core/defines.h"
+
 #include "../../containers/string.h"
+#include "../../core/types.h"
 
 namespace RAL
 {
-	class Console
+	class ConsoleInterpreter
 	{
 	public:
 		enum class ColourBackground : u8_t
@@ -47,35 +46,18 @@ namespace RAL
 			YELLOW = 14,
 			WHITE = 15
 		};
-
 		virtual void setTitle(const RAL::String& title) = 0;
 		virtual void log(const RAL::String& msg, ColourBackground background, ColourForeground text = ColourForeground::WHITE) = 0;
 		virtual void log(const RAL::String& msg, ColourForeground text, ColourBackground background = ColourBackground::BLACK) = 0;
 		virtual void log(const RAL::String& msg) = 0;
 		virtual void clear() = 0;
 		virtual void pause() = 0;
-		virtual ~Console();
+        virtual void unpause() = 0;
+		virtual ~ConsoleInterpreter();
 	};
 
-	u8_t operator|(Console::ColourForeground foreground, Console::ColourBackground background);
-	u8_t operator|(Console::ColourBackground background, Console::ColourForeground foreground);
-};
-
-#ifdef RAL_WINDOWS
-#include "Wconsole.h"
-#endif // _DEBUG
-#ifdef RAL_LINUX
-#include "Lconsole.h"
-#endif // _DEBUG
-#ifdef RAL_MAC
-#include "Mconsole.h"
-#endif // _DEBUG
-
-namespace RAL
-{
-	class ConsoleFacotry
-	{
-	public:
-		static Console* createConsole();
-	};
+	u8_t operator|(ConsoleInterpreter::ColourForeground foreground, ConsoleInterpreter::ColourBackground background);
+	u8_t operator|(ConsoleInterpreter::ColourBackground background, ConsoleInterpreter::ColourForeground foreground);
 }
+
+
