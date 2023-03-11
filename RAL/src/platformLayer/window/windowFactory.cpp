@@ -1,4 +1,5 @@
 #include "windowFactory.h"
+#include "../../core/allocator.h"
 
 namespace RAL
 {
@@ -6,7 +7,7 @@ namespace RAL
 
 		Window* WindowFactory::createWindow()
 		{
-			return new WindowsWindow();
+            return mainMemory.alloc<WindowsWindow>();
 		}
 
 		i32_t WindowFactory::getWindowCount()
