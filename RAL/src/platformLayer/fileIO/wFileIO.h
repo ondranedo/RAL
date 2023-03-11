@@ -29,14 +29,14 @@ namespace RAL {
         WFileIO();
         ~WFileIO() override;
 
-        void open(RAL::String path, RAL::String alias, RAL::String mode) override;
-        void close(RAL::String alias) override;
+        void open(const RAL::String& path, const RAL::String& alias, const RAL::String& mode) override;
+        void close(const RAL::String& alias) override;
 
-        void println(RAL::String alias, RAL::String string) override;
-        void println(RAL::String alias, i64_t num) override;
-        void println(RAL::String alias, f64_t num) override;
+        void println(const RAL::String& alias, const RAL::String& string) override;
+        void println(const RAL::String& alias, i64_t num) override;
+        void println(const RAL::String& alias, f64_t num) override;
 
-        RAL::String readln(RAL::String alias) override;
+        RAL::String readln(const RAL::String& alias) override;
 
         void printFileUsage() override;
 

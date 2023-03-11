@@ -10,7 +10,7 @@ namespace RAL {
     WFileIO::WFileIO() {
 
         openFiles = 0;
-        files = mainMemory.alloc;
+        files = reinterpret_cast<RAL_FILE_ENTRY*>(mainMemory.allocn<i8_t>(sizeof(RAL_FILE_ENTRY)));
         RAL_LOG_TRACE("File I/O created");
     }
 
@@ -23,7 +23,7 @@ namespace RAL {
         RAL_LOG_TRACE("File I/O destroyed");
     }
 
-    void WFileIO::open(RAL::String path, RAL::String alias, RAL::String mode) {
+    void WFileIO::open(const RAL::String& path, const RAL::String& alias, const RAL::String& mode) {
 
         RAL_FILE_SCANTHRU{
             if(FileIO::stringCompare(path, files[i].x.x)){
@@ -48,7 +48,7 @@ namespace RAL {
         openFiles += 1;
     }
 
-    void WFileIO::close(RAL::String alias) {
+    void WFileIO::close(const RAL::String& alias) {
 
         i16_t i = findIndex(alias);
         if(i == -1){
@@ -66,7 +66,7 @@ namespace RAL {
         openFiles -= 1;
     }
 
-    RAL::String WFileIO::readln(RAL::String alias){
+    RAL::String WFileIO::readln(const RAL::String& alias){
 
         char* buf;
         RAL::String buf2 = RAL::String();
@@ -89,7 +89,7 @@ namespace RAL {
         }
     }
 
-    void WFileIO::println(RAL::String alias, RAL::String string){
+    void WFileIO::println(const RAL::String& alias, const RAL::String& string){
 
         i16_t i = findIndex(alias);
         if(i == -1){
@@ -98,7 +98,7 @@ namespace RAL {
         }
         fprintf(files[i].y.y, "%s\n", string.c_str());
     }
-    void WFileIO::println(RAL::String alias, i64_t num){
+    void WFileIO::println(const RAL::String& alias, i64_t num){
 
         i16_t i = findIndex(alias);
         if(i == -1){
@@ -107,7 +107,7 @@ namespace RAL {
         }
         fprintf(files[i].y.y, "%lld", num);
     }
-    void WFileIO::println(RAL::String alias, f64_t num){
+    void WFileIO::println(const RAL::String& alias, f64_t num){
 
         i16_t i = findIndex(alias);
         if(i == -1){
