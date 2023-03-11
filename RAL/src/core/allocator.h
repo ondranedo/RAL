@@ -1,6 +1,8 @@
 #pragma once
 #include "logger.h"
-#include "../platformLayer/platformLayer.h"
+#include "../platformLayer/memory/memory.h"
+
+#include <new>
 
 namespace RAL{
     struct Allocator{
