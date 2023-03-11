@@ -27,20 +27,20 @@ namespace RAL {
     class WFileIO: public FileIO{
     public:
         WFileIO();
-        ~WFileIO();
+        ~WFileIO() override;
 
-        void open(RAL::String path, RAL::String alias, RAL::String mode);
-        void close(RAL::String alias);
+        void open(RAL::String path, RAL::String alias, RAL::String mode) override;
+        void close(RAL::String alias) override;
 
-        void println(RAL::String alias, RAL::String string);
-        void println(RAL::String alias, i64_t num);
-        void println(RAL::String alias, f64_t num);
+        void println(RAL::String alias, RAL::String string) override;
+        void println(RAL::String alias, i64_t num) override;
+        void println(RAL::String alias, f64_t num) override;
 
-        RAL::String readln(RAL::String alias);
+        RAL::String readln(RAL::String alias) override;
 
-        void printFileUsage();
+        void printFileUsage() override;
 
-        void maxFile(i16_t count);
+        void maxFile(i16_t count) override;
     };
 }
 

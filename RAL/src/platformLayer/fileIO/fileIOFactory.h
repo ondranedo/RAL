@@ -1,8 +1,14 @@
-//
-// Created by Wiszc on 11.03.2023.
-//
+#pragma once
 
-#ifndef RAL_PROJECT_FILEIOFACTORY_H
-#define RAL_PROJECT_FILEIOFACTORY_H
+#ifdef RAL_WINDOWS
+#include "wFileIO.h"
+#endif
 
-#endif //RAL_PROJECT_FILEIOFACTORY_H
+namespace RAL{
+
+    class FileIOFactory{
+
+    public:
+        FileIO* createFileIO();
+    };
+}

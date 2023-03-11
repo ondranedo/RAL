@@ -1,3 +1,13 @@
-//
-// Created by Wiszc on 11.03.2023.
-//
+#include "fileIOFactory.h"
+#include "../../core/allocator.h"
+
+namespace RAL{
+
+    FileIO* FileIOFactory::createFileIO() {
+
+#ifdef RAL_WINDOWS
+        return mainMemory.alloc<WFileIO>();
+#endif
+        return nullptr;
+    }
+}

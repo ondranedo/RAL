@@ -25,7 +25,7 @@ namespace RAL {
     void WFileIO::open(RAL::String path, RAL::String alias, RAL::String mode) {
 
         RAL_FILE_SCANTHRU{
-            if(WFileIO::stringCompare(path, files[i].x.x)){
+            if(FileIO::stringCompare(path, files[i].x.x)){
                 RAL_LOG_ERROR("This path is already open!");
                 return;
             }
