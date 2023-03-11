@@ -1,6 +1,6 @@
 #pragma once
-
-#include "../platformLayer/memory/memory.h"
+#include "logger.h"
+#include "../platformLayer/platformLayer.h"
 
 namespace RAL{
     struct Allocator{
@@ -12,18 +12,18 @@ namespace RAL{
                 new (ptr) T(args...);
                 return ptr;
             }
-            std::cerr<<"Allocator unset\n";
+            RAL_LOG_CRIT("Allocator unset");
             return nullptr;
         }
         template<typename T, typename... Args>
-        T* allocn(size_t n = 1, Args... args)
+        T* allocn(size_t n = 1,Args... args)
         {
             if(m_memory){
                 T* ptr = (T*)(m_memory->*(&Memory::allocate))(sizeof(T)*n);
                 new (ptr) T(args...);
                 return ptr;
             }
-            std::cerr<<"Allocator unset\n";
+            RAL_LOG_CRIT("Allocator unset");
             return nullptr;
         }
         template<typename T>
@@ -34,7 +34,7 @@ namespace RAL{
                 mem->~T();
             }
             else
-                std::cerr<<"Allocator unset\n";
+                RAL_LOG_CRIT("Allocator unset");
         }
         void bindToMemory(Memory& mem);
         void* reallocate(void* mem, size_t size);
