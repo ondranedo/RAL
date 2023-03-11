@@ -1,6 +1,8 @@
 #include "WindowsWindow.h"
 #include "windowFactory.h"
 #include "../../core/logger.h"
+#include "../../core/types.h"
+#include "../../core/asserts.h"
 
 namespace RAL
 {
