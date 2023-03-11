@@ -98,4 +98,9 @@ namespace RAL
     {
 
     }
+
+    void WindowsWindow::release()
+    {
+
+    }
 }
