@@ -9,18 +9,12 @@ namespace RAL
 {
     WConsoleInterpreter::WConsoleInterpreter()
     {
-        FreeConsole();
-        AllocConsole();
-        console = GetStdHandle(STD_OUTPUT_HANDLE);
-        freopen_s((FILE **) stdout, "CONOUT$", "w", stdout);
-        freopen_s((FILE **) stderr, "CONOUT$", "w", stderr);
-        freopen_s((FILE **) stdin, "CONIN$", "r", stdin);
-        RAL_LOG_DEBUG("Console constructed on Windows platform");
+
     }
 
     WConsoleInterpreter::~WConsoleInterpreter()
     {
-        FreeConsole();
+
     }
 
     void WConsoleInterpreter::setTitle(const RAL::String &title)
@@ -85,6 +79,22 @@ namespace RAL
         SetConsoleTextAttribute(console, RAL::ConsoleInterpreter::ColourBackground::BLACK |
                                          RAL::ConsoleInterpreter::ColourForeground::LIGHTRED);
         printf("Console unpaused!\n");
+    }
+
+    void WConsoleInterpreter::init()
+    {
+        FreeConsole();
+        AllocConsole();
+        console = GetStdHandle(STD_OUTPUT_HANDLE);
+        freopen_s((FILE **) stdout, "CONOUT$", "w", stdout);
+        freopen_s((FILE **) stderr, "CONOUT$", "w", stderr);
+        freopen_s((FILE **) stdin, "CONIN$", "r", stdin);
+        RAL_LOG_DEBUG("Console constructed on Windows platform");
+    }
+
+    void WConsoleInterpreter::release()
+    {
+        FreeConsole();
     }
 }
 #endif
