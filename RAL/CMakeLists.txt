@@ -3,9 +3,8 @@ set(file_core                  src/core/allocator.cpp src/core/allocator.h src/c
 set(file_platformLayer_memory  src/platformLayer/memory/wMemory.cpp src/platformLayer/memory/wMemory.h src/platformLayer/memory/memory.cpp src/platformLayer/memory/memory.h src/platformLayer/memory/memoryFactory.h src/platformLayer/memory/memoryFactory.cpp)
 set(file_platformLayer_console src/platformLayer/console/consoleInterpreter.cpp src/platformLayer/console/consoleInterpreter.h src/platformLayer/console/wConsoleInterpreter.cpp src/platformLayer/console/wConsoleInterpreter.h src/platformLayer/console/consoleInterpreterFactory.cpp src/platformLayer/console/consoleInterpreterFactory.h)
 set(file_platformLayer_window  src/platformLayer/window/window.cpp src/platformLayer/window/windowFactory.cpp src/platformLayer/window/WindowsWindow.cpp)
-set(file_test                  src/tests/test.cpp src/tests/test.h)
 
-set(src ${file_containers} ${file_core} ${file_platformLayer_memory} ${file_platformLayer_console} ${file_test} src/pch.h ${file_platformLayer_window})
+set(src ${file_containers} ${file_core} ${file_platformLayer_memory} ${file_platformLayer_console} ${file_test} ${file_platformLayer_window})
 
 add_library(ral ${src})
 

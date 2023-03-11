@@ -1,15 +1,18 @@
 #pragma once
 
-#include "../../pch.h"
+#include "../../core/types.h"
+
+typedef u64_t size_t;
+
 namespace RAL {
     class Memory {
 
     protected:
-        int64_t nOfBytes;
+        i64_t nOfBytes;
 #ifdef RAL_DEBUG
-        int64_t nOfGuards;
+        i64_t nOfGuards;
 #endif
-        int64_t nOfBlocks;
+        i64_t nOfBlocks;
 
     public:
         Memory();
@@ -22,8 +25,8 @@ namespace RAL {
 
         virtual void *reallocate(void *block, size_t newSize) = 0;
 
-        int64_t allocated();
-        int64_t blocks();
+        i64_t allocated();
+        i64_t blocks();
     };
 
     typedef void* (Memory::*fallocate)(size_t);

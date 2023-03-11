@@ -1,5 +1,7 @@
 #pragma once
-#include "../../pch.h"
+
+#include "../../containers/string.h"
+#include "../../core/types.h"
 
 namespace RAL
 {

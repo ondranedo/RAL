@@ -3,10 +3,11 @@
 #include "../platformLayer/window/windowFactory.h"
 #include "../platformLayer/console/consoleInterpreter.h"
 #include "../platformLayer/console/consoleInterpreterFactory.h"
+#include "logger.h"
 
 namespace RAL
 {
-    Application::Application(Memory* mem)
+    Application::Application(Memory* mem):m_memory(mem)
     {
         RAL_LOG_TRACE("Application created");
 // setMem(mem)

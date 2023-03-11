@@ -12,7 +12,7 @@ namespace RAL{
     i64_t Memory::allocated() {
 
 #ifdef RAL_DEBUG
-        return nOfBytes + nOfGuards;
+        return nOfBytes /*+ nOfGuards*/;
 #else
         return nOfBytes;
 #endif

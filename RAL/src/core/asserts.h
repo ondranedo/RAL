@@ -1,5 +1,5 @@
 #pragma once
-#include "../pch.h"
+
 /*
 	Asserts WILL abort the program if the given condition is false
 	Need to define for both DEBUG and RELEASE

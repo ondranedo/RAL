@@ -1,13 +1,17 @@
 #pragma once
-#include "../pch.h"
+#include "../core/types.h"
+#include "../core/allocator.h"
+
+typedef u64_t size_t;
+
 #include <utility>
 
 namespace RAL {
     template<typename T>
     class Vector{
-        const uint64_t m_allocScale = 2;
-        uint64_t m_maxCount;
-        uint64_t m_count;
+        const u64_t m_allocScale = 2;
+        u64_t m_maxCount;
+        u64_t m_count;
         T* m_first;
 
     public:
@@ -36,8 +40,8 @@ namespace RAL {
         Vector<T> pop_nback(const size_t& count);
         void clear();
 
-        [[nodiscrad]] const uint64_t size() const;
-        [[nodiscard]] const uint64_t capacity() const;
+        [[nodiscrad]] u64_t size() const;
+        [[nodiscard]] u64_t capacity() const;
 
         [[nodiscard]] const T* c_cpy() const;
         void for_each(void(*function)(const T& val)) const;
@@ -60,12 +64,12 @@ namespace RAL {
     };
 
     template<typename T>
-    const uint64_t Vector<T>::size() const {
+    u64_t Vector<T>::size() const {
         return m_count;
     }
 
     template<typename T>
-    const uint64_t Vector<T>::capacity() const {
+    u64_t Vector<T>::capacity() const {
         return m_maxCount;
     }
 
@@ -85,7 +89,7 @@ namespace RAL {
     T &Vector<T>::operator[](const size_t &val) {
         if(val < m_count)
             return m_first[val];
-        // TODO: Asserts
+        RAL_LOG_WARN("vector's operator[] accessing unindexed value, returning last element of vector");
         return m_first[m_count-1];
     }
 
@@ -93,7 +97,7 @@ namespace RAL {
     const T &Vector<T>::operator[](const size_t &val) const {
         if(val < m_count)
             return m_first[val];
-        // TODO: Asserts
+        RAL_LOG_WARN("vector's operator[] accessing unindexed value, returning last element of vector");
         return m_first[m_count-1];
     }
 
@@ -120,9 +124,10 @@ namespace RAL {
     void Vector<T>::clear() {
         m_maxCount = 0;
         m_count = 0;
-        if(m_first)
-            // TODO: memory class
-            std::free(m_first);
+        if(m_first){
+            mainMemory.release(m_first);
+            m_first = 0;
+        }
         m_first = nullptr;
     }
 
@@ -172,8 +177,7 @@ namespace RAL {
         if(!m_first)
         {
             m_maxCount = 1;
-            // TODO: memory class
-            m_first = static_cast<T*>(std::malloc(m_maxCount*sizeof(T)));
+            m_first = mainMemory.allocn<T>(m_maxCount);
         }
         if(m_count == m_maxCount)
             this->realloc();
@@ -195,9 +199,7 @@ namespace RAL {
 
     template<typename T>
     Vector<T>::~Vector() {
-        if(m_first)
-            // TODO: memory class
-            std::free(m_first);
+        clear();
     }
 
 
@@ -213,8 +215,7 @@ namespace RAL {
         if(!m_first)
         {
             m_maxCount = 1;
-            // TODO: memory class
-            m_first = static_cast<T*>(std::malloc(m_maxCount*sizeof(T)));
+            m_first = mainMemory.allocn<T>(m_maxCount);
         }
         if(m_count == m_maxCount)
             this->realloc();
@@ -225,11 +226,9 @@ namespace RAL {
     void Vector<T>::realloc() {
         if(m_maxCount == 0) m_maxCount++;
         else  m_maxCount *= m_allocScale;
-        // TODO: memory class
-        T* tmp = static_cast<T*>(std::malloc(m_maxCount*sizeof(T)));
+        T* tmp = mainMemory.allocn<T>(m_maxCount);
         memcpy(tmp, m_first, m_count*sizeof(T));
-        // TODO: memory class
-        std::free(m_first);
+        mainMemory.release(m_first);
         m_first = tmp;
     }
 
@@ -237,24 +236,22 @@ namespace RAL {
     template<typename T>
     void Vector<T>::dealloc() {
         if(m_count == 0){
-            if(m_first) std::free(m_first);
+            if(m_first) mainMemory.release(m_first);
             m_first = nullptr;
             m_maxCount = 0;
             return;
         }
         m_maxCount /= m_allocScale;
-        // TODO: memory class
-        T* tmp = static_cast<T*>(std::malloc(m_maxCount*sizeof(T)));
+        T* tmp = mainMemory.allocn<T>(m_maxCount);
         memcpy(tmp, m_first, m_count*sizeof(T));
-        // TODO: memory class
-        std::free(m_first);
+        mainMemory.release(m_first);
         m_first = tmp;
     }
 
     template<typename T>
     const T *Vector<T>::c_cpy() const {
         // TODO: memory class
-        T* ret = reinterpret_cast<T*>(std::malloc(m_maxCount * sizeof(T)));
+        T* ret = mainMemory.allocn<T>(m_maxCount);
         memcpy(ret, m_first,m_maxCount * sizeof(T));
         return ret;
     }

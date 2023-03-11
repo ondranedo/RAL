@@ -1,5 +1,4 @@
 #pragma once
-#include "../pch.h"
 
 using i8_t = signed char;
 using i16_t = short;
