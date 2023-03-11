@@ -3,9 +3,25 @@
 #include "../../core/logger.h"
 #include "../../core/types.h"
 #include "../../core/asserts.h"
+#include "../../core/allocator.h"
+
 
 namespace RAL
 {
+
+    static void* _alloc(size_t size,void* user)
+    {
+        return malloc(size);
+    }
+    static void* _realloc(void* block, size_t size, void* user)
+    {
+        return realloc(block, size);
+    }
+    static void _release(void* block, void* user)
+    {
+        free(block);
+    }
+
     WindowsWindow::WindowsWindow()
     {
     }
@@ -17,13 +33,22 @@ namespace RAL
 
 	void WindowsWindow::init()
 	{
-		if (RAL::WindowFactory::windowcount == 0)
+
+        GLFWallocator allocator;
+        allocator.allocate = _alloc;
+        allocator.reallocate = _realloc;
+        allocator.deallocate = _release;
+        allocator.user = NULL;
+
+        glfwInitAllocator(&allocator);
+
+;		if (RAL::WindowFactory::windowcount == 0)
 		{
             RAL_LOG_INFO("Initializing GLFW");
 			RAL_ASSERT_NULL(glfwInit(),"GLFW cant be initialized");
 		}
 
-		RAL_LOG_INFO("Creating windows window. Width: %d, Height: %d Title: %s", m_width, m_height, m_title);
+		RAL_LOG_INFO("Creating windows window. Width: %d, Height: %d Title: %s", m_width, m_height, m_title.c_str());
 		m_window = glfwCreateWindow(static_cast<int>(m_width), static_cast<int>(m_height), m_title.c_str(), nullptr, nullptr);
         RAL_ASSERT_NULL(m_window, "Windows window cant be opened");
 
