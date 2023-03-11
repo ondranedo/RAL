@@ -3,13 +3,14 @@
 #ifdef RAL_WINDOWS
 
 #include <cstdio>
+#include "../../core/allocator.h"
 
 namespace RAL {
 
     WFileIO::WFileIO() {
 
         openFiles = 0;
-        files = reinterpret_cast<RAL_FILE_ENTRY*>(malloc(sizeof(RAL_FILE_ENTRY)));
+        files = mainMemory.alloc;
         RAL_LOG_TRACE("File I/O created");
     }
 
@@ -18,7 +19,7 @@ namespace RAL {
         RAL_FILE_SCANTHRU{
             fclose(files[i].y.y);
         }
-        free(files);
+        mainMemory.release(files);
         RAL_LOG_TRACE("File I/O destroyed");
     }
 
@@ -39,7 +40,7 @@ namespace RAL {
             return;
         }
 
-        files = reinterpret_cast<RAL_FILE_ENTRY*>(realloc(files, sizeof(RAL_FILE_ENTRY) * (openFiles + 1)));
+        files = reinterpret_cast<RAL_FILE_ENTRY*>(mainMemory.reallocate(files, sizeof(RAL_FILE_ENTRY) * (openFiles + 1)));
         files[openFiles].y.y = fopen(path.c_str(), mode.c_str());
         files[openFiles].x.x = path;
         files[openFiles].x.y = alias;
@@ -61,7 +62,7 @@ namespace RAL {
         files[i].y.x = files[openFiles - 1].y.x;
         files[i].y.y = files[openFiles - 1].y.y;
 
-        files = reinterpret_cast<RAL_FILE_ENTRY*>(realloc(files, sizeof(RAL_FILE_ENTRY) * (openFiles - 1)));
+        files = reinterpret_cast<RAL_FILE_ENTRY*>(mainMemory.reallocate(files, sizeof(RAL_FILE_ENTRY) * (openFiles - 1)));
         openFiles -= 1;
     }
 
@@ -79,11 +80,11 @@ namespace RAL {
         }
         else{
             // change to a better solution than this
-            buf = reinterpret_cast<char*>(malloc(1024));
+            buf = mainMemory.alloc<char>(1024);
             fscanf(files[i].y.y, "%s\n", buf);
 
             buf2.recreate(buf);
-            free(buf);
+            mainMemory.release(buf);
             return buf2;
         }
     }
