@@ -6,7 +6,7 @@
 
 namespace RAL
 {
-    class WindowFactory : BaseFactory<Window>
+    class WindowFactory : public BaseFactory<Window>
     {
     public:
         Window* create() override
@@ -18,7 +18,7 @@ namespace RAL
         }
     private:
     };
-}
+};
 
 //#ifdef RAL_PLATFORM_WINDOWS
 //#define INIT() RAL::WindowsWindow::init();
