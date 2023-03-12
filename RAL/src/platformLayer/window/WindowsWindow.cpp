@@ -41,8 +41,8 @@ namespace RAL
         allocator.user = NULL;
 
         glfwInitAllocator(&allocator);
-
-;		if (RAL::WindowFactory::windowcount == 0)
+        //TODO:: Windowcoount
+;		if (1)
 		{
             RAL_LOG_INFO("Initializing GLFW");
 			RAL_ASSERT_NULL(glfwInit(),"GLFW cant be initialized");
@@ -52,7 +52,7 @@ namespace RAL
 		m_window = glfwCreateWindow(static_cast<int>(m_width), static_cast<int>(m_height), m_title.c_str(), nullptr, nullptr);
         RAL_ASSERT_NULL(m_window, "Windows window cant be opened");
 
-		if(m_window) RAL::WindowFactory::windowcount++;
+		//if(m_window) RAL::WindowFactory::windowcount++;
 
 		//GLFW callbacks
 	}
@@ -60,8 +60,8 @@ namespace RAL
 	void WindowsWindow::destroy()
 	{
 		glfwDestroyWindow(m_window);
-		RAL::WindowFactory::windowcount--;
-		if (RAL::WindowFactory::windowcount == 0)
+		//RAL::WindowFactory::windowcount--;
+		//if (RAL::WindowFactory::windowcount == 0)
 		{
 			glfwTerminate();
 		}
@@ -95,6 +95,11 @@ namespace RAL
 	}
 
     void WindowsWindow::setEvenCallBack()
+    {
+
+    }
+
+    void WindowsWindow::release()
     {
 
     }
