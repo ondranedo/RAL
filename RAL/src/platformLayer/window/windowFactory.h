@@ -1,18 +1,24 @@
 #pragma once
 #include "windows.h"
 #include "WindowsWindow.h"
+#include "../../core/baseFactory.h"
+#include "../../core/allocator.h"
 
 namespace RAL
 {
-    class WindowFactory
+    class WindowFactory : public BaseFactory<Window>
     {
     public:
-        static i32_t getWindowCount();
-        static i32_t windowcount;
-        static Window* createWindow();
+        Window* create() override
+        {
+#ifdef RAL_WINDOWS
+            return mainMemory.alloc<WindowsWindow>();
+#endif
+            return nullptr;
+        }
     private:
     };
-}
+};
 
 //#ifdef RAL_PLATFORM_WINDOWS
 //#define INIT() RAL::WindowsWindow::init();
