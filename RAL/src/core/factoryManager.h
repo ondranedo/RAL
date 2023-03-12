@@ -18,7 +18,7 @@ namespace RAL{
 
         void addComponent(BaseComponent* component, const String& name);
         void createComponent();
-        void removeComponent();
+        void removeComponent(const String& name);
 
         void create();
         void init();
