@@ -5,6 +5,7 @@
 typedef u64_t size_t;
 
 #include <utility>
+#include <cstring>
 
 namespace RAL {
     template<typename T>
@@ -227,7 +228,7 @@ namespace RAL {
         if(m_maxCount == 0) m_maxCount++;
         else  m_maxCount *= m_allocScale;
         T* tmp = mainMemory.allocn<T>(m_maxCount);
-        memcpy(tmp, m_first, m_count*sizeof(T));
+        std::memcpy(tmp, m_first, m_count*sizeof(T));
         mainMemory.release(m_first);
         m_first = tmp;
     }
@@ -243,7 +244,7 @@ namespace RAL {
         }
         m_maxCount /= m_allocScale;
         T* tmp = mainMemory.allocn<T>(m_maxCount);
-        memcpy(tmp, m_first, m_count*sizeof(T));
+        std::memcpy(tmp, m_first, m_count*sizeof(T));
         mainMemory.release(m_first);
         m_first = tmp;
     }
@@ -252,7 +253,7 @@ namespace RAL {
     const T *Vector<T>::c_cpy() const {
         // TODO: memory class
         T* ret = mainMemory.allocn<T>(m_maxCount);
-        memcpy(ret, m_first,m_maxCount * sizeof(T));
+        std::memcpy(ret, m_first,m_maxCount * sizeof(T));
         return ret;
     }
 
