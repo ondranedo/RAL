@@ -16,7 +16,7 @@ namespace RAL{
     public:
         void addFactory();
 
-        void addComponent();
+        void addComponent(BaseComponent* component, const String& name);
         void createComponent();
         void removeComponent();
 

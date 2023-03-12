@@ -7,6 +7,13 @@ namespace RAL{
         return m_components[findIndex(name)].x;
     }
 
+    void FactoryMgr::addComponent(BaseComponent *component, const String& name) {
+
+        Pair<BaseComponent*, String> temp = {component, name};
+
+        m_components.push_back(temp);
+    }
+
     bool FactoryMgr::stringCompare(const RAL::String& a, const RAL::String& b) {
 
         /* three levels of nesting is fine ~1nome */
