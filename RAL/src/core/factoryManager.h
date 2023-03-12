@@ -1,5 +1,14 @@
 #pragma once
 
+#include "baseComponent.h"
+#include "baseFactory.h"
+#include "../containers/vector.h"
+#include "../containers/pair.h"
+#include "../containers/string.h"
+
+#define RAL_COMPONENT_SCANTHRU for(i16_t i = 0; i < m_components.size(); i++)
+#define RAL_COMPONENT_ISNAME if(stringCompare(name, m_components[i].y))
+
 namespace RAL{
 
     class FactoryMgr{
@@ -15,10 +24,13 @@ namespace RAL{
         void init();
         void release();
 
-        void get();
+        BaseComponent* get(const String& name);
 
     private:
-        BaseFactory* factories;
-        BaseComponent* components;
+        Vector<Pair<BaseComponent*, String>> m_components;
+        Vector<BaseFactory<BaseComponent>> m_factories;
+
+        bool stringCompare(const String& a, const String& b);
+        i16_t findIndex(const String& name);
     };
 }
