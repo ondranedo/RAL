@@ -8,7 +8,6 @@ namespace RAL {
         WindowsWindow();
         virtual ~WindowsWindow();
 
-        void init() override;
         void destroy() override;
         void makeContextCurrent() override;
         void onUpdate() override;
@@ -16,7 +15,8 @@ namespace RAL {
         void setDims(const RAL::Pair<u8_t, u8_t>& dimsWH) override;
         void vSyncEnable() override;
         void vSyncDisable() override;
-
+        void init() override;
+        void release() override;
     private:
         GLFWwindow *m_window;
     };

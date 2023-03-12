@@ -1,11 +1,12 @@
 #pragma once
 
 #include "../../core/types.h"
+#include "../../core/baseComponent.h"
 
 typedef u64_t size_t;
 
 namespace RAL {
-    class Memory {
+    class Memory : public BaseComponent{
 
     protected:
         i64_t nOfBytes;

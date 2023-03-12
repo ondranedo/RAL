@@ -28,6 +28,9 @@ namespace RAL {
 		void* allocate(size_t bytes) override;
 		void release(void* block) override;
 		void* reallocate(void* block, size_t newSize) override;
+
+        void init() override;
+        void release() override;
 	};
 }
 #endif
