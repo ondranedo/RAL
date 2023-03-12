@@ -1,7 +1,7 @@
 #pragma once
-#include "../../pch.h"
 #include "../../containers/string.h"
-
+#include "../../containers/pair.h"
+#include "../../core/types.h"
 //TO DO:
 //	-MUTEX lock
 //	-

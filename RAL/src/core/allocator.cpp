@@ -13,7 +13,7 @@ namespace RAL{
         if(m_memory)
             return (m_memory->*(&Memory::reallocate))(mem, size);
 
-        std::cerr<<"Allocator unset\n";
+        RAL_LOG_CRIT("Can't reallocate, memory unset");
         return nullptr;
     }
 }

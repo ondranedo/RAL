@@ -1,6 +1,4 @@
 #include "logger.h"
-
-#include "../pch.h"
 #include "asserts.h"
 
 namespace RAL 

@@ -2,6 +2,7 @@
 
 #ifdef RAL_WINDOWS
 
+#include "../../core/logger.h"
 #include <iostream>
 
 namespace RAL
