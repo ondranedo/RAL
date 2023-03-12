@@ -20,11 +20,11 @@ namespace RAL
 
         virtual T* create() = 0;
 
-        virtual void setMaxObjectCount(u32_t new_maxobjectcount)
+        void setMaxObjectCount(u32_t new_maxobjectcount)
         {
             m_maxObjectCount = new_maxobjectcount;
         }
-        virtual u32_t getMaxObjectCount()
+        u32_t getMaxObjectCount()
         {
             return m_maxObjectCount;
         }
