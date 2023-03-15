@@ -10,7 +10,7 @@ namespace RAL{
             RAL_ASSERT("Object %s not found!", name.c_str());
         }
 
-        return m_components[findIndex(name)].x;
+        return m_components[i].x;
     }
 
     void FactoryMgr::addComponent(BaseComponent *component, const String& name) {
@@ -23,6 +23,7 @@ namespace RAL{
         Pair<BaseComponent*, String> temp = {component, name};
 
         m_components.push_back(temp);
+        m_flags.push_back(0);
     }
 
     //TODO: finish
@@ -33,9 +34,19 @@ namespace RAL{
             RAL_ASSERT("Object %s not found!", name.c_str());
         }
 
-        void* temp = (void*)&m_components.pop_back();
+        //void* temp = (void*)&m_components.pop_back();
+        m_flags[i] = m_flags.pop_back();
 
-        m_components[findIndex(name)];
+        m_components[i];
+    }
+
+    void FactoryMgr::init(){
+
+        RAL_COMPONENT_SCANTHRU{
+
+            if(m_flags[i] & RAL_WAS_INITIALIZED)
+                m_components[i].x->init();
+        }
     }
 
     bool FactoryMgr::stringCompare(const RAL::String& a, const RAL::String& b) {

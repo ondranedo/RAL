@@ -28,6 +28,9 @@ namespace RAL{
 
     private:
         Vector<Pair<BaseComponent*, String>> m_components;
+        Vector<u8_t> m_flags;
+#define RAL_WAS_INITIALIZED (1 << 0)
+
         Vector<BaseFactory<BaseComponent>> m_factories;
 
         bool stringCompare(const String& a, const String& b);
