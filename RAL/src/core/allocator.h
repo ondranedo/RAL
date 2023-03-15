@@ -32,8 +32,8 @@ namespace RAL{
         void release(T* mem)
         {
             if(m_memory){
-                (m_memory->*(&Memory::release))(mem);
                 mem->~T();
+                (m_memory->*(&Memory::release))(mem);
             }
             else
                 RAL_LOG_CRIT("Allocator unset");

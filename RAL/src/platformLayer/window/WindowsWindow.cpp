@@ -80,8 +80,8 @@ namespace RAL
 
 	void WindowsWindow::setDims(const RAL::Pair<u8_t, u8_t>& dimsWH)
 	{
-		m_width = dimsWH.first;
-		m_height = dimsWH.second;
+		m_width = dimsWH.x;
+		m_height = dimsWH.y;
 	}
 
 	void WindowsWindow::vSyncEnable()

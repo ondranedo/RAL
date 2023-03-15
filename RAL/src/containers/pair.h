@@ -6,14 +6,8 @@
 namespace RAL {
     template<typename TL, typename TR>
     struct Pair {
-        union {
-            TL x;
-            TL first;
-        };
-        union {
-            TR y;
-            TR second;
-        };
+        TL x;
+        TR y;
 
         // TODO: constexpr
         // constructors
