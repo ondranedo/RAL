@@ -44,8 +44,28 @@ namespace RAL{
 
         RAL_COMPONENT_SCANTHRU{
 
-            if(m_flags[i] & RAL_WAS_INITIALIZED)
+            if(m_flags[i] & RAL_WAS_INITIALIZED) {
                 m_components[i].x->init();
+                m_flags[i] |= RAL_WAS_INITIALIZED;
+            }
+        }
+    }
+
+    //TODO: find a way to convert class name to string
+    void FactoryMgr::create() {
+
+        Pair<BaseComponent*, String> temp;
+
+        RAL_FACTORY_SCANTHRU{
+
+            if(m_flags[i] & RAL_DEFAULT_CREATED){
+
+                temp = {m_factories[i].create(), "placeholderNotFinalThisWontWork"};
+                m_flags[i] |= RAL_DEFAULT_CREATED;
+
+                m_components.push_back(temp);
+                m_flags.push_back(0);
+            }
         }
     }
 

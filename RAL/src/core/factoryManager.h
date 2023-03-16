@@ -7,6 +7,7 @@
 #include "../containers/string.h"
 
 #define RAL_COMPONENT_SCANTHRU for(i16_t i = 0; i < m_components.size(); i++)
+#define RAL_FACTORY_SCANTHRU for(i8_t i = 0; i < m_factories.size(); i++)
 #define RAL_COMPONENT_ISNAME if(stringCompare(name, m_components[i].y))
 
 namespace RAL{
@@ -29,7 +30,10 @@ namespace RAL{
     private:
         Vector<Pair<BaseComponent*, String>> m_components;
         Vector<u8_t> m_flags;
+//flags for components
 #define RAL_WAS_INITIALIZED (1 << 0)
+//flags for factories
+#define RAL_DEFAULT_CREATED (1 << 7)
 
         Vector<BaseFactory<BaseComponent>> m_factories;
 
