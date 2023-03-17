@@ -34,19 +34,31 @@ namespace RAL{
             RAL_ASSERT("Object %s not found!", name.c_str());
         }
 
-        //void* temp = (void*)&m_components.pop_back();
+        m_components[i].x->release();
+
         m_flags[i] = m_flags.pop_back();
 
-        m_components[i];
+        m_components[i] = m_components.pop_back();
     }
 
     void FactoryMgr::init(){
 
         RAL_COMPONENT_SCANTHRU{
 
-            if(m_flags[i] & RAL_WAS_INITIALIZED) {
+            if(!(m_flags[i] & RAL_WAS_INITIALIZED)) {
                 m_components[i].x->init();
                 m_flags[i] |= RAL_WAS_INITIALIZED;
+            }
+        }
+    }
+
+    void FactoryMgr::release() {
+
+        RAL_COMPONENT_SCANTHRU{
+
+            if(m_flags[i] & RAL_WAS_INITIALIZED){
+                m_components[i].x->release();
+                m_flags[i] &= ~RAL_WAS_INITIALIZED;
             }
         }
     }
