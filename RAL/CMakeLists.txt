@@ -1,4 +1,4 @@
-set(file_containers            src/containers/string.cpp src/containers/string.h src/containers/vector.h src/containers/pair.h src/containers/optional.h)
+set(file_containers            src/containers/string.cpp src/containers/string.h src/containers/vector.h src/containers/pair.h)
 set(file_core                  src/core/allocator.cpp src/core/allocator.h src/core/application.cpp src/core/application.h src/core/baseGame.cpp src/core/baseGame.h src/core/logger.cpp  src/core/logger.h src/core/defines.h src/core/main.cpp src/core/types.h src/core/baseFactory.h)
 set(file_platformLayer_memory  src/platformLayer/memory/wMemory.cpp src/platformLayer/memory/wMemory.h src/platformLayer/memory/memory.cpp src/platformLayer/memory/memory.h src/platformLayer/memory/memoryFactory.h)
 set(file_platformLayer_console src/platformLayer/console/consoleInterpreter.cpp src/platformLayer/console/consoleInterpreter.h src/platformLayer/console/wConsoleInterpreter.cpp src/platformLayer/console/wConsoleInterpreter.h src/platformLayer/console/consoleInterpreterFactory.h)
