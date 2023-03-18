@@ -8,7 +8,7 @@
 
 #define RAL_COMPONENT_SCANTHRU for(i16_t i = 0; i < m_components.size(); i++)
 #define RAL_FACTORY_SCANTHRU for(i8_t i = 0; i < m_factories.size(); i++)
-#define RAL_COMPONENT_ISNAME if(stringCompare(name, m_components[i].y))
+#define RAL_COMPONENT_ISNAME if(m_components[i].m_name == name)
 
 namespace RAL{
 
@@ -28,16 +28,24 @@ namespace RAL{
         BaseComponent* get(const String& name);
 
     private:
-        Vector<Pair<BaseComponent*, String>> m_components;
-        Vector<u8_t> m_flags;
-//flags for components
-#define RAL_WAS_INITIALIZED (1 << 0)
-//flags for factories
-#define RAL_DEFAULT_CREATED (1 << 7)
+        struct Component{
 
-        Vector<BaseFactory<BaseComponent>> m_factories;
+            BaseComponent* m_component;
+            String m_name;
+            // flags
+            bool m_wasInitialized;
+        };
 
-        bool stringCompare(const String& a, const String& b);
+        struct Factory{
+
+            BaseFactory<BaseComponent>* m_factory;
+            //flags
+            bool m_hadDefaultCreated;
+        };
+
+        Vector<Component> m_components;
+        Vector<Factory> m_factories;
+
         i16_t findIndex(const String& name);
     };
 }
