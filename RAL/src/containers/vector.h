@@ -1,6 +1,7 @@
 #pragma once
 #include "../core/types.h"
 #include "../core/allocator.h"
+#include "../containers/optional.h"
 
 typedef u64_t size_t;
 
@@ -37,7 +38,7 @@ namespace RAL {
         template<typename... Args>
         void push_back(T&& val, Args... args) noexcept;
 
-        T pop_back();
+        Optional<T> pop_back();
         Vector<T> pop_nback(const size_t& count);
         void clear();
 
@@ -113,12 +114,13 @@ namespace RAL {
     }
 
     template<typename T>
-    T Vector<T>::pop_back() {
-        if(!m_first || !m_count) return 0; // TODO: Assert + Error
-        T val = m_first[m_count-1];
+    Optional<T> Vector<T>::pop_back() {
+        Optional<T> ret;
+        if(!m_first || !m_count) return ret; // TODO: Assert + Error
+        ret = m_first[m_count-1];
         if(--m_count <= m_maxCount/m_allocScale)
             this->dealloc();
-        return val;
+        return ret;
     }
 
     template<typename T>

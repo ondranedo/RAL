@@ -36,7 +36,6 @@ namespace RAL{
 
         m_components[i].x->release();
 
-        m_flags[i] = m_flags.pop_back();
 
         m_components[i] = m_components.pop_back();
     }
