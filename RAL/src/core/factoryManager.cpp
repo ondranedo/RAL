@@ -1,22 +1,38 @@
 #include "factoryManager.h"
 #include "asserts.h"
 
-namespace RAL{
+namespace RAL {
 
-    BaseComponent* FactoryMgr::get(const String& name) {
+    template<class name>
+    void FactoryMgr::addFactory() {
 
-        i16_t i = findIndex(name);
-        if(i == -1){
+        RAL_FACTORY_SCANTHRU {
+
+            RAL_FACTORY_ISNAME;
+        }
+    }
+
+
+    BaseComponent *FactoryMgr::get(const String &name) {
+
+        RAL_COMPONENT_SCANTHRU
+            RAL_COMPONENT_ISNAME
+                break;
+
+        if (i == m_components.size()) {
             RAL_ASSERT("Object %s not found!", name.c_str());
         }
 
         return m_components[i].m_component;
     }
 
-    void FactoryMgr::addComponent(BaseComponent *component, const String& name) {
+    void FactoryMgr::addComponent(BaseComponent *component, const String &name) {
 
-        i16_t i = findIndex(name);
-        if(i == -1){
+        RAL_COMPONENT_SCANTHRU
+            RAL_COMPONENT_ISNAME
+                break;
+
+        if (i != m_components.size()) {
             RAL_ASSERT("Object %s already created!", name.c_str());
         }
 
@@ -30,8 +46,11 @@ namespace RAL{
 
     void FactoryMgr::removeComponent(const String &name) {
 
-        i16_t i = findIndex(name);
-        if(i == -1){
+        RAL_COMPONENT_SCANTHRU
+            RAL_COMPONENT_ISNAME
+                break;
+
+        if (i == m_components.size()) {
             RAL_ASSERT("Object %s not found!", name.c_str());
         }
 
@@ -41,11 +60,11 @@ namespace RAL{
         m_components.pop_back();
     }
 
-    void FactoryMgr::init(){
+    void FactoryMgr::init() {
 
-        RAL_COMPONENT_SCANTHRU{
+        RAL_COMPONENT_SCANTHRU {
 
-            if(!m_components[i].m_wasInitialized) {
+            if (!m_components[i].m_wasInitialized) {
                 m_components[i].m_component->init();
                 m_components[i].m_wasInitialized = true;
             }
@@ -54,9 +73,9 @@ namespace RAL{
 
     void FactoryMgr::release() {
 
-        RAL_COMPONENT_SCANTHRU{
+        RAL_COMPONENT_SCANTHRU {
 
-            if(m_components[i].m_wasInitialized){
+            if (m_components[i].m_wasInitialized) {
                 m_components[i].m_component->release();
                 m_components[i].m_wasInitialized = false;
             }
@@ -68,9 +87,9 @@ namespace RAL{
 
         struct Component temp;
 
-        RAL_FACTORY_SCANTHRU{
+        RAL_FACTORY_SCANTHRU {
 
-            if(!m_factories[i].m_hadDefaultCreated){
+            if (!m_factories[i].m_hadDefaultCreated) {
 
                 temp.m_component = m_factories[i].m_factory->create();
                 temp.m_name = "ClassName";
@@ -79,15 +98,5 @@ namespace RAL{
                 m_components.push_back(temp);
             }
         }
-    }
-
-    i16_t FactoryMgr::findIndex(const String& name){
-
-        RAL_COMPONENT_SCANTHRU{
-            RAL_COMPONENT_ISNAME{
-                return i;
-            }
-        }
-        return -1;
     }
 }
