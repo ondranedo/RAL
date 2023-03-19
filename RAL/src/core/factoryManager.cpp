@@ -9,6 +9,7 @@ namespace RAL {
 
         String temp2 = stringize(factory);
         struct Factory temp;
+        u64_t i;
 
         RAL_FACTORY_SCANTHRU{
             if(m_factories[i].m_name == temp2){
@@ -24,6 +25,11 @@ namespace RAL {
     }
 
     template<typename factory> void FactoryMgr::createComponent(const String& name){
+
+        u64_t i;
+        RAL_COMPONENT_SCANTHRU
+            RAL_COMPONENT_ISNAME
+                RAL_ASSERT("Component %s already created!", name.c_str());
 
         String temp2 = stringize(factory);
 
@@ -42,6 +48,7 @@ namespace RAL {
 
     BaseComponent *FactoryMgr::get(const String &name) {
 
+        u64_t i;
         RAL_COMPONENT_SCANTHRU
             RAL_COMPONENT_ISNAME
                 break;
@@ -55,6 +62,7 @@ namespace RAL {
 
     void FactoryMgr::addComponent(BaseComponent *component, const String &name) {
 
+        u64_t i;
         RAL_COMPONENT_SCANTHRU
             RAL_COMPONENT_ISNAME
                 break;
@@ -73,6 +81,7 @@ namespace RAL {
 
     void FactoryMgr::removeComponent(const String &name) {
 
+        u64_t i;
         RAL_COMPONENT_SCANTHRU
             RAL_COMPONENT_ISNAME
                 break;
@@ -89,6 +98,7 @@ namespace RAL {
 
     void FactoryMgr::init() {
 
+        u64_t i;
         RAL_COMPONENT_SCANTHRU {
 
             if (!m_components[i].m_wasInitialized) {
@@ -100,6 +110,7 @@ namespace RAL {
 
     void FactoryMgr::release() {
 
+        u64_t i;
         RAL_COMPONENT_SCANTHRU {
 
             if (m_components[i].m_wasInitialized) {
@@ -113,6 +124,7 @@ namespace RAL {
     void FactoryMgr::create() {
 
         struct Component temp;
+        u64_t i;
 
         RAL_FACTORY_SCANTHRU {
 

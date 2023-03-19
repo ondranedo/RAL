@@ -8,8 +8,8 @@
 
 #define stringize(string) #string
 
-#define RAL_COMPONENT_SCANTHRU u64_t i; for(i = 0; i < m_components.size(); i++)
-#define RAL_FACTORY_SCANTHRU u64_t i; for(i = 0; i < m_factories.size(); i++)
+#define RAL_COMPONENT_SCANTHRU for(i = 0; i < m_components.size(); i++)
+#define RAL_FACTORY_SCANTHRU for(i = 0; i < m_factories.size(); i++)
 #define RAL_COMPONENT_ISNAME if(m_components[i].m_name == name)
 
 namespace RAL{
