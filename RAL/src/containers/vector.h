@@ -1,10 +1,12 @@
 #pragma once
 #include "../core/types.h"
 #include "../core/allocator.h"
+#include "../containers/optional.h"
 
 typedef u64_t size_t;
 
 #include <utility>
+#include <cstring>
 
 namespace RAL {
     template<typename T>
@@ -36,7 +38,7 @@ namespace RAL {
         template<typename... Args>
         void push_back(T&& val, Args... args) noexcept;
 
-        T pop_back();
+        Optional<T> pop_back();
         Vector<T> pop_nback(const size_t& count);
         void clear();
 
@@ -112,12 +114,13 @@ namespace RAL {
     }
 
     template<typename T>
-    T Vector<T>::pop_back() {
-        if(!m_first || !m_count) return 0; // TODO: Assert + Error
-        T val = m_first[m_count-1];
+    Optional<T> Vector<T>::pop_back() {
+        Optional<T> ret;
+        if(!m_first || !m_count) return ret; // TODO: Assert + Error
+        ret = m_first[m_count-1];
         if(--m_count <= m_maxCount/m_allocScale)
             this->dealloc();
-        return val;
+        return ret;
     }
 
     template<typename T>
@@ -227,7 +230,7 @@ namespace RAL {
         if(m_maxCount == 0) m_maxCount++;
         else  m_maxCount *= m_allocScale;
         T* tmp = mainMemory.allocn<T>(m_maxCount);
-        memcpy(tmp, m_first, m_count*sizeof(T));
+        std::memcpy(tmp, m_first, m_count*sizeof(T));
         mainMemory.release(m_first);
         m_first = tmp;
     }
@@ -243,7 +246,7 @@ namespace RAL {
         }
         m_maxCount /= m_allocScale;
         T* tmp = mainMemory.allocn<T>(m_maxCount);
-        memcpy(tmp, m_first, m_count*sizeof(T));
+        std::memcpy(tmp, m_first, m_count*sizeof(T));
         mainMemory.release(m_first);
         m_first = tmp;
     }
@@ -252,7 +255,7 @@ namespace RAL {
     const T *Vector<T>::c_cpy() const {
         // TODO: memory class
         T* ret = mainMemory.allocn<T>(m_maxCount);
-        memcpy(ret, m_first,m_maxCount * sizeof(T));
+        std::memcpy(ret, m_first,m_maxCount * sizeof(T));
         return ret;
     }
 

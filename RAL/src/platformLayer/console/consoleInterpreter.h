@@ -2,10 +2,11 @@
 
 #include "../../containers/string.h"
 #include "../../core/types.h"
+#include "../../core/baseComponent.h"
 
 namespace RAL
 {
-	class ConsoleInterpreter
+	class ConsoleInterpreter : public BaseComponent
 	{
 	public:
 		enum class ColourBackground : u8_t

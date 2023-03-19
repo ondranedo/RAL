@@ -230,4 +230,16 @@ namespace RAL {
         }
 		m_size = 0;
 	}
+
+    bool String::operator==(const String &str) {
+        return !(memcmp(this->m_ptr, str.m_ptr, this->m_size));
+    }
+
+    bool String::operator!=(const String &str) {
+        return !(*this == str);\
+    }
+
+    bool String::operator()() {
+        return this->m_ptr ? true : false;
+    }
 }

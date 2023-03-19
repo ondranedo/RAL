@@ -120,5 +120,15 @@ namespace RAL {
 #endif
         return nullptr;
 	}
+
+    void WinMemory::init()
+    {
+
+    }
+
+    void WinMemory::release()
+    {
+
+    }
 }
 #endif

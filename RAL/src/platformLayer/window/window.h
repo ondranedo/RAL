@@ -2,25 +2,23 @@
 #include "../../containers/string.h"
 #include "../../containers/pair.h"
 #include "../../core/types.h"
+#include "../../core/baseComponent.h"
 //TO DO:
 //	-MUTEX lock
 //	-
 
 namespace RAL
 {
-    class Window
+    class Window : public RAL::BaseComponent
     {
     public:
         Window();
         virtual ~Window();
-        virtual void init() = 0;
         virtual void destroy() = 0;
         virtual void makeContextCurrent() = 0;
         virtual void onUpdate() = 0;
         virtual void setEvenCallBack() = 0;
-
         virtual void setDims(const RAL::Pair<u8_t, u8_t>& dimsWH) = 0;
-
         virtual void vSyncEnable() = 0;
         virtual void vSyncDisable() = 0;
     protected:

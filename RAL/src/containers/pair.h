@@ -6,14 +6,8 @@
 namespace RAL {
     template<typename TL, typename TR>
     struct Pair {
-        union {
-            TL x;
-            TL first;
-        };
-        union {
-            TR y;
-            TR second;
-        };
+        TL x;
+        TR y;
 
         // TODO: constexpr
         // constructors
@@ -66,8 +60,8 @@ namespace RAL {
             x(std::move(other.x)),
             y(std::move(other.y))
     {
-        other.x = 0;
-        other.y = 0;
+        std::memset(&other.x, 0, sizeof(other.x));
+        std::memset(&other.y, 0, sizeof(other.y));
     }
 
     template<typename TL, typename TR>
