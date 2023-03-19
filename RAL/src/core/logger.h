@@ -25,27 +25,27 @@ namespace RAL
 		//static std::mutex log_mutex;
 		FILE* m_file;
 		bool m_fileDumpEnabled;
-        WConsoleInterpreter *m_console = nullptr;
+        ConsoleInterpreter *m_console = nullptr;
 
 
 	private:
-		template<typename... Args> void log(const char* message_priority_str, LoggerClass::Priority message_priority, const char* message, Args... args) const
+		template<typename... Args> void log(const char* message_priority_str, LoggerClass::Priority message_priority, const char* message, ConsoleInterpreter::ColourBackground background = ConsoleInterpreter::ColourBackground::BLACK, ConsoleInterpreter::ColourForeground foreground = ConsoleInterpreter::ColourForeground::WHITE) const
 		{
             if(m_console != nullptr)
             {
                 if (m_priority <= message_priority)
                 {
-                    // TODO: Should use platform layer
-                    m_console->log(message_priority_str);
-                    m_console->log(message);
+
+                    m_console->log(message_priority_str, background, foreground);
+                    m_console->log(message, foreground, background);
                     m_console->log("\n");
                 }
                 if (m_file != 0 && m_fileDumpEnabled)
                 {
                     // TODO: Should use platform layer
-                    fprintf_s(m_file, message_priority_str);
-                    fprintf_s(m_file, message, args...);
-                    fprintf_s(m_file, "\n");
+                    //fprintf_s(m_file, message_priority_str);
+                    //fprintf_s(m_file, message, args...);
+                    //fprintf_s(m_file, "\n");
                 }
             }
             else
@@ -74,39 +74,40 @@ namespace RAL
 		void stopDumpFile();
 		void continueDumpFile();
 
-        void bindToConsole(WConsoleInterpreter* console_ptr);
+        void bindToConsole(ConsoleInterpreter* console_ptr);
+        void detachFromConsole();
 	};
 
 	extern LoggerClass mainLogger;
 
 	template<typename... Args> inline void LoggerClass::trace(const char* message, Args... args) const
 	{
-		log("[Trace]\t", LoggerClass::Priority::Critical, message, args...);
+		log("[Trace]\t", LoggerClass::Priority::Critical, message);
 	}
   
 	template<typename... Args> inline void LoggerClass::debug(const char* message, Args... args) const
 	{
-		log("[Debug]\t", LoggerClass::Priority::Debug, message, args...);
+		log("[Debug]\t", LoggerClass::Priority::Debug, message);
 	}
 
 	template<typename... Args> inline void LoggerClass::info(const char* message, Args... args) const
 	{
-		log("[Info]\t", LoggerClass::Priority::Info, message, args...);
+		log("[Info]\t", LoggerClass::Priority::Info, message);
 	}
 
 	template<typename... Args> inline void LoggerClass::warning(const char* message, Args... args) const
 	{
-		log("[Warning]\t", LoggerClass::Priority::Warning, message, args...);
+		log("[Warning]\t", LoggerClass::Priority::Warning, message);
 	}
   
 	template<typename... Args> inline void LoggerClass::error(const char* message, Args... args) const
 	{
-		log("[Error]\t", LoggerClass::Priority::Error, message, args...);
+		log("[Error]\t", LoggerClass::Priority::Error, message);
 	}
   
 	template<typename... Args> inline void LoggerClass::critical(const char* message, Args... args) const
 	{
-		log("[Critical]\t", LoggerClass::Priority::Critical, message, args...);
+		log("[Critical]\t", LoggerClass::Priority::Critical, message);
 	}
 };
 

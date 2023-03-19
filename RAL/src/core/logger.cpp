@@ -44,9 +44,13 @@ namespace RAL
 	{
 		m_fileDumpEnabled = true;
 	}
-    void LoggerClass::bindToConsole(WConsoleInterpreter* console_ptr)
+    void LoggerClass::bindToConsole(ConsoleInterpreter* console_ptr)
     {
         m_console = console_ptr;
+    }
+    void LoggerClass::detachFromConsole()
+    {
+        m_console = nullptr;
     }
 }
 
