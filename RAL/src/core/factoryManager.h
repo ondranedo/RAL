@@ -41,7 +41,7 @@ namespace RAL{
         struct Factory{
 
             BaseFactory<BaseComponent>* m_factory;
-            String m_name;
+            String m_productName;
             //flags
             bool m_hadDefaultCreated;
         };
