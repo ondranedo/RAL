@@ -14,7 +14,7 @@
 
 namespace RAL{
 
-    class FactoryMgr{
+    class FactoryComponentMgr{
 
     public:
         template<typename factory> void addFactory();

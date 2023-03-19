@@ -5,7 +5,7 @@
 namespace RAL {
 
     template<typename factory>
-    void FactoryMgr::addFactory() {
+    void FactoryComponentMgr::addFactory() {
 
         String temp2 = stringize(factory);
         struct Factory temp;
@@ -24,7 +24,7 @@ namespace RAL {
         m_factories.push_back(temp);
     }
 
-    template<typename factory> void FactoryMgr::createComponent(const String& name){
+    template<typename factory> void FactoryComponentMgr::createComponent(const String& name){
 
         u64_t i;
         RAL_COMPONENT_SCANTHRU
@@ -49,7 +49,7 @@ namespace RAL {
         RAL_ASSERT_MSG("Factory %s not found or created!", temp2.c_str());
     }
 
-    BaseComponent* FactoryMgr::operator[](const String &name) {
+    BaseComponent* FactoryComponentMgr::operator[](const String &name) {
 
         u64_t i;
         RAL_COMPONENT_SCANTHRU
@@ -63,7 +63,7 @@ namespace RAL {
         return m_components[i].m_component;
     }
 
-    void FactoryMgr::addComponent(BaseComponent *component, const String &name) {
+    void FactoryComponentMgr::addComponent(BaseComponent *component, const String &name) {
 
         u64_t i;
         RAL_COMPONENT_SCANTHRU
@@ -78,7 +78,7 @@ namespace RAL {
         m_components.push_back(temp);
     }
 
-    void FactoryMgr::removeComponent(const String &name) {
+    void FactoryComponentMgr::removeComponent(const String &name) {
 
         u64_t i;
         RAL_COMPONENT_SCANTHRU
@@ -95,7 +95,7 @@ namespace RAL {
         m_components.pop_back();
     }
 
-    void FactoryMgr::init() {
+    void FactoryComponentMgr::init() {
 
         u64_t i;
         RAL_COMPONENT_SCANTHRU {
@@ -107,7 +107,7 @@ namespace RAL {
         }
     }
 
-    void FactoryMgr::release() {
+    void FactoryComponentMgr::release() {
 
         u64_t i;
         RAL_COMPONENT_SCANTHRU {
@@ -119,7 +119,7 @@ namespace RAL {
         }
     }
 
-    void FactoryMgr::create() {
+    void FactoryComponentMgr::create() {
 
         struct Component temp;
         u64_t i;
