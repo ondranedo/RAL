@@ -1,17 +1,44 @@
 #include "factoryManager.h"
 #include "asserts.h"
+#include "allocator.h"
 
 namespace RAL {
 
-    template<class name>
+    template<typename factory>
     void FactoryMgr::addFactory() {
 
-        RAL_FACTORY_SCANTHRU {
+        String temp2 = stringize(factory);
+        struct Factory temp;
 
-            RAL_FACTORY_ISNAME;
-        }
+        RAL_FACTORY_SCANTHRU{
+            if(m_factories[i].m_name == temp2){
+                RAL_ASSERT("Factory %s already created!", temp2.c_str());
+            }
+        };
+
+        temp.m_name = temp2;
+        temp.m_hadDefaultCreated = false;
+        temp.m_factory = mainMemory.alloc<factory>();
+
+        m_factories.push_back(temp);
     }
 
+    template<typename factory> void FactoryMgr::createComponent(const String& name){
+
+        String temp2 = stringize(factory);
+
+        RAL_FACTORY_SCANTHRU{
+            if(m_factories[i].m_name == temp2){
+                struct Component temp;
+                temp.m_wasInitialized = false;
+                temp.m_name = name;
+                temp.m_component = m_factories[i].m_factory->create();
+                m_components.push_back(temp);
+                return;
+            }
+        };
+        RAL_ASSERT("Factory %s not found or created!", temp2.c_str());
+    }
 
     BaseComponent *FactoryMgr::get(const String &name) {
 

@@ -6,22 +6,21 @@
 #include "../containers/pair.h"
 #include "../containers/string.h"
 
-#define stringize(string) String( #string )
+#define stringize(string) #string
 
-#define RAL_COMPONENT_SCANTHRU u16_t i; for(i = 0; i < m_components.size(); i++)
-#define RAL_FACTORY_SCANTHRU u8_t i; for(i = 0; i < m_factories.size(); i++)
+#define RAL_COMPONENT_SCANTHRU u64_t i; for(i = 0; i < m_components.size(); i++)
+#define RAL_FACTORY_SCANTHRU u64_t i; for(i = 0; i < m_factories.size(); i++)
 #define RAL_COMPONENT_ISNAME if(m_components[i].m_name == name)
-#define RAL_FACTORY_ISNAME if(m_factories[i].m_name == stringize(name) )
 
 namespace RAL{
 
     class FactoryMgr{
 
     public:
-        template<class name> void addFactory();
+        template<typename factory> void addFactory();
 
         void addComponent(BaseComponent* component, const String& name);
-        void createComponent();
+        template<typename factory> void createComponent(const String& name);
         void removeComponent(const String& name);
 
         void create();
