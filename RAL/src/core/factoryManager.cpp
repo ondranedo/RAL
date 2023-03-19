@@ -49,7 +49,7 @@ namespace RAL {
         RAL_ASSERT_MSG("Factory %s not found or created!", temp2.c_str());
     }
 
-    BaseComponent *FactoryMgr::get(const String &name) {
+    BaseComponent* FactoryMgr::operator[](const String &name) {
 
         u64_t i;
         RAL_COMPONENT_SCANTHRU

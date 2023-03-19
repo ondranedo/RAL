@@ -27,7 +27,7 @@ namespace RAL{
         void init();
         void release();
 
-        BaseComponent* get(const String& name);
+        BaseComponent* operator[](const String& name);
 
     private:
         struct Component{
