@@ -5,6 +5,7 @@
 //  - Custom format
 
 #include <stdio.h>
+#include "../platformLayer/console/wConsoleInterpreter.h"
 
 
 namespace RAL
@@ -24,24 +25,33 @@ namespace RAL
 		//static std::mutex log_mutex;
 		FILE* m_file;
 		bool m_fileDumpEnabled;
+        WConsoleInterpreter *m_console = nullptr;
+
 
 	private:
 		template<typename... Args> void log(const char* message_priority_str, LoggerClass::Priority message_priority, const char* message, Args... args) const
 		{
-			if (m_priority <= message_priority)
-			{
-				// TODO: Should use platform layer
-				printf(message_priority_str);
-				printf(message, args...);
-				printf("\n");
-			}
-			if (m_file != 0 && m_fileDumpEnabled)
-			{
-				// TODO: Should use platform layer
-				fprintf_s(m_file, message_priority_str);
-				fprintf_s(m_file, message, args...);
-				fprintf_s(m_file, "\n");
-			}
+            if(m_console != nullptr)
+            {
+                if (m_priority <= message_priority)
+                {
+                    // TODO: Should use platform layer
+                    m_console->log(message_priority_str);
+                    m_console->log(message);
+                    m_console->log("\n");
+                }
+                if (m_file != 0 && m_fileDumpEnabled)
+                {
+                    // TODO: Should use platform layer
+                    fprintf_s(m_file, message_priority_str);
+                    fprintf_s(m_file, message, args...);
+                    fprintf_s(m_file, "\n");
+                }
+            }
+            else
+            {
+                //TODO: save to message vector, log dump (po blocich)
+            }
 		}
 
 	public:
@@ -63,6 +73,8 @@ namespace RAL
 		void dumpFile(const char* filepath);
 		void stopDumpFile();
 		void continueDumpFile();
+
+        void bindToConsole(WConsoleInterpreter* console_ptr);
 	};
 
 	extern LoggerClass mainLogger;
