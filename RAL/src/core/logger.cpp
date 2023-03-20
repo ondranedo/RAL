@@ -26,9 +26,13 @@ namespace RAL
 	{
 		m_priority = m_prevPriority;
 	}
-    void LoggerClass::bindToConsole(WConsoleInterpreter* new_console)
+    void LoggerClass::bindToConsole(ConsoleInterpreter* console_ptr)
     {
-        m_console = new_console;
+        m_console = console_ptr;
+    }
+    void LoggerClass::setFileIO(FileIO *fileio_ptr)
+    {
+        m_fileio = fileio_ptr;
     }
 
 	void LoggerClass::dumpFile(const char* filepath)
