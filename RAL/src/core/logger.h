@@ -23,26 +23,24 @@ namespace RAL
 		Priority m_priority;
 		Priority m_prevPriority;
 		//static std::mutex log_mutex;
-		FILE* m_file;
 		bool m_fileDumpEnabled;
         RAL::ConsoleInterpreter* m_console = nullptr;
-        RAL::FileIO* m_fileio = nullptr;
+        RAL::FileIO* m_file = nullptr;
+        RAL::String m_filename = "logger";
 	private:
 		template<typename... Args> void log(RAL::String message_priority_str, LoggerClass::Priority message_priority, RAL::String message,ConsoleInterpreter::ColourForeground foreground = ConsoleInterpreter::ColourForeground::WHITE,  ConsoleInterpreter::ColourBackground background = ConsoleInterpreter::ColourBackground::BLACK) const
 		{
 			if (m_priority <= message_priority)
 			{
-				// TODO: Should use platform layer
 				m_console->log(message_priority_str, background, foreground);
 				m_console->log(message,background, foreground);
 				m_console->log("\n");
 			}
-			if (m_file != 0 && m_fileDumpEnabled)
+			if (m_file != nullptr && m_fileDumpEnabled)
 			{
-				// TODO: Should use platform layer
-				//fprintf_s(m_file, message_priority_str);
-				//fprintf_s(m_file, message, args...);
-				//fprintf_s(m_file, "\n");
+                m_file->println(m_filename, message_priority_str);
+                m_file->println(m_filename,message);
+                m_file->println(m_filename,"\n");
 			}
 		}
 
@@ -62,7 +60,7 @@ namespace RAL
 		template<typename... Args> inline void error(RAL::String message, Args... args) const;
 		template<typename... Args> inline void critical(RAL::String message, Args... args) const;
 
-		void dumpFile(const char* filepath);
+		void dumpFile(RAL::String filepath);
 		void stopDumpFile();
 		void continueDumpFile();
         void bindToConsole(ConsoleInterpreter* console_ptr);

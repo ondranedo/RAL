@@ -32,13 +32,13 @@ namespace RAL
     }
     void LoggerClass::setFileIO(FileIO *fileio_ptr)
     {
-        m_fileio = fileio_ptr;
+        m_file = fileio_ptr;
     }
 
-	void LoggerClass::dumpFile(const char* filepath)
+	void LoggerClass::dumpFile(RAL::String filepath)
 	{
-		if (m_file != nullptr) fclose(m_file);
-		fopen_s(&m_file, filepath, "w");
+		if (m_file != nullptr) m_file->close(m_filename);
+		m_file->open(filepath, m_filename, "w");
 		RAL_ASSERT_NULL(m_file, "Failed to open file: %s", filepath);
 		if (!m_file) m_fileDumpEnabled = true;
 	}
