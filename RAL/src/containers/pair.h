@@ -59,8 +59,8 @@ namespace RAL {
             x(std::move(other.x)),
             y(std::move(other.y))
     {
-        other.x = 0;
-        other.y = 0;
+        std::memset(&other.x, 0, sizeof(other.x));
+        std::memset(&other.y, 0, sizeof(other.y));
     }
 
     template<typename TL, typename TR>
