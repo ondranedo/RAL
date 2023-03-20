@@ -14,7 +14,7 @@ namespace RAL
 	}
 	LoggerClass::~LoggerClass()
 	{
-		if (m_file != nullptr) fclose(m_file);
+		if (m_file != nullptr) m_file->close(m_filename);
 	}
 
 	void LoggerClass::setPriority(Priority new_priority)
