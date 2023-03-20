@@ -5,7 +5,7 @@
 //  - Custom format
 
 #include <stdio.h>
-
+#include "../platformLayer/console/consoleInterpreterFactory.h"
 
 namespace RAL
 {	
@@ -24,23 +24,23 @@ namespace RAL
 		//static std::mutex log_mutex;
 		FILE* m_file;
 		bool m_fileDumpEnabled;
-
+        WConsoleInterpreter* m_console = nullptr;
 	private:
-		template<typename... Args> void log(const char* message_priority_str, LoggerClass::Priority message_priority, const char* message, Args... args) const
+		template<typename... Args> void log(RAL::String message_priority_str, LoggerClass::Priority message_priority, RAL::String message, Args... args) const
 		{
 			if (m_priority <= message_priority)
 			{
 				// TODO: Should use platform layer
-				printf(message_priority_str);
-				printf(message, args...);
-				printf("\n");
+				m_console->log(message_priority_str, args...);
+				m_console->log(message, args...);
+				m_console->log("\n");
 			}
 			if (m_file != 0 && m_fileDumpEnabled)
 			{
 				// TODO: Should use platform layer
-				fprintf_s(m_file, message_priority_str);
-				fprintf_s(m_file, message, args...);
-				fprintf_s(m_file, "\n");
+				//fprintf_s(m_file, message_priority_str);
+				//fprintf_s(m_file, message, args...);
+				//fprintf_s(m_file, "\n");
 			}
 		}
 
@@ -53,46 +53,47 @@ namespace RAL
 		void setPriorityPrev();
 
 		//Functions for each priority.
-		template<typename... Args> inline void trace(const char* message, Args... args) const;
-		template<typename... Args> inline void debug(const char* message, Args... args) const;
-		template<typename... Args> inline void info(const char* message, Args... args) const;
-		template<typename... Args> inline void warning(const char* message, Args... args) const;
-		template<typename... Args> inline void error(const char* message, Args... args) const;
-		template<typename... Args> inline void critical(const char* message, Args... args) const;
+		template<typename... Args> inline void trace(RAL::String message, Args... args) const;
+		template<typename... Args> inline void debug(RAL::String message, Args... args) const;
+		template<typename... Args> inline void info(RAL::String message, Args... args) const;
+		template<typename... Args> inline void warning(RAL::String message, Args... args) const;
+		template<typename... Args> inline void error(RAL::String message, Args... args) const;
+		template<typename... Args> inline void critical(RAL::String message, Args... args) const;
 
 		void dumpFile(const char* filepath);
 		void stopDumpFile();
 		void continueDumpFile();
+        void bindToConsole(WConsoleInterpreter* new_console);
 	};
 
 	extern LoggerClass mainLogger;
 
-	template<typename... Args> inline void LoggerClass::trace(const char* message, Args... args) const
+	template<typename... Args> inline void LoggerClass::trace(RAL::String message, Args... args) const
 	{
 		log("[Trace]\t", LoggerClass::Priority::Critical, message, args...);
 	}
   
-	template<typename... Args> inline void LoggerClass::debug(const char* message, Args... args) const
+	template<typename... Args> inline void LoggerClass::debug(RAL::String message, Args... args) const
 	{
 		log("[Debug]\t", LoggerClass::Priority::Debug, message, args...);
 	}
 
-	template<typename... Args> inline void LoggerClass::info(const char* message, Args... args) const
+	template<typename... Args> inline void LoggerClass::info(RAL::String message, Args... args) const
 	{
 		log("[Info]\t", LoggerClass::Priority::Info, message, args...);
 	}
 
-	template<typename... Args> inline void LoggerClass::warning(const char* message, Args... args) const
+	template<typename... Args> inline void LoggerClass::warning(RAL::String message, Args... args) const
 	{
 		log("[Warning]\t", LoggerClass::Priority::Warning, message, args...);
 	}
   
-	template<typename... Args> inline void LoggerClass::error(const char* message, Args... args) const
+	template<typename... Args> inline void LoggerClass::error(RAL::String message, Args... args) const
 	{
 		log("[Error]\t", LoggerClass::Priority::Error, message, args...);
 	}
   
-	template<typename... Args> inline void LoggerClass::critical(const char* message, Args... args) const
+	template<typename... Args> inline void LoggerClass::critical(RAL::String message, Args... args) const
 	{
 		log("[Critical]\t", LoggerClass::Priority::Critical, message, args...);
 	}

@@ -7,7 +7,6 @@ set(file_platformLayer_window  src/platformLayer/window/window.cpp src/platformL
 
 set(src ${file_containers} ${file_core} ${file_platformLayer_fileio} ${file_platformLayer_memory} ${file_platformLayer_console} ${file_test} ${file_platformLayer_window} src/core/baseComponent.cpp src/core/baseComponent.h)
 
-
 add_library(ral ${src})
 
 ########################################################################################################################
