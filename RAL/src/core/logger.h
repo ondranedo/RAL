@@ -41,7 +41,7 @@ namespace RAL
 				m_console->log(message,background, foreground);
 				m_console->log("\n");
 			}
-			if (m_file != nullptr && m_fileDumpEnabled && !m_console)
+			if (m_fileDumpEnabled && !m_file && !m_console)
 			{
                 m_file->println(m_filename, message_priority_str);
                 m_file->println(m_filename,message);
@@ -58,55 +58,68 @@ namespace RAL
 		void setPriorityPrev();
 
 		//Functions for each priority.
-		template<typename... Args> inline void trace(const RAL::String& message, Args... args) const;
-		template<typename... Args> inline void debug(const RAL::String& message, Args... args) const;
-		template<typename... Args> inline void info(const RAL::String& message, Args... args) const;
-		template<typename... Args> inline void warning(const RAL::String& message, Args... args) const;
-		template<typename... Args> inline void error(const RAL::String& message, Args... args) const;
-		template<typename... Args> inline void critical(const RAL::String& message, Args... args) const;
+		template<typename... Args> inline void trace(RAL::String& message, Args... args) const;
+		template<typename... Args> inline void debug(RAL::String& message, Args... args) const;
+		template<typename... Args> inline void info(RAL::String& message, Args... args) const;
+		template<typename... Args> inline void warning(RAL::String& message, Args... args) const;
+		template<typename... Args> inline void error(RAL::String& message, Args... args) const;
+		template<typename... Args> inline void critical(RAL::String& message, Args... args) const;
 
 		void dumpFile(const RAL::String& filepath);
 		void stopDumpFile();
 		void continueDumpFile();
         void bindToConsole(ConsoleInterpreter* console_ptr);
         void setFileIO(FileIO* file_ptr);
+
+        template<typename... Args> void argsToMsg(RAL::String& message, Args... args)
+        {
+            char buff[100];
+            snprintf(buff,100,"%s",message.c_str(), args...);
+            message.recreate(buff);
+        }
 	};
 
 	extern LoggerClass mainLogger;
 
-	template<typename... Args> inline void LoggerClass::trace(const RAL::String& message, Args... args) const
+	template<typename... Args> inline void LoggerClass::trace(RAL::String& message, Args... args) const
 	{
         std::lock_guard<std::mutex> guard(m_mutex);
-		log("[Trace]\t", LoggerClass::Priority::Critical, message, ConsoleInterpreter::ColourForeground::GRAY);
+        argsToMsg(message, args...);
+		log("[Trace]\t", LoggerClass::Priority::Critical, argsToMsg(message, args...), ConsoleInterpreter::ColourForeground::GRAY);
     }
   
-	template<typename... Args> inline void LoggerClass::debug(const RAL::String& message, Args... args) const
+	template<typename... Args> inline void LoggerClass::debug(RAL::String& message, Args... args) const
 	{
         std::lock_guard<std::mutex> guard(m_mutex);
+        argsToMsg(message, args...);
 		log("[Debug]\t", LoggerClass::Priority::Debug, message, ConsoleInterpreter::ColourForeground::BROWN);
     }
 
-	template<typename... Args> inline void LoggerClass::info(const RAL::String& message, Args... args) const
+	template<typename... Args> inline void LoggerClass::info(RAL::String& message, Args... args) const
 	{
         std::lock_guard<std::mutex> guard(m_mutex);
+        argsToMsg(message, args...);
 		log("[Info]\t", LoggerClass::Priority::Info, message, ConsoleInterpreter::ColourForeground::GREEN);
     }
 
-	template<typename... Args> inline void LoggerClass::warning(const RAL::String& message, Args... args) const
+	template<typename... Args> inline void LoggerClass::warning(RAL::String& message, Args... args) const
 	{
         std::lock_guard<std::mutex> guard(m_mutex);
+        argsToMsg(message, args...);
 		log("[Warning]\t", LoggerClass::Priority::Warning, message, ConsoleInterpreter::ColourForeground::YELLOW);
     }
   
-	template<typename... Args> inline void LoggerClass::error(const RAL::String& message, Args... args) const
+	template<typename... Args> inline void LoggerClass::error(RAL::String& message, Args... args) const
 	{
         std::lock_guard<std::mutex> guard(m_mutex);
+        argsToMsg(message, args...);
 		log("[Error]\t", LoggerClass::Priority::Error, message, ConsoleInterpreter::ColourForeground::RED);
     }
   
-	template<typename... Args> inline void LoggerClass::critical(const RAL::String& message, Args... args) const
+	template<typename... Args> inline void LoggerClass::critical(RAL::String& message, Args... args) const
 	{
         std::lock_guard<std::mutex> guard(m_mutex);
+        argsToMsg(message, args...);
 		log("[Critical]\t", LoggerClass::Priority::Critical, message, ConsoleInterpreter::ColourForeground::WHITE, ConsoleInterpreter::ColourBackground::RED);
     }
 };
