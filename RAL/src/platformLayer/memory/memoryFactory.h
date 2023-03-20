@@ -8,15 +8,18 @@
 
 namespace RAL{
 
-    class MemoryFactory : public BaseFactory<Memory>
-    {
+    class MemoryFactory : public BaseFactory<Memory> {
 
     public:
-        Memory* create() override
-        {
+        Memory *create() override {
 #ifdef RAL_WINDOWS
             return mainMemory.alloc<WinMemory>();
 #endif
             return nullptr;
         };
-};
+
+        const char *productName() override {
+            return "Memory";
+        }
+    };
+}

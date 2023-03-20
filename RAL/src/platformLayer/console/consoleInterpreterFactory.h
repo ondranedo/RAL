@@ -21,5 +21,8 @@ namespace RAL
             return mainMemory.alloc<WConsoleInterpreter>();
 #endif
         }
+        const char *productName() override {
+            return "ConsoleInterpreter";
+        }
 	};
 };

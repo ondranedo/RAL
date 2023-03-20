@@ -69,10 +69,11 @@ namespace RAL {
 
         u64_t i;
         RAL_COMPONENT_SCANTHRU {
-                m_components[i].m_component->release();
+            m_components[i].m_component->release();
         }
     }
 
+    //TODO: add a default set of constructor parameters if necessary
     void FactoryComponentMgr::createComponents() {
 
         u64_t i;
@@ -82,7 +83,7 @@ namespace RAL {
             if (!m_factories[i].m_hadDefaultCreated) {
 
                 tempComponent->m_component = m_factories[i].m_factory->create();
-                tempComponent->m_name = m_factories[i].m_factoryName;
+                tempComponent->m_name = m_factories[i].m_productName;
                 tempComponent->m_wasInitialized = false;
 
                 m_components.push_back(*tempComponent);
