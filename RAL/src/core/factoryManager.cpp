@@ -7,27 +7,33 @@ namespace RAL {
     void FactoryComponentMgr::addComponent(BaseComponent *component, const String &name) {
 
         u64_t i;
-        RAL_COMPONENT_SCANTHRU
-            RAL_COMPONENT_ISNAME
+        RAL_COMPONENT_SCANTHRU{
+            RAL_COMPONENT_ISNAME{
                 RAL_ASSERT_MSG("Object %s already created!", name.c_str());
+                return;
+            }
+        }
 
-        struct Component temp;
-        temp.m_component = component;
-        temp.m_name = name;
-        temp.m_wasInitialized = true;
+        struct Component tempComponent;
+        tempComponent.m_component = component;
+        tempComponent.m_name = name;
+        tempComponent.m_wasInitialized = true;
 
-        m_components.push_back(temp);
+        m_components.push_back(tempComponent);
     }
 
     void FactoryComponentMgr::removeComponent(const String &name) {
 
         u64_t i;
-        RAL_COMPONENT_SCANTHRU
-            RAL_COMPONENT_ISNAME
+        RAL_COMPONENT_SCANTHRU{
+            RAL_COMPONENT_ISNAME{
                 break;
+            }
+        }
 
         if (i == m_components.size()) {
             RAL_ASSERT_MSG("Object %s not found!", name.c_str());
+            return;
         }
 
         m_components[i].m_component->release();
@@ -62,18 +68,18 @@ namespace RAL {
 
     void FactoryComponentMgr::create() {
 
-        struct Component temp;
+        struct Component tempComponent;
         u64_t i;
 
         RAL_FACTORY_SCANTHRU {
 
             if (!m_factories[i].m_hadDefaultCreated) {
 
-                temp.m_component = m_factories[i].m_factory->create();
-                temp.m_name = m_factories[i].m_productName;
-                temp.m_wasInitialized = false;
+                tempComponent.m_component = m_factories[i].m_factory->create();
+                tempComponent.m_name = m_factories[i].m_factoryName;
+                tempComponent.m_wasInitialized = false;
 
-                m_components.push_back(temp);
+                m_components.push_back(tempComponent);
                 m_factories[i].m_hadDefaultCreated = true;
             }
         }

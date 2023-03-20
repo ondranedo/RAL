@@ -38,10 +38,11 @@ namespace RAL{
             bool m_wasInitialized;
         };
 
+        //TODO: change factoryName to productName
         struct Factory{
 
             BaseFactory<BaseComponent>* m_factory;
-            String m_productName;
+            String m_factoryName;
             //flags
             bool m_hadDefaultCreated;
         };
@@ -53,55 +54,64 @@ namespace RAL{
     template<typename factory>
     void FactoryComponentMgr::addFactory() {
 
-        String temp2 = stringize(factory);
-        struct Factory temp;
+        String factoryName = stringize(factory);
+        struct Factory tempFactory;
         u64_t i;
 
         RAL_FACTORY_SCANTHRU{
-            if(m_factories[i].m_productName == temp2){
-                RAL_ASSERT_MSG("Factory %s already created!", temp2.c_str());
+            if(m_factories[i].m_factoryName == factoryName){
+                RAL_ASSERT_MSG("Factory %s already created!", factoryName.c_str());
+                return;
             }
-        };
+        }
 
-        temp.m_productName = temp2;
-        temp.m_hadDefaultCreated = false;
-        temp.m_factory = mainMemory.alloc<factory>();
+        tempFactory.m_factoryName = factoryName;
+        tempFactory.m_hadDefaultCreated = false;
+        tempFactory.m_factory = mainMemory.alloc<factory>();
 
-        m_factories.push_back(temp);
+        m_factories.push_back(tempFactory);
     }
 
-    template<typename factory> void FactoryComponentMgr::createComponent(const String& name){
+    template<typename factory>
+    void FactoryComponentMgr::createComponent(const String& name){
 
         u64_t i;
-        RAL_COMPONENT_SCANTHRU
-            RAL_COMPONENT_ISNAME
-        RAL_ASSERT_MSG("Component %s already created!", name.c_str());
+        RAL_COMPONENT_SCANTHRU {
+            RAL_COMPONENT_ISNAME {
+                RAL_ASSERT_MSG("Component %s already created!", name.c_str());
+                return;
+            }
+        }
 
-        String temp2 = stringize(factory);
+        String factoryName = stringize(factory);
 
-        if(temp2 == name)
-        RAL_ASSERT_MSG("Cant create a non-default component with a default name (%s)", name.c_str());
+        if(factoryName == name){
+            RAL_ASSERT_MSG("Cant create a component of a same name as a factory (for some reason)");
+            return;
+        }
 
         RAL_FACTORY_SCANTHRU{
-            if(m_factories[i].m_productName == temp2){
-                struct Component temp;
-                temp.m_wasInitialized = false;
-                temp.m_name = name;
-                temp.m_component = m_factories[i].m_factory->create();
-                m_components.push_back(temp);
+            if(m_factories[i].m_factoryName == factoryName){
+                struct Component tempComponent;
+                tempComponent.m_wasInitialized = false;
+                tempComponent.m_name = name;
+                tempComponent.m_component = m_factories[i].m_factory->create();
+                m_components.push_back(tempComponent);
                 return;
             }
         };
-        RAL_ASSERT_MSG("Factory %s not found or created!", temp2.c_str());
+        RAL_ASSERT_MSG("Factory %s not found or created!", factoryName.c_str());
     }
 
     template<typename T>
     T* FactoryComponentMgr::get(const String &name) {
 
         u64_t i;
-        RAL_COMPONENT_SCANTHRU
-            RAL_COMPONENT_ISNAME
+        RAL_COMPONENT_SCANTHRU {
+            RAL_COMPONENT_ISNAME {
                 break;
+            }
+        }
 
         if (i == m_components.size()) {
             RAL_ASSERT_MSG("Object %s not found!", name.c_str());
