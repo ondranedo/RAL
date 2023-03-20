@@ -30,12 +30,12 @@ namespace RAL
     {
         m_console = console_ptr;
     }
-    void LoggerClass::setFileIO(FileIO *fileio_ptr)
+    void LoggerClass::setFileIO(FileIO *file_ptr)
     {
-        m_file = fileio_ptr;
+        m_file = file_ptr;
     }
 
-	void LoggerClass::dumpFile(RAL::String filepath)
+	void LoggerClass::dumpFile(const RAL::String& filepath)
 	{
 		if (!m_file) m_file->close(m_filename);
 		m_file->open(filepath, m_filename, "w");
