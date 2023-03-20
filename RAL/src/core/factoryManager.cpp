@@ -14,12 +14,13 @@ namespace RAL {
             }
         }
 
-        struct Component tempComponent;
-        tempComponent.m_component = component;
-        tempComponent.m_name = name;
-        tempComponent.m_wasInitialized = true;
+        auto* tempComponent = mainMemory.alloc<struct Component>();
+        tempComponent->m_component = component;
+        tempComponent->m_name = name;
+        tempComponent->m_wasInitialized = true;
 
-        m_components.push_back(tempComponent);
+        m_components.push_back(*tempComponent);
+        mainMemory.release(tempComponent);
     }
 
     void FactoryComponentMgr::removeComponent(const String &name) {
@@ -68,19 +69,20 @@ namespace RAL {
 
     void FactoryComponentMgr::create() {
 
-        struct Component tempComponent;
+        auto* tempComponent = mainMemory.alloc<struct Component>();
         u64_t i;
 
         RAL_FACTORY_SCANTHRU {
 
             if (!m_factories[i].m_hadDefaultCreated) {
 
-                tempComponent.m_component = m_factories[i].m_factory->create();
-                tempComponent.m_name = m_factories[i].m_factoryName;
-                tempComponent.m_wasInitialized = false;
+                tempComponent->m_component = m_factories[i].m_factory->create();
+                tempComponent->m_name = m_factories[i].m_factoryName;
+                tempComponent->m_wasInitialized = false;
 
-                m_components.push_back(tempComponent);
+                m_components.push_back(*tempComponent);
                 m_factories[i].m_hadDefaultCreated = true;
+                mainMemory.release(tempComponent);
             }
         }
     }
