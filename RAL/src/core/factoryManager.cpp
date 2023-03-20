@@ -4,20 +4,6 @@
 
 namespace RAL {
 
-    BaseComponent* FactoryComponentMgr::operator[](const String &name) {
-
-        u64_t i;
-        RAL_COMPONENT_SCANTHRU
-            RAL_COMPONENT_ISNAME
-                break;
-
-        if (i == m_components.size()) {
-            RAL_ASSERT_MSG("Object %s not found!", name.c_str());
-        }
-
-        return m_components[i].m_component;
-    }
-
     void FactoryComponentMgr::addComponent(BaseComponent *component, const String &name) {
 
         u64_t i;

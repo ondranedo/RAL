@@ -27,7 +27,7 @@ namespace RAL{
         void init();
         void release();
 
-        BaseComponent* operator[](const String& name);
+        template<typename T> T* get(const String& name);
 
     private:
         struct Component{
@@ -93,5 +93,21 @@ namespace RAL{
             }
         };
         RAL_ASSERT_MSG("Factory %s not found or created!", temp2.c_str());
+    }
+
+    template<typename T>
+    T* FactoryComponentMgr::get(const String &name) {
+
+        u64_t i;
+        RAL_COMPONENT_SCANTHRU
+            RAL_COMPONENT_ISNAME
+                break;
+
+        if (i == m_components.size()) {
+            RAL_ASSERT_MSG("Object %s not found!", name.c_str());
+            return nullptr;
+        }
+
+        return dynamic_cast<T*>(m_components[i].m_component);
     }
 }
