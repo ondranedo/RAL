@@ -4,7 +4,19 @@
 
 namespace RAL {
 
-    void FactoryComponentMgr::addComponent(BaseComponent *component, const String &name) {
+    FactoryComponentMgr::FactoryComponentMgr() {
+
+        tempComponent = mainMemory.alloc<struct Component>();
+        tempFactory = mainMemory.alloc<struct Factory>();
+    }
+
+    FactoryComponentMgr::~FactoryComponentMgr() {
+
+        clearComponents();
+        clearFactories();
+    }
+
+    void FactoryComponentMgr::addComponent(BaseComponent *component, const String& name) {
 
         u64_t i;
         RAL_COMPONENT_SCANTHRU{
@@ -14,13 +26,11 @@ namespace RAL {
             }
         }
 
-        auto* tempComponent = mainMemory.alloc<struct Component>();
         tempComponent->m_component = component;
         tempComponent->m_name = name;
         tempComponent->m_wasInitialized = true;
 
         m_components.push_back(*tempComponent);
-        mainMemory.release(tempComponent);
     }
 
     void FactoryComponentMgr::removeComponent(const String &name) {
@@ -59,17 +69,12 @@ namespace RAL {
 
         u64_t i;
         RAL_COMPONENT_SCANTHRU {
-
-            if (m_components[i].m_wasInitialized) {
                 m_components[i].m_component->release();
-                m_components[i].m_wasInitialized = false;
-            }
         }
     }
 
     void FactoryComponentMgr::createComponents() {
 
-        auto* tempComponent = mainMemory.alloc<struct Component>();
         u64_t i;
 
         RAL_FACTORY_SCANTHRU {
@@ -84,6 +89,41 @@ namespace RAL {
                 m_factories[i].m_hadDefaultCreated = true;
             }
         }
+    }
+
+    void FactoryComponentMgr::clearComponents() {
+
+        i64_t i;
+
+        releaseComponents();
+        RAL_COMPONENT_SCANTHRU{
+            m_components[i].m_component = nullptr;
+        }
+        m_components.clear();
+
+        if(tempComponent->m_component){
+            tempComponent->m_component->release();
+            tempComponent->m_component = nullptr;
+        }
         mainMemory.release(tempComponent);
+        tempComponent = nullptr;
+    }
+
+    void FactoryComponentMgr::clearFactories() {
+
+        i64_t i;
+
+        RAL_FACTORY_SCANTHRU{
+            mainMemory.release(m_factories[i].m_factory);
+            m_factories[i].m_factory = nullptr;
+        }
+        m_factories.clear();
+
+        if(tempFactory->m_factory){
+            mainMemory.release(tempFactory->m_factory);
+            tempFactory->m_factory = nullptr;
+        }
+        mainMemory.release(tempFactory);
+        tempFactory = nullptr;
     }
 }

@@ -17,6 +17,9 @@ namespace RAL{
     class FactoryComponentMgr{
 
     public:
+        FactoryComponentMgr();
+        ~FactoryComponentMgr();
+
         template<typename factory> void addFactory();
 
         void addComponent(BaseComponent* component, const String& name);
@@ -28,6 +31,9 @@ namespace RAL{
         void releaseComponents();
 
         template<typename T> T* get(const String& name);
+
+        void clearFactories();
+        void clearComponents();
 
     private:
         struct Component{
@@ -49,13 +55,15 @@ namespace RAL{
 
         Vector<Component> m_components;
         Vector<Factory> m_factories;
+
+        struct Component* tempComponent;
+        struct Factory* tempFactory;
     };
 
     template<typename factory>
     void FactoryComponentMgr::addFactory() {
 
         String factoryName = stringize(factory);
-        auto* tempFactory = mainMemory.alloc<struct Factory>();
         u64_t i;
 
         RAL_FACTORY_SCANTHRU{
@@ -70,7 +78,6 @@ namespace RAL{
         tempFactory->m_factory = mainMemory.alloc<factory>();
 
         m_factories.push_back(*tempFactory);
-        mainMemory.release(tempFactory);
     }
 
     template<typename factory>
@@ -93,12 +100,10 @@ namespace RAL{
 
         RAL_FACTORY_SCANTHRU{
             if(m_factories[i].m_factoryName == factoryName){
-                auto* tempComponent = mainMemory.alloc<struct Component>();
                 tempComponent->m_wasInitialized = false;
                 tempComponent->m_name = name;
                 tempComponent->m_component = m_factories[i].m_factory->create();
                 m_components.push_back(*tempComponent);
-                mainMemory.release(tempComponent);
                 return;
             }
         };
