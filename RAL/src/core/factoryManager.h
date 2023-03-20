@@ -23,9 +23,9 @@ namespace RAL{
         template<typename factory> void createComponent(const String& name);
         void removeComponent(const String& name);
 
-        void create();
-        void init();
-        void release();
+        void createComponents();
+        void initComponents();
+        void releaseComponents();
 
         template<typename T> T* get(const String& name);
 

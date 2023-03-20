@@ -43,7 +43,7 @@ namespace RAL {
         m_components.pop_back();
     }
 
-    void FactoryComponentMgr::init() {
+    void FactoryComponentMgr::initComponents() {
 
         u64_t i;
         RAL_COMPONENT_SCANTHRU {
@@ -55,7 +55,7 @@ namespace RAL {
         }
     }
 
-    void FactoryComponentMgr::release() {
+    void FactoryComponentMgr::releaseComponents() {
 
         u64_t i;
         RAL_COMPONENT_SCANTHRU {
@@ -67,7 +67,7 @@ namespace RAL {
         }
     }
 
-    void FactoryComponentMgr::create() {
+    void FactoryComponentMgr::createComponents() {
 
         auto* tempComponent = mainMemory.alloc<struct Component>();
         u64_t i;
@@ -82,8 +82,8 @@ namespace RAL {
 
                 m_components.push_back(*tempComponent);
                 m_factories[i].m_hadDefaultCreated = true;
-                mainMemory.release(tempComponent);
             }
         }
+        mainMemory.release(tempComponent);
     }
 }
