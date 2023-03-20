@@ -10,6 +10,7 @@ namespace RAL
 		m_fileDumpEnabled(false),
 		m_priority(LoggerClass::Priority::Info),
 		m_prevPriority(LoggerClass::Priority::Info)
+
 	{
 	}
 	LoggerClass::~LoggerClass()

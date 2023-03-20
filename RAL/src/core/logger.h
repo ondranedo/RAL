@@ -25,7 +25,7 @@ namespace RAL
 		Priority                    m_prevPriority;
 
         //TODO: should use platform layer
-		// static std::mutex           m_mutex;
+        static std::mutex            m_mutex;
         //
 
 		bool                        m_fileDumpEnabled;
@@ -76,33 +76,39 @@ namespace RAL
 
 	template<typename... Args> inline void LoggerClass::trace(const RAL::String& message, Args... args) const
 	{
+        std::lock_guard<std::mutex> guard(m_mutex);
 		log("[Trace]\t", LoggerClass::Priority::Critical, message, ConsoleInterpreter::ColourForeground::GRAY);
-	}
+    }
   
 	template<typename... Args> inline void LoggerClass::debug(const RAL::String& message, Args... args) const
 	{
+        std::lock_guard<std::mutex> guard(m_mutex);
 		log("[Debug]\t", LoggerClass::Priority::Debug, message, ConsoleInterpreter::ColourForeground::BROWN);
-	}
+    }
 
 	template<typename... Args> inline void LoggerClass::info(const RAL::String& message, Args... args) const
 	{
+        std::lock_guard<std::mutex> guard(m_mutex);
 		log("[Info]\t", LoggerClass::Priority::Info, message, ConsoleInterpreter::ColourForeground::GREEN);
-	}
+    }
 
 	template<typename... Args> inline void LoggerClass::warning(const RAL::String& message, Args... args) const
 	{
+        std::lock_guard<std::mutex> guard(m_mutex);
 		log("[Warning]\t", LoggerClass::Priority::Warning, message, ConsoleInterpreter::ColourForeground::YELLOW);
-	}
+    }
   
 	template<typename... Args> inline void LoggerClass::error(const RAL::String& message, Args... args) const
 	{
+        std::lock_guard<std::mutex> guard(m_mutex);
 		log("[Error]\t", LoggerClass::Priority::Error, message, ConsoleInterpreter::ColourForeground::RED);
-	}
+    }
   
 	template<typename... Args> inline void LoggerClass::critical(const RAL::String& message, Args... args) const
 	{
+        std::lock_guard<std::mutex> guard(m_mutex);
 		log("[Critical]\t", LoggerClass::Priority::Critical, message, ConsoleInterpreter::ColourForeground::WHITE, ConsoleInterpreter::ColourBackground::RED);
-	}
+    }
 };
 
 #ifdef RAL_DEBUG
