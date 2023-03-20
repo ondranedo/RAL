@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include "../platformLayer/console/consoleInterpreter.h"
 #include "../platformLayer/fileIO/fileIO.h"
+#include <mutex>
 
 namespace RAL
 {	
@@ -22,7 +23,7 @@ namespace RAL
 		//Priority variable is set to 'Info' by default
 		Priority m_priority;
 		Priority m_prevPriority;
-		//static std::mutex log_mutex;
+		static std::mutex log_mutex;
 		bool m_fileDumpEnabled;
         RAL::ConsoleInterpreter* m_console = nullptr;
         RAL::FileIO* m_file = nullptr;

@@ -37,7 +37,7 @@ namespace RAL
 
 	void LoggerClass::dumpFile(RAL::String filepath)
 	{
-		if (m_file != nullptr) m_file->close(m_filename);
+		if (!m_file) m_file->close(m_filename);
 		m_file->open(filepath, m_filename, "w");
 		RAL_ASSERT_NULL(m_file, "Failed to open file: %s", filepath);
 		if (!m_file) m_fileDumpEnabled = true;
