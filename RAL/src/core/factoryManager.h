@@ -52,9 +52,6 @@ namespace RAL{
 
         Vector<Component> m_components;
         Vector<Factory> m_factories;
-
-        struct Component* tempComponent;
-        struct Factory* tempFactory;
     };
 
     template<typename factory>
@@ -62,21 +59,22 @@ namespace RAL{
 
         u64_t i;
 
-        tempFactory->m_factory = mainMemory.alloc<factory>();
-        String productName = tempFactory->m_factory->productName();
+        Factory tempFactory;
+        tempFactory.m_factory = mainMemory.alloc<factory>();
+        String productName = tempFactory.m_factory->productName();
 
         RAL_FACTORY_SCANTHRU{
             if(m_factories[i].m_productName == productName){
-                mainMemory.release(tempFactory->m_factory);
+                mainMemory.release(tempFactory.m_factory);
                 RAL_ASSERT_MSG("Factory %s already created!", productName.c_str());
                 return;
             }
         }
 
-        tempFactory->m_productName = productName;
-        tempFactory->m_hadDefaultCreated = false;
+        tempFactory.m_productName = productName;
+        tempFactory.m_hadDefaultCreated = false;
 
-        m_factories.push_back(*tempFactory);
+        m_factories.push_back(std::move(tempFactory));
     }
 
     template<typename factory>
@@ -90,12 +88,12 @@ namespace RAL{
             }
         }
 
+        Factory tempFactory;
+        tempFactory.m_factory = mainMemory.alloc<factory>();
+        String productName = tempFactory.m_factory->productName();
+        mainMemory.release(tempFactory.m_factory);
 
-        tempFactory->m_factory = mainMemory.alloc<factory>();
-        String productName = tempFactory->m_factory->productName();
-        mainMemory.release(tempFactory->m_factory);
-
-        //will still create if for ex. name = "FileIO" but fileIOFactory hasnt been added yet
+        //will still create if for ex. name = "FileIO" but fileIOFactory hasn't been added yet
         RAL_FACTORY_SCANTHRU{
             if(m_factories[i].m_productName == name){
                 RAL_ASSERT_MSG("Can't create a component of the same name as the default name!");
@@ -105,10 +103,7 @@ namespace RAL{
 
         RAL_FACTORY_SCANTHRU{
             if(m_factories[i].m_productName == productName){
-                tempComponent->m_wasInitialized = false;
-                tempComponent->m_name = name;
-                tempComponent->m_component = m_factories[i].m_factory->create();
-                m_components.push_back(*tempComponent);
+                addComponent(m_factories[i].m_factory->create(), name);
                 return;
             }
         };
