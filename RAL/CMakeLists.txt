@@ -5,7 +5,7 @@ set(file_platformLayer_memory  src/platformLayer/memory/wMemory.cpp src/platform
 set(file_platformLayer_console src/platformLayer/console/consoleInterpreter.cpp src/platformLayer/console/consoleInterpreter.h src/platformLayer/console/wConsoleInterpreter.cpp src/platformLayer/console/wConsoleInterpreter.h src/platformLayer/console/consoleInterpreterFactory.h)
 set(file_platformLayer_window  src/platformLayer/window/window.cpp src/platformLayer/window/WindowsWindow.cpp)
 
-set(src ${file_containers} ${file_core} ${file_platformLayer_fileio} ${file_platformLayer_memory} ${file_platformLayer_console} ${file_test} ${file_platformLayer_window} src/core/baseComponent.cpp src/core/baseComponent.h)
+set(src ${file_containers} ${file_core} ${file_platformLayer_fileio} ${file_platformLayer_memory} ${file_platformLayer_console} ${file_test} ${file_platformLayer_window} src/core/baseComponent.cpp src/core/baseComponent.h ${file_platformLayer_fileio} )
 
 add_library(ral ${src})
 

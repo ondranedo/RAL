@@ -29,24 +29,24 @@ namespace RAL
         //
 
 		bool                        m_fileDumpEnabled;
-        ConsoleInterpreter*    m_console = nullptr;
-        FileIO*                m_file = nullptr;
-        String                 m_filename = "log";
+        ConsoleInterpreter*    m_console;
+        FileIO*                m_file;
+        String*                m_filealias;
 	private:
 		template<typename... Args> void log(const String& message_priority_str, LoggerClass::Priority message_priority,const String& message, ConsoleInterpreter::ColourForeground foreground = ConsoleInterpreter::ColourForeground::WHITE,  ConsoleInterpreter::ColourBackground background = ConsoleInterpreter::ColourBackground::BLACK) const
 		{
 
 			if (m_priority <= message_priority && m_console != nullptr)
 			{
-                m_console->log(message_priority_str, background, foreground);
-                m_console->log(message,background, foreground);
+                m_console->log(message_priority_str,foreground, background);
+                m_console->log(message,foreground, background);
                 m_console->log("\n");
 			}
-			//if (m_fileDumpEnabled && m_file != nullptr && m_console != nullptr)
+			if (m_fileDumpEnabled && m_file != nullptr && m_console != nullptr)
 			{
-                m_file->println(m_filename, message_priority_str);
-                m_file->println(m_filename,message);
-                m_file->println(m_filename,"\n");
+                m_file->println(*m_filealias, message_priority_str);
+                m_file->println(*m_filealias,message);
+                m_file->println(*m_filealias,"\n");
 			}
 		}
 
