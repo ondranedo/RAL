@@ -6,7 +6,7 @@ namespace RAL
 	LoggerClass mainLogger;
     std::mutex LoggerClass::s_mutex = std::mutex();
 	LoggerClass::LoggerClass() :
-		//m_file(nullptr),
+		m_file(nullptr),
 		m_fileDumpEnabled(false),
 		m_priority(LoggerClass::Priority::Info),
 		m_prevPriority(LoggerClass::Priority::Info)
@@ -15,7 +15,7 @@ namespace RAL
 	}
 	LoggerClass::~LoggerClass()
 	{
-		//if (m_file != nullptr) m_file->close(m_filename);
+		if (m_file != nullptr) m_file->close(m_filename);
 	}
 
 	void LoggerClass::setPriority(Priority new_priority)
@@ -31,15 +31,15 @@ namespace RAL
     {
         m_console = console_ptr;
     }
-    //void LoggerClass::setFileIO(FileIO *file_ptr)
-    //{
-       // m_file = file_ptr;
-    //}
+    void LoggerClass::setFileIO(FileIO *file_ptr)
+    {
+       m_file = file_ptr;
+    }
 
-    // void LoggerClass::resetFileIO()
-    //{
-        //m_file = nullptr;
-    //}
+    void LoggerClass::resetFileIO()
+    {
+        m_file = nullptr;
+    }
 
     void LoggerClass::detachFromConsole()
     {
@@ -48,10 +48,10 @@ namespace RAL
 
 	void LoggerClass::dumpFile(const RAL::String& filepath)
 	{
-		//if (!m_file) m_file->close(m_filename);
-		//m_file->open(filepath, m_filename, "w");
+		if (!m_file) m_file->close(m_filename);
+		m_file->open(filepath, m_filename, "w");
 		//RAL_ASSERT_NULL(m_file, "Failed to open file: %s", filepath);
-		//if (!m_file) m_fileDumpEnabled = true;
+		if (!m_file) m_fileDumpEnabled = true;
 	}
 
 	void LoggerClass::stopDumpFile()

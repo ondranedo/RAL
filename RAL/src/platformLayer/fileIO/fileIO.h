@@ -3,7 +3,6 @@
 #include "../../containers/string.h"
 #include "../../containers/pair.h"
 #include "../../core/types.h"
-#include "../../core/logger.h"
 
 #define RAL_FILE_ENTRY RAL::Pair<RAL::Pair<RAL::String, RAL::String>, RAL::Pair<RAL::String, FILE*>>
 

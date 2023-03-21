@@ -5,12 +5,10 @@ namespace RAL {
 	FileIO::FileIO() {
 
         openFiles = 0;
-		RAL_LOG_TRACE("File I/O created");
 	}
 
 	FileIO::~FileIO() {
 
-		RAL_LOG_TRACE("File I/O destroyed");
 	}
 
     bool FileIO::stringCompare(RAL::String a, RAL::String b) {

@@ -6,6 +6,7 @@
 #include <mutex>
 #include <stdio.h>
 #include "../platformLayer/console/consoleInterpreter.h"
+#include "../platformLayer/fileIO/fileIO.h"
 
 #define RAL_LOGGER_BUFF_SIZE 200
 
@@ -29,7 +30,7 @@ namespace RAL
 
 		bool                        m_fileDumpEnabled;
         ConsoleInterpreter*    m_console = nullptr;
-        //FileIO*                m_file = nullptr;
+        FileIO*                m_file = nullptr;
         String                 m_filename = "log";
 	private:
 		template<typename... Args> void log(const String& message_priority_str, LoggerClass::Priority message_priority,const String& message, ConsoleInterpreter::ColourForeground foreground = ConsoleInterpreter::ColourForeground::WHITE,  ConsoleInterpreter::ColourBackground background = ConsoleInterpreter::ColourBackground::BLACK) const
@@ -37,15 +38,15 @@ namespace RAL
 
 			if (m_priority <= message_priority && m_console != nullptr)
 			{
-                LoggerClass::m_console->log(message_priority_str, background, foreground);
-                LoggerClass::m_console->log(message,background, foreground);
-                LoggerClass::m_console->log("\n");
+                m_console->log(message_priority_str, background, foreground);
+                m_console->log(message,background, foreground);
+                m_console->log("\n");
 			}
 			//if (m_fileDumpEnabled && m_file != nullptr && m_console != nullptr)
 			{
-                //LoggerClass::m_file->println(m_filename, message_priority_str);
-                //LoggerClass::m_file->println(m_filename,message);
-                //LoggerClass:: m_file->println(m_filename,"\n");
+                m_file->println(m_filename, message_priority_str);
+                m_file->println(m_filename,message);
+                m_file->println(m_filename,"\n");
 			}
 		}
 
@@ -70,8 +71,8 @@ namespace RAL
 		void continueDumpFile();
         void bindToConsole(ConsoleInterpreter* console_ptr);
         void detachFromConsole();
-        //void setFileIO(FileIO* file_ptr);
-        //void resetFileIO();
+        void setFileIO(FileIO* file_ptr);
+        void resetFileIO();
 
         template<typename... Args> void argsToMsg(String& message, Args... args);
 
