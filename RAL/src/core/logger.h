@@ -59,11 +59,11 @@ namespace RAL
 		void setPriorityPrev();
 
 		//Functions for each priority.
-		template<typename... Args> inline void trace(const char* message, Args... args) const;
-		template<typename... Args> inline void debug(const char* message, Args... args) const;
-		template<typename... Args> inline void info(const char* message, Args... args) const;
-		template<typename... Args> inline void warning(const char* message, Args... args) const;
-		template<typename... Args> inline void error(const char* message, Args... args) const;
+		template<typename... Args> inline void trace(const char* msg, Args... args) const;
+		template<typename... Args> inline void debug(const char* msg, Args... args) const;
+		template<typename... Args> inline void info(const char* msg, Args... args) const;
+		template<typename... Args> inline void warning(const char* msg, Args... args) const;
+		template<typename... Args> inline void error(const char* msg, Args... args) const;
 		template<typename... Args> inline void critical(const char* msg, Args... args) const;
 
 		void dumpFile(const String& filepath);
@@ -94,7 +94,7 @@ namespace RAL
         String message;
         message.recreate(msg);
         mainLogger.argsToMsg(message, args...);
-		log("[Trace]\t", LoggerClass::Priority::Critical, msg, ConsoleInterpreter::ColourForeground::GRAY);
+		log("[Trace]\t", LoggerClass::Priority::Critical, message, ConsoleInterpreter::ColourForeground::GRAY);
     }
   
 	template<typename... Args> inline void LoggerClass::debug(const char* msg, Args... args) const
@@ -139,7 +139,7 @@ namespace RAL
         String message;
         message.recreate(msg);
         mainLogger.argsToMsg(message, args...);
-		log("[Critical]\t", LoggerClass::Priority::Critical, msg, ConsoleInterpreter::ColourForeground::WHITE, ConsoleInterpreter::ColourBackground::RED);
+		log("[Critical]\t", LoggerClass::Priority::Critical,  message, ConsoleInterpreter::ColourForeground::WHITE, ConsoleInterpreter::ColourBackground::RED);
     }
 };
 
