@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include <GLFW/glfw3.h>
 #include "../containers/string.h"
 #include "../core/types.h"
 #include <stdio.h>
