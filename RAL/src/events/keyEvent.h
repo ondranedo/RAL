@@ -34,7 +34,7 @@ namespace RAL
     public:
         KeyCodes m_key;
 
-        EVENT_TYPE(EventType::KeyPressed)
+        EVENT_TYPE(EventType::KeyReleased)
 
         KeyReleased(KeyCodes keyCode)
                 : m_key(keyCode)
@@ -51,7 +51,7 @@ namespace RAL
     public:
         KeyCodes m_key;
 
-        EVENT_TYPE(EventType::KeyPressed)
+        EVENT_TYPE(EventType::KeyTyped)
 
         KeyTyped(KeyCodes keyCode)
                 : m_key(keyCode)
