@@ -4,52 +4,45 @@
 
 #pragma once
 
+#include <GLFW/glfw3.h>
 #include "../containers/string.h"
+#include "../core/types.h"
+#include <stdio.h>
 
 namespace RAL
 {
+
+#define EVENT_TYPE(eventType) EventType getEventType() override { return eventType; }
+#define EVENT_STRING(bufferString) RAL::String toString() override { \
+message.recreate(bufferString);                                      \
+return message; }
+#define RAL_EVENT_BUFFER_SIZE 128
+
     enum class EventType
     {
         None = 0,
         WindowResized, WindowClosed, WindowFocus, WindowLostFocus, WindowMoved,
         KeyPressed, KeyReleased, KeyTyped,
-        MousePressed, MouseReleased, MouseMoved, MouseScrolled,
-        AppUpdate, AppRender
-    };
-
-    enum class EventCategory
-    {
-        None = 0,
-        EventCategoryApp = 1 << 0,
-        EventCategoryInput = 1 << 1,
-        EventCategoryKeybaord = 1 << 2,
-        EventCategoryMouse = 1 << 3,
-        EventCattegoryMouseButton = 1 << 4
+        MousePressed, MouseReleased, MouseMoved, MouseScrolled
     };
 
     class Event
     {
     public:
-        virtual ~Event() {}
-        virtual EventType getEventType() = 0;
+        char buffer[RAL_EVENT_BUFFER_SIZE];
+        String message;
 
-        virtual int getCategoryFlags() = 0;
+        virtual ~Event() = default;
+
+        virtual EventType getEventType() = 0;
 
 #ifdef RAL_DEBUG
 
-        virtual RAL::String getName() = 0;
-
-        virtual RAL::String toString() { return getName(); }
+        virtual RAL::String toString() = 0;
 
 #endif
-
-        bool inCategory(EventCategory category)
-        {
-            return static_cast<int>(getCategoryFlags()) & static_cast<int>(category);
-        }
 
     protected:
         bool m_handled = false;
     };
-
 }
