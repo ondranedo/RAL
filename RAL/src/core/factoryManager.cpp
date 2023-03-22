@@ -20,17 +20,17 @@ namespace RAL {
         u64_t i;
         RAL_COMPONENT_SCANTHRU{
             RAL_COMPONENT_ISNAME{
-                RAL_ASSERT_MSG("Object %s already created!", name.c_str());
+                RAL_ASSERT_MSG("Object %s already created!", name.c_str())
                 return;
             }
         }
 
-        Component tempComponent;
+        Component tempComponent{};
         tempComponent.m_component = component;
-        tempComponent.m_name = name;
+        tempComponent.m_name = mainMemory.alloc<String>(name);
         tempComponent.m_wasInitialized = false;
 
-        m_components.push_back(std::move(tempComponent));
+        m_components.push_back(tempComponent);
     }
 
     void FactoryComponentMgr::removeComponent(const String &name) {
@@ -43,13 +43,15 @@ namespace RAL {
         }
 
         if (i == m_components.size()) {
-            RAL_ASSERT_MSG("Object %s not found!", name.c_str());
+            RAL_ASSERT_MSG("Object %s not found!", name.c_str())
             return;
         }
 
         m_components[i].m_component->release();
+        mainMemory.release(m_components[i].m_component);
+        mainMemory.release(m_components[i].m_name);
 
-        m_components[i] = m_components[m_components.size() - 1];
+        m_components[i] = *m_components.end();
         m_components.pop_back();
     }
 
@@ -70,6 +72,8 @@ namespace RAL {
         u64_t i;
         RAL_COMPONENT_SCANTHRU {
             m_components[i].m_component->release();
+            mainMemory.release(m_components[i].m_component);
+            mainMemory.release(m_components[i].m_name);
         }
     }
 
@@ -82,12 +86,14 @@ namespace RAL {
 
             if (!m_factories[i].m_hadDefaultCreated) {
 
-                Component tempComponent;
+                Component tempComponent{};
                 tempComponent.m_component = m_factories[i].m_factory->create();
-                tempComponent.m_name = m_factories[i].m_productName;
+
+
+                tempComponent.m_name = mainMemory.alloc<String>(m_factories[i].m_productName->c_str());
                 tempComponent.m_wasInitialized = false;
 
-                m_components.push_back(std::move(tempComponent));
+                m_components.push_back(tempComponent);
                 m_factories[i].m_hadDefaultCreated = true;
             }
         }
@@ -100,7 +106,6 @@ namespace RAL {
         releaseComponents();
         RAL_COMPONENT_SCANTHRU{
             if(m_components[i].m_component != nullptr) {
-                mainMemory.release(m_components[i].m_component);
                 m_components[i].m_component = nullptr;
             }
         }

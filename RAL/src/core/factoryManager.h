@@ -8,7 +8,7 @@
 
 #define RAL_COMPONENT_SCANTHRU for(i = 0; i < m_components.size(); i++)
 #define RAL_FACTORY_SCANTHRU for(i = 0; i < m_factories.size(); i++)
-#define RAL_COMPONENT_ISNAME if(m_components[i].m_name == name)
+#define RAL_COMPONENT_ISNAME if(*m_components[i].m_name == name)
 
 namespace RAL{
 
@@ -37,7 +37,7 @@ namespace RAL{
         struct Component{
 
             BaseComponent* m_component;
-            String m_name;
+            String* m_name;
             // flags
             bool m_wasInitialized;
         };
@@ -45,7 +45,7 @@ namespace RAL{
         struct Factory{
 
             BaseFactory<BaseComponent>* m_factory;
-            String m_productName;
+            String* m_productName;
             //flags
             bool m_hadDefaultCreated;
         };
@@ -59,14 +59,14 @@ namespace RAL{
 
         u64_t i;
 
-        Factory tempFactory;
+        Factory tempFactory{};
         tempFactory.m_factory = mainMemory.alloc<factory>();
-        String productName = tempFactory.m_factory->productName();
+        String* productName = mainMemory.alloc<String>(tempFactory.m_factory->productName());
 
         RAL_FACTORY_SCANTHRU{
-            if(m_factories[i].m_productName == productName){
+            if(*m_factories[i].m_productName == *productName){
                 mainMemory.release(tempFactory.m_factory);
-                RAL_ASSERT_MSG("Factory %s already created!", productName.c_str());
+                RAL_ASSERT_MSG("Factory %s already created!", productName->c_str())
                 return;
             }
         }
@@ -74,7 +74,7 @@ namespace RAL{
         tempFactory.m_productName = productName;
         tempFactory.m_hadDefaultCreated = false;
 
-        m_factories.push_back(std::move(tempFactory));
+        m_factories.push_back(tempFactory);
     }
 
     template<typename factory>
@@ -83,31 +83,31 @@ namespace RAL{
         u64_t i;
         RAL_COMPONENT_SCANTHRU {
             RAL_COMPONENT_ISNAME {
-                RAL_ASSERT_MSG("Component %s already created!", name.c_str());
+                RAL_ASSERT_MSG("Component %s already created!", name.c_str())
                 return;
             }
         }
 
-        Factory tempFactory;
+        Factory tempFactory{};
         tempFactory.m_factory = mainMemory.alloc<factory>();
         String productName = tempFactory.m_factory->productName();
         mainMemory.release(tempFactory.m_factory);
 
         //will still create if for ex. name = "FileIO" but fileIOFactory hasn't been added yet
         RAL_FACTORY_SCANTHRU{
-            if(m_factories[i].m_productName == name){
-                RAL_ASSERT_MSG("Can't create a component of the same name as the default name!");
+            if(*m_factories[i].m_productName == name){
+                RAL_ASSERT_MSG("Can't create a component of the same name as the default name!")
                 return;
             }
         }
 
         RAL_FACTORY_SCANTHRU{
-            if(m_factories[i].m_productName == productName){
+            if(*m_factories[i].m_productName == productName){
                 addComponent(m_factories[i].m_factory->create(), name);
                 return;
             }
-        };
-        RAL_ASSERT_MSG("%s factory not found or created!", productName.c_str());
+        }
+        RAL_ASSERT_MSG("%s factory not found or created!", productName.c_str())
     }
 
     template<typename T>
@@ -121,10 +121,14 @@ namespace RAL{
         }
 
         if (i == m_components.size()) {
-            RAL_ASSERT_MSG("Object %s not found!", name.c_str());
+            RAL_ASSERT_MSG("Object %s not found!", name.c_str())
             return nullptr;
         }
 
-        return dynamic_cast<T*>(m_components[i].m_component);
+        if(m_components[i].m_wasInitialized){
+            return dynamic_cast<T*>(m_components[i].m_component);
+        }
+        RAL_ASSERT_MSG("Object %s was not initialized!", name.c_str())
+        return nullptr;
     }
 }
