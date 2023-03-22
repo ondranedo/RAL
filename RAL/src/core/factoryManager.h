@@ -20,7 +20,7 @@ namespace RAL{
 
         template<typename factory> void addFactory();
 
-        void addComponent(BaseComponent* component, const String& name);
+        void addComponent(BaseComponent* component, const String& name, bool wasInitialized);
         template<typename factory> void createComponent(const String& name);
         void removeComponent(const String& name);
 
@@ -103,7 +103,7 @@ namespace RAL{
 
         RAL_FACTORY_SCANTHRU{
             if(*m_factories[i].m_productName == productName){
-                addComponent(m_factories[i].m_factory->create(), name);
+                addComponent(m_factories[i].m_factory->create(), name, false);
                 return;
             }
         }

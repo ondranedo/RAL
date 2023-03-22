@@ -15,7 +15,7 @@ namespace RAL {
         RAL_LOG_TRACE("Component manager destroyed");
     }
 
-    void FactoryComponentMgr::addComponent(BaseComponent *component, const String& name) {
+    void FactoryComponentMgr::addComponent(BaseComponent *component, const String& name, bool wasInitialized) {
 
         u64_t i;
         RAL_COMPONENT_SCANTHRU{
@@ -28,7 +28,7 @@ namespace RAL {
         Component tempComponent{};
         tempComponent.m_component = component;
         tempComponent.m_name = mainMemory.alloc<String>(name);
-        tempComponent.m_wasInitialized = false;
+        tempComponent.m_wasInitialized = wasInitialized;
 
         m_components.push_back(tempComponent);
     }
