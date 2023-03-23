@@ -1,43 +1,40 @@
 #pragma once
 
-// constants for open modes
-#define TXT_READ "r"
-#define TXT_WRITE "w"
-#define TXT_APPEND "a"
-#define TXT_READ_WRITE "r+"
-#define BIN_READ "rb"
-#define BIN_WRITE "wb"
-#define BIN_APPEND "ab"
-#define BIN_READ_WRITE "rb+"
+#include "../../containers/string.h"
+#include "../../containers/pair.h"
+#include "../../core/types.h"
 
-/* TODO: 
-*		use String once it has been documented
-*		refactor to Memory once platformLayer is complete
-*		potentially more overrides for println
-*/
+#define RAL_FILE_ENTRY RAL::Pair<RAL::Pair<RAL::String, RAL::String>, RAL::Pair<RAL::String, FILE*>>
+
+#define RAL_FILE_SCANTHRU for(i16_t i = 0; i < openFiles; i++)
+#define RAL_FILE_ISALIAS if(FileIO::stringCompare(alias, files[i].x.y))
 
 namespace RAL {
 
-	class fileIO{
+	class FileIO{
 	public:
-		fileIO();
-		~fileIO();
+		FileIO();
+		virtual ~FileIO();
 
-		void open(const i8_t* path, const i8_t* alias, const i8_t* mode);
-		void close(const i8_t* alias);
+        virtual void open(const RAL::String& path, const RAL::String& alias, const RAL::String& mode) = 0;
+        virtual void close(const RAL::String& alias) = 0;
 
-		void println(const i8_t* string);
-		void println(i32_t num);
-		void println(f32_t num);
+        virtual void println(const RAL::String& alias, const RAL::String& string) = 0;
+        virtual void println(const RAL::String& alias, i64_t num) = 0;
+        virtual void println(const RAL::String& alias, f64_t num) = 0;
 
-		i8_t* readln();
+        virtual RAL::String readln(const RAL::String& alias) = 0;
 
-		void printFileUsage();
-		
-		void maxFile(u16_t count);
+        virtual void printFileUsage() = 0;
 
-	private:
+        virtual void maxFile(i16_t count) = 0;
 
-		u16_t openFiles;
+	protected:
+
+		i16_t openFiles;
+        RAL_FILE_ENTRY* files{};
+
+        bool stringCompare(RAL::String a, RAL::String b);
+        i16_t findIndex(RAL::String alias);
 	};
 }

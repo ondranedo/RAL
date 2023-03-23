@@ -44,6 +44,10 @@ namespace RAL {
 		String& operator=(String&& str) noexcept;
 		String& operator=(const char* str);
 		String& operator=(char c);
+        bool operator==(const String& str);
+        bool operator!=(const String& str);
+        bool operator()();
+
 		// Iterators
 		char* begin();
 		char* end();

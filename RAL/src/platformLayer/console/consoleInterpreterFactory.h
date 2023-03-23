@@ -7,12 +7,23 @@
 #ifdef RAL_WINDOWS
 #include "wConsoleInterpreter.h"
 #endif //!RAL_WINDOWS
+#include "../../core/allocator.h"
+#include "../../core/baseFactory.h"
+#include "consoleInterpreter.h"
 
 namespace RAL
 {
-	class ConsoleInterpreterFactory
+	class ConsoleInterpreterFactory : BaseFactory<ConsoleInterpreter>
 	{
 	public:
-		static ConsoleInterpreter* createConsole();
+		ConsoleInterpreter* create() override
+        {
+#ifdef RAL_WINDOWS
+            return mainMemory.alloc<WConsoleInterpreter>();
+#endif
+        }
+        const char *productName() override {
+            return "ConsoleInterpreter";
+        }
 	};
-}
+};

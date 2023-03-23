@@ -1,27 +1,36 @@
 #include "fileIO.h"
-#include "../../core/logger.h"
 
 namespace RAL {
 
-	fileIO::fileIO() {
+	FileIO::FileIO() {
 
-		RAL_LOG_TRACE("File I/O created");
+        openFiles = 0;
 	}
 
-	fileIO::~fileIO() {
+	FileIO::~FileIO() {
 
-		RAL_LOG_TRACE("File I/O destroyed");
 	}
 
-	void fileIO::open(const i8_t* path, const i8_t* alias, const i8_t* mode) {
+    bool FileIO::stringCompare(RAL::String a, RAL::String b) {
 
-		fopen(path, mode);
-	}
+        /* three levels of nesting is fine ~1nome */
+        if(a.size() == b.size()){
+            for(u32_t i = 0; i < a.size(); i++){
+                if(a.c_str()[i] != b.c_str()[i])
+                    return false;
+            }
+            return true;
+        }
+        return false;
+    }
 
+    i16_t FileIO::findIndex(RAL::String alias){
 
-	void fileIO::maxFile(u16_t count) {
-
-		RAL_LOG_TRACE("Maximum number of open files changed to %hu", count);
-		_setmaxstdio = count;
-	}
+        RAL_FILE_SCANTHRU{
+            RAL_FILE_ISALIAS{
+                return i;
+            }
+        }
+        return -1;
+    }
 }

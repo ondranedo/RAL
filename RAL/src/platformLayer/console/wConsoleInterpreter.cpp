@@ -9,18 +9,12 @@ namespace RAL
 {
     WConsoleInterpreter::WConsoleInterpreter()
     {
-        FreeConsole();
-        AllocConsole();
-        console = GetStdHandle(STD_OUTPUT_HANDLE);
-        freopen_s((FILE **) stdout, "CONOUT$", "w", stdout);
-        freopen_s((FILE **) stderr, "CONOUT$", "w", stderr);
-        freopen_s((FILE **) stdin, "CONIN$", "r", stdin);
-        RAL_LOG_DEBUG("Console constructed on Windows platform");
+
     }
 
     WConsoleInterpreter::~WConsoleInterpreter()
     {
-        FreeConsole();
+
     }
 
     void WConsoleInterpreter::setTitle(const RAL::String &title)
@@ -33,8 +27,8 @@ namespace RAL
     {
         if (m_pause == FALSE)
         {
-            SetConsoleTextAttribute(console, background | text);
-            printf("%s\n", msg.c_str());
+            SetConsoleTextAttribute(m_console, background | text);
+            printf("%s", msg.c_str());
         }
     }
 
@@ -43,8 +37,8 @@ namespace RAL
     {
         if (m_pause == FALSE)
         {
-            SetConsoleTextAttribute(console, text | background);
-            printf("%s\n", msg.c_str());
+            SetConsoleTextAttribute(m_console, text | background);
+            printf("%s", msg.c_str());
         }
     }
 
@@ -52,29 +46,29 @@ namespace RAL
     {
         if (m_pause == FALSE)
         {
-            SetConsoleTextAttribute(console, RAL::ConsoleInterpreter::ColourBackground::BLACK |
+            SetConsoleTextAttribute(m_console, RAL::ConsoleInterpreter::ColourBackground::BLACK |
                                              RAL::ConsoleInterpreter::ColourForeground::WHITE);
-            printf("%s\n", msg.c_str());
+            printf("%s", msg.c_str());
         }
     }
 
     void WConsoleInterpreter::clear()
     {
-        GetConsoleScreenBufferInfo(console, &screen);
+        GetConsoleScreenBufferInfo(m_console, &m_screen);
         FillConsoleOutputCharacterA(
-                console, ' ', screen.dwSize.X * screen.dwSize.Y, topLeft, &written
+                m_console, ' ', m_screen.dwSize.X * m_screen.dwSize.Y, m_topLeft, &m_written
         );
         FillConsoleOutputAttribute(
-                console, FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE,
-                screen.dwSize.X * screen.dwSize.Y, topLeft, &written
+                m_console, FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE,
+                m_screen.dwSize.X * m_screen.dwSize.Y, m_topLeft, &m_written
         );
-        SetConsoleCursorPosition(console, topLeft);
+        SetConsoleCursorPosition(m_console, m_topLeft);
     }
 
     void WConsoleInterpreter::pause()
     {
         m_pause = TRUE;
-        SetConsoleTextAttribute(console, RAL::ConsoleInterpreter::ColourBackground::BLACK |
+        SetConsoleTextAttribute(m_console, RAL::ConsoleInterpreter::ColourBackground::BLACK |
                                          RAL::ConsoleInterpreter::ColourForeground::LIGHTRED);
         printf("Console paused!\n");
     }
@@ -82,9 +76,25 @@ namespace RAL
     void WConsoleInterpreter::unpause()
     {
         m_pause = FALSE;
-        SetConsoleTextAttribute(console, RAL::ConsoleInterpreter::ColourBackground::BLACK |
+        SetConsoleTextAttribute(m_console, RAL::ConsoleInterpreter::ColourBackground::BLACK |
                                          RAL::ConsoleInterpreter::ColourForeground::LIGHTRED);
         printf("Console unpaused!\n");
+    }
+
+    void WConsoleInterpreter::init()
+    {
+        FreeConsole();
+        AllocConsole();
+        m_console = GetStdHandle(STD_OUTPUT_HANDLE);
+        freopen_s((FILE **) stdout, "CONOUT$", "w", stdout);
+        freopen_s((FILE **) stderr, "CONOUT$", "w", stderr);
+        freopen_s((FILE **) stdin, "CONIN$", "r", stdin);
+        RAL_LOG_DEBUG("Console constructed on Windows platform");
+    }
+
+    void WConsoleInterpreter::release()
+    {
+        FreeConsole();
     }
 }
 #endif
