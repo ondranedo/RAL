@@ -7,7 +7,7 @@ namespace RAL {
 
 	WinMemory::WinMemory() {
 
-		RAL_LOG_TRACE("Memory tracker/allocator created");
+
 		nOfBytes = 0;
 #ifdef RAL_DEBUG
 		nOfGuards = 0;

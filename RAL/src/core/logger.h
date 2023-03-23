@@ -21,12 +21,13 @@ namespace RAL
 		};
 	private:
 		//Priority variable is set to 'Info' by default
-		Priority                    m_priority;
-		Priority                    m_prevPriority;
+		Priority m_priority;
+		Priority m_prevPriority;
+		//static std::mutex log_mutex;
+		FILE* m_file;
+		bool m_fileDumpEnabled;
+    ConsoleInterpreter *m_console = nullptr;
 
-        //TODO: should use platform layer
-		// static std::mutex           m_mutex;
-        //
 
 		bool                        m_fileDumpEnabled;
         RAL::ConsoleInterpreter*    m_console = nullptr;
@@ -68,8 +69,9 @@ namespace RAL
 		void dumpFile(const RAL::String& filepath);
 		void stopDumpFile();
 		void continueDumpFile();
-        void bindToConsole(ConsoleInterpreter* console_ptr);
-        void setFileIO(FileIO* file_ptr);
+    void bindToConsole(ConsoleInterpreter* console_ptr);
+    void detachFromConsole();
+
 	};
 
 	extern LoggerClass mainLogger;
@@ -102,7 +104,6 @@ namespace RAL
 	template<typename... Args> inline void LoggerClass::critical(const RAL::String& message, Args... args) const
 	{
 		log("[Critical]\t", LoggerClass::Priority::Critical, message, ConsoleInterpreter::ColourForeground::WHITE, ConsoleInterpreter::ColourBackground::RED);
-	}
 };
 
 #ifdef RAL_DEBUG
