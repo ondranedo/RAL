@@ -14,7 +14,7 @@ namespace RAL
 	}
 	LoggerClass::~LoggerClass()
 	{
-		if (m_file != nullptr) fclose(m_file);
+		if (m_file != nullptr) m_file->close(m_filename);
 	}
 
 	void LoggerClass::setPriority(Priority new_priority)
@@ -26,11 +26,19 @@ namespace RAL
 	{
 		m_priority = m_prevPriority;
 	}
+    void LoggerClass::bindToConsole(ConsoleInterpreter* console_ptr)
+    {
+        m_console = console_ptr;
+    }
+    void LoggerClass::setFileIO(FileIO *file_ptr)
+    {
+        m_file = file_ptr;
+    }
 
-	void LoggerClass::dumpFile(const char* filepath)
+	void LoggerClass::dumpFile(const RAL::String& filepath)
 	{
-		if (m_file != nullptr) fclose(m_file);
-		fopen_s(&m_file, filepath, "w");
+		if (!m_file) m_file->close(m_filename);
+		m_file->open(filepath, m_filename, "w");
 		RAL_ASSERT_NULL(m_file, "Failed to open file: %s", filepath);
 		if (!m_file) m_fileDumpEnabled = true;
 	}
@@ -44,5 +52,13 @@ namespace RAL
 	{
 		m_fileDumpEnabled = true;
 	}
+    void LoggerClass::bindToConsole(ConsoleInterpreter* console_ptr)
+    {
+        m_console = console_ptr;
+    }
+    void LoggerClass::detachFromConsole()
+    {
+        m_console = nullptr;
+    }
 }
 

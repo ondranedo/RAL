@@ -28,7 +28,7 @@ namespace RAL
         if (m_pause == FALSE)
         {
             SetConsoleTextAttribute(m_console, background | text);
-            printf("%s\n", msg.c_str());
+            printf("%s", msg.c_str());
         }
     }
 
@@ -38,7 +38,7 @@ namespace RAL
         if (m_pause == FALSE)
         {
             SetConsoleTextAttribute(m_console, text | background);
-            printf("%s\n", msg.c_str());
+            printf("%s", msg.c_str());
         }
     }
 
@@ -48,7 +48,7 @@ namespace RAL
         {
             SetConsoleTextAttribute(m_console, RAL::ConsoleInterpreter::ColourBackground::BLACK |
                                              RAL::ConsoleInterpreter::ColourForeground::WHITE);
-            printf("%s\n", msg.c_str());
+            printf("%s", msg.c_str());
         }
     }
 

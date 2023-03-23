@@ -5,7 +5,9 @@
 //  - Custom format
 
 #include <stdio.h>
-
+#include "../platformLayer/console/consoleInterpreter.h"
+#include "../platformLayer/fileIO/fileIO.h"
+#include <mutex>
 
 namespace RAL
 {	
@@ -24,23 +26,27 @@ namespace RAL
 		//static std::mutex log_mutex;
 		FILE* m_file;
 		bool m_fileDumpEnabled;
+    ConsoleInterpreter *m_console = nullptr;
 
+
+		bool                        m_fileDumpEnabled;
+        RAL::ConsoleInterpreter*    m_console = nullptr;
+        RAL::FileIO*                m_file = nullptr;
+        RAL::String                 m_filename = "log";
 	private:
-		template<typename... Args> void log(const char* message_priority_str, LoggerClass::Priority message_priority, const char* message, Args... args) const
+		template<typename... Args> void log(const RAL::String& message_priority_str, LoggerClass::Priority message_priority, RAL::String message,ConsoleInterpreter::ColourForeground foreground = ConsoleInterpreter::ColourForeground::WHITE,  ConsoleInterpreter::ColourBackground background = ConsoleInterpreter::ColourBackground::BLACK) const
 		{
-			if (m_priority <= message_priority)
+			if (m_priority <= message_priority && !m_console)
 			{
-				// TODO: Should use platform layer
-				printf(message_priority_str);
-				printf(message, args...);
-				printf("\n");
+				m_console->log(message_priority_str, background, foreground);
+				m_console->log(message,background, foreground);
+				m_console->log("\n");
 			}
-			if (m_file != 0 && m_fileDumpEnabled)
+			if (m_file != nullptr && m_fileDumpEnabled && !m_console)
 			{
-				// TODO: Should use platform layer
-				fprintf_s(m_file, message_priority_str);
-				fprintf_s(m_file, message, args...);
-				fprintf_s(m_file, "\n");
+                m_file->println(m_filename, message_priority_str);
+                m_file->println(m_filename,message);
+                m_file->println(m_filename,"\n");
 			}
 		}
 
@@ -53,49 +59,51 @@ namespace RAL
 		void setPriorityPrev();
 
 		//Functions for each priority.
-		template<typename... Args> inline void trace(const char* message, Args... args) const;
-		template<typename... Args> inline void debug(const char* message, Args... args) const;
-		template<typename... Args> inline void info(const char* message, Args... args) const;
-		template<typename... Args> inline void warning(const char* message, Args... args) const;
-		template<typename... Args> inline void error(const char* message, Args... args) const;
-		template<typename... Args> inline void critical(const char* message, Args... args) const;
+		template<typename... Args> inline void trace(const RAL::String& message, Args... args) const;
+		template<typename... Args> inline void debug(const RAL::String& message, Args... args) const;
+		template<typename... Args> inline void info(const RAL::String& message, Args... args) const;
+		template<typename... Args> inline void warning(const RAL::String& message, Args... args) const;
+		template<typename... Args> inline void error(const RAL::String& message, Args... args) const;
+		template<typename... Args> inline void critical(const RAL::String& message, Args... args) const;
 
-		void dumpFile(const char* filepath);
+		void dumpFile(const RAL::String& filepath);
 		void stopDumpFile();
 		void continueDumpFile();
+    void bindToConsole(ConsoleInterpreter* console_ptr);
+    void detachFromConsole();
+
 	};
 
 	extern LoggerClass mainLogger;
 
-	template<typename... Args> inline void LoggerClass::trace(const char* message, Args... args) const
+	template<typename... Args> inline void LoggerClass::trace(const RAL::String& message, Args... args) const
 	{
-		log("[Trace]\t", LoggerClass::Priority::Critical, message, args...);
+		log("[Trace]\t", LoggerClass::Priority::Critical, message, ConsoleInterpreter::ColourForeground::GRAY);
 	}
   
-	template<typename... Args> inline void LoggerClass::debug(const char* message, Args... args) const
+	template<typename... Args> inline void LoggerClass::debug(const RAL::String& message, Args... args) const
 	{
-		log("[Debug]\t", LoggerClass::Priority::Debug, message, args...);
+		log("[Debug]\t", LoggerClass::Priority::Debug, message, ConsoleInterpreter::ColourForeground::BROWN);
 	}
 
-	template<typename... Args> inline void LoggerClass::info(const char* message, Args... args) const
+	template<typename... Args> inline void LoggerClass::info(const RAL::String& message, Args... args) const
 	{
-		log("[Info]\t", LoggerClass::Priority::Info, message, args...);
+		log("[Info]\t", LoggerClass::Priority::Info, message, ConsoleInterpreter::ColourForeground::GREEN);
 	}
 
-	template<typename... Args> inline void LoggerClass::warning(const char* message, Args... args) const
+	template<typename... Args> inline void LoggerClass::warning(const RAL::String& message, Args... args) const
 	{
-		log("[Warning]\t", LoggerClass::Priority::Warning, message, args...);
+		log("[Warning]\t", LoggerClass::Priority::Warning, message, ConsoleInterpreter::ColourForeground::YELLOW);
 	}
   
-	template<typename... Args> inline void LoggerClass::error(const char* message, Args... args) const
+	template<typename... Args> inline void LoggerClass::error(const RAL::String& message, Args... args) const
 	{
-		log("[Error]\t", LoggerClass::Priority::Error, message, args...);
+		log("[Error]\t", LoggerClass::Priority::Error, message, ConsoleInterpreter::ColourForeground::RED);
 	}
   
-	template<typename... Args> inline void LoggerClass::critical(const char* message, Args... args) const
+	template<typename... Args> inline void LoggerClass::critical(const RAL::String& message, Args... args) const
 	{
-		log("[Critical]\t", LoggerClass::Priority::Critical, message, args...);
-	}
+		log("[Critical]\t", LoggerClass::Priority::Critical, message, ConsoleInterpreter::ColourForeground::WHITE, ConsoleInterpreter::ColourBackground::RED);
 };
 
 #ifdef RAL_DEBUG

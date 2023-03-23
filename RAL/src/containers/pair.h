@@ -12,6 +12,7 @@ namespace RAL {
         // TODO: constexpr
         // constructors
         Pair();
+        ~Pair();
         Pair(const Pair& other);
         Pair(Pair&& other) noexcept;
 
