@@ -22,11 +22,12 @@ namespace RAL
 		};
 	private:
 		//Priority variable is set to 'Info' by default
-		Priority                    m_priority;
-		Priority                    m_prevPriority;
-
-        //TODO: should use platform layer
-        //
+		Priority m_priority;
+		Priority m_prevPriority;
+		//static std::mutex log_mutex;
+		FILE* m_file;
+		bool m_fileDumpEnabled;
+    ConsoleInterpreter *m_console = nullptr;
 
 		bool                        m_fileDumpEnabled;
         ConsoleInterpreter*    m_console;
@@ -69,14 +70,14 @@ namespace RAL
 		void dumpFile(const String& filepath);
 		void stopDumpFile();
 		void continueDumpFile();
-        void bindToConsole(ConsoleInterpreter* console_ptr);
-        void detachFromConsole();
-        void setFileIO(FileIO* file_ptr);
-        void resetFileIO();
+    void bindToConsole(ConsoleInterpreter* console_ptr);
+    void detachFromConsole();
+    void setFileIO(FileIO* file_ptr);
+    void resetFileIO();
 
-        template<typename... Args> void argsToMsg(String& message, Args... args);
+    template<typename... Args> void argsToMsg(String& message, Args... args);
 
-        static std::mutex s_mutex;
+    static std::mutex s_mutex;
 	};
 
 	extern LoggerClass mainLogger;
