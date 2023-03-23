@@ -16,6 +16,9 @@ namespace RAL
 #endif
             return nullptr;
         }
+        const char *productName() override {
+            return "Window";
+        }
     private:
     };
 };

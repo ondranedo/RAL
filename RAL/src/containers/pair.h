@@ -2,6 +2,7 @@
 
 #include <utility>
 #include <iostream>
+#include <cstring>
 
 namespace RAL {
     template<typename TL, typename TR>

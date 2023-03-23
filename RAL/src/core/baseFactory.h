@@ -28,6 +28,7 @@ namespace RAL
         {
             return m_maxObjectCount;
         }
+        virtual const char* productName() = 0;
 
     protected:
 

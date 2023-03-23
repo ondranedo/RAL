@@ -1,106 +1,134 @@
 #include "factoryManager.h"
 #include "asserts.h"
+#include "allocator.h"
 
-namespace RAL{
+namespace RAL {
 
-    BaseComponent* FactoryMgr::get(const String& name) {
-
-        i16_t i = findIndex(name);
-        if(i == -1){
-            RAL_ASSERT("Object %s not found!", name.c_str());
-        }
-
-        return m_components[i].x;
+    FactoryComponentMgr::FactoryComponentMgr() {
+        RAL_LOG_TRACE("Component manager running");
     }
 
-    void FactoryMgr::addComponent(BaseComponent *component, const String& name) {
+    FactoryComponentMgr::~FactoryComponentMgr() {
 
-        i16_t i = findIndex(name);
-        if(i == -1){
-            RAL_ASSERT("Object %s already created!", name.c_str());
-        }
-
-        Pair<BaseComponent*, String> temp = {component, name};
-
-        m_components.push_back(temp);
-        m_flags.push_back(0);
+        clearComponents();
+        clearFactories();
+        RAL_LOG_TRACE("Component manager destroyed");
     }
 
-    //TODO: finish
-    void FactoryMgr::removeComponent(const String &name) {
+    void FactoryComponentMgr::addComponent(BaseComponent *component, const String& name, bool wasInitialized) {
 
-        i16_t i = findIndex(name);
-        if(i == -1){
-            RAL_ASSERT("Object %s not found!", name.c_str());
-        }
-
-        m_components[i].x->release();
-
-        m_flags[i] = m_flags.pop_back();
-
-        m_components[i] = m_components.pop_back();
-    }
-
-    void FactoryMgr::init(){
-
-        RAL_COMPONENT_SCANTHRU{
-
-            if(!(m_flags[i] & RAL_WAS_INITIALIZED)) {
-                m_components[i].x->init();
-                m_flags[i] |= RAL_WAS_INITIALIZED;
-            }
-        }
-    }
-
-    void FactoryMgr::release() {
-
-        RAL_COMPONENT_SCANTHRU{
-
-            if(m_flags[i] & RAL_WAS_INITIALIZED){
-                m_components[i].x->release();
-                m_flags[i] &= ~RAL_WAS_INITIALIZED;
-            }
-        }
-    }
-
-    //TODO: find a way to convert class name to string
-    void FactoryMgr::create() {
-
-        Pair<BaseComponent*, String> temp;
-
-        RAL_FACTORY_SCANTHRU{
-
-            if(m_flags[i] & RAL_DEFAULT_CREATED){
-
-                temp = {m_factories[i].create(), "placeholderNotFinalThisWontWork"};
-                m_flags[i] |= RAL_DEFAULT_CREATED;
-
-                m_components.push_back(temp);
-                m_flags.push_back(0);
-            }
-        }
-    }
-
-    bool FactoryMgr::stringCompare(const RAL::String& a, const RAL::String& b) {
-
-        /* three levels of nesting is fine ~1nome */
-        if(a.size() == b.size()){
-            for(u32_t i = 0; i < a.size(); i++){
-                if(a.c_str()[i] != b.c_str()[i])
-                    return false;
-            }
-            return true;
-        }
-        return false;
-    }
-
-    i16_t FactoryMgr::findIndex(const String& name){
-
+        u64_t i;
         RAL_COMPONENT_SCANTHRU{
             RAL_COMPONENT_ISNAME{
-                return i;
+                RAL_ASSERT_MSG("Object %s already created!", name.c_str())
+                return;
             }
         }
-        return -1;
+
+        Component tempComponent{};
+        tempComponent.m_component = component;
+        tempComponent.m_name = mainMemory.alloc<String>(name);
+        tempComponent.m_wasInitialized = wasInitialized;
+
+        m_components.push_back(tempComponent);
+    }
+//TODO: find the cause for components not working after deletion / change so work
+    void FactoryComponentMgr::removeComponent(const String &name) {
+
+        u64_t i;
+        RAL_COMPONENT_SCANTHRU{
+            RAL_COMPONENT_ISNAME{
+                break;
+            }
+        }
+
+        if (i == m_components.size()) {
+            RAL_ASSERT_MSG("Object %s not found!", name.c_str())
+            return;
+        }
+
+        m_components[i].m_component->release();
+        mainMemory.release(m_components[i].m_component);
+        mainMemory.release(m_components[i].m_name);
+
+        m_components[i].m_component = m_components[m_components.size() - 1].m_component;
+        m_components[i].m_name = m_components[m_components.size() - 1].m_name;
+        m_components[i].m_wasInitialized = m_components[m_components.size() - 1].m_wasInitialized;
+        m_components.pop_back();
+    }
+
+    void FactoryComponentMgr::initComponents() {
+
+        u64_t i;
+        RAL_COMPONENT_SCANTHRU {
+
+            if (!m_components[i].m_wasInitialized) {
+                m_components[i].m_component->init();
+                m_components[i].m_wasInitialized = true;
+            }
+        }
+    }
+
+    void FactoryComponentMgr::releaseComponents() {
+
+        u64_t i;
+        RAL_COMPONENT_SCANTHRU {
+            if(m_components[i].m_component != nullptr){
+                m_components[i].m_component->release();
+                mainMemory.release(m_components[i].m_component);
+                m_components[i].m_component = nullptr;
+            }
+            if(m_components[i].m_name != nullptr){
+                mainMemory.release(m_components[i].m_name);
+                m_components[i].m_name = nullptr;
+            }
+        }
+    }
+
+    //TODO: add a default set of constructor parameters if necessary
+    void FactoryComponentMgr::createComponents() {
+
+        u64_t i;
+
+        RAL_FACTORY_SCANTHRU {
+
+            if (!m_factories[i].m_hadDefaultCreated) {
+
+                Component tempComponent{};
+                tempComponent.m_component = m_factories[i].m_factory->create();
+
+
+                tempComponent.m_name = mainMemory.alloc<String>(m_factories[i].m_productName->c_str());
+                tempComponent.m_wasInitialized = false;
+
+                m_components.push_back(tempComponent);
+                m_factories[i].m_hadDefaultCreated = true;
+            }
+        }
+    }
+
+    void FactoryComponentMgr::clearComponents() {
+
+        i64_t i;
+
+        releaseComponents();
+        m_components.clear();
+    }
+
+    void FactoryComponentMgr::clearFactories() {
+
+        i64_t i;
+
+        RAL_FACTORY_SCANTHRU{
+            if(m_factories[i].m_factory != nullptr) {
+                mainMemory.release(m_factories[i].m_factory);
+                m_factories[i].m_factory = nullptr;
+            }
+            if(m_factories[i].m_productName != nullptr) {
+                mainMemory.release(m_factories[i].m_productName);
+                m_factories[i].m_productName = nullptr;
+            }
+        }
+        m_factories.clear();
     }
 }
