@@ -17,7 +17,7 @@ namespace RAL
             return nullptr;
         }
         const char *productName() override {
-            return "ConsoleInterpreter";
+            return "Window";
         }
     private:
     };

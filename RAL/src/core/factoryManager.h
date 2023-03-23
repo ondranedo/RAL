@@ -43,7 +43,7 @@ namespace RAL{
         };
 
         struct Factory{
-
+//TODO: do some oop magic to make conversions to m_factory pointer possible
             BaseFactory<BaseComponent>* m_factory;
             String* m_productName;
             //flags

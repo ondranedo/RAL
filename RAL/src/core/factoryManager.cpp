@@ -32,7 +32,7 @@ namespace RAL {
 
         m_components.push_back(tempComponent);
     }
-
+//TODO: find the cause for components not working after deletion / change so work
     void FactoryComponentMgr::removeComponent(const String &name) {
 
         u64_t i;
@@ -51,7 +51,9 @@ namespace RAL {
         mainMemory.release(m_components[i].m_component);
         mainMemory.release(m_components[i].m_name);
 
-        m_components[i] = *m_components.end();
+        m_components[i].m_component = m_components[m_components.size() - 1].m_component;
+        m_components[i].m_name = m_components[m_components.size() - 1].m_name;
+        m_components[i].m_wasInitialized = m_components[m_components.size() - 1].m_wasInitialized;
         m_components.pop_back();
     }
 
@@ -71,9 +73,15 @@ namespace RAL {
 
         u64_t i;
         RAL_COMPONENT_SCANTHRU {
-            m_components[i].m_component->release();
-            mainMemory.release(m_components[i].m_component);
-            mainMemory.release(m_components[i].m_name);
+            if(m_components[i].m_component != nullptr){
+                m_components[i].m_component->release();
+                mainMemory.release(m_components[i].m_component);
+                m_components[i].m_component = nullptr;
+            }
+            if(m_components[i].m_name != nullptr){
+                mainMemory.release(m_components[i].m_name);
+                m_components[i].m_name = nullptr;
+            }
         }
     }
 
@@ -104,11 +112,6 @@ namespace RAL {
         i64_t i;
 
         releaseComponents();
-        RAL_COMPONENT_SCANTHRU{
-            if(m_components[i].m_component != nullptr) {
-                m_components[i].m_component = nullptr;
-            }
-        }
         m_components.clear();
     }
 
@@ -120,6 +123,10 @@ namespace RAL {
             if(m_factories[i].m_factory != nullptr) {
                 mainMemory.release(m_factories[i].m_factory);
                 m_factories[i].m_factory = nullptr;
+            }
+            if(m_factories[i].m_productName != nullptr) {
+                mainMemory.release(m_factories[i].m_productName);
+                m_factories[i].m_productName = nullptr;
             }
         }
         m_factories.clear();
