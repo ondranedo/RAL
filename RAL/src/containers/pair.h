@@ -13,6 +13,7 @@ namespace RAL {
         // TODO: constexpr
         // constructors
         Pair();
+        ~Pair();
         Pair(const Pair& other);
         Pair(Pair&& other) noexcept;
 
@@ -60,8 +61,8 @@ namespace RAL {
             x(std::move(other.x)),
             y(std::move(other.y))
     {
-        std::memset(&other.x, 0, sizeof(other.x));
-        std::memset(&other.y, 0, sizeof(other.y));
+        std::wmemset(&other.x, 0, sizeof(other.x));
+        std::wmemset(&other.y, 0, sizeof(other.y));
     }
 
     template<typename TL, typename TR>

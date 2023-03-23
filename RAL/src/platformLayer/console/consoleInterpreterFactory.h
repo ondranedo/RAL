@@ -9,6 +9,7 @@
 #endif //!RAL_WINDOWS
 #include "../../core/allocator.h"
 #include "../../core/baseFactory.h"
+#include "consoleInterpreter.h"
 
 namespace RAL
 {
