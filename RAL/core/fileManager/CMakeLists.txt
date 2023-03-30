@@ -10,19 +10,10 @@
 # License v3.0` license.                              #
 # See file `LICENSE` for full license details.        #
 #######################################################
-#####################################
-#   ROOT cmakelists                 #
-#####################################
-#####################################
-#   GENRAL INFORMATION              #
-#####################################
-cmake_minimum_required(VERSION 3.24)
-project(RAL_PROJECT)
 
-
-#####################################
-#   Parts of the engine ecosystem   #
-#####################################
-
-add_subdirectory("RAL")
-add_subdirectory("testbed")
+add_library(ral_core_fileManager
+    FileManager.cpp
+    FileManager.h
+    FileManagerFactory.cpp
+    FileManagerFactory.h
+)

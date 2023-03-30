@@ -10,19 +10,17 @@
 # License v3.0` license.                              #
 # See file `LICENSE` for full license details.        #
 #######################################################
-#####################################
-#   ROOT cmakelists                 #
-#####################################
-#####################################
-#   GENRAL INFORMATION              #
-#####################################
-cmake_minimum_required(VERSION 3.24)
-project(RAL_PROJECT)
 
+if(WIN32)
+add_subdirectory(windows)
+target_link_libraries(${RAL_ENGINE_LIB} PUBLIC ral_platformLayer_windows)
+endif()
 
-#####################################
-#   Parts of the engine ecosystem   #
-#####################################
+add_subdirectory(memory)
+target_link_libraries(${RAL_ENGINE_LIB} PUBLIC ral_platformLayer_memory)
 
-add_subdirectory("RAL")
-add_subdirectory("testbed")
+add_subdirectory(window)
+target_link_libraries(${RAL_ENGINE_LIB} PUBLIC ral_platformLayer_window)
+
+add_subdirectory(file)
+target_link_libraries(${RAL_ENGINE_LIB} PUBLIC ral_platformLayer_file)

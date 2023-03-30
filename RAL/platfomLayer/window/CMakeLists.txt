@@ -10,19 +10,21 @@
 # License v3.0` license.                              #
 # See file `LICENSE` for full license details.        #
 #######################################################
-#####################################
-#   ROOT cmakelists                 #
-#####################################
-#####################################
-#   GENRAL INFORMATION              #
-#####################################
-cmake_minimum_required(VERSION 3.24)
-project(RAL_PROJECT)
 
+if(WIN32)
+    set(platform
+            ../windows/window/Win32Window.cpp
+            ../windows/window/Win32Window.h
+            )
+endif()
 
-#####################################
-#   Parts of the engine ecosystem   #
-#####################################
+add_library(ral_platformLayer_window STATIC
+        Window.cpp
+        Window.h
+        WindowFactory.cpp
+        WindowFactory.h
+        WindowSpec.cpp
+        WindowSpec.h
+        ${platform}
+        )
 
-add_subdirectory("RAL")
-add_subdirectory("testbed")

@@ -10,19 +10,7 @@
 # License v3.0` license.                              #
 # See file `LICENSE` for full license details.        #
 #######################################################
-#####################################
-#   ROOT cmakelists                 #
-#####################################
-#####################################
-#   GENRAL INFORMATION              #
-#####################################
-cmake_minimum_required(VERSION 3.24)
-project(RAL_PROJECT)
-
-
-#####################################
-#   Parts of the engine ecosystem   #
-#####################################
-
-add_subdirectory("RAL")
-add_subdirectory("testbed")
+# Core utils, used to provide some basic utilities,
+# such as logging, assertions, data types, data types
+# conversion etc.
+add_library(ral_core_utility Asserts.h Logger.cpp Logger.h LogMsg.h LogMsg.cpp Types.cpp Types.h)

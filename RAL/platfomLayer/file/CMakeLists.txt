@@ -10,19 +10,17 @@
 # License v3.0` license.                              #
 # See file `LICENSE` for full license details.        #
 #######################################################
-#####################################
-#   ROOT cmakelists                 #
-#####################################
-#####################################
-#   GENRAL INFORMATION              #
-#####################################
-cmake_minimum_required(VERSION 3.24)
-project(RAL_PROJECT)
 
+if(WIN32)
+    set(platform
+            ../windows/file/Win32FileTxt.cpp
+            ../windows/file/Win32FileTxt.h
+            ../windows/file/Win32File.cpp ../windows/file/Win32File.h)
+endif()
 
-#####################################
-#   Parts of the engine ecosystem   #
-#####################################
-
-add_subdirectory("RAL")
-add_subdirectory("testbed")
+add_library(ral_platformLayer_file STATIC
+    File.cpp
+    File.h
+    FileFactory.cpp
+    FileFactory.h
+    ${platform} FileTxt.cpp FileTxt.h)

@@ -10,19 +10,14 @@
 # License v3.0` license.                              #
 # See file `LICENSE` for full license details.        #
 #######################################################
-#####################################
-#   ROOT cmakelists                 #
-#####################################
-#####################################
-#   GENRAL INFORMATION              #
-#####################################
-cmake_minimum_required(VERSION 3.24)
-project(RAL_PROJECT)
 
+if(WIN32)
+    set(platform
+            ../windows/memory/Win32Memory.cpp
+            ../windows/memory/Win32Memory.h
+            )
+endif()
 
-#####################################
-#   Parts of the engine ecosystem   #
-#####################################
-
-add_subdirectory("RAL")
-add_subdirectory("testbed")
+add_library(ral_platformLayer_memory STATIC
+    Memory.cpp
+    Memory.h ${platform} MemoryFactory.cpp MemoryFactory.h)
