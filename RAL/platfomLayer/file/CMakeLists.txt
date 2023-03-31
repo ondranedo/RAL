@@ -15,7 +15,8 @@ if(WIN32)
     set(platform
             ../windows/file/Win32FileTxt.cpp
             ../windows/file/Win32FileTxt.h
-            ../windows/file/Win32File.cpp ../windows/file/Win32File.h)
+            ../windows/file/Win32File.cpp
+            ../windows/file/Win32File.h)
 endif()
 
 add_library(ral_platformLayer_file STATIC

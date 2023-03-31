@@ -24,3 +24,6 @@ target_link_libraries(${RAL_ENGINE_LIB} PUBLIC ral_platformLayer_window)
 
 add_subdirectory(file)
 target_link_libraries(${RAL_ENGINE_LIB} PUBLIC ral_platformLayer_file)
+
+add_subdirectory(consoleInterpreter)
+target_link_libraries(${RAL_ENGINE_LIB} PUBLIC ral_platformLayer_consoleInterpreter)
