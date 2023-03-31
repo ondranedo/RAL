@@ -5,7 +5,6 @@
 #include "../containers/vector.h"
 #include "../containers/pair.h"
 #include "../containers/string.h"
-#include "../platformLayer/window/windowFactory.h"
 
 #define RAL_COMPONENT_SCANTHRU for(i = 0; i < m_components.size(); i++)
 #define RAL_FACTORY_SCANTHRU for(i = 0; i < m_factories.size(); i++)
