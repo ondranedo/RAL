@@ -32,7 +32,7 @@ namespace RAL {
 
         m_components.push_back(tempComponent);
     }
-//TODO: find the cause for components not working after deletion / change so work
+
     void FactoryComponentMgr::removeComponent(const String &name) {
 
         u64_t i;
@@ -108,8 +108,6 @@ namespace RAL {
     }
 
     void FactoryComponentMgr::clearComponents() {
-
-        i64_t i;
 
         releaseComponents();
         m_components.clear();

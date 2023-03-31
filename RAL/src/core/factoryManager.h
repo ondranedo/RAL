@@ -5,6 +5,7 @@
 #include "../containers/vector.h"
 #include "../containers/pair.h"
 #include "../containers/string.h"
+#include "../platformLayer/window/windowFactory.h"
 
 #define RAL_COMPONENT_SCANTHRU for(i = 0; i < m_components.size(); i++)
 #define RAL_FACTORY_SCANTHRU for(i = 0; i < m_factories.size(); i++)
@@ -66,7 +67,7 @@ namespace RAL{
         RAL_FACTORY_SCANTHRU{
             if(*m_factories[i].m_productName == *productName){
                 mainMemory.release(tempFactory.m_factory);
-                RAL_ASSERT_MSG("Factory %s already created!", productName->c_str())
+                RAL_ASSERT_MSG("%s Factory already created!", productName->c_str())
                 return;
             }
         }
