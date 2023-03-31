@@ -44,3 +44,7 @@ target_link_libraries(${RAL_ENGINE_LIB} PUBLIC ral_core_base_class)
 # file manager, used to load and save files
 add_subdirectory(fileManager)
 target_link_libraries(${RAL_ENGINE_LIB} PUBLIC ral_core_fileManager)
+
+# events
+add_subdirectory(events)
+target_link_libraries(${RAL_ENGINE_LIB} PUBLIC ral_core_events)
