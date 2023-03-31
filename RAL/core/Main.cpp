@@ -18,10 +18,9 @@
 
 namespace RAL {
     int main(const StartupInfo& info) {
-
-        RAL_PLATFORM_MEMORY(memory);
-        RAL::MemoryManager mgr(&memory);
+        RAL::MemoryManager mgr(info.memory);
         RAL::global::setMemoryManager(&mgr);
+        RAL::global::mainLogger.setConsoleInterpreter(info.consoleInterpreter);
 
         auto app = new RAL::Application();
 
@@ -33,7 +32,30 @@ namespace RAL {
     }
 }
 
-int main()
-{
-    return RAL::main({});
+
+// TODO: move it into platform layer
+#ifdef RAL_WINDOWS
+#include <platfomLayer/windows/memory/Win32Memory.h>
+#include <platfomLayer/windows/consoleInterpreter/Win32ConsoleInterpreter.h>
+
+int main(int argc, char** argv) {
+    RAL::Win32::Win32Memory memory;
+    RAL::Win32::Win32ConsoleInterpreter interpreter;
+    interpreter.init();
+    interpreter.setTitle("RAL engine - debug console");
+    interpreter.log("Starting logging...\n", RAL::ConsoleInterpreter::ColourForeground::GREEN,  RAL::ConsoleInterpreter::ColourBackground::BLACK);
+
+    RAL::StartupInfo info = { &interpreter, &memory };
+    RAL::main(info);
+
+#ifdef RAL_DEBUG
+    RAL::global::mainLogger.print();
+    system("pause");
+#endif //!RAL_DEBUG
+
+    //interpreter.release();
+    //memory.release();
+
+    return 0;
 }
+#endif //!RAL_WINDOWS

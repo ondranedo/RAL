@@ -17,7 +17,7 @@
 
 
 /*
- *  & -> level [DEBUG, INFO, WARN, ERROR, FATAL]
+ *  & -> level [DEBU, INFO, WARN, ERRO, FATA]
  *  % -> message [c like format]
  */
 
@@ -27,6 +27,7 @@
 // TODO: Add custom utility library
 #include <cstring>
 #include <cstdio>
+#include <platfomLayer/consoleInterpreter/ConsoleInterpreter.h>
 
 #ifdef RAL_DEBUG
 #define RAL_LOG_MSG_QUEUE_SIZE 32    // DBG opt
@@ -44,14 +45,16 @@ namespace RAL {
         template<typename ...Args>
         void log(LogMsg::Level level, Args... args);
         void setLevel(LogMsg::Level level);
+        void setConsoleInterpreter(ConsoleInterpreter* consoleInterpreter);
 
     private:
         template<typename ...Args>
         void printMsg(char* msgBuff, LogMsg::Level level, Args... args) const;
 
     private:
+        ConsoleInterpreter* m_consoleInterpreter;
         LogMsg m_msgQueue[RAL_LOG_MSG_QUEUE_SIZE];
-        const char* m_format = "[&]\t%";
+        const char* m_format = "[&] %";
         size_t m_msgQueueSize;
         LogMsg::Level m_level;
 #ifdef RAL_DEBUG
@@ -93,6 +96,10 @@ namespace RAL {
             else
                 bytesWritten+= snprintf(msgBuff + bytesWritten, RAL_LOG_MSG_SIZE - bytesWritten, "%c", m_format[i]);
         }
+        msgBuff[bytesWritten] = '\n';
+        bytesWritten++;
+        msgBuff[bytesWritten] = '\0';
+
     }
 } // RAL
 

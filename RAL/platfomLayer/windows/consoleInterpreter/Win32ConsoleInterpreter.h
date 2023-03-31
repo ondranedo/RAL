@@ -25,12 +25,12 @@ namespace RAL::Win32 {
         Win32ConsoleInterpreter();
         ~Win32ConsoleInterpreter() override;
 
-        void log(const std::string& msg, ColourForeground text, ColourBackground background) override;
-        void log(const std::string& msg, ColourBackground background) override;
-        void log(const std::string& msg, ColourForeground text) override;
-        void log(const std::string& msg) override;
+        void log(const char* msg, ColourForeground text, ColourBackground background) override;
+        void log(const char* msg, ColourBackground background) override;
+        void log(const char* msg, ColourForeground text) override;
+        void log(const char* msg) override;
 
-        void setTitle(const std::string &title) override;
+        void setTitle(const char* title) override;
 
         void clear() override;
 

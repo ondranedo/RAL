@@ -24,29 +24,29 @@ namespace RAL::Win32 {
 
     Win32ConsoleInterpreter::~Win32ConsoleInterpreter() = default;
 
-    void Win32ConsoleInterpreter::log(const std::string &msg, RAL::ConsoleInterpreter::ColourForeground text,
+    void Win32ConsoleInterpreter::log(const char* msg, RAL::ConsoleInterpreter::ColourForeground text,
                                            RAL::ConsoleInterpreter::ColourBackground background) {
         RAL_ASSERTRV(m_consoleHandle != 0, "Console handle is not initialized")
         SetConsoleTextAttribute(m_consoleHandle, background | text);
-        WriteConsole(m_consoleHandle, msg.c_str(), msg.size(), &m_bytesWrittten, NULL);
+        WriteConsole(m_consoleHandle, msg, strlen(msg)+1, &m_bytesWrittten, NULL);
         SetConsoleTextAttribute(m_consoleHandle, ColourBackground::BLACK | ColourForeground::WHITE);
     }
 
     void
-    Win32ConsoleInterpreter::log(const std::string &msg, RAL::ConsoleInterpreter::ColourBackground background) {
+    Win32ConsoleInterpreter::log(const char* msg, RAL::ConsoleInterpreter::ColourBackground background) {
         log(msg, ColourForeground::WHITE, background);
     }
 
-    void Win32ConsoleInterpreter::log(const std::string &msg, RAL::ConsoleInterpreter::ColourForeground text) {
+    void Win32ConsoleInterpreter::log(const char* msg, RAL::ConsoleInterpreter::ColourForeground text) {
         log(msg, text, ColourBackground::BLACK);
     }
 
-    void Win32ConsoleInterpreter::log(const std::string &msg) {
+    void Win32ConsoleInterpreter::log(const char* msg) {
         log(msg, ColourForeground::WHITE, ColourBackground::BLACK);
     }
 
-    void Win32ConsoleInterpreter::setTitle(const std::string &title) {
-        SetConsoleTitle(title.c_str());
+    void Win32ConsoleInterpreter::setTitle(const char* title) {
+        SetConsoleTitle(title);
     }
 
     void Win32ConsoleInterpreter::clear() {
@@ -60,6 +60,7 @@ namespace RAL::Win32 {
     }
 
     void Win32ConsoleInterpreter::init() {
+        FreeConsole();
         if (!AllocConsole()) {
             MessageBox(NULL, "Failed to allocate console", "RAL - Error", MB_OK | MB_ICONERROR);
             return;

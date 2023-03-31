@@ -15,11 +15,9 @@
 #ifndef RAL_PROJECT_CORE_H
 #define RAL_PROJECT_CORE_H
 
-/*#define RAL_WINDOWS_USE_WINMAIN*/
+#define RAL_WINDOWS_USE_WINMAIN
 
 #ifdef RAL_WINDOWS
-#include <platfomLayer/windows/memory/Win32Memory.h>
-#define RAL_PLATFORM_MEMORY(name) RAL::Win32::Win32Memory name
 #else
 #error "Unknown platform"
 #endif

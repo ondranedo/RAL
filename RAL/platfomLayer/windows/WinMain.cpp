@@ -24,18 +24,19 @@
 #include <stdio.h>
 #include <iostream>
 
-
+/**
 int WinMain(HINSTANCE , HINSTANCE, LPSTR, int)
 {
     DWORD processID;
     GetWindowThreadProcessId(GetConsoleWindow(), &processID);
     AllocConsole();
-	
+
     //RAL::main({});
 
     while (1);
     return 1;
 }
+**/
 
 #endif
 #endif //!RAL_WINDOWS

@@ -15,9 +15,13 @@
 #ifndef RAL_PROJECT_MAIN_H
 #define RAL_PROJECT_MAIN_H
 
+#include <platfomLayer/consoleInterpreter/ConsoleInterpreter.h>
+#include <platfomLayer/memory/Memory.h>
+
 namespace RAL{
     struct StartupInfo {
-        int _t;
+        ConsoleInterpreter* consoleInterpreter;
+        Memory* memory;
     };
 
     extern int main(const StartupInfo& info);

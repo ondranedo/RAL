@@ -33,12 +33,12 @@ namespace RAL {
 
         virtual ~ConsoleInterpreter();
 
-        virtual void log(const std::string& msg, ColourForeground text, ColourBackground background) = 0;
-        virtual void log(const std::string& msg, ColourBackground background) = 0;
-        virtual void log(const std::string& msg, ColourForeground text) = 0;
-        virtual void log(const std::string& msg) = 0;
+        virtual void log(const char* msg, ColourForeground text, ColourBackground background) = 0;
+        virtual void log(const char* msg, ColourBackground background) = 0;
+        virtual void log(const char* msg, ColourForeground text) = 0;
+        virtual void log(const char* msg) = 0;
 
-        virtual void setTitle(const std::string& title) = 0;
+        virtual void setTitle(const char* title) = 0;
 
         virtual void clear() = 0;
     private:

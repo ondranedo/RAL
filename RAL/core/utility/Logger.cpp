@@ -13,14 +13,22 @@
 
 #include "Logger.h"
 // TODO: Add custom output library
-#include <iostream>
+#include <core/utility/Asserts.h>
 
 namespace RAL {
+    static ConsoleInterpreter::ColourForeground colourForegroundArray[5] = {
+            ConsoleInterpreter::ColourForeground::WHITE,
+            ConsoleInterpreter::ColourForeground::GREEN,
+            ConsoleInterpreter::ColourForeground::YELLOW,
+            ConsoleInterpreter::ColourForeground::RED,
+            ConsoleInterpreter::ColourForeground::LIGHTMAGENTA
+    };
+
     namespace global{
         Logger mainLogger;
     }
 
-    Logger::Logger() : m_msgQueue(), m_msgQueueSize(0),
+    Logger::Logger() : m_msgQueue(), m_msgQueueSize(0), m_consoleInterpreter(nullptr),
 #ifdef RAL_DEBUG
         m_level(LogMsg::Level::DEBUG)
 #else
@@ -38,13 +46,22 @@ namespace RAL {
         {
             LogMsg &msg = m_msgQueue[i];
 
-            // TODO: Console output
-            printf("%s\n", msg.m_buff);
+            if(m_consoleInterpreter) {
+                m_consoleInterpreter->log(msg.m_buff,colourForegroundArray[static_cast<uint8_t>(msg.m_level)]);
+            }
+            else
+                printf("%s", msg.m_buff);
         }
         m_msgQueueSize = 0;
     }
 
     void Logger::setLevel(LogMsg::Level level) {
         m_level = level;
+    }
+
+    void Logger::setConsoleInterpreter(ConsoleInterpreter *consoleInterpreter) {
+        RAL_ASSERT(m_consoleInterpreter == nullptr, "Console interpreter is not nullptr");
+        RAL_ASSERTRV(consoleInterpreter != nullptr, "Console interpreter is nullptr");
+        m_consoleInterpreter = consoleInterpreter;
     }
 } // RAL
