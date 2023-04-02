@@ -11,24 +11,12 @@
 # See file `LICENSE` for full license details.        #
 #######################################################
 
-add_library(ral_platformLayer STATIC
-        PlatformLayer.cpp
-        PlatformLayer.h
-        )
+add_library(ral_renderer STATIC
+        Renderer.cpp
+        Renderer.h)
 
-if(WIN32)
-add_subdirectory(windows)
-target_link_libraries(ral_platformLayer PUBLIC ral_platformLayer_windows)
-endif()
+add_subdirectory(renderer2d)
+target_link_libraries(ral_renderer PUBLIC ral_renderer_renderer2d)
 
-add_subdirectory(memory)
-target_link_libraries(ral_platformLayer PUBLIC ral_platformLayer_memory)
-
-add_subdirectory(window)
-target_link_libraries(ral_platformLayer PUBLIC ral_platformLayer_window)
-
-add_subdirectory(file)
-target_link_libraries(ral_platformLayer PUBLIC ral_platformLayer_file)
-
-add_subdirectory(consoleInterpreter)
-target_link_libraries(ral_platformLayer PUBLIC ral_platformLayer_consoleInterpreter)
+add_subdirectory(renderingAPI)
+target_link_libraries(ral_renderer PUBLIC ral_renderer_renderingAPI)
