@@ -12,11 +12,21 @@
 #######################################################
 
 set(openGL
-        # path to pengl rendering api files
-        )
+        # path to openGL rendering api files
+        platforms/openGL/OpenGL.cpp platforms/openGL/OpenGL.h)
+
+set(vulkan
+        # path to vulkan rendering api files
+        platforms/vulkan/Vulkan.cpp platforms/vulkan/Vulkan.h)
+
+set(directX
+        # path to directX rendering api files
+        platforms/directX/DirectX.cpp platforms/directX/DirectX.h)
 
 add_library(ral_renderer_renderingAPI STATIC
         RenderingAPI.cpp
         RenderingAPI.h
         ${openGL}
+        ${vulkan}
+        ${directX}
         )
