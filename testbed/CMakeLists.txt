@@ -1,5 +1,5 @@
 if(WIN32)
-	add_executable(win32_testbed testbed.cpp)
+	add_executable(win32_testbed WIN32 testbed.cpp)
 	target_link_libraries(win32_testbed PRIVATE ral-engine)
 	target_include_directories(win32_testbed PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 endif()
