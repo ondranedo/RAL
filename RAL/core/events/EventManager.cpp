@@ -12,6 +12,7 @@
 /////////////////////////////////////////////////////////
 #include "EventManager.h"
 
+#include <core/memoryManager/Overload.h>
 #include <core/utility/Logger.h>
 #include <core/utility/Asserts.h>
 
@@ -71,4 +72,11 @@ namespace RAL {
     }
 
     EventManager::EventManager() : m_engineCallback(nullptr), m_userCallback(nullptr), m_eventQueue(std::queue<Event*>()){}
+
+    EventManager::~EventManager() {
+        if(!m_eventQueue.empty()) {
+            RAL_LOG_WARNING("Engine event queue not empty, dumping queue");
+            handleEvents();
+        }
+    }
 } // RAL

@@ -19,4 +19,4 @@ add_library(ral_core_events STATIC
         eventTypes/KeyEvents.cpp
         eventTypes/KeyEvents.h
         eventTypes/WindowEvents.cpp
-        eventTypes/WindowEvents.h EventManager.cpp EventManager.h)
+        eventTypes/WindowEvents.h EventManager.cpp EventManager.h EventManagerFactory.cpp EventManagerFactory.h)

@@ -18,14 +18,15 @@
 #include <functional>
 #include <queue>
 
-//[this](auto && PH1) { onEvent(std::forward<decltype(PH1)>(PH1)); }
+#define RAL_BIND_CLASS_FUNCTION(name) [this](auto && p) { name(std::forward<decltype(p)>(p)); }
 
 namespace RAL {
-    class EventManager : public BaseComponent {
+    class EventManager final : public BaseComponent {
     public:
         using EventCallback = std::function<void(Event*)>;
 
         EventManager();
+        ~EventManager() override;
 
         void init() override;
         void release() override;
