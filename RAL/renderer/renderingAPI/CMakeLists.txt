@@ -29,4 +29,4 @@ add_library(ral_renderer_renderingAPI STATIC
         ${openGL}
         ${vulkan}
         ${directX}
-        )
+        RenderingContext.cpp RenderingContext.h)
