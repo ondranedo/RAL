@@ -13,10 +13,35 @@
 #ifndef RAL_PROJECT_SCENE_H
 #define RAL_PROJECT_SCENE_H
 
+#include <vector>
+#include <cstdint>
+
 namespace RAL {
     class Scene {
     public:
+        Scene();
+        ~Scene();
+
     private:
+        struct Vertex{
+            float x;
+            float y;
+            float z;
+        };
+        struct Triangle{
+            uint32_t a;
+            uint32_t b;
+            uint32_t c;
+        };
+        struct Mesh{
+            std::vector<Vertex> m_vertices;
+            std::vector<Triangle> m_triangle;
+        };
+
+        struct Entity{
+            Mesh m_mesh;
+        };
+        std::vector<Entity> m_entities;
     };
 } // RAL
 
