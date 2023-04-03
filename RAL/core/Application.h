@@ -14,6 +14,7 @@
 #ifndef RAL_PROJECT_APPLICATION_H
 #define RAL_PROJECT_APPLICATION_H
 #include <core/memoryManager/Overload.h>
+#include <core/events/Event.h>
 
 namespace RAL {
     class Application {
@@ -21,6 +22,7 @@ namespace RAL {
         Application();
         ~Application();
         void run();
+        void onEvent(Event* event);
     };
 }; // RAL
 

@@ -14,20 +14,24 @@
 
 #include "Application.h"
 #include <core/utility/Logger.h>
-#include <core/events/WindowEvents.h>
-#include <core/events/KeyEvents.h>
+
+
 
 namespace RAL {
     Application::Application() {
-        RAL_LOG_DEBUG("Application created");
+        RAL_LOG_INFO("Application created");
     }
 
     Application::~Application() {
-        RAL_LOG_DEBUG("Application destroyed");
+        RAL_LOG_INFO("Application destroyed");
+    }
+
+    void Application::onEvent(Event *event) {
+        RAL_LOG_DEBUG("Application received event");
     }
 
     void Application::run() {
-        RAL_LOG_DEBUG("Application running");
+        RAL_LOG_INFO("Application running");
 
     }
 } // RAL
