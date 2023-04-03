@@ -16,11 +16,6 @@ add_library(ral_platformLayer STATIC
         PlatformLayer.h
         )
 
-if(WIN32)
-add_subdirectory(windows)
-target_link_libraries(ral_platformLayer PUBLIC ral_platformLayer_windows)
-endif()
-
 add_subdirectory(memory)
 target_link_libraries(ral_platformLayer PUBLIC ral_platformLayer_memory)
 
@@ -32,3 +27,8 @@ target_link_libraries(ral_platformLayer PUBLIC ral_platformLayer_file)
 
 add_subdirectory(consoleInterpreter)
 target_link_libraries(ral_platformLayer PUBLIC ral_platformLayer_consoleInterpreter)
+
+if(WIN32)
+add_subdirectory(windows)
+target_link_libraries(ral_platformLayer PUBLIC ral_platformLayer_windows)
+endif()
