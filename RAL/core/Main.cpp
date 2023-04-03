@@ -43,13 +43,17 @@ int main(int argc, char** argv) {
     RAL::Win32::Win32ConsoleInterpreter interpreter;
     interpreter.init();
     interpreter.setTitle("RAL engine - debug console");
-    interpreter.log("Starting logging...\n", RAL::ConsoleInterpreter::ColourForeground::GREEN,  RAL::ConsoleInterpreter::ColourBackground::BLACK);
+    interpreter.log(" \xDA");
+    interpreter.log("Starting logging...\n", RAL::ConsoleInterpreter::ColourForeground::GRAY,  RAL::ConsoleInterpreter::ColourBackground::BLACK);
+    interpreter.log("\xB3\n");
 
     RAL::StartupInfo info = { &interpreter, &memory };
     RAL::main(info);
 
-#ifdef RAL_DEBUG
     RAL::global::mainLogger.print();
+    interpreter.log("\xB3\n");
+    interpreter.log("\xAF");
+#ifdef RAL_DEBUG
     system("pause");
 #endif //!RAL_DEBUG
 

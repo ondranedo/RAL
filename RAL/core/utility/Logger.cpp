@@ -47,6 +47,7 @@ namespace RAL {
             LogMsg &msg = m_msgQueue[i];
 
             if(m_consoleInterpreter) {
+                m_consoleInterpreter->log("\xB3");
                 m_consoleInterpreter->log(msg.m_buff,colourForegroundArray[static_cast<uint8_t>(msg.m_level)]);
             }
             else
