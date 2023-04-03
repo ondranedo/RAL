@@ -11,15 +11,7 @@
 # See file `LICENSE` for full license details.        #
 #######################################################
 
-add_library(ral_renderer STATIC
-        Renderer.cpp
-        Renderer.h)
-
-add_subdirectory(renderer2d)
-target_link_libraries(ral_renderer PUBLIC ral_renderer_renderer2d)
-
-add_subdirectory(renderingAPI)
-target_link_libraries(ral_renderer PUBLIC ral_renderer_renderingAPI)
-
-add_subdirectory(scene)
-target_link_libraries(ral_renderer PUBLIC ral_renderer_scene)
+add_library(ral_renderer_scene STATIC
+        Scene.cpp
+        Scene.h
+        )
