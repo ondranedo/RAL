@@ -13,4 +13,10 @@
 
 add_library(ral_core_events STATIC
     Event.cpp
-    Event.h)
+    Event.h
+    MouseEvents.cpp
+    MouseEvents.h
+    KeyEvents.cpp
+    KeyEvents.h
+    WindowEvents.cpp
+    WindowEvents.h)

@@ -10,31 +10,23 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
+#ifndef RAL_PROJECT_KEYEVENTS_H
+#define RAL_PROJECT_KEYEVENTS_H
 
+#include <core/utility/Types.h>
+#include <core/events/Event.h>
 
-#include "event.h"
+namespace RAL::Events {
+    struct KeyPressed : public EventTL<KeyPressed> {
+        types::KeyCodes key;
 
-namespace RAL
-{
-    EventHandler Event::getHandler() const
-    {
-        return m_header.eventHandler;
-    }
+        explicit KeyPressed(types::KeyCodes _key);
+    };
 
-    EventType Event::getType() const
-    {
-        return m_header.eventType;
-    }
+    struct KeyReleased : public EventTL<KeyReleased> {
+        types::KeyCodes key;
 
-    Event::Event() {
-        m_header.eventHandler = EventHandler::NONE;
-        m_header.eventType = EventType::NONE;
-        m_header.handled = false;
-    }
-
-    Event::Header::Header() {
-        eventHandler = EventHandler::NONE;
-        eventType = EventType::NONE;
-        handled = false;
-    }
-};
+        explicit KeyReleased(types::KeyCodes _key);
+    };
+}
+#endif //!RAL_PROJECT_KEYEVENTS_H

@@ -10,31 +10,39 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
+#ifndef RAL_PROJECT_WINDOWEVENTS_H
+#define RAL_PROJECT_WINDOWEVENTS_H
 
+#include <core/events/Event.h>
 
-#include "event.h"
-
-namespace RAL
-{
-    EventHandler Event::getHandler() const
+namespace RAL::Events {
+    struct WindowResized : public EventTL<WindowResized>
     {
-        return m_header.eventHandler;
-    }
+        unsigned int x, y;
 
-    EventType Event::getType() const
+        WindowResized(unsigned int _x, unsigned int _y);
+    };
+
+    struct WindowClosed : public EventTL<WindowClosed>
     {
-        return m_header.eventType;
-    }
+        WindowClosed();
+    };
 
-    Event::Event() {
-        m_header.eventHandler = EventHandler::NONE;
-        m_header.eventType = EventType::NONE;
-        m_header.handled = false;
-    }
+    struct WindowFocus : public EventTL<WindowFocus>
+    {
+        WindowFocus();
+    };
 
-    Event::Header::Header() {
-        eventHandler = EventHandler::NONE;
-        eventType = EventType::NONE;
-        handled = false;
-    }
-};
+    struct WindowLostFocus : public EventTL<WindowLostFocus>
+    {
+        WindowLostFocus();
+    };
+
+    struct WindowMoved : public EventTL<WindowMoved>
+    {
+        WindowMoved();
+    };
+
+} // RAL
+
+#endif //!RAL_PROJECT_WINDOWEVENTS_H
