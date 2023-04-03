@@ -14,9 +14,9 @@
 add_library(ral_core_events STATIC
     Event.cpp
     Event.h
-    MouseEvents.cpp
-    MouseEvents.h
-    KeyEvents.cpp
-    KeyEvents.h
-    WindowEvents.cpp
-    WindowEvents.h)
+        eventTypes/MouseEvents.cpp
+        eventTypes/MouseEvents.h
+        eventTypes/KeyEvents.cpp
+        eventTypes/KeyEvents.h
+        eventTypes/WindowEvents.cpp
+        eventTypes/WindowEvents.h EventManager.cpp EventManager.h)

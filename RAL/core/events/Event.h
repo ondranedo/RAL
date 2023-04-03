@@ -15,8 +15,6 @@
 #define RAL_PROJECT_EVENT_H
 
 #include <typeinfo>
-#include <cstring>
-#include <iostream>
 #include <core/utility/Types.h>
 
 namespace RAL
@@ -54,32 +52,6 @@ namespace RAL
     protected:
         Header m_header;
     };
-
-
-    template<typename T>
-    class EventTL : public Event
-    {
-    public:
-        virtual ~EventTL() = default;
-
-        static std::string asString();
-        std::string getString() const;
-    };
-
-    template<typename T>
-    std::string EventTL<T>::getString() const {
-        return EventTL<T>::asString();
-    }
-
-
-    template<typename T>
-    std::string EventTL<T>::asString()
-    {
-        std::string str = typeid(T).name();
-        // TODO: This is not a good solution, but it works for now
-        str = str.erase(0, strlen("struct "));
-        return str;
-    }
 } // RAL
 
 #endif //!RAL_PROJECT_EVENT_H

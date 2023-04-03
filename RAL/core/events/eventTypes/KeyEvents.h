@@ -13,17 +13,17 @@
 #ifndef RAL_PROJECT_KEYEVENTS_H
 #define RAL_PROJECT_KEYEVENTS_H
 
-#include <core/utility/Types.h>
-#include <core/events/Event.h>
+#include "core/utility/Types.h"
+#include "core/events/Event.h"
 
 namespace RAL::Events {
-    struct KeyPressed : public EventTL<KeyPressed> {
+    struct KeyPressed : public Event {
         types::KeyCodes key;
 
         explicit KeyPressed(types::KeyCodes _key);
     };
 
-    struct KeyReleased : public EventTL<KeyReleased> {
+    struct KeyReleased : public Event {
         types::KeyCodes key;
 
         explicit KeyReleased(types::KeyCodes _key);

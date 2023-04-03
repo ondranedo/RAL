@@ -10,39 +10,40 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#ifndef RAL_PROJECT_WINDOWEVENTS_H
-#define RAL_PROJECT_WINDOWEVENTS_H
+#ifndef RAL_PROJECT_MOUSEEVENTS_H
+#define RAL_PROJECT_MOUSEEVENTS_H
 
-#include <core/events/Event.h>
+#include "core/events/Event.h"
 
 namespace RAL::Events {
-    struct WindowResized : public EventTL<WindowResized>
+    struct MouseMoved : public Event
     {
-        unsigned int x, y;
+        float x, y;
 
-        WindowResized(unsigned int _x, unsigned int _y);
+        MouseMoved(float _x, float _y);
     };
 
-    struct WindowClosed : public EventTL<WindowClosed>
+    struct MouseScrolled : public Event
     {
-        WindowClosed();
+        float x, y;
+
+        MouseScrolled(float _x, float _y);
     };
 
-    struct WindowFocus : public EventTL<WindowFocus>
+    struct MousePressed : public Event
     {
-        WindowFocus();
+        types::KeyCodes button;
+
+        explicit MousePressed(types::KeyCodes _button);
     };
 
-    struct WindowLostFocus : public EventTL<WindowLostFocus>
+    struct MouseReleased : public Event
     {
-        WindowLostFocus();
-    };
+        types::KeyCodes button;
 
-    struct WindowMoved : public EventTL<WindowMoved>
-    {
-        WindowMoved();
+        explicit MouseReleased(types::KeyCodes _button);
     };
 
 } // RAL
 
-#endif //!RAL_PROJECT_WINDOWEVENTS_H
+#endif //!RAL_PROJECT_MOUSEEVENTS_H
