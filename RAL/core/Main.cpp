@@ -57,8 +57,7 @@ int main(int argc, char** argv) {
     system("pause");
 #endif //!RAL_DEBUG
 
-    //interpreter.release();
-    //memory.release();
+    RAL::global::mainLogger.detachConsoleInterpreter();
 
     return 0;
 }

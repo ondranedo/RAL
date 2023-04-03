@@ -65,4 +65,9 @@ namespace RAL {
         RAL_ASSERTRV(consoleInterpreter != nullptr, "Console interpreter is nullptr");
         m_consoleInterpreter = consoleInterpreter;
     }
+
+    void Logger::detachConsoleInterpreter() {
+        RAL_ASSERT(m_consoleInterpreter != nullptr, "Console interpreter is nullptr");
+        m_consoleInterpreter = nullptr;
+    }
 } // RAL

@@ -46,6 +46,7 @@ namespace RAL {
         void log(LogMsg::Level level, Args... args);
         void setLevel(LogMsg::Level level);
         void setConsoleInterpreter(ConsoleInterpreter* consoleInterpreter);
+        void detachConsoleInterpreter();
 
     private:
         template<typename ...Args>
