@@ -11,3 +11,9 @@
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
 #include "OpenGL.h"
+
+namespace RAL {
+	void GLRenderingAPI::init()
+	{
+	}
+};

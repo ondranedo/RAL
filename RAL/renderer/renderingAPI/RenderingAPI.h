@@ -16,6 +16,13 @@
 namespace RAL {
     class RenderingAPI {
     public:
+        RenderingAPI() {
+            
+        }
+        ~RenderingAPI() {
+
+        }
+        virtual void init() = 0;
     private:
     };
 } // RAL

@@ -13,5 +13,12 @@
 #ifndef RAL_PROJECT_OPENGL_H
 #define RAL_PROJECT_OPENGL_H
 
+#include <renderer/renderingAPI/RenderingAPI.h>
+namespace RAL {
 
+	class GLRenderingAPI : public RenderingAPI {
+	public:
+		void init() override;
+	};
+};
 #endif //!RAL_PROJECT_OPENGL_H
