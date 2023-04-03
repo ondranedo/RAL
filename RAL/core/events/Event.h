@@ -62,12 +62,18 @@ namespace RAL
     public:
         virtual ~EventTL() = default;
 
-        static std::string getString();
+        static std::string asString();
+        std::string getString() const;
     };
+
+    template<typename T>
+    std::string EventTL<T>::getString() const {
+        return EventTL<T>::asString();
+    }
 
 
     template<typename T>
-    std::string EventTL<T>::getString()
+    std::string EventTL<T>::asString()
     {
         std::string str = typeid(T).name();
         // TODO: This is not a good solution, but it works for now

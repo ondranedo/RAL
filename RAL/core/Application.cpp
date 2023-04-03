@@ -14,7 +14,8 @@
 
 #include "Application.h"
 #include <core/utility/Logger.h>
-
+#include <core/events/WindowEvents.h>
+#include <core/events/KeyEvents.h>
 
 namespace RAL {
     Application::Application() {
@@ -27,10 +28,6 @@ namespace RAL {
 
     void Application::run() {
         RAL_LOG_DEBUG("Application running");
-        RAL_LOG_DEBUG("Debug");
-        RAL_LOG_INFO("Info");
-        RAL_LOG_WARNING("Warning");
-        RAL_LOG_ERROR("Error");
-        RAL_LOG_FATAL("Fatal");
+
     }
 } // RAL
