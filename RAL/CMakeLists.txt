@@ -68,5 +68,5 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glfw)
 target_link_libraries(${RAL_ENGINE_LIB} PRIVATE glfw)
 
 #GLAD
-add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glad/cmake)
+add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glad)
 target_link_libraries(${RAL_ENGINE_LIB} PRIVATE glad)
