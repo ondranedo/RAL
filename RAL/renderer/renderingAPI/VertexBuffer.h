@@ -21,6 +21,7 @@ namespace RAL
         virtual ~VertexBuffer() {}
 
         virtual void bindVB() = 0;
+
         virtual void unbindVB() = 0;
     };
 };

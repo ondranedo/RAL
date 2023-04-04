@@ -13,8 +13,8 @@
 #ifndef RAL_PROJECT_GLVERTEXBUFFER_H
 #define RAL_PROJECT_GLVERTEXBUFFER_H
 
-#include <vendor/glad/include/glad/glad.h>
 #include <renderer/renderingAPI/VertexBuffer.h>
+#include <core/utility/Asserts.h>
 
 namespace RAL
 {
@@ -22,9 +22,13 @@ namespace RAL
     {
     public:
         ~GLVertexBuffer() override;
-        explicit GLVertexBuffer(const void* vertices);
+
+        explicit GLVertexBuffer(float *vertices,unsigned int size,unsigned char mode);
+
         void bindVB() override;
+
         void unbindVB() override;
+
     protected:
         unsigned int m_VB{};
     };
