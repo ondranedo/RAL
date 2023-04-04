@@ -21,12 +21,14 @@ namespace RAL::Events {
         types::KeyCodes key;
 
         explicit KeyPressed(types::KeyCodes _key);
+        static EventType getEventType() { return EventType::KEY_PRESSED; }
     };
 
     struct KeyReleased : public Event {
         types::KeyCodes key;
 
         explicit KeyReleased(types::KeyCodes _key);
+        static EventType getEventType() { return EventType::KEY_RELEASED; }
     };
 }
 #endif //!RAL_PROJECT_KEYEVENTS_H

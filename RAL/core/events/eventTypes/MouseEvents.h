@@ -21,6 +21,7 @@ namespace RAL::Events {
         float x, y;
 
         MouseMoved(float _x, float _y);
+        static EventType getEventType() { return EventType::MOUSE_MOVED; }
     };
 
     struct MouseScrolled : public Event
@@ -28,6 +29,7 @@ namespace RAL::Events {
         float x, y;
 
         MouseScrolled(float _x, float _y);
+        static EventType getEventType() { return EventType::MOUSE_SCROLLED; }
     };
 
     struct MousePressed : public Event
@@ -35,6 +37,7 @@ namespace RAL::Events {
         types::KeyCodes button;
 
         explicit MousePressed(types::KeyCodes _button);
+        static EventType getEventType() { return EventType::MOUSE_PRESSED; }
     };
 
     struct MouseReleased : public Event
@@ -42,6 +45,7 @@ namespace RAL::Events {
         types::KeyCodes button;
 
         explicit MouseReleased(types::KeyCodes _button);
+        static EventType getEventType() { return EventType::MOUSE_RELEASED; }
     };
 
 } // RAL

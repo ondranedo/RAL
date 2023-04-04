@@ -21,26 +21,31 @@ namespace RAL::Events {
         unsigned int x, y;
 
         WindowResized(unsigned int _x, unsigned int _y);
+        static EventType getEventType() { return EventType::WINDOW_RESIZED; }
     };
 
     struct WindowClosed : public Event
     {
         WindowClosed();
+        static EventType getEventType() { return EventType::WINDOW_CLOSED; }
     };
 
     struct WindowFocus : public Event
     {
         WindowFocus();
+        static EventType getEventType() { return EventType::WINDOW_FOCUS; }
     };
 
     struct WindowLostFocus : public Event
     {
         WindowLostFocus();
+        static EventType getEventType() { return EventType::WINDOW_LOST_FOCUS; }
     };
 
     struct WindowMoved : public Event
     {
         WindowMoved();
+        static EventType getEventType() { return EventType::WINDOW_MOVED; }
     };
 
 } // RAL

@@ -48,3 +48,8 @@ target_link_libraries(${RAL_ENGINE_LIB} PUBLIC ral_core_fileManager)
 # events
 add_subdirectory(events)
 target_link_libraries(${RAL_ENGINE_LIB} PUBLIC ral_core_events)
+
+# layers
+add_subdirectory(layers)
+target_link_libraries(${RAL_ENGINE_LIB} PUBLIC ral_core_layers)
+

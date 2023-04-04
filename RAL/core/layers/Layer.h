@@ -10,39 +10,26 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
+#ifndef RAL_PROJECT_LAYER_H
+#define RAL_PROJECT_LAYER_H
 
+#include <core/memoryManager/Overload.h>
+#include <core/events/Event.h>
+#include <string>
 
-#include "event.h"
+namespace RAL {
+    class Layer {
+    public:
+        explicit Layer(const std::string& name = "Layer");
+        virtual ~Layer() = default;-895
+        virtual void onEvent(Event* event) = 0;
+        virtual void onUpdate() = 0;
+        virtual void onAttach() = 0;
+        virtual void onDetach() = 0;
 
-namespace RAL
-{
-    EventHandler Event::getHandler() const
-    {
-        return m_header.eventHandler;
-    }
+    private:
+        std::string m_name;
+    };
+} // RAL
 
-    EventType Event::getType() const
-    {
-        return m_header.eventType;
-    }
-
-    Event::Event() {
-        m_header.eventHandler = EventHandler::NONE;
-        m_header.eventType = EventType::NONE;
-        m_header.handled = false;
-    }
-
-    bool Event::isHandled() const {
-        return m_header.handled;
-    }
-
-    void Event::setHandled(bool _handled) {
-        m_header.handled = _handled;
-    }
-
-    Event::Header::Header() {
-        eventHandler = EventHandler::NONE;
-        eventType = EventType::NONE;
-        handled = false;
-    }
-};
+#endif //!RAL_PROJECT_LAYERS_H

@@ -35,7 +35,7 @@ namespace RAL {
 
     void EventManager::enqueueEvent(Event* event) {
         m_eventQueue.push(event);
-        if(m_eventQueue.size() > 1000) {
+        if(m_eventQueue.size() > RAL_EVENT_MANAGER_QUEUE_SIZE) {
             RAL_LOG_WARNING("Event queue is full, mandatory queue dump, consider increasing queue size");
             handleEvents();
         }
@@ -45,7 +45,8 @@ namespace RAL {
         while(!m_eventQueue.empty()) {
             auto event = m_eventQueue.front();
             m_eventQueue.pop();
-            dispatchEvent(event);
+            if(!event->isHandled())
+                dispatchEvent(event);
             delete event;
         }
     }

@@ -19,7 +19,7 @@
 #include <queue>
 
 #define RAL_BIND_CLASS_FUNCTION(name) [this](auto && p) { name(std::forward<decltype(p)>(p)); }
-
+#define RAL_EVENT_MANAGER_QUEUE_SIZE 1000
 namespace RAL {
     class EventManager final : public BaseComponent {
     public:

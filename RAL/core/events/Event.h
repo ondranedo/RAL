@@ -48,6 +48,8 @@ namespace RAL
         virtual ~Event() = default;
         [[nodiscard]] EventHandler getHandler() const;
         [[nodiscard]] EventType getType() const;
+        [[nodiscard]] bool isHandled() const;
+        void setHandled(bool _handled);
 
     protected:
         Header m_header;

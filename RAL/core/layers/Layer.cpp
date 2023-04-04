@@ -10,39 +10,8 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
+#include "Layer.h"
 
-
-#include "event.h"
-
-namespace RAL
-{
-    EventHandler Event::getHandler() const
-    {
-        return m_header.eventHandler;
-    }
-
-    EventType Event::getType() const
-    {
-        return m_header.eventType;
-    }
-
-    Event::Event() {
-        m_header.eventHandler = EventHandler::NONE;
-        m_header.eventType = EventType::NONE;
-        m_header.handled = false;
-    }
-
-    bool Event::isHandled() const {
-        return m_header.handled;
-    }
-
-    void Event::setHandled(bool _handled) {
-        m_header.handled = _handled;
-    }
-
-    Event::Header::Header() {
-        eventHandler = EventHandler::NONE;
-        eventType = EventType::NONE;
-        handled = false;
-    }
-};
+namespace RAL {
+    Layer::Layer(const std::string& name): m_name(name){}
+} // RAL
