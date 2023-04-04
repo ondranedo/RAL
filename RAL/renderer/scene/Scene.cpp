@@ -11,6 +11,27 @@
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
 #include "Scene.h"
+#include "../../platfomLayer/windows/file/Win32FileTxt.h"
 
 namespace RAL {
+
+    Scene::Scene() {
+
+    }
+
+    Scene::~Scene() {
+
+    }
+
+    void Scene::loadBinScene() {
+
+    }
+
+    void Scene::saveBinScene() {
+
+    }
+
+    void Scene::loadTxtScene(const std::string& name) {
+    }
+
 } // RAL

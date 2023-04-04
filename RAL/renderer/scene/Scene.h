@@ -15,6 +15,7 @@
 
 #include <vector>
 #include <cstdint>
+#include <string>
 
 namespace RAL {
     class Scene {
@@ -22,24 +23,36 @@ namespace RAL {
         Scene();
         ~Scene();
 
+        void loadTxtScene(const std::string& name);
+        void loadBinScene();
+        void saveBinScene();
+
     private:
         struct Vertex{
             float x;
             float y;
             float z;
         };
-        struct Triangle{
+        struct vertexTriangle{
             uint32_t a;
             uint32_t b;
             uint32_t c;
         };
         struct Mesh{
             std::vector<Vertex> m_vertices;
-            std::vector<Triangle> m_triangle;
+            std::vector<vertexTriangle> m_triangles;
+        };
+
+        struct intPos{
+            int32_t x;
+            int32_t y;
+            int32_t z;
         };
 
         struct Entity{
-            Mesh m_mesh;
+            Mesh* m_mesh;
+            std::string name;
+            intPos m_pos;
         };
         std::vector<Entity> m_entities;
     };
