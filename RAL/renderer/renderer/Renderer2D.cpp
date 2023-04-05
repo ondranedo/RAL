@@ -11,6 +11,33 @@
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
 #include "Renderer2D.h"
+#include <core/utility/Asserts.h>
 
 namespace RAL {
+    void Renderer2D::render()
+    {
+        setData();
+    }
+
+    void Renderer2D::renderLoop()
+    {
+        RAL_ASSERT(m_Window != nullptr, "Window is not selected");
+        if(m_Data.vertecies.size() == 0 || m_Data.indecies.size() == 0) RAL_LOG_WARNING("Data not set");
+        render();
+    }
+
+    void Renderer2D::setWindow(Window *window)
+    {
+        m_Window = window;
+    }
+
+    void Renderer2D::setData()
+    {
+        /*TODO: Scene scene = Scene::getScene();
+            *Get indecies and vertecies from scene*
+                RendererAPI::setVertexBuffer(...);
+                RendererAPI::setIndexBuffer(...);
+         */
+    }
+
 } // RAL

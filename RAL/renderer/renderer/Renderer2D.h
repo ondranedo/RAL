@@ -13,11 +13,27 @@
 #ifndef RAL_PROJECT_RENDERER2D_H
 #define RAL_PROJECT_RENDERER2D_H
 
+#include <vector>
+
+#include <platfomLayer/window/Window.h>
+
 namespace RAL {
     class Renderer2D {
-    public:
     private:
+        struct Data
+        {
+            std::vector<std::pair<float,float>> vertecies;
+            std::vector<unsigned int> indecies;
+        };
+        Data m_Data;
+        Window* m_Window = nullptr;
+
+        void setWindow(Window* window);
+        void setData();
+    public:
+        void render();
+        void renderLoop();
     };
 } // RAL
 
-#endif //!RAL_PROJECT_RENDERER2D_H
+#endif //RAL_PROJECT_RENDERER2D_H
