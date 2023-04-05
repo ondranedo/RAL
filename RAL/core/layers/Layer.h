@@ -21,7 +21,7 @@ namespace RAL {
     class Layer {
     public:
         explicit Layer(const std::string& name = "Layer");
-        virtual ~Layer() = default;-895
+        virtual ~Layer() = default;
         virtual void onEvent(Event* event) = 0;
         virtual void onUpdate() = 0;
         virtual void onAttach() = 0;

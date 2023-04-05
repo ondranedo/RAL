@@ -15,4 +15,4 @@ add_library(ral_core_layers STATIC
         Layer.cpp
         Layer.h
         LayerManager.cpp
-        LayerManager.h)
+        LayerManager.h LayerManagerFactory.cpp LayerManagerFactory.h)

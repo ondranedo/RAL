@@ -14,9 +14,17 @@
 #ifndef RAL_BASEGAME_H
 #define RAL_BASEGAME_H
 
+
 namespace RAL {
     class BaseGame {
     public:
+        // TODO: Add more layer methods
+        //virtual void addLayer(Layer* layer) = 0;
+
+        virtual void onUpdate() = 0;
+        virtual void onStartup() = 0;
+        virtual void onShutdown() = 0;
+
         BaseGame();
         virtual ~BaseGame();
     };

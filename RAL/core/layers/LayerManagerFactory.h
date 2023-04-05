@@ -10,33 +10,21 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#ifndef RAL_PROJECT_LAYERMANAGER_H
-#define RAL_PROJECT_LAYERMANAGER_H
+#ifndef RAL_PROJECT_LAYERMANAGERFACTORY_H
+#define RAL_PROJECT_LAYERMANAGERFACTORY_H
 
-#include <vector>
-#include <core/layers/Layer.h>
-#include <core/baseClass/BaseComponent.h>
-#include <core/events/EventManager.h>
+#include <core/baseClass/BaseFactory.h>
+#include <core/layers/LayerManager.h>
 
 namespace RAL {
-    class LayerManager final : public BaseComponent {
+    class LayerManagerFactory : public BaseFactory<LayerManager> {
     public:
-        ~LayerManager() override;
+        LayerManager *create() override;
 
-        void init() override;
-        void release() override;
-        void update() override;
-
-        void addLayerToFront(Layer* layer);
-        void removeLayerFromFront();
-        void removeAllLayers();
-
-        EventManager::EventCallback getEventCallback();
+    public:
 
     private:
-        void eventCallback(Event* event);
-        std::vector<Layer*> m_layers;
     };
 } // RAL
 
-#endif //!RAL_PROJECT_LAYERMANAGER_H
+#endif //!RAL_PROJECT_LAYERMANAGERFACTORY_H
