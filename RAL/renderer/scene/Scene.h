@@ -23,7 +23,7 @@ namespace RAL {
         Scene();
         ~Scene();
 
-        void loadTxtScene(const std::string& name);
+        void loadTxtScene(const std::string& scenePath);
         void loadBinScene();
         void saveBinScene();
 
