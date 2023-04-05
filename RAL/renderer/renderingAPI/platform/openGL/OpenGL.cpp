@@ -11,9 +11,47 @@
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
 #include "OpenGL.h"
+#include "core/utility/Logger.h"
+
+#include <vendor/glad/include/glad/glad.h>
 
 namespace RAL {
+    //Default shader program
 	void GLRenderingAPI::init()
 	{
+        shaderInit();
+        compileShaders();
+        attachShader();
 	}
+
+    void GLRenderingAPI::shaderInit()
+    {
+        vertexShader = glCreateShader(GL_VERTEX_SHADER);
+        fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+        shaderProgram = glCreateProgram();
+    }
+
+    void GLRenderingAPI::compileShaders()
+    {
+        glShaderSource(vertexShader,1,&vertexShaderSource, nullptr);
+        glCompileShader(vertexShader);
+        glShaderSource(fragmentShader,1,&fragmentShaderSource, nullptr);
+        glCompileShader(fragmentShader);
+    }
+
+    void GLRenderingAPI::attachShader()
+    {
+        glAttachShader(shaderProgram,vertexShader);
+        glAttachShader(shaderProgram,fragmentShader);
+        glLinkProgram(shaderProgram);
+        glDeleteShader(vertexShader);
+        glDeleteShader(fragmentShader);
+    }
+
+
+    void GLRenderingAPI::useDefaultProgram()
+    {
+
+        glUseProgram(shaderProgram);
+    }
 };

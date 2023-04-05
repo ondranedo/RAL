@@ -14,11 +14,35 @@
 #define RAL_PROJECT_OPENGL_H
 
 #include <renderer/renderingAPI/RenderingAPI.h>
-namespace RAL {
 
-	class GLRenderingAPI : public RenderingAPI {
-	public:
-		void init() override;
-	};
+namespace RAL
+{
+
+    class GLRenderingAPI : public RenderingAPI
+    {
+    public:
+        void init() override;
+        void useDefaultProgram() override;
+    private:
+        void shaderInit() override;
+        void compileShaders() override;
+        void attachShader() override;
+
+    protected:
+        unsigned int vertexShader, fragmentShader, shaderProgram;
+        const char *vertexShaderSource = "#version 460 core\n"
+                                         "layout (location = 0) in vec3 aPos;\n"
+                                         "void main()\n"
+                                         "{\n"
+                                         "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+                                         "}\0";
+
+        const char *fragmentShaderSource = "#version 460 core\n"
+                                           "out vec4 FragColor;\n"
+                                           "void main()\n"
+                                           "{\n"
+                                           "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+                                           "}\n\0";
+    };
 };
 #endif //!RAL_PROJECT_OPENGL_H
