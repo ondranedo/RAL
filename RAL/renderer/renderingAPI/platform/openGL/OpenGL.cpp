@@ -51,7 +51,6 @@ namespace RAL {
 
     void GLRenderingAPI::useDefaultProgram()
     {
-
         glUseProgram(shaderProgram);
     }
 };
