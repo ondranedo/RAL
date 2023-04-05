@@ -13,15 +13,18 @@
 #include "GLVertexArray.h"
 
 #include <vendor/glad/include/glad/glad.h>
-namespace RAL{
 
-    GLVertexArray::~GLVertexArray(){
-        glDeleteVertexArrays(1,&m_VA);
+namespace RAL
+{
+
+    GLVertexArray::~GLVertexArray()
+    {
+        glDeleteVertexArrays(1, &m_VA);
     }
 
     GLVertexArray::GLVertexArray()
     {
-        glGenVertexArrays(1,&m_VA);
+        glGenVertexArrays(1, &m_VA);
     }
 
     void GLVertexArray::bindVA()
@@ -36,7 +39,9 @@ namespace RAL{
 
     void GLVertexArray::setLayout()
     {
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *) 0);
         glEnableVertexAttribArray(0);
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *) (3 * sizeof(float)));
+        glEnableVertexAttribArray(1);
     }
 };
