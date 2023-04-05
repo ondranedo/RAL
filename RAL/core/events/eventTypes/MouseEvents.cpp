@@ -13,7 +13,7 @@
 #include "MouseEvents.h"
 
 namespace RAL::Events {
-    MouseReleased::MouseReleased(types::KeyCodes _button) : button(_button) {
+    MouseReleased::MouseReleased(Types::KeyCodes _button) : button(_button) {
         m_header.eventHandler = EventHandler::USER;
         m_header.eventType = EventType::MOUSE_RELEASED;
     }
@@ -28,7 +28,7 @@ namespace RAL::Events {
         m_header.eventType = EventType::MOUSE_SCROLLED;
     }
 
-    MousePressed::MousePressed(types::KeyCodes _button) : button(_button){
+    MousePressed::MousePressed(Types::KeyCodes _button) : button(_button){
         m_header.eventHandler = EventHandler::USER;
         m_header.eventType = EventType::MOUSE_PRESSED;
     }

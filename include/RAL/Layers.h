@@ -10,25 +10,35 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#ifndef RAL_PROJECT_KEYEVENTS_H
-#define RAL_PROJECT_KEYEVENTS_H
 
-#include "core/utility/Types.h"
-#include "core/events/Event.h"
+// Last version of this file: 2023-04-05_20:17
 
-namespace RAL::Events {
-    struct KeyPressed : public Event {
-        Types::KeyCodes key;
+/*
+ * Layers are used to separate different parts of the application.
+ * For example, you can have a layer for the game logic, a layer for the UI etc.
+ *
+ */
 
-        explicit KeyPressed(Types::KeyCodes _key);
-        static EventType getEventType() { return EventType::KEY_PRESSED; }
+#ifndef RAL_LAYERS_H
+#define RAL_LAYERS_H
+
+#include "MemoryOverload.h"
+#include "Event.h"
+#include <string>
+
+namespace RAL {
+    class Layer {
+    public:
+        explicit Layer(const std::string& name = "Layer");
+        virtual ~Layer() = default;
+        virtual void onEvent(Event* event) = 0;
+        virtual void onUpdate() = 0;
+        virtual void onAttach() = 0;
+        virtual void onDetach() = 0;
+
+    private:
+        std::string m_name;
     };
+} // RAL
 
-    struct KeyReleased : public Event {
-        Types::KeyCodes key;
-
-        explicit KeyReleased(Types::KeyCodes _key);
-        static EventType getEventType() { return EventType::KEY_RELEASED; }
-    };
-}
-#endif //!RAL_PROJECT_KEYEVENTS_H
+#endif //!RAL_LAYERS_H

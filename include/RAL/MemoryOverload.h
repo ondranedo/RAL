@@ -10,25 +10,26 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#ifndef RAL_PROJECT_KEYEVENTS_H
-#define RAL_PROJECT_KEYEVENTS_H
 
-#include "core/utility/Types.h"
-#include "core/events/Event.h"
+// Last version of this file: 2023-04-05_20:17
 
-namespace RAL::Events {
-    struct KeyPressed : public Event {
-        Types::KeyCodes key;
+/*
+ *  This file is used to overload new and delete operators.
+ *  It is used to track memory leaks. Should be included
+ *  in every file that uses new and delete operators.
+ *  Include if using std library headers that use new and delete,
+ *  f.e std::string, std::vector, std::map, etc.
+ */
 
-        explicit KeyPressed(Types::KeyCodes _key);
-        static EventType getEventType() { return EventType::KEY_PRESSED; }
-    };
 
-    struct KeyReleased : public Event {
-        Types::KeyCodes key;
 
-        explicit KeyReleased(Types::KeyCodes _key);
-        static EventType getEventType() { return EventType::KEY_RELEASED; }
-    };
-}
-#endif //!RAL_PROJECT_KEYEVENTS_H
+#ifndef RAL_PROJECT_OVERLOAD_H
+#define RAL_PROJECT_OVERLOAD_H
+
+#include <cstdint>
+
+extern void* operator new(size_t size);
+extern void operator delete(void* block, size_t size) noexcept;
+extern void operator delete(void* blck) noexcept;
+
+#endif //!RAL_PROJECT_OVERLOAD_H

@@ -13,12 +13,12 @@
 #include "KeyEvents.h"
 
 namespace RAL::Events {
-    KeyPressed::KeyPressed(RAL::types::KeyCodes _key) : key(_key){
+    KeyPressed::KeyPressed(RAL::Types::KeyCodes _key) : key(_key){
         m_header.eventHandler = EventHandler::USER;
         m_header.eventType = EventType::KEY_PRESSED;
     }
 
-    KeyReleased::KeyReleased(types::KeyCodes _key) : key(_key){
+    KeyReleased::KeyReleased(Types::KeyCodes _key) : key(_key){
         m_header.eventHandler = EventHandler::USER;
         m_header.eventType = EventType::KEY_RELEASED;
     }

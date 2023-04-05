@@ -49,11 +49,11 @@ add_subdirectory(core)
 
 # Platform layer - contains platform specific code
 add_subdirectory(platfomLayer)
-target_link_libraries(${RAL_ENGINE_LIB} PUBLIC ral_platformLayer)
+target_link_libraries(${RAL_ENGINE_LIB} PRIVATE ral_platformLayer)
 
 # Renderer - contains renderer specific code
 add_subdirectory(renderer)
-target_link_libraries(${RAL_ENGINE_LIB} PUBLIC ral_renderer)
+target_link_libraries(${RAL_ENGINE_LIB} PRIVATE ral_renderer)
 
 #######################################################
 #   Vendor libraries                                  #

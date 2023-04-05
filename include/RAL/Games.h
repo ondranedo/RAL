@@ -11,21 +11,29 @@
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
 
-#ifndef RAL_BASEGAME_H
-#define RAL_BASEGAME_H
+// Last version of this file: 2023-04-05_20:17
 
-#include <core/layers/Layer.h>
-#include <core/layers/LayerManager.h>
+/*
+ * Base game class, which is used to create games.
+ * It is used to create games, which are then constructed and
+ * used in the RAL engine. You have to implement the createGame
+ * function, which is used to create the game.
+ */
+
+#ifndef RAL_PROJECT_GAMES_H
+#define RAL_PROJECT_GAMES_H
+
+#include "MemoryOverload.h"
+#include "Layers.h"
 
 namespace RAL {
+    class LayerManager;
     enum class GameType {
         BASE_GAME
     };
     class BaseGame {
     public:
-        // TODO: Add more layer methods
         void addLayer(Layer* layer);
-        void setLayerManager(const LayerManager* layerManager);
 
         virtual void onUpdate() = 0;
         virtual void onStartup() = 0;
@@ -38,8 +46,7 @@ namespace RAL {
         LayerManager* m_layerManager;
     };
 
-    // TODO: Custom class, some factory
     extern BaseGame* createGame();
 } // RAL
 
-#endif //!RAL_BASEGAME_H
+#endif //!RAL_PROJECT_GAMES_H

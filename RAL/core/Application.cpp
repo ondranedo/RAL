@@ -15,23 +15,27 @@
 #include "Application.h"
 #include <core/utility/Logger.h>
 
-
+#include <core/layers/LayerManagerFactory.h>
 
 namespace RAL {
     Application::Application() {
-        RAL_LOG_INFO("Application created");
+        RAL_LOG_DEBUG("Engine initialization started");
+
+        RAL_LOG_DEBUG("Engine initialization ended");
     }
 
     Application::~Application() {
-        RAL_LOG_INFO("Application destroyed");
+        RAL_LOG_DEBUG("Engine release started");
+
+        RAL_LOG_DEBUG("Engine release ended");
     }
 
     void Application::onEvent(Event *event) {
-        RAL_LOG_DEBUG("Application received event");
+        RAL_LOG_DEBUG("Engine received event");
     }
 
     void Application::run() {
-        RAL_LOG_INFO("Application running");
+        RAL_LOG_INFO("Engine starting!");
 
     }
 } // RAL

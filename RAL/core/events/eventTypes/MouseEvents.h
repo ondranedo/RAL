@@ -34,17 +34,17 @@ namespace RAL::Events {
 
     struct MousePressed : public Event
     {
-        types::KeyCodes button;
+        Types::KeyCodes button;
 
-        explicit MousePressed(types::KeyCodes _button);
+        explicit MousePressed(Types::KeyCodes _button);
         static EventType getEventType() { return EventType::MOUSE_PRESSED; }
     };
 
     struct MouseReleased : public Event
     {
-        types::KeyCodes button;
+        Types::KeyCodes button;
 
-        explicit MouseReleased(types::KeyCodes _button);
+        explicit MouseReleased(Types::KeyCodes _button);
         static EventType getEventType() { return EventType::MOUSE_RELEASED; }
     };
 

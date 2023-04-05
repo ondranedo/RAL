@@ -13,8 +13,9 @@
 
 #ifndef RAL_PROJECT_APPLICATION_H
 #define RAL_PROJECT_APPLICATION_H
-#include <core/memoryManager/Overload.h>
+
 #include <core/events/Event.h>
+#include <core/baseClass/BaseGame.h>
 
 namespace RAL {
     class Application {
