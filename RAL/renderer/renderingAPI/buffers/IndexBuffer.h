@@ -20,6 +20,7 @@ namespace RAL
     class IndexBuffer : public Buffer
     {
     public:
+        virtual ~IndexBuffer() = default;
     private:
     };
 } // RAL

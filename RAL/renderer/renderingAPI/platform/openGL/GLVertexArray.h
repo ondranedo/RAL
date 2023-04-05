@@ -13,23 +13,23 @@
 #ifndef RAL_PROJECT_GLVERTEXARRAY_H
 #define RAL_PROJECT_GLVERTEXARRAY_H
 
+#include <renderer/renderingAPI/platform/openGL/GLIndexable.h>
+
 namespace RAL
 {
-    class GLVertexArray
+    class GLVertexArray final: public virtual GLIndexable
     {
     public:
-        ~GLVertexArray();
+        ~GLVertexArray() override;
 
         GLVertexArray();
 
-        void bindVA();
+        void bind() const;
 
-        void unbindVA();
+        void unbind() const;
 
         void setLayout();
 
-    protected:
-        unsigned int m_VA{};
     };
 };
 #endif //!RAL_PROJECT_GLVERTEXARRAY_H

@@ -11,6 +11,7 @@
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
 #include "GLVertexArray.h"
+#include "core/utility/Asserts.h"
 
 #include <vendor/glad/include/glad/glad.h>
 
@@ -19,22 +20,22 @@ namespace RAL
 
     GLVertexArray::~GLVertexArray()
     {
-        glDeleteVertexArrays(1, &m_VA);
+        glDeleteVertexArrays(1, &m_id);
     }
 
     GLVertexArray::GLVertexArray()
     {
-        glGenVertexArrays(1, &m_VA);
+        glGenVertexArrays(1, &m_id);
     }
 
-    void GLVertexArray::bindVA()
+    void GLVertexArray::bind() const
     {
-        glBindVertexArray(m_VA);
+        glBindVertexArray(m_id);
     }
 
-    void GLVertexArray::unbindVA()
+    void GLVertexArray::unbind() const
     {
-        glBindVertexArray(m_VA);
+        glBindVertexArray(0);
     }
 
     void GLVertexArray::setLayout()

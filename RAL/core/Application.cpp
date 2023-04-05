@@ -18,7 +18,7 @@
 #include <platfomLayer/window/WindowFactory.h>
 #include <renderer/renderingAPI/platform/openGL/GLVertexArray.h>
 #include <renderer/renderingAPI/platform/openGL/GLVertexBuffer.h>
-#include <renderer/renderingAPI/platform/openGL/OpenGL.h>
+#include <renderer/renderingAPI/platform/openGL/GLRenderingAPI.h>
 
 namespace RAL
 {
@@ -65,8 +65,8 @@ namespace RAL
         GLVertexArray va;
         GLVertexBuffer vb(vertices, sizeof(vertices),2);
         rAPI.init();
-        va.bindVA();
-        vb.bindVB();
+        va.bind();
+        vb.bind();
         va.setLayout();
         global::mainLogger.print();
         while (1)

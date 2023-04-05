@@ -10,18 +10,19 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#ifndef RAL_PROJECT_VERTEXBUFFER_H
-#define RAL_PROJECT_VERTEXBUFFER_H
-
-#include <renderer/renderingAPI/buffers/Buffer.h>
+#ifndef RAL_PROJECT_GLINDEXABLE_H
+#define RAL_PROJECT_GLINDEXABLE_H
 
 namespace RAL
 {
-    class VertexBuffer : public virtual Buffer
+    class GLIndexable
     {
     public:
-        virtual ~VertexBuffer() = default;
-
+        GLIndexable();
+        virtual ~GLIndexable() = default;
+    protected:
+        unsigned int m_id;
     };
-};
-#endif //!RAL_PROJECT_VERTEXBUFFER_H
+} // RAL
+
+#endif //!RAL_PROJECT_GLINDEXABLE_H

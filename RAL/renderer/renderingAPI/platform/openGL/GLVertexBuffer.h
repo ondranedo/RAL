@@ -14,22 +14,21 @@
 #define RAL_PROJECT_GLVERTEXBUFFER_H
 
 #include <renderer/renderingAPI/buffers/VertexBuffer.h>
+#include <renderer/renderingAPI/platform/openGL/GLIndexable.h>
 
 namespace RAL
 {
-    class GLVertexBuffer : public VertexBuffer
+    class GLVertexBuffer final : public virtual VertexBuffer, public virtual GLIndexable
     {
     public:
         ~GLVertexBuffer() override;
 
         explicit GLVertexBuffer(float *vertices,unsigned int size,unsigned char mode);
 
-        void bindVB() override;
+        void bind() const override;
 
-        void unbindVB() override;
+        void unbind() const override;
 
-    protected:
-        unsigned int m_VB{};
     };
 };
 #endif //!RAL_PROJECT_GLVERTEXBUFFER_H

@@ -10,8 +10,8 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#ifndef RAL_PROJECT_OPENGL_H
-#define RAL_PROJECT_OPENGL_H
+#ifndef RAL_PROJECT_GLRENDERINGAPI_H
+#define RAL_PROJECT_GLRENDERINGAPI_H
 
 #include <renderer/renderingAPI/RenderingAPI.h>
 
@@ -54,4 +54,4 @@ namespace RAL
                                            "}\n\0";
     };
 };
-#endif //!RAL_PROJECT_OPENGL_H
+#endif //!RAL_PROJECT_GLRENDERINGAPI_H

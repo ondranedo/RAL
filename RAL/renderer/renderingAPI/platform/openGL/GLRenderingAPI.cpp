@@ -10,7 +10,7 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#include "OpenGL.h"
+#include "GLRenderingAPI.h"
 #include "core/utility/Logger.h"
 
 #include <vendor/glad/include/glad/glad.h>

@@ -19,7 +19,7 @@ namespace RAL
 {
     GLVertexBuffer::~GLVertexBuffer()
     {
-        glDeleteBuffers(1, &m_VB);
+        glDeleteBuffers(1, &m_id);
     }
 
     /**
@@ -31,8 +31,8 @@ namespace RAL
     //TODO ENUM GL_STREAM_DRAW = VOLATILE
     GLVertexBuffer::GLVertexBuffer(float *vertices,unsigned int size,unsigned char mode)
     {
-        glGenBuffers(1, &m_VB);
-        glBindBuffer(GL_ARRAY_BUFFER, m_VB);
+        glGenBuffers(1, &m_id);
+        glBindBuffer(GL_ARRAY_BUFFER, m_id);
         switch (mode)
         {
             case 1:
@@ -49,12 +49,12 @@ namespace RAL
         }
     }
 
-    void GLVertexBuffer::bindVB()
+    void GLVertexBuffer::bind() const
     {
-        glBindBuffer(GL_ARRAY_BUFFER, m_VB);
+        glBindBuffer(GL_ARRAY_BUFFER, m_id);
     }
 
-    void GLVertexBuffer::unbindVB()
+    void GLVertexBuffer::unbind() const
     {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
