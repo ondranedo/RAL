@@ -10,8 +10,7 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#ifndef RAL_PROJECT_VULKAN_H
-#define RAL_PROJECT_VULKAN_H
+#include "Buffer.h"
 
-
-#endif //!RAL_PROJECT_VULKAN_H
+namespace RAL {
+} // RAL

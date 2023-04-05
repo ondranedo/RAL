@@ -16,14 +16,8 @@
 namespace RAL {
     class RenderingAPI {
     public:
-        RenderingAPI() {
-            
-        }
-        ~RenderingAPI() {
-
-        }
-        //TODO
-        //Compile all shaders in init
+        RenderingAPI() = default;
+        virtual ~RenderingAPI() = default;
         virtual void init() = 0;
         //TODO: MOVE TO SHADER FILE, maybe keep default shader
         virtual void shaderInit() = 0;

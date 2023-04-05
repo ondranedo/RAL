@@ -13,8 +13,7 @@
 #ifndef RAL_PROJECT_GLVERTEXBUFFER_H
 #define RAL_PROJECT_GLVERTEXBUFFER_H
 
-#include <renderer/renderingAPI/VertexBuffer.h>
-#include <core/utility/Asserts.h>
+#include <renderer/renderingAPI/buffers/VertexBuffer.h>
 
 namespace RAL
 {

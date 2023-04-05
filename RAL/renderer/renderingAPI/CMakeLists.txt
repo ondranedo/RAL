@@ -13,20 +13,22 @@
 
 set(openGL
         # path to openGL rendering api files
-        platform/openGL/OpenGL.cpp platform/openGL/OpenGL.h platform/openGL/GLVertexBuffer.cpp platform/openGL/GLVertexBuffer.h platform/openGL/GLVertexArray.cpp platform/openGL/GLVertexArray.h platform/openGL/GLIndexBuffer.cpp platform/openGL/GLIndexBuffer.h)
-
-set(vulkan
-        # path to vulkan rendering api files
-        platform/vulkan/Vulkan.cpp platform/vulkan/Vulkan.h)
-
-set(directX
-        # path to directX rendering api files
-        platform/directX/DirectX.cpp platform/directX/DirectX.h)
+        platform/openGL/OpenGL.cpp
+        platform/openGL/OpenGL.h
+        platform/openGL/GLVertexBuffer.cpp
+        platform/openGL/GLVertexBuffer.h
+        platform/openGL/GLVertexArray.cpp
+        platform/openGL/GLVertexArray.h
+        platform/openGL/GLIndexBuffer.cpp
+        platform/openGL/GLIndexBuffer.h)
 
 add_library(ral_renderer_renderingAPI STATIC
         RenderingAPI.cpp
         RenderingAPI.h
         ${openGL}
-        ${vulkan}
-        ${directX}
-        RenderingContext.cpp RenderingContext.h VertexBuffer.cpp VertexBuffer.h VertexArray.cpp VertexArray.h IndexBuffer.cpp IndexBuffer.h)
+        buffers/VertexBuffer.cpp
+        buffers/VertexBuffer.h
+        buffers/IndexBuffer.cpp
+        buffers/IndexBuffer.h
+        buffers/Buffer.cpp
+        buffers/Buffer.h)

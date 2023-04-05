@@ -13,23 +13,20 @@
 #ifndef RAL_PROJECT_GLVERTEXARRAY_H
 #define RAL_PROJECT_GLVERTEXARRAY_H
 
-
-#include <renderer/renderingAPI/VertexArray.h>
-
 namespace RAL
 {
-    class GLVertexArray : public VertexArray
+    class GLVertexArray
     {
     public:
-        ~GLVertexArray() override;
+        ~GLVertexArray();
 
         GLVertexArray();
 
-        void bindVA() override;
+        void bindVA();
 
-        void unbindVA() override;
+        void unbindVA();
 
-        void setLayout() override;
+        void setLayout();
 
     protected:
         unsigned int m_VA{};

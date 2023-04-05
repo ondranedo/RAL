@@ -10,4 +10,18 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#include "VertexArray.h"
+#ifndef RAL_PROJECT_INDEXBUFFER_H
+#define RAL_PROJECT_INDEXBUFFER_H
+
+#include <renderer/renderingAPI/buffers/Buffer.h>
+
+namespace RAL
+{
+    class IndexBuffer : public Buffer
+    {
+    public:
+    private:
+    };
+} // RAL
+
+#endif //!RAL_PROJECT_INDEXBUFFER_H

@@ -10,19 +10,16 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#ifndef RAL_PROJECT_VERTEXBUFFER_H
-#define RAL_PROJECT_VERTEXBUFFER_H
+#ifndef RAL_PROJECT_BUFFER_H
+#define RAL_PROJECT_BUFFER_H
 
-namespace RAL
-{
-    class VertexBuffer
-    {
+namespace RAL {
+    class Buffer {
     public:
-        virtual ~VertexBuffer() {}
+        void bind();
+        void unbind();
 
-        virtual void bindVB() = 0;
-
-        virtual void unbindVB() = 0;
     };
-};
-#endif //!RAL_PROJECT_VERTEXBUFFER_H
+} // RAL
+
+#endif //!RAL_PROJECT_BUFFER_H
