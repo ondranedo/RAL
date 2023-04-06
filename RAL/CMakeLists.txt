@@ -43,13 +43,17 @@ endif()
 #   Source files  - components                        #
 #######################################################
 
-# Engines core - main library others libraries link into this one
-add_subdirectory(core)
-# Already linked into core
+add_library(${RAL_ENGINE_LIB} STATIC
+        "RAL.cpp"
+        "RAL.h")
 
 # Platform layer - contains platform specific code
 add_subdirectory(platfomLayer)
 target_link_libraries(${RAL_ENGINE_LIB} PRIVATE ral_platformLayer)
+
+# Engines core - main library others libraries link into this one
+add_subdirectory(core)
+target_link_libraries(${RAL_ENGINE_LIB} PRIVATE ral_core)
 
 # Renderer - contains renderer specific code
 add_subdirectory(renderer)

@@ -15,7 +15,7 @@
 #ifndef RAL_PROJECT_CORE_H
 #define RAL_PROJECT_CORE_H
 
-#ifdef _WIN32
+#ifdef _MSC_VER
 #define RAL_WINDOWS_USE_WINMAIN
 #endif
 

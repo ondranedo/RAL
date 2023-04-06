@@ -10,27 +10,7 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-
-
-#ifndef RAL_PROJECT_OVERLOAD_H
-#define RAL_PROJECT_OVERLOAD_H
-
-#include <cstdint>
-
-#ifdef  _MSC_VER
-[[nodiscard]] extern __declspec(allocator) void* operator new(size_t size);
-#else
-extern void* operator new(std::size_t size);
-#endif
-extern void operator delete(void* block, size_t size) noexcept;
-extern void operator delete(void* block) noexcept;
+#include "RAL.h"
 
 namespace RAL {
-    class MemoryManager;
-    namespace global {
-        extern void setMemoryManager(MemoryManager* memManager);
-    };
-};
-
-
-#endif //!RAL_PROJECT_OVERLOAD_H
+} // RAL
