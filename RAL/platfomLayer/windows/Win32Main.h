@@ -16,6 +16,11 @@
 #define RAL_PROJECT_WIN32MAIN_H
 #ifdef RAL_WINDOWS
 
+namespace RAL {
+    namespace Win32 {
+        int main();
+    }
+}
 
 #endif //!RAL_WINDOWS
 #endif //!RAL_PROJECT_WIN32MAIN_H

@@ -31,3 +31,28 @@ namespace RAL {
         return 0;
     }
 }
+
+#ifdef RAL_WINDOWS_USE_WINMAIN
+
+#include "Win32Main.h"
+#include <windows.h>
+
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
+{
+	return RAL::Win32::main();
+}
+
+#else
+
+#ifdef RAL_WINDOWS
+#include <platfomLayer/windows/Win32Main.h>
+#endif
+
+int main(int, char**)
+{
+#ifdef RAL_WINDOWS
+    return RAL::Win32::main();
+#endif
+}
+
+#endif //!RAL_WINDOWS_USE_WINMAIN

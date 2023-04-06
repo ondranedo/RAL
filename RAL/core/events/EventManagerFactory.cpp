@@ -14,6 +14,10 @@
 
 namespace RAL {
     EventManager *EventManagerFactory::create() {
-        return this->createPass(new EventManager);
+        return RAL_BASEFACTORY_CREATE(EventManager);
+    }
+
+    std::string EventManagerFactory::productName() const {
+        return "EventManager";
     }
 } // RAL

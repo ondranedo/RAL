@@ -14,9 +14,13 @@
 #include "FileManagerFactory.h"
 
 namespace RAL {
-    FileManagerFactory::FileManagerFactory() : BaseFactory<FileManager>(1) {}
+    FileManagerFactory::FileManagerFactory() : BaseFactory(1) {}
 
     FileManager *FileManagerFactory::create() {
-        return this->createPass(new FileManager);
+        return RAL_BASEFACTORY_CREATE(FileManager);
+    }
+
+    std::string FileManagerFactory::productName() const {
+        return "FileManager";
     }
 } // RAL

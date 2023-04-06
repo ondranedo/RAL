@@ -17,13 +17,11 @@
 #include <core/layers/LayerManager.h>
 
 namespace RAL {
-    class LayerManagerFactory : public BaseFactory<LayerManager> {
+    class LayerManagerFactory : public BaseFactory {
     public:
         LayerManager *create() override;
+        [[nodiscard]] std::string productName() const override;
 
-    public:
-
-    private:
     };
 } // RAL
 

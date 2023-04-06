@@ -14,6 +14,10 @@
 
 namespace RAL {
     LayerManager *LayerManagerFactory::create() {
-        return this->createPass(new LayerManager);
+        return RAL_BASEFACTORY_CREATE(LayerManager);
+    }
+
+    std::string LayerManagerFactory::productName() const {
+        return "LayerManager";
     }
 } // RAL
