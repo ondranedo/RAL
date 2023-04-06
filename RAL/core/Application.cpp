@@ -18,16 +18,22 @@
 #include <platfomLayer/window/WindowFactory.h>
 #include <renderer/renderingAPI/platform/openGL/GLVertexArray.h>
 #include <renderer/renderingAPI/platform/openGL/GLVertexBuffer.h>
+#include <renderer/renderingAPI/platform/openGL/GLIndexBuffer.h>
 #include <renderer/renderingAPI/platform/openGL/GLRenderingAPI.h>
 
 namespace RAL
 {
     float vertices[] = {
-        // positions         // colors
-         0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  // bottom right
-        -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  // bottom left
-         0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   // top
+            // positions         // colors
+            -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,  // bottom left
+            -0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, // top left
+            0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f,  // top right
+            0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom right
 
+    };
+    unsigned int indices[] = {  // note that we start from 0!
+            0, 1, 3,  // first Triangle
+            1, 2, 3   // second Triangle
     };
 
 
@@ -45,7 +51,7 @@ namespace RAL
     {
 
         RAL_LOG_DEBUG("Application running");
-        Window *window, *window1;
+        Window *window;
         WindowFactory factory;
         WindowSpec spec;
         strcpy(spec.m_title, "Ahoj");
@@ -62,11 +68,11 @@ namespace RAL
         }
 
         GLRenderingAPI rAPI;
-        GLVertexArray va;
-        GLVertexBuffer vb(vertices, sizeof(vertices),2);
         rAPI.init();
+        GLVertexArray va;
         va.bind();
-        vb.bind();
+        GLVertexBuffer vb(vertices, sizeof(vertices), Buffer::DrawUsage::STATIC);
+        GLIndexBuffer ib(indices, sizeof(indices), Buffer::DrawUsage::STATIC);
         va.setLayout();
         global::mainLogger.print();
         while (1)
@@ -74,7 +80,9 @@ namespace RAL
             glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
             rAPI.useDefaultProgram();
-            glDrawArrays(GL_TRIANGLES, 0, 3);
+            va.bind();
+            //glDrawArrays(GL_TRIANGLES,0,6);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
             window->swapBuffers();
             window->update();
 

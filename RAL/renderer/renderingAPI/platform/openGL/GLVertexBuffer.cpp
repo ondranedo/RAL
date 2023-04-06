@@ -22,30 +22,21 @@ namespace RAL
         glDeleteBuffers(1, &m_id);
     }
 
-    /**
-     * Mode can be number from 1 to 3
-     * 1: GL_STREAM_DRAW Data is set only once and used by the GPU few times
-     * 2: GL_STATIC_DRAW Data is set only once and used many times
-     * 3: GL_DYNAMIC_DRAW Data is changed a lot and used many times
-    */
-    //TODO ENUM GL_STREAM_DRAW = VOLATILE
-    GLVertexBuffer::GLVertexBuffer(float *vertices,unsigned int size,unsigned char mode)
+    GLVertexBuffer::GLVertexBuffer(float *vertices,unsigned int size,DrawUsage usage)
     {
         glGenBuffers(1, &m_id);
         glBindBuffer(GL_ARRAY_BUFFER, m_id);
-        switch (mode)
+        switch (usage)
         {
-            case 1:
+            case DrawUsage::VOLATILE:
                 glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STREAM_DRAW);
                 break;
-            case 2:
+            case DrawUsage::STATIC:
                 glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
                 break;
-            case 3:
+            case DrawUsage::DYNAMIC:
                 glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_DYNAMIC_DRAW);
                 break;
-            default:
-                RAL_LOG_FATAL("Wrong draw usage mode must be 1-3");
         }
     }
 

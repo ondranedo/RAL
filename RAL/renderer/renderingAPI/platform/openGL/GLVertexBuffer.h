@@ -23,7 +23,7 @@ namespace RAL
     public:
         ~GLVertexBuffer() override;
 
-        explicit GLVertexBuffer(float *vertices,unsigned int size,unsigned char mode);
+        explicit GLVertexBuffer(float *vertices,unsigned int size,DrawUsage usage);
 
         void bind() const override;
 
