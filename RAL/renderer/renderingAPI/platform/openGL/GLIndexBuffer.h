@@ -13,11 +13,22 @@
 #ifndef RAL_PROJECT_GLINDEXBUFFER_H
 #define RAL_PROJECT_GLINDEXBUFFER_H
 
+#include <renderer/renderingAPI/buffers/IndexBuffer.h>
+#include <renderer/renderingAPI/platform/openGL/GLIndexable.h>
+
 namespace RAL
 {
-    class GLIndexBuffer
+    class GLIndexBuffer : public virtual IndexBuffer, public virtual GLIndexable
     {
     public:
+        ~GLIndexBuffer() override;
+
+        explicit GLIndexBuffer(unsigned int *indices,unsigned int size,DrawUsage usage);
+
+        void bind() const override;
+
+        void unbind() const override;
+
     private:
     };
 } // RAL
