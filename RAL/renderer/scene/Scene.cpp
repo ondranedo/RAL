@@ -34,11 +34,11 @@ namespace RAL {
 
     //is subject to change
     //currently loads five-line entries without separation and in an exact format
-    //entity name
-    //path to its mesh
-    //x offset
-    //y offset
-    //z offset
+    //entity name\n
+    //path to its mesh\n
+    //x offset\n
+    //y offset\n
+    //z offset\n
     void Scene::loadTxtScene(const std::string& scenePath) {
 
         Win32::Win32FileTxt file;
@@ -51,6 +51,7 @@ namespace RAL {
         uint32_t tempSize;
         void* buffer;
 
+        //there is memory leak potential if the scene file doesn't follow the strict guidelines
         while (auto tempLine = file.readLine()){
             switch (switcher) {
                 case 0:
@@ -71,7 +72,7 @@ namespace RAL {
                     //      potentially move meshes to another files / classes
                     //      i.e Mesh* openMesh(path)
                     //      ONDRANEDO CODE REVIEW
-                    tempFile = fopen(tempLine->c_str(), "r");
+                    tempFile = fopen(tempLine->c_str(), "rb");
                     tempMesh = new Mesh;
 
                     //.ralms has this structure:
@@ -101,13 +102,31 @@ namespace RAL {
                         buffer = new Vertex[tempSize];
                         fread(buffer, sizeof(Vertex), tempSize, tempFile);
 
-                        //todo: data into vector
-                        tempMesh->m_vertices.push_back(reinterpret_cast<Vertex*>(buffer)[0]);
+                        //todo: something less dumb
+                        //      we already have an array so find a way to stuff it into the vector
+                        for(int i = 0; i < tempSize; i++){
+                            tempMesh->m_vertices.push_back(reinterpret_cast<Vertex*>(buffer)[i]);
+                        }
+                        delete[] reinterpret_cast<Vertex*>(buffer);
                     }
                     /********************************************************************************/
                     //number of vertex triangles followed by them
+                    if(tempMesh){
+                        fread(&tempSize, sizeof(uint32_t), 1, tempFile);
 
+                        buffer = new vertexTriangle[tempSize];
+                        fread(buffer, sizeof(vertexTriangle), tempSize, tempFile);
+
+                        //todo: same here
+                        for(int i = 0; i < tempSize; i++){
+                            tempMesh->m_triangles.push_back(reinterpret_cast<vertexTriangle*>(buffer)[i]);
+                        }
+                        delete[] reinterpret_cast<vertexTriangle*>(buffer);
+                    }
                     /********************************************************************************/
+                    if(tempMesh){
+                        tempEntity.m_mesh = tempMesh;
+                    }
                     fclose(tempFile);
                     break;
                 case 2:
