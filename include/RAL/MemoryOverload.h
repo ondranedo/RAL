@@ -11,7 +11,7 @@
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
 
-// Last version of this file: 2023-04-05_20:17
+// Last version of this file: 2023-04-06_13:10
 
 /*
  *  This file is used to overload new and delete operators.
@@ -28,8 +28,8 @@
 
 #include <cstdint>
 
-extern void* operator new(size_t size);
+[[nodiscard]] __declspec(allocator) void* operator new(size_t size) noexcept;
 extern void operator delete(void* block, size_t size) noexcept;
-extern void operator delete(void* blck) noexcept;
+extern void operator delete(void* block) noexcept;
 
 #endif //!RAL_PROJECT_OVERLOAD_H

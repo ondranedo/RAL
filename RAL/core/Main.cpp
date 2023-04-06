@@ -31,34 +31,3 @@ namespace RAL {
         return 0;
     }
 }
-
-
-// TODO: move it into platform layer
-#ifdef RAL_WINDOWS
-#include <platfomLayer/windows/memory/Win32Memory.h>
-#include <platfomLayer/windows/consoleInterpreter/Win32ConsoleInterpreter.h>
-
-int main(int argc, char** argv) {
-    RAL::Win32::Win32Memory memory;
-    RAL::Win32::Win32ConsoleInterpreter interpreter;
-    interpreter.init();
-    interpreter.setTitle("RAL engine - debug console");
-    interpreter.log(" \xDA");
-    interpreter.log("Starting logging...\n", RAL::ConsoleInterpreter::ColourForeground::GRAY,  RAL::ConsoleInterpreter::ColourBackground::BLACK);
-    interpreter.log("\xB3\n");
-
-    RAL::StartupInfo info = { &interpreter, &memory };
-    RAL::main(info);
-
-    RAL::global::mainLogger.print();
-    interpreter.log("\xB3\n");
-    interpreter.log("\xAF");
-#ifdef RAL_DEBUG
-    system("pause");
-#endif //!RAL_DEBUG
-
-    RAL::global::mainLogger.detachConsoleInterpreter();
-
-    return 0;
-}
-#endif //!RAL_WINDOWS

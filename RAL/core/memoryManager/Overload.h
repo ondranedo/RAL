@@ -14,13 +14,12 @@
 
 #ifndef RAL_PROJECT_OVERLOAD_H
 #define RAL_PROJECT_OVERLOAD_H
-#include <core/memoryManager/Overload.h>
 
 #include <cstdint>
 
-extern void* operator new(size_t size);
+[[nodiscard]] __declspec(allocator) void* operator new(size_t size) noexcept;
 extern void operator delete(void* block, size_t size) noexcept;
-extern void operator delete(void* blck) noexcept;
+extern void operator delete(void* block) noexcept;
 
 namespace RAL {
     class MemoryManager;

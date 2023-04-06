@@ -12,9 +12,10 @@
 /////////////////////////////////////////////////////////
 
 
-#ifndef RAL_PROJECT_WINMAIN_H
-#define RAL_PROJECT_WINMAIN_H
+#ifndef RAL_PROJECT_WIN32MAIN_H
+#define RAL_PROJECT_WIN32MAIN_H
 #ifdef RAL_WINDOWS
 
+
 #endif //!RAL_WINDOWS
-#endif //!RAL_PROJECT_WINMAIN_H
+#endif //!RAL_PROJECT_WIN32MAIN_H
