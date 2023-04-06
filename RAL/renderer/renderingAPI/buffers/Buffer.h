@@ -13,12 +13,26 @@
 #ifndef RAL_PROJECT_BUFFER_H
 #define RAL_PROJECT_BUFFER_H
 
-namespace RAL {
-    class Buffer {
+namespace RAL
+{
+    class Buffer
+    {
     public:
-        virtual void bind() const = 0 ;
+        virtual void bind() const = 0;
+
         virtual void unbind() const = 0;
 
+        /**
+        1: VOLATILE = GL_STREAM_DRAW Data is set only once and used by the GPU few times
+        2: STATIC = GL_STATIC_DRAW Data is set only once and used many times
+        3: DYNAMIC = GL_DYNAMIC_DRAW Data is changed a lot and used many times
+        */
+        enum class DrawUsage : unsigned char
+        {
+            STATIC,
+            DYNAMIC,
+            VOLATILE
+        };
     };
 } // RAL
 
