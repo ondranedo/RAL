@@ -12,6 +12,6 @@
 #######################################################
 
 
-add_library(ral_core_events STATIC
+add_library(ral_core_FCM STATIC
         FCM.cpp
         FCM.h)

@@ -39,7 +39,7 @@ target_link_libraries(ral_core PRIVATE ral_core_utility)
 
 # baseClasses (interfaces) for many parts of the engine
 add_subdirectory(baseClass)
-target_link_libraries(ral_core PRIVATE ral_core_base_class)
+target_link_libraries(ral_core PRIVATE ral_core_baseClass)
 
 # file manager, used to load and save files
 add_subdirectory(fileManager)
@@ -52,3 +52,8 @@ target_link_libraries(ral_core PRIVATE ral_core_layers)
 # events
 add_subdirectory(events)
 target_link_libraries(ral_core PRIVATE ral_core_events)
+
+# FCM - factory-component manager, used to create and manage
+# components and their factories
+add_subdirectory(FCM)
+target_link_libraries(ral_core PRIVATE ral_core_FCM)
