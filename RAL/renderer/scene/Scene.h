@@ -34,11 +34,12 @@ namespace RAL {
             float z;
         };
         struct vertexTriangle{
-            uint32_t a;
-            uint32_t b;
-            uint32_t c;
+            uint32_t indexA;
+            uint32_t indexB;
+            uint32_t indexC;
         };
         struct Mesh{
+            std::string name;
             std::vector<Vertex> m_vertices;
             std::vector<vertexTriangle> m_triangles;
         };

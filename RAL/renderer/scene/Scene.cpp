@@ -12,6 +12,7 @@
 /////////////////////////////////////////////////////////
 #include "Scene.h"
 #include "../../platfomLayer/windows/file/Win32FileTxt.h"
+#include "../../core/utility/Logger.h"
 
 namespace RAL {
 
@@ -44,18 +45,70 @@ namespace RAL {
         file.RAL::Win32::Win32File::open(scenePath, File::Mode::Read);
 
         Entity tempEntity;
+        Mesh* tempMesh;
         int8_t switcher = 0;
+        FILE* tempFile;
+        uint32_t tempSize;
+        void* buffer;
 
         while (auto tempLine = file.readLine()){
             switch (switcher) {
                 case 0:
+                    for(auto & entity : m_entities){
+                        if(entity.name == tempLine){
+                            RAL_LOG_INFO("Entity %s already in scene; won't be added", entity.name.c_str());
+                            for(int i = 0; i < 4; i++){
+                                file.readLine();
+                            }
+                            switcher--;
+                            break;
+                        }
+                    }
                     tempEntity.name = tempLine.value();
                     break;
                 case 1:
-                    //open mesh file
-                    //find if has been loaded yet
-                    //stuff contents into Mesh on heap
-                    //save pointer in tempEntity
+                    //TODO: switch to File
+                    //      potentially move meshes to another files / classes
+                    //      i.e Mesh* openMesh(path)
+                    //      ONDRANEDO CODE REVIEW
+                    tempFile = fopen(tempLine->c_str(), "r");
+                    tempMesh = new Mesh;
+
+                    //.ralms has this structure:
+                    /*****************************************************************************/
+                    //length of c string (max 255) followed by name <- used for optimization
+                    fread(&tempSize, sizeof(uint8_t), 1, tempFile);
+
+                    buffer = new char[tempSize];
+                    fread(buffer, sizeof(char), tempSize, tempFile);
+
+                    tempMesh->name = reinterpret_cast<char*>(buffer);
+                    for(auto & entity : m_entities){
+                        if(entity.m_mesh->name == tempMesh->name){
+                            delete tempMesh;
+                            tempMesh = nullptr;
+                            tempEntity.m_mesh = entity.m_mesh;
+                            break;
+                        }
+                    }
+
+                    delete[] reinterpret_cast<char*>(buffer);
+                    /*********************************************************************/
+                    //number of verticies followed by them
+                    if(tempMesh){
+                        fread(&tempSize, sizeof(uint32_t), 1, tempFile);
+
+                        buffer = new Vertex[tempSize];
+                        fread(buffer, sizeof(Vertex), tempSize, tempFile);
+
+                        //todo: data into vector
+                        tempMesh->m_vertices.push_back(reinterpret_cast<Vertex*>(buffer)[0]);
+                    }
+                    /********************************************************************************/
+                    //number of vertex triangles followed by them
+
+                    /********************************************************************************/
+                    fclose(tempFile);
                     break;
                 case 2:
                     tempEntity.m_pos.x = std::stoi(tempLine.value());
