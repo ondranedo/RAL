@@ -19,18 +19,6 @@
 
 namespace RAL {
     class Mesh {
-
-        //todo: potentially make a factory for use in model creator
-        //      .obj or other foreign file support
-    public:
-        Mesh();
-        ~Mesh();
-
-        void openRalms(const std::string& path);
-
-        std::string getPath();
-
-    private:
         struct Vertex{
             float x;
             float y;
@@ -41,6 +29,27 @@ namespace RAL {
             uint32_t indexB;
             uint32_t indexC;
         };
+
+        //todo: potentially make a factory for use in model creator
+        //      .obj or other foreign file support
+    public:
+        Mesh();
+        ~Mesh();
+
+        void openRalms(const std::string& path);
+
+        void addVertex(float x, float y, float z);
+        void addVertex(Vertex vertex);
+        void addVertexTriangle(uint32_t indexA, uint32_t indexB, uint32_t indexC);
+        void addVertexTriangle(vertexTriangle triangle);
+        void removeVertex(uint32_t index);
+        void removeVertices(uint32_t beginIndex, uint32_t endIndex);
+        void removeVertexTriangle(uint32_t index);
+        void removeVertexTriangles(uint32_t beginIndex, uint32_t endIndex);
+
+        std::string getPath();
+
+    private:
         std::string m_path;
         std::vector<Vertex> m_vertices;
         std::vector<vertexTriangle> m_triangles;

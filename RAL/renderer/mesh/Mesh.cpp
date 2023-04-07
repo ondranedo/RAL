@@ -59,6 +59,54 @@ namespace RAL{
         return m_path;
     }
 
+    void Mesh::addVertex(float x, float y, float z) {
+        m_vertices.push_back({x,y,z});
+    }
+
+    void Mesh::addVertexTriangle(uint32_t indexA, uint32_t indexB, uint32_t indexC) {
+        m_triangles.push_back({indexA, indexB, indexC});
+    }
+
+    void Mesh::removeVertex(uint32_t index) {
+        if(index >= m_vertices.size()){
+            m_vertices.pop_back();
+        } else{
+            //todo: make faster??? maybe?
+            m_vertices[index] = m_vertices[m_vertices.size() - 1];
+            m_vertices.pop_back();
+        }
+    }
+
+    void Mesh::removeVertices(uint32_t beginIndex, uint32_t endIndex) {
+        for(uint32_t i = beginIndex; i <= endIndex; i++){
+            removeVertex(i);
+        }
+    }
+
+    void Mesh::removeVertexTriangle(uint32_t index) {
+        if(index >= m_triangles.size()){
+            m_triangles.pop_back();
+        } else{
+            //todo: make faster??? maybe?
+            m_triangles[index] = m_triangles[m_triangles.size() - 1];
+            m_triangles.pop_back();
+        }
+    }
+
+    void Mesh::removeVertexTriangles(uint32_t beginIndex, uint32_t endIndex) {
+        for(uint32_t i = beginIndex; i <= endIndex; i++){
+            removeVertexTriangle(i);
+        }
+    }
+
+    void Mesh::addVertex(Mesh::Vertex vertex) {
+        m_vertices.push_back(vertex);
+    }
+
+    void Mesh::addVertexTriangle(Mesh::vertexTriangle triangle) {
+        m_triangles.push_back(triangle);
+    }
+
     Mesh::Mesh() = default;
 
     Mesh::~Mesh() = default;
