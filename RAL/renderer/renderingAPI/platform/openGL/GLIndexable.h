@@ -10,22 +10,19 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#ifndef RAL_PROJECT_RENDERINGAPI_H
-#define RAL_PROJECT_RENDERINGAPI_H
-//TODO: Factory
-namespace RAL {
-    class RenderingAPI {
+#ifndef RAL_PROJECT_GLINDEXABLE_H
+#define RAL_PROJECT_GLINDEXABLE_H
+
+namespace RAL
+{
+    class GLIndexable
+    {
     public:
-        RenderingAPI() = default;
-        virtual ~RenderingAPI() = default;
-        virtual void init() = 0;
-        //TODO: MOVE TO SHADER FILE, maybe keep default shader
-        virtual void shaderInit() = 0;
-        virtual void compileShaders() = 0;
-        virtual void attachShader() = 0;
-        virtual void useDefaultProgram() = 0;
-    private:
+        GLIndexable();
+        virtual ~GLIndexable() = default;
+    protected:
+        unsigned int m_id;
     };
 } // RAL
 
-#endif //!RAL_PROJECT_RENDERINGAPI_H
+#endif //!RAL_PROJECT_GLINDEXABLE_H

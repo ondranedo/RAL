@@ -10,22 +10,25 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#ifndef RAL_PROJECT_RENDERINGAPI_H
-#define RAL_PROJECT_RENDERINGAPI_H
-//TODO: Factory
-namespace RAL {
-    class RenderingAPI {
-    public:
-        RenderingAPI() = default;
-        virtual ~RenderingAPI() = default;
-        virtual void init() = 0;
-        //TODO: MOVE TO SHADER FILE, maybe keep default shader
-        virtual void shaderInit() = 0;
-        virtual void compileShaders() = 0;
-        virtual void attachShader() = 0;
-        virtual void useDefaultProgram() = 0;
-    private:
-    };
-} // RAL
+#ifndef RAL_PROJECT_GLVERTEXBUFFER_H
+#define RAL_PROJECT_GLVERTEXBUFFER_H
 
-#endif //!RAL_PROJECT_RENDERINGAPI_H
+#include <renderer/renderingAPI/buffers/VertexBuffer.h>
+#include <renderer/renderingAPI/platform/openGL/GLIndexable.h>
+
+namespace RAL
+{
+    class GLVertexBuffer final : public virtual VertexBuffer, public virtual GLIndexable
+    {
+    public:
+        ~GLVertexBuffer() override;
+
+        explicit GLVertexBuffer(float *vertices,unsigned int size,DrawUsage usage);
+
+        void bind() const override;
+
+        void unbind() const override;
+
+    };
+};
+#endif //!RAL_PROJECT_GLVERTEXBUFFER_H

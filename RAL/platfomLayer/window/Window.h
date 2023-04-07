@@ -33,6 +33,7 @@ namespace RAL {
         virtual void setVSync(bool state) = 0;
         [[nodiscard]] virtual bool getVSync() const = 0;
         virtual void makeContextCurrent() = 0;
+        virtual void swapBuffers() = 0;
 
     protected:
         WindowSpec m_spec;

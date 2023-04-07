@@ -12,11 +12,23 @@
 #######################################################
 
 set(openGL
-        # path to pengl rendering api files
-        )
+        # path to openGL rendering api files
+        platform/openGL/GLRenderingAPI.cpp
+        platform/openGL/GLRenderingAPI.h
+        platform/openGL/GLVertexBuffer.cpp
+        platform/openGL/GLVertexBuffer.h
+        platform/openGL/GLVertexArray.cpp
+        platform/openGL/GLVertexArray.h
+        platform/openGL/GLIndexBuffer.cpp
+        platform/openGL/GLIndexBuffer.h platform/openGL/GLIndexable.cpp platform/openGL/GLIndexable.h)
 
 add_library(ral_renderer_renderingAPI STATIC
         RenderingAPI.cpp
         RenderingAPI.h
         ${openGL}
-        )
+        buffers/VertexBuffer.cpp
+        buffers/VertexBuffer.h
+        buffers/IndexBuffer.cpp
+        buffers/IndexBuffer.h
+        buffers/Buffer.cpp
+        buffers/Buffer.h)

@@ -10,22 +10,30 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#ifndef RAL_PROJECT_RENDERINGAPI_H
-#define RAL_PROJECT_RENDERINGAPI_H
-//TODO: Factory
-namespace RAL {
-    class RenderingAPI {
+#ifndef RAL_PROJECT_BUFFER_H
+#define RAL_PROJECT_BUFFER_H
+
+namespace RAL
+{
+    class Buffer
+    {
     public:
-        RenderingAPI() = default;
-        virtual ~RenderingAPI() = default;
-        virtual void init() = 0;
-        //TODO: MOVE TO SHADER FILE, maybe keep default shader
-        virtual void shaderInit() = 0;
-        virtual void compileShaders() = 0;
-        virtual void attachShader() = 0;
-        virtual void useDefaultProgram() = 0;
-    private:
+        virtual void bind() const = 0;
+
+        virtual void unbind() const = 0;
+
+        /**
+        1: VOLATILE = GL_STREAM_DRAW Data is set only once and used by the GPU few times
+        2: STATIC = GL_STATIC_DRAW Data is set only once and used many times
+        3: DYNAMIC = GL_DYNAMIC_DRAW Data is changed a lot and used many times
+        */
+        enum class DrawUsage : unsigned char
+        {
+            STATIC,
+            DYNAMIC,
+            VOLATILE
+        };
     };
 } // RAL
 
-#endif //!RAL_PROJECT_RENDERINGAPI_H
+#endif //!RAL_PROJECT_BUFFER_H

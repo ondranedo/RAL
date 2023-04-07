@@ -10,22 +10,18 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#ifndef RAL_PROJECT_RENDERINGAPI_H
-#define RAL_PROJECT_RENDERINGAPI_H
-//TODO: Factory
-namespace RAL {
-    class RenderingAPI {
-    public:
-        RenderingAPI() = default;
-        virtual ~RenderingAPI() = default;
-        virtual void init() = 0;
-        //TODO: MOVE TO SHADER FILE, maybe keep default shader
-        virtual void shaderInit() = 0;
-        virtual void compileShaders() = 0;
-        virtual void attachShader() = 0;
-        virtual void useDefaultProgram() = 0;
-    private:
-    };
-} // RAL
+#ifndef RAL_PROJECT_VERTEXBUFFER_H
+#define RAL_PROJECT_VERTEXBUFFER_H
 
-#endif //!RAL_PROJECT_RENDERINGAPI_H
+#include <renderer/renderingAPI/buffers/Buffer.h>
+
+namespace RAL
+{
+    class VertexBuffer : public virtual Buffer
+    {
+    public:
+        virtual ~VertexBuffer() = default;
+
+    };
+};
+#endif //!RAL_PROJECT_VERTEXBUFFER_H
