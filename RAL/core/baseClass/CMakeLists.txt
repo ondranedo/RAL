@@ -11,7 +11,7 @@
 # See file `LICENSE` for full license details.        #
 #######################################################
 # baseClasses (interfaces) for many parts of the engine
-add_library(ral_core_base_class
+add_library(ral_core_baseClass STATIC
         BaseComponent.cpp
         BaseComponent.h
         BaseFactory.cpp

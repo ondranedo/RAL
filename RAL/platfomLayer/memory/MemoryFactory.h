@@ -20,10 +20,12 @@
 #include <platfomLayer/memory/Memory.h>
 
 namespace RAL {
-    class MemoryFactory : public BaseFactory<Memory> {
+    class MemoryFactory : public BaseFactory {
     public:
         MemoryFactory();
         Memory *create() override;
+
+        [[nodiscard]] std::string productName() const override;
     };
 } // RAL
 

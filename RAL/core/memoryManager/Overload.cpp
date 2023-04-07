@@ -28,7 +28,12 @@ namespace RAL {
     };
 };
 
-void* operator new(size_t size) {
+
+#ifdef  _MSC_VER
+[[nodiscard]] __declspec(allocator) void* operator new(size_t size) noexcept {
+#else
+void* operator new(size_t size){
+#endif
     RAL_ASSERTR(RAL::global::_memManager != nullptr, malloc(size), "Memory manager is not initialized! using malloc");
     return RAL::global::_memManager->alloc_size(size);
 }

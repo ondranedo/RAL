@@ -27,4 +27,8 @@ namespace RAL {
 	const std::string& File::getPath() const {
         return m_path;
     }
+
+    void File::init() { }
+    void File::release() {}
+    void File::update() { }
 }

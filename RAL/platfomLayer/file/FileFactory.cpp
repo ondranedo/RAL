@@ -33,4 +33,8 @@ namespace RAL {
         RAL_ASSERTR(false, nullptr, "Unknown platform when creating txt file");
     }
 
+    std::string FileFactory::productName() const {
+        return "File";
+    }
+
 } // RAL

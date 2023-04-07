@@ -20,9 +20,10 @@
 #include <string>
 #include <vector>
 #include <optional>
+#include <core/baseClass/BaseComponent.h>
 
 namespace RAL {
-    class File {
+    class File : public BaseComponent {
 	public:
         enum class Mode {
             None, Read, Write, ReadWrite, Append
@@ -37,6 +38,12 @@ namespace RAL {
 
         [[nodiscard]] Mode getMode() const;
         [[nodiscard]] const std::string& getPath() const;
+
+        void init() override;
+
+        void release() override;
+
+        void update() override;
 
     protected:
         Mode m_mode;
