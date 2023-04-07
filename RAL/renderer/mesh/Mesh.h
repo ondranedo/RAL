@@ -10,38 +10,36 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#ifndef RAL_PROJECT_SCENE_H
-#define RAL_PROJECT_SCENE_H
 
-#include <vector>
-#include <cstdint>
+#ifndef RAL_PROJECT_MESH_H
+#define RAL_PROJECT_MESH_H
+
 #include <string>
-#include "renderer/mesh/Mesh.h"
+#include <vector>
 
 namespace RAL {
-    class Scene {
+    class Mesh {
+
+        //todo: potentially make a factory for use in model creator
+        //      .obj or other foreign file support
     public:
-        Scene();
-        ~Scene();
+        explicit Mesh(const std::string& path);
+        ~Mesh();
 
-        void loadTxtScene(const std::string& scenePath);
-        void loadBinScene();
-        void saveBinScene();
-
-    private:
-        struct intPos{
-            int32_t x;
-            int32_t y;
-            int32_t z;
+        struct Vertex{
+            float x;
+            float y;
+            float z;
         };
-
-        struct Entity{
-            Mesh* m_mesh;
-            std::string name;
-            intPos m_pos;
+        struct vertexTriangle{
+            uint32_t indexA;
+            uint32_t indexB;
+            uint32_t indexC;
         };
-        std::vector<Entity> m_entities;
+        std::string name;
+        std::vector<Vertex> m_vertices;
+        std::vector<vertexTriangle> m_triangles;
     };
 } // RAL
 
-#endif //!RAL_PROJECT_SCENE_H
+#endif //RAL_PROJECT_MESH_H

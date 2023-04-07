@@ -47,9 +47,6 @@ namespace RAL {
         Entity tempEntity;
         Mesh* tempMesh;
         int8_t switcher = 0;
-        FILE* tempFile;
-        uint32_t tempSize;
-        void* buffer;
 
         //there is memory leak potential if the scene file doesn't follow the strict guidelines
         while (auto tempLine = file.readLine()){
@@ -68,22 +65,9 @@ namespace RAL {
                     tempEntity.name = tempLine.value();
                     break;
                 case 1:
-                    //TODO: switch to File
-                    //      potentially move meshes to another files / classes
-                    //      i.e Mesh* openMesh(path)
-                    //      ONDRANEDO CODE REVIEW
-                    tempFile = fopen(tempLine->c_str(), "rb");
-                    tempMesh = new Mesh;
+                    tempMesh = new Mesh(tempLine.value());
 
-                    //.ralms has this structure:
-                    /*****************************************************************************/
-                    //length of c string (max 255) followed by name <- used for optimization
-                    fread(&tempSize, sizeof(uint8_t), 1, tempFile);
-
-                    buffer = new char[tempSize];
-                    fread(buffer, sizeof(char), tempSize, tempFile);
-
-                    tempMesh->name = reinterpret_cast<char*>(buffer);
+                    // optimization: if mesh was used, point to the already loaded one
                     for(auto & entity : m_entities){
                         if(entity.m_mesh->name == tempMesh->name){
                             delete tempMesh;
@@ -93,41 +77,9 @@ namespace RAL {
                         }
                     }
 
-                    delete[] reinterpret_cast<char*>(buffer);
-                    /*********************************************************************/
-                    //number of verticies followed by them
-                    if(tempMesh){
-                        fread(&tempSize, sizeof(uint32_t), 1, tempFile);
-
-                        buffer = new Vertex[tempSize];
-                        fread(buffer, sizeof(Vertex), tempSize, tempFile);
-
-                        //todo: something less dumb
-                        //      we already have an array so find a way to stuff it into the vector
-                        for(int i = 0; i < tempSize; i++){
-                            tempMesh->m_vertices.push_back(reinterpret_cast<Vertex*>(buffer)[i]);
-                        }
-                        delete[] reinterpret_cast<Vertex*>(buffer);
-                    }
-                    /********************************************************************************/
-                    //number of vertex triangles followed by them
-                    if(tempMesh){
-                        fread(&tempSize, sizeof(uint32_t), 1, tempFile);
-
-                        buffer = new vertexTriangle[tempSize];
-                        fread(buffer, sizeof(vertexTriangle), tempSize, tempFile);
-
-                        //todo: same here
-                        for(int i = 0; i < tempSize; i++){
-                            tempMesh->m_triangles.push_back(reinterpret_cast<vertexTriangle*>(buffer)[i]);
-                        }
-                        delete[] reinterpret_cast<vertexTriangle*>(buffer);
-                    }
-                    /********************************************************************************/
                     if(tempMesh){
                         tempEntity.m_mesh = tempMesh;
                     }
-                    fclose(tempFile);
                     break;
                 case 2:
                     tempEntity.m_pos.x = std::stoi(tempLine.value());
