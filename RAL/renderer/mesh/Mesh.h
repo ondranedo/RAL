@@ -23,8 +23,10 @@ namespace RAL {
         //todo: potentially make a factory for use in model creator
         //      .obj or other foreign file support
     public:
-        explicit Mesh(const std::string& path);
+        Mesh();
         ~Mesh();
+
+        void openRalms(const std::string& path);
 
         std::string getPath();
 

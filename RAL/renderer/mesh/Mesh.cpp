@@ -15,7 +15,7 @@
 
 namespace RAL{
 
-    Mesh::Mesh(const std::string& path) {
+    void Mesh::openRalms(const std::string& path) {
         //TODO: switch to File
         //      ONDRANEDO CODE REVIEW
 
@@ -58,6 +58,8 @@ namespace RAL{
     std::string Mesh::getPath() {
         return m_path;
     }
+
+    Mesh::Mesh() = default;
 
     Mesh::~Mesh() = default;
 }

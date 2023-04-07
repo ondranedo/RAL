@@ -75,7 +75,8 @@ namespace RAL {
                     }
 
                     if(!tempEntity.m_mesh){
-                        tempEntity.m_mesh = new Mesh(tempLine.value());
+                        tempEntity.m_mesh = new Mesh;
+                        tempEntity.m_mesh->openRalms(tempLine.value());
                     }
                     break;
                 case 2:
