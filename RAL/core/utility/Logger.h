@@ -49,9 +49,6 @@ namespace RAL {
         void setConsoleInterpreter(ConsoleInterpreter* consoleInterpreter);
         void detachConsoleInterpreter();
 
-        void startLogLoop();
-        void endLogLoop();
-
     private:
         template<typename ...Args>
         void printMsg(char* msgBuff, LogMsg::Level level, Args... args) const;
@@ -66,7 +63,6 @@ namespace RAL {
         char& guardByte = m_msgQueue[m_msgQueueSize].m_buff[RAL_LOG_MSG_SIZE-1];
 #endif
         bool m_logLoop;
-        std::mutex m_mutex;
     };
     namespace global{
         extern Logger mainLogger;
@@ -74,7 +70,6 @@ namespace RAL {
 
     template<typename... Args>
     void Logger::log(LogMsg::Level level, Args... args) {
-        std::lock_guard<std::mutex> lock(m_mutex);
         if(m_level > level) return;
         if(m_msgQueueSize >= RAL_LOG_MSG_QUEUE_SIZE - 2) {
             log(LogMsg::Level::ERROR, "Logger buffer overflow! msg count = %d", m_msgQueueSize + 1);

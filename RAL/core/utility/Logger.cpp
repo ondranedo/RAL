@@ -42,7 +42,6 @@ namespace RAL {
     }
 
     void Logger::print() {
-        std::lock_guard<std::mutex> lock(m_mutex);
         for(size_t i = 0; i < m_msgQueueSize; ++i)
         {
             LogMsg &msg = m_msgQueue[i];
@@ -62,26 +61,13 @@ namespace RAL {
     }
 
     void Logger::setConsoleInterpreter(ConsoleInterpreter *consoleInterpreter) {
-        std::lock_guard<std::mutex> lock(m_mutex);
         RAL_ASSERT(m_consoleInterpreter == nullptr, "Console interpreter is not nullptr");
         RAL_ASSERTRV(consoleInterpreter != nullptr, "Console interpreter is nullptr");
         m_consoleInterpreter = consoleInterpreter;
     }
 
     void Logger::detachConsoleInterpreter() {
-        std::lock_guard<std::mutex> lock(m_mutex);
         RAL_ASSERT(m_consoleInterpreter != nullptr, "Console interpreter is nullptr");
         m_consoleInterpreter = nullptr;
-    }
-
-    void Logger::endLogLoop() {
-        std::lock_guard<std::mutex> lock(m_mutex);
-        m_logLoop = false;
-    }
-
-    void Logger::startLogLoop() {
-        m_logLoop = true;
-        while(m_logLoop)
-            print();
     }
 } // RAL

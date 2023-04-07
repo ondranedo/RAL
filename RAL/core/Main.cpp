@@ -20,16 +20,12 @@ namespace RAL {
     int main(const StartupInfo& info) {
         MemoryManager mgr(info.memory);
         global::setMemoryManager(&mgr);
-        std::thread loggerThread(&global::mainLogger.startLogLoop, &global::mainLogger);
 
         auto app = new RAL::Application({&mgr, info.consoleInterpreter});
         app->inti();
         app->run();
         app->release();
         delete app;
-
-        global::mainLogger.endLogLoop();
-        loggerThread.join();
 
         return 0;
     }
