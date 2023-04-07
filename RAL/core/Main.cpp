@@ -15,47 +15,43 @@
 #include <core/Core.h>
 #include <core/memoryManager/MemoryManager.h>
 #include <core/Application.h>
-
+#include <thread>
 namespace RAL {
     int main(const StartupInfo& info) {
-        RAL::MemoryManager mgr(info.memory);
-        RAL::global::setMemoryManager(&mgr);
-        RAL::global::mainLogger.setConsoleInterpreter(info.consoleInterpreter);
+        MemoryManager mgr(info.memory);
+        global::setMemoryManager(&mgr);
 
-        auto app = new RAL::Application();
-
+        auto app = new RAL::Application({&mgr, info.consoleInterpreter});
+        app->inti();
         app->run();
-
+        app->release();
         delete app;
 
         return 0;
     }
 }
 
+#ifdef RAL_WINDOWS_USE_WINMAIN
 
-// TODO: move it into platform layer
-#ifdef RAL_WINDOWS
-#include <platfomLayer/windows/memory/Win32Memory.h>
-#include <platfomLayer/windows/consoleInterpreter/Win32ConsoleInterpreter.h>
+#include "Win32Main.h"
+#include <windows.h>
 
-int main(int argc, char** argv) {
-    RAL::Win32::Win32Memory memory;
-    RAL::Win32::Win32ConsoleInterpreter interpreter;
-    interpreter.init();
-    interpreter.setTitle("RAL engine - debug console");
-    interpreter.log("Starting logging...\n", RAL::ConsoleInterpreter::ColourForeground::GREEN,  RAL::ConsoleInterpreter::ColourBackground::BLACK);
-
-    RAL::StartupInfo info = { &interpreter, &memory };
-    RAL::main(info);
-
-#ifdef RAL_DEBUG
-    RAL::global::mainLogger.print();
-    system("pause");
-#endif //!RAL_DEBUG
-
-    //interpreter.release();
-    //memory.release();
-
-    return 0;
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
+{
+	return RAL::Win32::main();
 }
-#endif //!RAL_WINDOWS
+
+#else
+
+#ifdef RAL_WINDOWS
+#include <platfomLayer/windows/Win32Main.h>
+#endif
+
+int main(int, char**)
+{
+#ifdef RAL_WINDOWS
+    return RAL::Win32::main();
+#endif
+}
+
+#endif //!RAL_WINDOWS_USE_WINMAIN

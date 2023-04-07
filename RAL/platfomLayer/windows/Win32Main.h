@@ -10,14 +10,17 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#ifndef RAL_PROJECT_RENDERER2D_H
-#define RAL_PROJECT_RENDERER2D_H
+
+
+#ifndef RAL_PROJECT_WIN32MAIN_H
+#define RAL_PROJECT_WIN32MAIN_H
+#ifdef RAL_WINDOWS
 
 namespace RAL {
-    class Renderer2D {
-    public:
-    private:
-    };
-} // RAL
+    namespace Win32 {
+        int main();
+    }
+}
 
-#endif //!RAL_PROJECT_RENDERER2D_H
+#endif //!RAL_WINDOWS
+#endif //!RAL_PROJECT_WIN32MAIN_H

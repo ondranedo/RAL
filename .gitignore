@@ -3,3 +3,5 @@
 CMakeSettings.json
 /cmake-build-debug/
 /.idea
+/RAL/out/build/x64-Debug
+/RAL/.vs

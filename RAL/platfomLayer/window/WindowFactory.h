@@ -23,19 +23,21 @@
 #endif
 
 namespace RAL{
-    class WindowFactory final : public BaseFactory<Window>{
+    class WindowFactory final : public BaseFactory {
     public:
         Window *create() override;
 
         template<class... Args>
         Window *create(Args... args);
+
+        [[nodiscard]] std::string productName() const override;
     };
 
 
     template<class... Args>
     Window *WindowFactory::create(Args... args) {
 #ifdef RAL_WINDOWS
-        return createPass(new Win32::Win32Window(args...));
+        return RAL_BASEFACTORY_CREATE_ADR(Win32::Win32Window, new Win32::Win32Window(args...));
 #endif
         RAL_ASSERTR(false, nullptr, "Unknown platform when creating window");
     }

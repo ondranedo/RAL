@@ -40,5 +40,10 @@ namespace RAL {
                    m_nOfBytesOnHeap,m_nOfBytesOnHeap>1?"s":"",
                    m_nOfBlocks,m_nOfBlocks>1?"s":"");
         RAL_ASSERT(m_nOfAlignedBlocks == 0, "Memory leak on aligned heap detected -  %d blocks not freed", m_nOfAlignedBlocks);
+        if(m_nOfBytesOnHeap != 0 || m_nOfBlocks != 0 || m_nOfAlignedBlocks != 0)
+        {
+            //TODO: add file logging
+            system("pause");
+        }
     }
 } // RAL

@@ -11,7 +11,7 @@
 # See file `LICENSE` for full license details.        #
 #######################################################
 
-add_library(ral_core_fileManager
+add_library(ral_core_fileManager STATIC
     FileManager.cpp
     FileManager.h
     FileManagerFactory.cpp
