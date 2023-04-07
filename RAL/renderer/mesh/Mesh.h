@@ -26,6 +26,9 @@ namespace RAL {
         explicit Mesh(const std::string& path);
         ~Mesh();
 
+        std::string getPath();
+
+    private:
         struct Vertex{
             float x;
             float y;
@@ -36,7 +39,7 @@ namespace RAL {
             uint32_t indexB;
             uint32_t indexC;
         };
-        std::string name;
+        std::string m_path;
         std::vector<Vertex> m_vertices;
         std::vector<vertexTriangle> m_triangles;
     };

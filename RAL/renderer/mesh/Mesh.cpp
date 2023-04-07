@@ -23,18 +23,10 @@ namespace RAL{
         void* buffer;
         FILE* file = fopen(path.c_str(), "rb");
 
+        m_path = path;
+
         //.ralms has this structure:
         /*****************************************************************************/
-        //length of c string (max 255) followed by name <- used for optimization
-        fread(&size, sizeof(uint8_t), 1, file);
-
-        buffer = new char[size];
-        fread(buffer, sizeof(char), size, file);
-
-        name = reinterpret_cast<char*>(buffer);
-
-        delete[] reinterpret_cast<char*>(buffer);
-        /*********************************************************************/
         //number of verticies followed by them
         fread(&size, sizeof(uint32_t), 1, file);
 
@@ -62,5 +54,11 @@ namespace RAL{
         /********************************************************************************/
         fclose(file);
     }
+
+    std::string Mesh::getPath() {
+        return m_path;
+    }
+
+    Mesh::~Mesh() = default;
 }
 

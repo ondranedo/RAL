@@ -45,7 +45,6 @@ namespace RAL {
         file.RAL::Win32::Win32File::open(scenePath, File::Mode::Read);
 
         Entity tempEntity;
-        Mesh* tempMesh;
         int8_t switcher = 0;
 
         //there is memory leak potential if the scene file doesn't follow the strict guidelines
@@ -65,20 +64,18 @@ namespace RAL {
                     tempEntity.name = tempLine.value();
                     break;
                 case 1:
-                    tempMesh = new Mesh(tempLine.value());
+                    tempEntity.m_mesh = nullptr;
 
                     // optimization: if mesh was used, point to the already loaded one
                     for(auto & entity : m_entities){
-                        if(entity.m_mesh->name == tempMesh->name){
-                            delete tempMesh;
-                            tempMesh = nullptr;
+                        if(entity.m_mesh->getPath() == tempLine.value()){
                             tempEntity.m_mesh = entity.m_mesh;
                             break;
                         }
                     }
 
-                    if(tempMesh){
-                        tempEntity.m_mesh = tempMesh;
+                    if(!tempEntity.m_mesh){
+                        tempEntity.m_mesh = new Mesh(tempLine.value());
                     }
                     break;
                 case 2:
