@@ -55,8 +55,8 @@ namespace RAL
         WindowFactory factory;
         WindowSpec spec;
         strcpy(spec.m_title, "Ahoj");
-        spec.m_height = 800;
-        spec.m_width = 500;
+        spec.m_height = 1280;
+        spec.m_width = 720;
         spec.m_created = false;
         window = factory.create(spec);
         window->init();
@@ -71,8 +71,10 @@ namespace RAL
         rAPI.init();
         GLVertexArray va;
         va.bind();
-        GLVertexBuffer vb(vertices, sizeof(vertices), Buffer::DrawUsage::STATIC);
-        GLIndexBuffer ib(indices, sizeof(indices), Buffer::DrawUsage::STATIC);
+        GLVertexBuffer vb;
+        vb.setData(vertices, sizeof(vertices), Buffer::DrawUsage::STATIC);
+        GLIndexBuffer ib;
+        ib.setData(indices, sizeof(indices), Buffer::DrawUsage::STATIC);
         va.setLayout();
         global::mainLogger.print();
         while (1)
@@ -85,7 +87,6 @@ namespace RAL
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
             window->swapBuffers();
             window->update();
-
         }
         window->destroy();
         window->release();

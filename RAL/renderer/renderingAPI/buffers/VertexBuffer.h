@@ -21,7 +21,7 @@ namespace RAL
     {
     public:
         virtual ~VertexBuffer() = default;
-
+        virtual void setData(float *vertices,unsigned int size,DrawUsage usage) = 0;
     };
 };
 #endif //!RAL_PROJECT_VERTEXBUFFER_H

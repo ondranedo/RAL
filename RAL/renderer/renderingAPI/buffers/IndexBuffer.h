@@ -17,10 +17,11 @@
 
 namespace RAL
 {
-    class IndexBuffer : public Buffer
+    class IndexBuffer : public virtual Buffer
     {
     public:
         virtual ~IndexBuffer() = default;
+        virtual void setData(unsigned int *indices,unsigned int size,DrawUsage usage) = 0;
     private:
     };
 } // RAL

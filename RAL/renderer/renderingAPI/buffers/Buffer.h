@@ -34,6 +34,12 @@ namespace RAL
             VOLATILE
         };
     };
+
+    class Layout{
+    public:
+
+    };
+
 } // RAL
 
 #endif //!RAL_PROJECT_BUFFER_H

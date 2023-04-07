@@ -21,22 +21,18 @@ namespace RAL
         glDeleteBuffers(1, &m_id);
     }
 
-    GLIndexBuffer::GLIndexBuffer(unsigned int *indices, unsigned int size, DrawUsage usage)
+    GLIndexBuffer::GLIndexBuffer()
     {
         glGenBuffers(1, &m_id);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
-        switch (usage)
-        {
-            case DrawUsage::VOLATILE:
-                glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STREAM_DRAW);
-                break;
-            case DrawUsage::STATIC:
-                glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STATIC_DRAW);
-                break;
-            case DrawUsage::DYNAMIC:
-                glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_DYNAMIC_DRAW);
-                break;
-        }
+    }
+
+    void GLIndexBuffer::setData(unsigned int *indices, unsigned int size, DrawUsage usage)
+    {
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices,
+                     usage == DrawUsage::VOLATILE ? GL_STREAM_DRAW :
+                     usage == DrawUsage::STATIC ? GL_STATIC_DRAW :
+                     GL_DYNAMIC_DRAW);
     }
 
     void GLIndexBuffer::bind() const
