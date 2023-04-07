@@ -15,18 +15,21 @@
 #include <core/Core.h>
 #include <core/memoryManager/MemoryManager.h>
 #include <core/Application.h>
-
+#include <thread>
 namespace RAL {
     int main(const StartupInfo& info) {
-        RAL::MemoryManager mgr(info.memory);
-        RAL::global::setMemoryManager(&mgr);
-        RAL::global::mainLogger.setConsoleInterpreter(info.consoleInterpreter);
+        MemoryManager mgr(info.memory);
+        global::setMemoryManager(&mgr);
+        std::thread loggerThread(&global::mainLogger.startLogLoop, &global::mainLogger);
 
         auto app = new RAL::Application({&mgr, info.consoleInterpreter});
         app->inti();
         app->run();
         app->release();
         delete app;
+
+        global::mainLogger.endLogLoop();
+        loggerThread.join();
 
         return 0;
     }

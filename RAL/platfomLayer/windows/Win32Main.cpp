@@ -13,7 +13,7 @@
 
 #ifdef RAL_WINDOWS
 
-#include <core/Core.h>
+#include <thread>
 #include <core/Main.h>
 #include <core/utility/Logger.h>
 #include <platfomLayer/windows/memory/Win32Memory.h>
@@ -25,25 +25,30 @@ namespace RAL {
 		{
 			RAL_LOG_DEBUG("Starting on Windows");
 
-			RAL::Win32::Win32Memory memory;
-			RAL::Win32::Win32ConsoleInterpreter interpreter;
+            Win32Memory memory;
+			Win32ConsoleInterpreter interpreter;
 			interpreter.init();
 			interpreter.setTitle("RAL engine - debug console");
 			interpreter.log(" \xDA");
-			interpreter.log("Starting logging...\n", RAL::ConsoleInterpreter::ColourForeground::GRAY, RAL::ConsoleInterpreter::ColourBackground::BLACK);
+			interpreter.log("Starting logging...\n", ConsoleInterpreter::ColourForeground::GRAY, ConsoleInterpreter::ColourBackground::BLACK);
 			interpreter.log("\xB3\n");
 
-			RAL::StartupInfo info = { &interpreter, &memory };
+            global::mainLogger.setConsoleInterpreter(&interpreter);
+
+
+			StartupInfo info = { &interpreter, &memory };
 			RAL::main(info);
 
-			RAL::global::mainLogger.print();
+            RAL_LOG_DEBUG("Ending on Windows");
+
+            global::mainLogger.print();
 			interpreter.log("\xB3\n");
 			interpreter.log("\xAF");
 #ifdef RAL_DEBUG
 			system("pause");
 #endif //!RAL_DEBUG
             interpreter.release();
-			RAL::global::mainLogger.detachConsoleInterpreter();
+			global::mainLogger.detachConsoleInterpreter();
 
 			return 0;
 		}
