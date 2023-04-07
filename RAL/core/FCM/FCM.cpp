@@ -72,13 +72,7 @@ namespace RAL {
                 if(!m_components[i].wasReleased)
                     m_components[i].ptr->release();
 
-                if(m_components[i].shouldDelete)
-                {
-                    if(m_components[i].motherFactory)
-                        m_components[i].motherFactory->ptr->destroy(m_components[i].ptr);
-                    else
-                        delete m_components[i].ptr;
-                }
+                getRidOfComponent(m_components[i]);
 
                 m_components[i].motherFactory->ptr->destroy(m_components[i].ptr);
                 RAL_LOG_DEBUG("Removed component: ", name.c_str());
@@ -140,7 +134,7 @@ namespace RAL {
         {
             if(!component.wasReleased)
             {
-                component.ptr->init();
+                component.ptr->release();
 #ifdef RAL_DEBUG
                 count++;
 #endif
@@ -159,13 +153,7 @@ namespace RAL {
     void FCM::clearComponents() {
         releaseComponents();
         for(auto &component : m_components)
-        {
-            if(!component.shouldDelete) continue;
-            if(component.motherFactory)
-                component.motherFactory->ptr->destroy(component.ptr);
-            else
-                delete component.ptr;
-        }
+            getRidOfComponent(component);
 
         m_components.clear();
     }
@@ -178,13 +166,13 @@ namespace RAL {
         m_factories.clear();
     }
 
-    void FCM::addComponent(BaseComponent *component, const std::string &name, bool wasInitialized, bool shouldDelete) {
+    void FCM::addComponent(BaseComponent *component, const std::string &name, bool wasInitialized, bool shlouldRelease, bool shouldDelete ) {
         Component com;
         com.motherFactory = nullptr;
         com.name = name;
         com.ptr = component;
         com.wasInitialized = wasInitialized;
-        com.wasReleased = false;
+        com.wasReleased = !shlouldRelease;
         com.shouldDelete = shouldDelete;
         m_components.push_back(com);
     }
@@ -195,5 +183,18 @@ namespace RAL {
 
     size_t FCM::getFactoriesCount() const {
         return m_factories.size();
+    }
+
+    void FCM::getRidOfComponent(FCM::Component &component) {
+        if(!component.wasReleased)
+        {
+            RAL_LOG_WARNING("Component %s was not released before destruction", component.name.c_str());
+            component.ptr->release();
+        }
+        if(!component.shouldDelete) return;
+        if(component.motherFactory)
+            component.motherFactory->ptr->destroy(component.ptr);
+        else
+            delete component.ptr;
     }
 } // RAL

@@ -54,7 +54,7 @@ namespace RAL {
         template <typename T> void addComponentToFactory(BaseComponent* component, const std::string& name, bool wasInitialized = false);
 
         // Adding component without linked factory
-        void addComponent(BaseComponent* component, const std::string& name, bool wasInitialized = false, bool shouldDelete = true);
+        void addComponent(BaseComponent* component, const std::string& name, bool wasInitialized = false, bool shlouldRelease = true, bool shouldDelete = true);
 
         // Factory have to be created on heap, because it is deleted in FCM
         // Component has to be build using that factory
@@ -99,6 +99,10 @@ namespace RAL {
         void printComponents();
         void printFactories();
 #endif
+    private:
+        void getRidOfComponent(Component& component);
+
+
     private:
         std::vector<Factory> m_factories;
         std::vector<Component> m_components;

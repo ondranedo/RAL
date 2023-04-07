@@ -42,7 +42,7 @@ namespace RAL {
 #ifdef RAL_DEBUG
 			system("pause");
 #endif //!RAL_DEBUG
-
+            interpreter.release();
 			RAL::global::mainLogger.detachConsoleInterpreter();
 
 			return 0;

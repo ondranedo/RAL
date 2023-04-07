@@ -24,8 +24,8 @@ namespace RAL {
     Application::Application(const ConstructInfo& info) : m_fcm({}) {
         RAL_LOG_DEBUG("Engine creation");
 
-        m_fcm.addComponent(info.memory, "memory", true, false);
-        m_fcm.addComponent(info.consoleInterpreter, "console", true, false);
+        m_fcm.addComponent(info.memory, "memory", true, false, false);
+        m_fcm.addComponent(info.consoleInterpreter, "console", true, false, false);
         m_fcm.addFactory<LayerManagerFactory>();
         m_fcm.addFactory<EventManagerFactory>();
 
@@ -46,6 +46,7 @@ namespace RAL {
 
     void Application::release() {
         RAL_LOG_DEBUG("Engine release");
+
         m_fcm.releaseComponents();
     }
 
@@ -56,9 +57,6 @@ namespace RAL {
     void Application::run() {
         RAL_LOG_INFO("Engine starting main loop");
 
-        while (true) {
-            m_fcm.updateComponents();
-            global::mainLogger.print();
-        }
+        m_fcm.updateComponents();
     }
 } // RAL
