@@ -22,10 +22,10 @@ namespace RAL {
         RAL::global::setMemoryManager(&mgr);
         RAL::global::mainLogger.setConsoleInterpreter(info.consoleInterpreter);
 
-        auto app = new RAL::Application();
-
+        auto app = new RAL::Application({&mgr, info.consoleInterpreter});
+        app->inti();
         app->run();
-
+        app->release();
         delete app;
 
         return 0;

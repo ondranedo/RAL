@@ -15,19 +15,38 @@
 #include "Application.h"
 #include <core/utility/Logger.h>
 
+#include <core/FCM/FCM.h>
 #include <core/layers/LayerManagerFactory.h>
+#include <platfomLayer/window/WindowFactory.h>
+#include <core/events/EventManagerFactory.h>
 
 namespace RAL {
-    Application::Application() {
-        RAL_LOG_DEBUG("Engine initialization started");
+    Application::Application(const ConstructInfo& info) : m_fcm({}) {
+        RAL_LOG_DEBUG("Engine creation");
 
-        RAL_LOG_DEBUG("Engine initialization ended");
+        m_fcm.addComponent(info.memory, "memory", true, false);
+        m_fcm.addComponent(info.consoleInterpreter, "console", true, false);
+        m_fcm.addFactory<LayerManagerFactory>();
+        m_fcm.addFactory<EventManagerFactory>();
+
+        m_fcm.createComponents();
+        RAL_LOG_INFO("Engine is at possession of %llu components", m_fcm.getComponentCount());
     }
 
-    Application::~Application() {
-        RAL_LOG_DEBUG("Engine release started");
+    Application::~Application()
+    {
+        RAL_LOG_DEBUG("Engine destruction");
+        m_fcm.clearFactories();
+    }
 
-        RAL_LOG_DEBUG("Engine release ended");
+    void Application::inti() {
+        RAL_LOG_DEBUG("Engine initialization");
+        m_fcm.initComponents();
+    }
+
+    void Application::release() {
+        RAL_LOG_DEBUG("Engine release");
+        m_fcm.releaseComponents();
     }
 
     void Application::onEvent(Event *event) {
@@ -35,7 +54,11 @@ namespace RAL {
     }
 
     void Application::run() {
-        RAL_LOG_INFO("Engine starting!");
+        RAL_LOG_INFO("Engine starting main loop");
 
+        while (true) {
+            m_fcm.updateComponents();
+            global::mainLogger.print();
+        }
     }
 } // RAL

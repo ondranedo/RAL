@@ -20,4 +20,6 @@ namespace RAL {
     std::string EventManagerFactory::productName() const {
         return "EventManager";
     }
+
+    EventManagerFactory::EventManagerFactory() : BaseFactory(1) {}
 } // RAL

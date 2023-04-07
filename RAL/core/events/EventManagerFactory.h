@@ -16,9 +16,11 @@
 #include <core/events/EventManager.h>
 
 namespace RAL {
-    class EventManagerFactory : public BaseFactory<EventManager>{
+    class EventManagerFactory : public BaseFactory {
     public:
+        EventManagerFactory();
         EventManager *create() override;
+        [[nodiscard]] std::string productName() const override;
 
     };
 } // RAL
