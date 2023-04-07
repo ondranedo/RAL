@@ -37,6 +37,7 @@ namespace RAL {
             // flags
             bool wasInitialized : 1;
             bool wasReleased : 1;
+            bool shouldDelete : 1;
         };
 
     public:
@@ -52,11 +53,15 @@ namespace RAL {
         // Adding component to already added factory
         template <typename T> void addComponentToFactory(BaseComponent* component, const std::string& name, bool wasInitialized = false);
 
+        // Adding component without linked factory
+        void addComponent(BaseComponent* component, const std::string& name, bool wasInitialized = false, bool shouldDelete = true);
+
         // Factory have to be created on heap, because it is deleted in FCM
         // Component has to be build using that factory
         template <typename T> void addComponentAndFactory(BaseFactory* factory, T* component, const std::string& name, bool wasInitialized = false);
 
         // Creating component with custom constructor and adding it to factory
+        // T is factory type
         template<typename T, typename... Args> void customComponentCreation(const std::string& name, Args ... args);
 
         // Removing component through constructor
@@ -86,6 +91,9 @@ namespace RAL {
 
         // Find component by name and return it
         template<typename T> T* get(const std::string& name);
+
+        [[nodiscard]] size_t getComponentCount() const;
+        [[nodiscard]] size_t getFactoriesCount() const;
 
 #ifdef RAL_DEBUG
         void printComponents();
@@ -118,7 +126,7 @@ namespace RAL {
                 // Deleting factory
                 delete m_factories[i].ptr;
                 m_factories[i].ptr = nullptr;
-                m_factories.erase(m_factories.begin() + i);
+                m_factories.erase(m_factories.begin() + static_cast<long long>(i));
                 return;
             }
         RAL_LOG_WARNING("Factory %s does not exist in FCM", typeid(T).name());
@@ -140,7 +148,13 @@ namespace RAL {
                 if(!m_components[i].wasReleased)
                     m_components[i].ptr->release();
                 m_components[i].wasReleased = true;
-                m_components[i].motherFactory->ptr->destroy(m_components[i].ptr);
+                if(m_components[i].shouldDelete)
+                {
+                    if(m_components[i].motherFactory)
+                        m_components[i].motherFactory->ptr->destroy(m_components[i].ptr);
+                    else
+                        delete m_components[i].ptr;
+                }
                 m_components.erase(m_components.begin() + i);
             }
     }
@@ -164,6 +178,7 @@ namespace RAL {
         newComponent.wasInitialized = wasInitialized;
         newComponent.wasReleased = false;
         newComponent.motherFactory = motherFac;
+        newComponent.shouldDelete = true;
     }
 
     template<typename T>
@@ -185,9 +200,14 @@ namespace RAL {
             Component newComponent;
             T* typedFactory = dynamic_cast<T*>(factory.ptr);
             BaseComponent* fcomponent = typedFactory->create(args...);
+            if(fcomponent == nullptr) {
+                RAL_LOG_WARNING("Component %s could not be created, probably maximum factory count reached", name.c_str());
+                return;
+            }
             newComponent.motherFactory = &factory;
             newComponent.ptr = fcomponent;
             newComponent.name = name;
+            newComponent.shouldDelete = true;
             factory.products.push_back(name);
             factory.defaultCreate = false;
             m_components.push_back(newComponent);

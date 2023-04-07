@@ -35,7 +35,12 @@ namespace RAL {
     void FCM::printComponents() {
         RAL_LOG_WARNING("FCM Components:");
         for(auto &component : m_components)
-            RAL_LOG_DEBUG("\t%s\t[init:%s]\t[released:%s]", component.name.c_str(), component.wasInitialized ? "true" : "false", component.wasReleased ? "true" : "false");
+            RAL_LOG_DEBUG("\t%s\t[init:%s] [rele:%s] [fact:%s] [dele:%s]",
+                          component.name.c_str(),
+                          component.wasInitialized ? "T" : "F",
+                          component.wasReleased ? "T" : "F",
+                          component.motherFactory ? component.motherFactory->typeIndex.name() : "none",
+                          component.shouldDelete ? "T" : "F");
     }
 
     void FCM::printFactories() {
@@ -47,7 +52,9 @@ namespace RAL {
                 snprintf(buffer, 256, "unlimited");
             else
                 snprintf(buffer, 256, "%d", factory.ptr->getMaxObjectCount());
-            RAL_LOG_DEBUG("\t%s\t[def.create:%s] [obj.:%d] [max.obj.:%s]", factory.typeIndex.name(), factory.defaultCreate ? "true" : "false", factory.ptr->getObjectCount(), buffer);
+            RAL_LOG_DEBUG("\t%s\t[crea:%s] [obje:%d] [maxo:%s]",
+                          factory.typeIndex.name(), factory.defaultCreate ? "T" : "F",
+                          factory.ptr->getObjectCount(), buffer);
             size_t written = 0;
             for(auto &product : factory.products)
                 written += snprintf(buffer + written, 256 - written, "%s ", product.c_str());
@@ -64,9 +71,18 @@ namespace RAL {
             {
                 if(!m_components[i].wasReleased)
                     m_components[i].ptr->release();
+
+                if(m_components[i].shouldDelete)
+                {
+                    if(m_components[i].motherFactory)
+                        m_components[i].motherFactory->ptr->destroy(m_components[i].ptr);
+                    else
+                        delete m_components[i].ptr;
+                }
+
                 m_components[i].motherFactory->ptr->destroy(m_components[i].ptr);
                 RAL_LOG_DEBUG("Removed component: ", name.c_str());
-                m_components.erase(m_components.begin() + i);
+                m_components.erase(m_components.begin() + static_cast<long long>(i));
                 return;
             }
         }
@@ -85,6 +101,7 @@ namespace RAL {
             com.ptr = fcomponent;
             com.wasInitialized = false;
             com.wasReleased = false;
+            com.shouldDelete = true;
             factory.products.push_back(com.name);
             factory.defaultCreate = false;
             m_components.push_back(com);
@@ -142,7 +159,13 @@ namespace RAL {
     void FCM::clearComponents() {
         releaseComponents();
         for(auto &component : m_components)
-            component.motherFactory->ptr->destroy(component.ptr);
+        {
+            if(!component.shouldDelete) continue;
+            if(component.motherFactory)
+                component.motherFactory->ptr->destroy(component.ptr);
+            else
+                delete component.ptr;
+        }
 
         m_components.clear();
     }
@@ -153,5 +176,24 @@ namespace RAL {
             delete factory.ptr;
 
         m_factories.clear();
+    }
+
+    void FCM::addComponent(BaseComponent *component, const std::string &name, bool wasInitialized, bool shouldDelete) {
+        Component com;
+        com.motherFactory = nullptr;
+        com.name = name;
+        com.ptr = component;
+        com.wasInitialized = wasInitialized;
+        com.wasReleased = false;
+        com.shouldDelete = shouldDelete;
+        m_components.push_back(com);
+    }
+
+    size_t FCM::getComponentCount() const {
+        return m_components.size();
+    }
+
+    size_t FCM::getFactoriesCount() const {
+        return m_factories.size();
     }
 } // RAL
