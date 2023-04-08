@@ -24,6 +24,9 @@ namespace RAL::Win32 {
     class Win32Window : public Window {
     public:
         Win32Window(const WindowSpec &spec);
+
+        void swapBuffers() override;
+
         Win32Window();
 
         void init() override;

@@ -36,13 +36,13 @@ namespace RAL::Win32 {
         RAL_ASSERT(m_window, "Cannot update window, window `%s` is not created", m_spec.m_title);
         if(!m_window) return;
         glfwPollEvents();
-        glfwSwapBuffers(m_window);
     }
 
     void Win32Window::makeContextCurrent() {
         RAL_ASSERT(m_window, "Cannot make context current, window `%s` is not created", m_spec.m_title);
         if(!m_window) return;
         glfwMakeContextCurrent(m_window);
+
     }
 
     void Win32Window::setDims(uint16_t width, uint16_t height) {
@@ -148,6 +148,12 @@ namespace RAL::Win32 {
             auto callBack = static_cast<EventManager::EventCallback*>(glfwGetWindowUserPointer(window));
             (*callBack)(new Events::WindowMoved(xPos, yPos));
         });
+
+    void Win32Window::swapBuffers()
+    {
+        RAL_ASSERT(m_window, "Cannot call swapBuffers, window `%s` is not created", m_spec.m_title);
+        glfwSwapBuffers(m_window);
+
     }
 } // RAL
 

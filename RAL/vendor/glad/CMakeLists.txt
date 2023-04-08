@@ -11,12 +11,8 @@
 # See file `LICENSE` for full license details.        #
 #######################################################
 
-add_library(ral_renderer STATIC
-        Renderer.cpp
-        Renderer.h)
+cmake_minimum_required(VERSION 3.4...3.20 FATAL_ERROR)
+project(Glad)
 
-add_subdirectory(renderer)
-target_link_libraries(ral_renderer PRIVATE ral_renderer_renderer2d)
-
-add_subdirectory(renderingAPI)
-target_link_libraries(ral_renderer PRIVATE ral_renderer_renderingAPI)
+add_library(glad include/glad/glad.h src/glad.c)
+target_include_directories(glad PUBLIC include/)

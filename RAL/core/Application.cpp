@@ -11,7 +11,7 @@
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
 
-
+#include <vendor/glad/include/glad/glad.h>
 #include "Application.h"
 
 #include <core/FCM/FCM.h>
@@ -38,8 +38,8 @@ namespace RAL {
 
         RAL_LOG_INFO("Engine is at possession of %zu components", m_fcm.getComponentCount());
     }
-
-    Application::~Application()
+    
+    Application::Application(const ConstructInfo& info)
     {
         RAL_LOG_DEBUG("Engine destruction");
         m_fcm.clearFactories();
@@ -78,9 +78,14 @@ namespace RAL {
             return true;
         });
     }
+    
+    Application::~Application()
+    {
+        RAL_LOG_DEBUG("Application destroyed");
+    }
 
-    void Application::run() {
-        RAL_LOG_INFO("Engine starting main loop");
+    void Application::run()
+    {
 
         while(m_running)
         {
@@ -89,5 +94,6 @@ namespace RAL {
 
             global::mainLogger.print();
         }
+
     }
 } // RAL

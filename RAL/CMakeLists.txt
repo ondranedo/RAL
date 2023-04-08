@@ -63,9 +63,14 @@ target_link_libraries(${RAL_ENGINE_LIB} PRIVATE ral_renderer)
 #   Vendor libraries                                  #
 #######################################################
 
+#GLFW
 set(GLFW_BUILD_DOCS OFF)
 set(GLFW_BUILD_TESTS OFF)
 set(GLFW_BUILD_EXAMPLES OFF)
 set(GLFW_INSTALL OFF)
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glfw)
 target_link_libraries(${RAL_ENGINE_LIB} PRIVATE glfw)
+
+#GLAD
+add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glad)
+target_link_libraries(${RAL_ENGINE_LIB} PRIVATE glad)

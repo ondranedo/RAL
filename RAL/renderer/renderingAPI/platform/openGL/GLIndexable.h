@@ -10,7 +10,19 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#include "Renderer2D.h"
+#ifndef RAL_PROJECT_GLINDEXABLE_H
+#define RAL_PROJECT_GLINDEXABLE_H
 
-namespace RAL {
+namespace RAL
+{
+    class GLIndexable
+    {
+    public:
+        GLIndexable();
+        virtual ~GLIndexable() = default;
+    protected:
+        unsigned int m_id;
+    };
 } // RAL
+
+#endif //!RAL_PROJECT_GLINDEXABLE_H

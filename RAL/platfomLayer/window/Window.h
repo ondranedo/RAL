@@ -39,6 +39,7 @@ namespace RAL {
         void setEventCallback(const EventManager::EventCallback& callback);
     private:
         virtual void setCallbacks() = 0;
+        virtual void swapBuffers() = 0;
 
     protected:
         WindowSpec m_spec;

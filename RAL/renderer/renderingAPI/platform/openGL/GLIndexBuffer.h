@@ -10,29 +10,29 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#ifndef RAL_PROJECT_RENDERINGAPI_H
-#define RAL_PROJECT_RENDERINGAPI_H
-//TODO: Factory
+#ifndef RAL_PROJECT_GLINDEXBUFFER_H
+#define RAL_PROJECT_GLINDEXBUFFER_H
+
+#include <renderer/renderingAPI/buffers/IndexBuffer.h>
+#include <renderer/renderingAPI/platform/openGL/GLIndexable.h>
+
 namespace RAL
 {
-    class RenderingAPI
+    class GLIndexBuffer : public virtual IndexBuffer, public virtual GLIndexable
     {
     public:
-        RenderingAPI() = default;
+        ~GLIndexBuffer() override;
 
-        virtual ~RenderingAPI() = default;
+        GLIndexBuffer();
 
-        virtual void init() = 0;
+        void setData(unsigned int *indices,unsigned int size,DrawUsage usage) override;
 
-        //TODO: MOVE TO SHADER FILE, maybe keep default shader
-        virtual void shaderInit() = 0;
+        void bind() const override;
 
-        virtual void compileShaders() = 0;
+        void unbind() const override;
 
-        virtual void attachShader() = 0;
-
-        virtual void useDefaultProgram() = 0;
+    private:
     };
 } // RAL
 
-#endif //!RAL_PROJECT_RENDERINGAPI_H
+#endif //!RAL_PROJECT_GLINDEXBUFFER_H
