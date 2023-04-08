@@ -18,36 +18,47 @@
 namespace RAL::Events {
     struct MouseMoved : public Event
     {
-        float x, y;
+        double x, y;
 
-        MouseMoved(float _x, float _y);
+        MouseMoved(double _x, double _y) : x(_x), y(_y) {
+            m_header.eventHandler = EventHandler::USER;
+            m_header.eventType = EventType::MOUSE_MOVED;
+        }
         static EventType getEventType() { return EventType::MOUSE_MOVED; }
     };
 
     struct MouseScrolled : public Event
     {
-        float x, y;
+        double x, y;
 
-        MouseScrolled(float _x, float _y);
+        MouseScrolled(double _x, double _y) : x(_x), y(_y) {
+            m_header.eventHandler = EventHandler::USER;
+            m_header.eventType = EventType::MOUSE_SCROLLED;
+        }
         static EventType getEventType() { return EventType::MOUSE_SCROLLED; }
     };
 
     struct MousePressed : public Event
     {
-        Types::KeyCodes button;
+        Types::Codes button;
 
-        explicit MousePressed(Types::KeyCodes _button);
+        explicit MousePressed(Types::Codes _button) : button(_button){
+            m_header.eventHandler = EventHandler::USER;
+            m_header.eventType = EventType::MOUSE_PRESSED;
+        }
         static EventType getEventType() { return EventType::MOUSE_PRESSED; }
     };
 
     struct MouseReleased : public Event
     {
-        Types::KeyCodes button;
+        Types::Codes button;
 
-        explicit MouseReleased(Types::KeyCodes _button);
+        explicit MouseReleased(Types::Codes _button) : button(_button) {
+            m_header.eventHandler = EventHandler::USER;
+            m_header.eventType = EventType::MOUSE_RELEASED;
+        }
         static EventType getEventType() { return EventType::MOUSE_RELEASED; }
     };
 
 } // RAL
-
 #endif //!RAL_PROJECT_MOUSEEVENTS_H

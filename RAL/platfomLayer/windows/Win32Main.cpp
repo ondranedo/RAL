@@ -41,12 +41,15 @@ namespace RAL {
 
             RAL_LOG_DEBUG("Ending on Windows");
 
+            memory.checkMemoryLeak();
             global::mainLogger.print();
-			interpreter.log("\xB3\n");
-			interpreter.log("\xAF");
+
+            interpreter.log("\xB3\n");
+            interpreter.log("\xAF");
 #ifdef RAL_DEBUG
-			system("pause");
+            system("pause");
 #endif //!RAL_DEBUG
+
             interpreter.release();
 			global::mainLogger.detachConsoleInterpreter();
 

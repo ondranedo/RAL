@@ -72,7 +72,6 @@ namespace RAL {
     void Logger::log(LogMsg::Level level, Args... args) {
         if(m_level > level) return;
         if(m_msgQueueSize >= RAL_LOG_MSG_QUEUE_SIZE - 2) {
-            log(LogMsg::Level::ERROR, "Logger buffer overflow! msg count = %d", m_msgQueueSize + 1);
             print();
         }
         m_msgQueue[m_msgQueueSize].m_level = level;

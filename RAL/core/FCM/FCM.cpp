@@ -104,7 +104,7 @@ namespace RAL {
 #endif
         }
         if(count)
-        RAL_LOG_INFO("Created %llu component%s", count, count > 1 ? "s" : "");
+        RAL_LOG_DEBUG("Created %zu component%s", count, count > 1 ? "s" : "");
     }
 
     void FCM::initComponents() {
@@ -123,7 +123,7 @@ namespace RAL {
             component.wasInitialized = true;
         }
         if(count)
-        RAL_LOG_DEBUG("Initialized %llu component%s", count, count > 1 ? "s" : "");
+        RAL_LOG_DEBUG("Initialized %zu component%s", count, count > 1 ? "s" : "");
     }
 
     void FCM::releaseComponents() {
@@ -142,7 +142,7 @@ namespace RAL {
             component.wasReleased = true;
         }
         if(count)
-        RAL_LOG_DEBUG("Released %llu component%s", count, count > 1 ? "s" : "");
+        RAL_LOG_DEBUG("Released %zu component%s", count, count > 1 ? "s" : "");
     }
 
     void FCM::updateComponents() {
@@ -196,5 +196,29 @@ namespace RAL {
             component.motherFactory->ptr->destroy(component.ptr);
         else
             delete component.ptr;
+    }
+
+    FCM::Factory *FCM::findFactoryByTypeIndex(const std::type_index &typeIndex) {
+        for(auto& factory : m_factories)
+            if(factory.typeIndex == typeIndex) {
+                return &factory;
+            }
+        return nullptr;
+    }
+
+    void FCM::releaseComponent(FCM::Component &component) {
+        if(!component.wasReleased)
+        {
+            component.ptr->release();
+            component.wasReleased = true;
+        }
+    }
+
+    FCM::Component *FCM::findComponentByName(const std::string &name) {
+        for(auto& component : m_components)
+            if(component.name == name) {
+                return &component;
+            }
+        return nullptr;
     }
 } // RAL

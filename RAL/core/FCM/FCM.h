@@ -101,8 +101,9 @@ namespace RAL {
 #endif
     private:
         void getRidOfComponent(Component& component);
-
-
+        Factory* findFactoryByTypeIndex(const std::type_index& typeIndex);
+        void releaseComponent(Component& component);
+        Component* findComponentByName(const std::string& name);
     private:
         std::vector<Factory> m_factories;
         std::vector<Component> m_components;
@@ -111,12 +112,12 @@ namespace RAL {
     template<typename T>
     void FCM::addFactory() {
         Factory factory(new T);
-        for(auto& f : m_factories)
-            if(f.typeIndex == factory.typeIndex) {
-                RAL_LOG_WARNING("Factory %s already exists in FCM", factory.typeIndex.name());
-                delete factory.ptr;
-                return;
-            }
+        if(findFactoryByTypeIndex(typeid(T)))
+        {
+             RAL_LOG_WARNING("Factory %s already exists in FCM", factory.typeIndex.name());
+             delete factory.ptr;
+             return;
+        }
         m_factories.push_back(factory);
         RAL_LOG_DEBUG("Factory %s added to FCM", factory.typeIndex.name());
     }
@@ -138,44 +139,25 @@ namespace RAL {
 
     template<class T>
     void FCM::clearFactoryComponents() {
-        BaseFactory* match_basefac = nullptr;
-        for(auto& factory : m_factories)
-            if(factory.typeIndex == typeid(T)) {
-                match_basefac = factory.ptr;
-                break;
-            }
-        if(match_basefac == nullptr) {
+        Factory* factory = findFactoryByTypeIndex(typeid(T));
+        if(!factory) {
             RAL_LOG_WARNING("Factory %s does not exist in FCM", typeid(T).name());
         }
+
         for(size_t i = 0; i < m_components.size(); i++)
-            if(m_components[i].motherFactory->ptr == match_basefac) {
-                if(!m_components[i].wasReleased)
-                    m_components[i].ptr->release();
-                m_components[i].wasReleased = true;
-                if(m_components[i].shouldDelete)
-                {
-                    if(m_components[i].motherFactory)
-                        m_components[i].motherFactory->ptr->destroy(m_components[i].ptr);
-                    else
-                        delete m_components[i].ptr;
-                }
-                m_components.erase(m_components.begin() + i);
+            if(m_components[i].motherFactory->ptr == factory->ptr) {
+                releaseComponent(m_components[i]);
+                getRidOfComponent(m_components[i]);
             }
     }
 
     template<typename T>
     void FCM::addComponentToFactory(BaseComponent *component, const std::string &name, bool wasInitialized) {
-        for(auto& component : m_components)
-            if(component.name == name) {
-                RAL_LOG_WARNING("Component %s already exists in FCM", name.c_str());
-                return;
-            }
-        Factory* motherFac = nullptr;
-        for(auto& factory : m_factories)
-            if(factory.typeIndex == typeid(T)) {
-                motherFac = &factory;
-                break;
-            }
+        if(findComponentByName(name)) {
+            RAL_LOG_WARNING("Component %s already exists in FCM", name.c_str());
+            return;
+        }
+        Factory* motherFac = findFactoryByTypeIndex(typeid(T));
         Component newComponent;
         newComponent.ptr = component;
         newComponent.name = name;
@@ -196,11 +178,10 @@ namespace RAL {
         for(auto& factory : m_factories)
         {
             if(factory.typeIndex != typeid(T)) continue;
-            for(auto& component : m_components)
-                if(component.name == name) {
-                    RAL_LOG_WARNING("Component %s already exists in FCM", name.c_str());
-                    return;
-                }
+            if(findComponentByName(name)) {
+                RAL_LOG_WARNING("Component %s already exists in FCM", name.c_str());
+                return;
+            }
             Component newComponent;
             T* typedFactory = dynamic_cast<T*>(factory.ptr);
             BaseComponent* fcomponent = typedFactory->create(args...);
@@ -222,9 +203,9 @@ namespace RAL {
 
     template<typename T>
     T *FCM::get(const std::string &name) {
-        for(auto& component : m_components)
-            if(component.name == name)
-                return dynamic_cast<T*>(component.ptr);
+        auto comp = findComponentByName(name);
+        if(comp)
+            return dynamic_cast<T*>(comp->ptr);
         RAL_LOG_WARNING("Component %s does not exist in FCM", name.c_str());
         return nullptr;
     }
