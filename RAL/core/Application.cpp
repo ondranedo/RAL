@@ -75,7 +75,7 @@ namespace RAL
         vb.setData(vertices, sizeof(vertices), Buffer::DrawUsage::STATIC);
         GLIndexBuffer ib;
         ib.setData(indices, sizeof(indices), Buffer::DrawUsage::STATIC);
-        va.setLayout();
+        va.setLayout({BufferLayout::LayoutType::FLOAT3,BufferLayout::LayoutType::FLOAT3});
         global::mainLogger.print();
         while (1)
         {

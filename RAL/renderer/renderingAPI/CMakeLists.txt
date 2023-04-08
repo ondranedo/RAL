@@ -31,4 +31,4 @@ add_library(ral_renderer_renderingAPI STATIC
         buffers/IndexBuffer.cpp
         buffers/IndexBuffer.h
         buffers/Buffer.cpp
-        buffers/Buffer.h)
+        buffers/Buffer.h buffers/BufferLayout.cpp buffers/BufferLayout.h)

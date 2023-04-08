@@ -13,7 +13,6 @@
 #include "GLVertexBuffer.h"
 
 #include <vendor/glad/include/glad/glad.h>
-#include <core/utility/Asserts.h>
 
 namespace RAL
 {

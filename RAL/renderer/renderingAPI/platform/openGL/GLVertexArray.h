@@ -14,10 +14,12 @@
 #define RAL_PROJECT_GLVERTEXARRAY_H
 
 #include <renderer/renderingAPI/platform/openGL/GLIndexable.h>
+#include <renderer/renderingAPI/buffers/BufferLayout.h>
+#include <vendor/glad/include/glad/glad.h>
 
 namespace RAL
 {
-    class GLVertexArray final: public virtual GLIndexable
+    class GLVertexArray final : public virtual BufferLayout, public virtual GLIndexable
     {
     public:
         ~GLVertexArray() override;
@@ -28,8 +30,21 @@ namespace RAL
 
         void unbind() const;
 
-        void setLayout();
+        void setLayout(std::initializer_list<LayoutType> layout) override;
 
+    protected:
+        GLenum getGLDataType(LayoutType element);
+
+        unsigned int getComponentSize(LayoutType element) override;
+
+        unsigned int getFullLayoutSize() override;
+
+        void addVertexData() override;
+
+        unsigned int getOffset() override;
+
+    private:
+        bool firstCall = true;
     };
 };
 #endif //!RAL_PROJECT_GLVERTEXARRAY_H
