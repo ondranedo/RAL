@@ -64,6 +64,7 @@ namespace RAL {
 
     void Application::release() {
         RAL_LOG_DEBUG("Engine release");
+        m_fcm.get<LayerManager>("LayerManager")->removeAllLayers();
         m_game->onShutdown();
         m_fcm.releaseComponents();
         delete m_game;
