@@ -36,7 +36,7 @@ namespace RAL {
         m_game = createGame();
         m_game->setLayerManager(m_fcm.get<LayerManager>("LayerManager"));
 
-        RAL_LOG_INFO("Engine is at possession of %llu components", m_fcm.getComponentCount());
+        RAL_LOG_INFO("Engine is at possession of %zu components", m_fcm.getComponentCount());
     }
 
     Application::~Application()
@@ -66,6 +66,7 @@ namespace RAL {
         RAL_LOG_DEBUG("Engine release");
         m_game->onShutdown();
         m_fcm.releaseComponents();
+        delete m_game;
     }
 
     void Application::onEvent(Event *event) {

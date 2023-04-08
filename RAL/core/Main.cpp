@@ -33,7 +33,7 @@ namespace RAL {
 
 #ifdef RAL_WINDOWS_USE_WINMAIN
 
-#include "Win32Main.h"
+#include <platfomLayer/windows/Win32Main.h>
 #include <windows.h>
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
