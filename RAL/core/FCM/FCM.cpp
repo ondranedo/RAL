@@ -197,4 +197,28 @@ namespace RAL {
         else
             delete component.ptr;
     }
+
+    FCM::Factory *FCM::findFactoryByTypeIndex(const std::type_index &typeIndex) {
+        for(auto& factory : m_factories)
+            if(factory.typeIndex == typeIndex) {
+                return &factory;
+            }
+        return nullptr;
+    }
+
+    void FCM::releaseComponent(FCM::Component &component) {
+        if(!component.wasReleased)
+        {
+            component.ptr->release();
+            component.wasReleased = true;
+        }
+    }
+
+    FCM::Component *FCM::findComponentByName(const std::string &name) {
+        for(auto& component : m_components)
+            if(component.name == name) {
+                return &component;
+            }
+        return nullptr;
+    }
 } // RAL
