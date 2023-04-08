@@ -37,6 +37,8 @@ namespace RAL {
 
     private:
         FCM m_fcm;
+        bool m_running;
+        BaseGame* m_game;
     };
 }; // RAL
 

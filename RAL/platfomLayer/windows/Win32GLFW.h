@@ -15,7 +15,12 @@
 #define RAL_PROJECT_WIN32GLFW_H
 #ifdef RAL_WINDOWS
 
+#include <core/memoryManager/Overload.h>
 #include <cstdint>
+#include <unordered_map>
+#include <core/utility/Types.h>
+
+#include <vendor/glfw/include/GLFW/glfw3.h>
 
 namespace RAL::Win32 {
     class Win32GLFW {
@@ -26,6 +31,7 @@ namespace RAL::Win32 {
         void release();
         void setVSync(bool state);
         [[nodiscard]] bool getVSync() const;
+        [[nodiscard]] static Types::Codes getCode(uint16_t glfwKeyCode);
 
     private:
         uint8_t m_windowCount;

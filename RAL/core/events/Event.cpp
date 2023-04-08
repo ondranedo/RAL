@@ -40,6 +40,24 @@ namespace RAL
         m_header.handled = _handled;
     }
 
+    [[nodiscard]] std::string Event::getEventTypeString() const {
+        switch (m_header.eventType) {
+            case EventType::NONE: return "NONE";
+            case EventType::WINDOW_RESIZED: return "WINDOW_RESIZED";
+            case EventType::WINDOW_CLOSED: return "WINDOW_CLOSED";
+            case EventType::WINDOW_FOCUS: return "WINDOW_FOCUS";
+            case EventType::WINDOW_LOST_FOCUS: return "WINDOW_LOST_FOCUS";
+            case EventType::WINDOW_MOVED: return "WINDOW_MOVED";
+            case EventType::KEY_PRESSED: return "KEY_PRESSED";
+            case EventType::KEY_RELEASED: return "KEY_RELEASED";
+            case EventType::MOUSE_PRESSED: return "MOUSE_PRESSED";
+            case EventType::MOUSE_RELEASED: return "MOUSE_RELEASED";
+            case EventType::MOUSE_MOVED: return "MOUSE_MOVED";
+            case EventType::MOUSE_SCROLLED: return "MOUSE_SCROLLED";
+            default: return "UNKNOWN";
+        }
+    }
+
     Event::Header::Header() {
         eventHandler = EventHandler::NONE;
         eventType = EventType::NONE;

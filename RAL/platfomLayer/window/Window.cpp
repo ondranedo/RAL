@@ -16,9 +16,19 @@
 
 namespace RAL {
     Window::~Window() = default;
-    Window::Window(const WindowSpec& spec) : m_spec(spec) {}
+    Window::Window(const WindowSpec& spec) : m_spec(spec), m_eventCallback(nullptr), m_id(0) {}
 
     const WindowSpec &Window::getSpec() const {
         return m_spec;
+    }
+
+    void Window::setEventCallback(const EventManager::EventCallback &callback) {
+        RAL_ASSERTRV(m_eventCallback == nullptr, "Event callback is already set!");
+        m_eventCallback = callback;
+        setCallbacks();
+    }
+
+    uint8_t Window::getId() const {
+        return m_id;
     }
 } // RAL
