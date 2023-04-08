@@ -11,8 +11,9 @@
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
 
-#include <vendor/glad/include/glad/glad.h>
+
 #include "Application.h"
+#include <vendor/glad/include/glad/glad.h>
 
 #include <core/FCM/FCM.h>
 #include <core/layers/LayerManagerFactory.h>
@@ -20,8 +21,30 @@
 #include <core/events/EventManagerFactory.h>
 #include <core/events/eventTypes/WindowEvents.h>
 #include <core/events/EventDispatcher.h>
+#include <platfomLayer/window/Window.h>
+
+#include <renderer/renderingAPI/platform/openGL/GLVertexArray.h>
+#include <renderer/renderingAPI/platform/openGL/GLVertexBuffer.h>
+#include <renderer/renderingAPI/platform/openGL/GLIndexBuffer.h>
+#include <renderer/renderingAPI/platform/openGL/GLRenderingAPI.h>
+
 
 namespace RAL {
+
+    float vertices[] = {
+            // positions         // colors
+            -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,  // bottom left
+            -0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, // top left
+            0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f,  // top right
+            0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom right
+
+    };
+    unsigned int indices[] = {  // note that we start from 0!
+            0, 1, 3,  // first Triangle
+            1, 2, 3   // second Triangle
+    };
+
+
     Application::Application(const ConstructInfo& info) : m_fcm({}), m_running(true), m_game(nullptr) {
         RAL_LOG_DEBUG("Engine creation");
 
@@ -38,8 +61,8 @@ namespace RAL {
 
         RAL_LOG_INFO("Engine is at possession of %zu components", m_fcm.getComponentCount());
     }
-    
-    Application::Application(const ConstructInfo& info)
+
+    Application::~Application()
     {
         RAL_LOG_DEBUG("Engine destruction");
         m_fcm.clearFactories();
@@ -78,14 +101,29 @@ namespace RAL {
             return true;
         });
     }
-    
-    Application::~Application()
-    {
-        RAL_LOG_DEBUG("Application destroyed");
-    }
 
-    void Application::run()
-    {
+    void Application::run() {
+        RAL_LOG_INFO("Engine starting main loop");
+
+        /// Vojtuv codik
+        m_fcm.get<Window>("Window")->makeContextCurrent();
+
+        if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
+        {
+            RAL_LOG_FATAL("Failed to initialize GLAD");
+        }
+        GLRenderingAPI rAPI;
+        rAPI.init();
+        GLVertexArray va;
+        va.bind();
+        GLVertexBuffer vb;
+        vb.setData(vertices, sizeof(vertices), Buffer::DrawUsage::STATIC);
+        GLIndexBuffer ib;
+        ib.setData(indices, sizeof(indices), Buffer::DrawUsage::STATIC);
+        va.setLayout({BufferLayout::LayoutType::FLOAT3,BufferLayout::LayoutType::FLOAT3});
+        ///~Vojtuv codik
+
+        m_fcm.get<Window>("Window")->swapBuffers();
 
         while(m_running)
         {
@@ -93,7 +131,15 @@ namespace RAL {
             m_fcm.updateComponents();
 
             global::mainLogger.print();
-        }
 
+            /// Vojtuv codik
+            glClearColor(34.0f/255.0f, 34.0f/255.0f, 34.0f/255.0f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
+            rAPI.useDefaultProgram();
+            va.bind();
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            m_fcm.get<Window>("Window")->swapBuffers();
+            ///~Vojtuv codik
+        }
     }
 } // RAL

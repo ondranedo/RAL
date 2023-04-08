@@ -11,7 +11,9 @@
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
 #include "GLVertexArray.h"
-#include "core/utility/Logger.h"
+
+#include <core/utility/Logger.h>
+#include <vendor/glad/include/glad/glad.h>
 
 namespace RAL
 {
@@ -65,6 +67,8 @@ namespace RAL
             case LayoutType::INT4:
                 return GL_INT;
         }
+        RAL_LOG_ERROR("Unknown layout type!");
+        return 0;
     }
 
 
@@ -97,6 +101,8 @@ namespace RAL
                 m_componentSize = 4;
                 return 4;
         }
+        RAL_LOG_ERROR("Unknown layout type!");
+        return 0;
     }
 
     void GLVertexArray::addVertexData()

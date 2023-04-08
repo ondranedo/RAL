@@ -15,7 +15,6 @@
 
 #include <renderer/renderingAPI/platform/openGL/GLIndexable.h>
 #include <renderer/renderingAPI/buffers/BufferLayout.h>
-#include <vendor/glad/include/glad/glad.h>
 
 namespace RAL
 {
@@ -33,6 +32,7 @@ namespace RAL
         void setLayout(std::initializer_list<LayoutType> layout) override;
 
     protected:
+        typedef unsigned int GLenum;
         GLenum getGLDataType(LayoutType element);
 
         unsigned int getComponentSize(LayoutType element) override;
