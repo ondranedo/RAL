@@ -11,7 +11,7 @@
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
 
-#include <glad/glad.h>
+#include <vendor/glad/include/glad/glad.h>
 #include "Application.h"
 #include <core/utility/Logger.h>
 #include <platfomLayer/window/Window.h>
@@ -36,48 +36,60 @@ namespace RAL
             1, 2, 3   // second Triangle
     };
 
-#include <core/FCM/FCM.h>
-#include <core/layers/LayerManagerFactory.h>
-#include <platfomLayer/window/WindowFactory.h>
-#include <core/events/EventManagerFactory.h>
 
-namespace RAL {
-    Application::Application(const ConstructInfo& info) : m_fcm({}) {
-        RAL_LOG_DEBUG("Engine creation");
-
-        m_fcm.addComponent(info.memory, "memory", true, false, false);
-        m_fcm.addComponent(info.consoleInterpreter, "console", true, false, false);
-        m_fcm.addFactory<LayerManagerFactory>();
-        m_fcm.addFactory<EventManagerFactory>();
-
-        m_fcm.createComponents();
-        RAL_LOG_INFO("Engine is at possession of %llu components", m_fcm.getComponentCount());
+    Application::Application(const ConstructInfo& info)
+    {
+        RAL_LOG_DEBUG("Application created");
     }
 
     Application::~Application()
     {
-        RAL_LOG_DEBUG("Engine destruction");
-        m_fcm.clearFactories();
+        RAL_LOG_DEBUG("Application destroyed");
     }
 
-    void Application::inti() {
-        RAL_LOG_DEBUG("Engine initialization");
-        m_fcm.initComponents();
-    }
+    void Application::run()
+    {
 
-    void Application::release() {
-        RAL_LOG_DEBUG("Engine release");
+        RAL_LOG_DEBUG("Application running");
+        Window *window;
+        WindowFactory factory;
+        WindowSpec spec;
+        strcpy(spec.m_title, "Ahoj");
+        spec.m_height = 1280;
+        spec.m_width = 720;
+        spec.m_created = false;
+        window = factory.create(spec);
+        window->init();
+        window->create();
+        window->makeContextCurrent();
+        if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
+        {
+            RAL_LOG_FATAL("Failed to initialize GLAD");
+        }
 
-        m_fcm.releaseComponents();
-    }
-
-    void Application::onEvent(Event *event) {
-        RAL_LOG_DEBUG("Engine received event");
-    }
-
-    void Application::run() {
-        RAL_LOG_INFO("Engine starting main loop");
-
-        m_fcm.updateComponents();
+        GLRenderingAPI rAPI;
+        rAPI.init();
+        GLVertexArray va;
+        va.bind();
+        GLVertexBuffer vb;
+        vb.setData(vertices, sizeof(vertices), Buffer::DrawUsage::STATIC);
+        GLIndexBuffer ib;
+        ib.setData(indices, sizeof(indices), Buffer::DrawUsage::STATIC);
+        va.setLayout({BufferLayout::LayoutType::FLOAT3,BufferLayout::LayoutType::FLOAT3});
+        global::mainLogger.print();
+        while (1)
+        {
+            glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
+            rAPI.useDefaultProgram();
+            va.bind();
+            //glDrawArrays(GL_TRIANGLES,0,6);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            window->swapBuffers();
+            window->update();
+        }
+        window->destroy();
+        window->release();
+        factory.destroy(window);
     }
 } // RAL

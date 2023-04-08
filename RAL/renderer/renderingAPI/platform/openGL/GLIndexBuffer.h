@@ -23,7 +23,9 @@ namespace RAL
     public:
         ~GLIndexBuffer() override;
 
-        explicit GLIndexBuffer(unsigned int *indices,unsigned int size,DrawUsage usage);
+        GLIndexBuffer();
+
+        void setData(unsigned int *indices,unsigned int size,DrawUsage usage) override;
 
         void bind() const override;
 

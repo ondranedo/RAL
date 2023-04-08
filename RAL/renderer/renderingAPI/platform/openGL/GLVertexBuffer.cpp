@@ -13,7 +13,6 @@
 #include "GLVertexBuffer.h"
 
 #include <vendor/glad/include/glad/glad.h>
-#include <core/utility/Asserts.h>
 
 namespace RAL
 {
@@ -22,22 +21,18 @@ namespace RAL
         glDeleteBuffers(1, &m_id);
     }
 
-    GLVertexBuffer::GLVertexBuffer(float *vertices,unsigned int size,DrawUsage usage)
+    GLVertexBuffer::GLVertexBuffer()
     {
         glGenBuffers(1, &m_id);
         glBindBuffer(GL_ARRAY_BUFFER, m_id);
-        switch (usage)
-        {
-            case DrawUsage::VOLATILE:
-                glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STREAM_DRAW);
-                break;
-            case DrawUsage::STATIC:
-                glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
-                break;
-            case DrawUsage::DYNAMIC:
-                glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_DYNAMIC_DRAW);
-                break;
-        }
+    }
+
+    void GLVertexBuffer::setData(float *vertices, unsigned int size, DrawUsage usage)
+    {
+        glBufferData(GL_ARRAY_BUFFER, size, vertices,
+                     usage == DrawUsage::VOLATILE ? GL_STREAM_DRAW :
+                     usage == DrawUsage::STATIC ? GL_STATIC_DRAW :
+                     GL_DYNAMIC_DRAW);
     }
 
     void GLVertexBuffer::bind() const
