@@ -104,7 +104,7 @@ namespace RAL {
 #endif
         }
         if(count)
-        RAL_LOG_INFO("Created %llu component%s", count, count > 1 ? "s" : "");
+        RAL_LOG_DEBUG("Created %llu component%s", count, count > 1 ? "s" : "");
     }
 
     void FCM::initComponents() {

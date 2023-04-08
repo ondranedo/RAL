@@ -18,16 +18,23 @@
 
 namespace RAL::Events {
     struct KeyPressed : public Event {
-        Types::KeyCodes key;
+        Types::Codes key;
+        bool repeat : 1;
 
-        explicit KeyPressed(Types::KeyCodes _key);
+        explicit KeyPressed(RAL::Types::Codes _key, bool repeat) : key(_key), repeat(repeat){
+            m_header.eventHandler = EventHandler::USER;
+            m_header.eventType = EventType::KEY_PRESSED;
+        }
         static EventType getEventType() { return EventType::KEY_PRESSED; }
     };
 
     struct KeyReleased : public Event {
-        Types::KeyCodes key;
+        Types::Codes key;
 
-        explicit KeyReleased(Types::KeyCodes _key);
+        explicit KeyReleased(Types::Codes _key) : key(_key) {
+            m_header.eventHandler = EventHandler::USER;
+            m_header.eventType = EventType::KEY_RELEASED;
+        }
         static EventType getEventType() { return EventType::KEY_RELEASED; }
     };
 }

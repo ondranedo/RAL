@@ -18,6 +18,7 @@
 #include <core/memoryManager/MemoryManager.h>
 #include <platfomLayer/window/WindowSpec.h>
 #include <string>
+#include <core/events/EventManager.h>
 
 namespace RAL {
     class Window : public BaseComponent{
@@ -33,9 +34,18 @@ namespace RAL {
         virtual void setVSync(bool state) = 0;
         [[nodiscard]] virtual bool getVSync() const = 0;
         virtual void makeContextCurrent() = 0;
+        [[nodiscard]] uint8_t getId() const;
+
+        void setEventCallback(const EventManager::EventCallback& callback);
+    private:
+        virtual void setCallbacks() = 0;
 
     protected:
         WindowSpec m_spec;
+        EventManager::EventCallback m_eventCallback;
+
+        // TODO: Window manager or some similar thing for supporting multiple windows
+        uint8_t m_id;
     };
 } // RAL
 

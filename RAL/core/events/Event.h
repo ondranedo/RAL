@@ -50,6 +50,7 @@ namespace RAL
         [[nodiscard]] EventType getType() const;
         [[nodiscard]] bool isHandled() const;
         void setHandled(bool _handled);
+        [[nodiscard]] std::string getEventTypeString() const;
 
     protected:
         Header m_header;

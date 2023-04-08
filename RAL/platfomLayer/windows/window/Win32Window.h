@@ -40,6 +40,9 @@ namespace RAL::Win32 {
         bool getVSync() const override;
 
     private:
+        void setCallbacks() override;
+
+    private:
         GLFWwindow *m_window;
     };
 } // RAL

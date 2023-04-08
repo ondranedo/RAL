@@ -13,23 +13,29 @@
 
 
 #include "Application.h"
-#include <core/utility/Logger.h>
 
 #include <core/FCM/FCM.h>
 #include <core/layers/LayerManagerFactory.h>
 #include <platfomLayer/window/WindowFactory.h>
 #include <core/events/EventManagerFactory.h>
+#include <core/events/eventTypes/WindowEvents.h>
+#include <core/events/EventDispatcher.h>
 
 namespace RAL {
-    Application::Application(const ConstructInfo& info) : m_fcm({}) {
+    Application::Application(const ConstructInfo& info) : m_fcm({}), m_running(true), m_game(nullptr) {
         RAL_LOG_DEBUG("Engine creation");
 
         m_fcm.addComponent(info.memory, "memory", true, false, false);
         m_fcm.addComponent(info.consoleInterpreter, "console", true, false, false);
-        m_fcm.addFactory<LayerManagerFactory>();
         m_fcm.addFactory<EventManagerFactory>();
+        m_fcm.addFactory<LayerManagerFactory>();
+        m_fcm.addFactory<WindowFactory>();
 
         m_fcm.createComponents();
+
+        m_game = createGame();
+        m_game->setLayerManager(m_fcm.get<LayerManager>("LayerManager"));
+
         RAL_LOG_INFO("Engine is at possession of %llu components", m_fcm.getComponentCount());
     }
 
@@ -42,21 +48,44 @@ namespace RAL {
     void Application::inti() {
         RAL_LOG_DEBUG("Engine initialization");
         m_fcm.initComponents();
+
+        auto layerCallback = m_fcm.get<LayerManager>("LayerManager")->getEventCallback();
+
+        m_fcm.get<EventManager>("EventManager")->setUserEventCallback(layerCallback);
+        m_fcm.get<EventManager>("EventManager")->setEngineEventCallback(RAL_BIND_CLASS_FUNCTION(onEvent));
+
+
+        m_fcm.get<Window>("Window")->create();
+        m_fcm.get<Window>("Window")->setEventCallback(m_fcm.get<EventManager>("EventManager")->getEventCallback());
+        m_fcm.get<Window>("Window")->setTitle("RAL Engine");
+
+        m_game->onStartup();
     }
 
     void Application::release() {
         RAL_LOG_DEBUG("Engine release");
-
+        m_game->onShutdown();
         m_fcm.releaseComponents();
     }
 
     void Application::onEvent(Event *event) {
-        RAL_LOG_DEBUG("Engine received event");
+        EventDispatcher dispatcher(event);
+        dispatcher.dispatch<Events::WindowClosed>([this](Events::WindowClosed* event)->bool{
+            RAL_LOG_WARNING("Engine received WindowClosed event");
+            m_running = false;
+            return true;
+        });
     }
 
     void Application::run() {
         RAL_LOG_INFO("Engine starting main loop");
 
-        m_fcm.updateComponents();
+        while(m_running)
+        {
+            m_game->onUpdate();
+            m_fcm.updateComponents();
+
+            global::mainLogger.print();
+        }
     }
 } // RAL

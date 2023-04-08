@@ -24,7 +24,7 @@
 namespace RAL {
     namespace Types {
 
-        enum class KeyCodes : uint16_t
+        enum class Codes : uint16_t
         {
             //Mouse
             MOUSE_BUTTON_1 = 0,
