@@ -11,7 +11,7 @@
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
 
-#include <glad/glad.h>
+#include <vendor/glad/include/glad/glad.h>
 #include "Application.h"
 #include <core/utility/Logger.h>
 #include <platfomLayer/window/Window.h>
@@ -37,7 +37,7 @@ namespace RAL
     };
 
 
-    Application::Application()
+    Application::Application(const ConstructInfo& info)
     {
         RAL_LOG_DEBUG("Application created");
     }
