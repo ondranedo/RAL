@@ -17,12 +17,16 @@
 #include <core/utility/Asserts.h>
 
 namespace RAL {
-    MemoryFactory::MemoryFactory() : BaseFactory<Memory>(1){}
+    MemoryFactory::MemoryFactory() : BaseFactory(1){}
     Memory *MemoryFactory::create() {
 #ifdef RAL_WINDOWS
-        return createPass(new Win32::Win32Memory);
+        return RAL_BASEFACTORY_CREATE(Win32::Win32Memory);
 #endif
         RAL_ASSERTR(false, nullptr, "Unknown platform when creating memory");
+    }
+
+    std::string MemoryFactory::productName() const {
+        return "Memory";
     }
 
 } // RAL

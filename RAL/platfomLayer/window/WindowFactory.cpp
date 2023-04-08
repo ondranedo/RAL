@@ -17,8 +17,12 @@
 namespace RAL {
     Window *WindowFactory::create() {
 #ifdef RAL_WINDOWS
-        return createPass(new Win32::Win32Window);
+        return RAL_BASEFACTORY_CREATE(Win32::Win32Window);
 #endif
         RAL_ASSERTR(false, nullptr, "Unknown platform when creating window");
+    }
+
+    std::string WindowFactory::productName() const {
+        return "Window";
     }
 }; //!RAL

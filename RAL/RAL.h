@@ -10,33 +10,14 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
+#ifndef RAL_PROJECT_RAL_H
+#define RAL_PROJECT_RAL_H
 
-#ifdef RAL_WINDOWS
-#include <core/Core.h>
+namespace RAL {
+    class RAL {
+    public:
+    private:
+    };
+} // RAL
 
-#ifdef RAL_WINDOWS_USE_WINMAIN
-#include "WinMain.h"
-
-#include <core/memoryManager/Overload.h>
-#include <core/Main.h>
-#include <windows.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <iostream>
-
-/**
-int WinMain(HINSTANCE , HINSTANCE, LPSTR, int)
-{
-    DWORD processID;
-    GetWindowThreadProcessId(GetConsoleWindow(), &processID);
-    AllocConsole();
-
-    //RAL::main({});
-
-    while (1);
-    return 1;
-}
-**/
-
-#endif
-#endif //!RAL_WINDOWS
+#endif //!RAL_PROJECT_RAL_H

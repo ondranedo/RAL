@@ -11,10 +11,34 @@
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
 
+// Last version of this file: 2023-04-05_20:17
 
-#ifndef RAL_PROJECT_WINMAIN_H
-#define RAL_PROJECT_WINMAIN_H
-#ifdef RAL_WINDOWS
+/*
+ * Layers are used to separate different parts of the application.
+ * For example, you can have a layer for the game logic, a layer for the UI etc.
+ *
+ */
 
-#endif //!RAL_WINDOWS
-#endif //!RAL_PROJECT_WINMAIN_H
+#ifndef RAL_LAYERS_H
+#define RAL_LAYERS_H
+
+#include "MemoryOverload.h"
+#include "Event.h"
+#include <string>
+
+namespace RAL {
+    class Layer {
+    public:
+        explicit Layer(const std::string& name = "Layer");
+        virtual ~Layer() = default;
+        virtual void onEvent(Event* event) = 0;
+        virtual void onUpdate() = 0;
+        virtual void onAttach() = 0;
+        virtual void onDetach() = 0;
+
+    private:
+        std::string m_name;
+    };
+} // RAL
+
+#endif //!RAL_LAYERS_H

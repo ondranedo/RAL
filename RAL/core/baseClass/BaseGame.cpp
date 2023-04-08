@@ -14,7 +14,26 @@
 
 #include "BaseGame.h"
 
+#include <core/utility/Asserts.h>
+
 namespace RAL {
-    BaseGame::~BaseGame() = default;
-    BaseGame::BaseGame() = default;
+    BaseGame::~BaseGame()
+    {
+        RAL_LOG_DEBUG("Base game destroyed!");
+    }
+    BaseGame::BaseGame(): m_layerManager(nullptr) {
+        RAL_LOG_DEBUG("Base game created!");
+    }
+
+
+    void BaseGame::addLayer(Layer *layer) {
+        RAL_ASSERTRV(m_layerManager != nullptr, "LayerManager is not set when creating game!");
+        m_layerManager->addLayerToFront(layer);
+        RAL_LOG_DEBUG("Added layer to the front in base game!");
+    }
+
+    void BaseGame::setLayerManager(const LayerManager *layerManager) {
+        RAL_ASSERTRV(m_layerManager == nullptr, "LayerManager is already set!");
+        m_layerManager = const_cast<LayerManager*>(layerManager);
+    }
 } // RAL

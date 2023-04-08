@@ -16,7 +16,7 @@
 #######################################################
 # links subcomponents together
 
-add_library(${RAL_ENGINE_LIB} STATIC
+add_library(ral_core STATIC
         Main.cpp
         Application.cpp
         Application.h
@@ -30,17 +30,30 @@ add_library(${RAL_ENGINE_LIB} STATIC
 # such as logging, assertions, data types, data types
 # conversion etc.
 add_subdirectory(memoryManager)
-target_link_libraries(${RAL_ENGINE_LIB} PUBLIC ral_core_memoryManager)
+target_link_libraries(ral_core PRIVATE ral_core_memoryManager)
 
 # factory-component manager, used to create and manage
 # components and their factories
 add_subdirectory(utility)
-target_link_libraries(${RAL_ENGINE_LIB} PUBLIC ral_core_utility)
+target_link_libraries(ral_core PRIVATE ral_core_utility)
 
 # baseClasses (interfaces) for many parts of the engine
 add_subdirectory(baseClass)
-target_link_libraries(${RAL_ENGINE_LIB} PUBLIC ral_core_base_class)
+target_link_libraries(ral_core PRIVATE ral_core_baseClass)
 
 # file manager, used to load and save files
 add_subdirectory(fileManager)
-target_link_libraries(${RAL_ENGINE_LIB} PUBLIC ral_core_fileManager)
+target_link_libraries(ral_core PRIVATE ral_core_fileManager)
+
+# layers
+add_subdirectory(layers)
+target_link_libraries(ral_core PRIVATE ral_core_layers)
+
+# events
+add_subdirectory(events)
+target_link_libraries(ral_core PRIVATE ral_core_events)
+
+# FCM - factory-component manager, used to create and manage
+# components and their factories
+add_subdirectory(FCM)
+target_link_libraries(ral_core PRIVATE ral_core_FCM)

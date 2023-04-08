@@ -14,15 +14,32 @@
 #ifndef RAL_BASEGAME_H
 #define RAL_BASEGAME_H
 
+#include <core/layers/Layer.h>
+#include <core/layers/LayerManager.h>
+
 namespace RAL {
+    enum class GameType {
+        BASE_GAME
+    };
     class BaseGame {
     public:
+        // TODO: Add more layer methods
+        void addLayer(Layer* layer);
+        void setLayerManager(const LayerManager* layerManager);
+
+        virtual void onUpdate() = 0;
+        virtual void onStartup() = 0;
+        virtual void onShutdown() = 0;
+
         BaseGame();
         virtual ~BaseGame();
+
+    private:
+        LayerManager* m_layerManager;
     };
 
     // TODO: Custom class, some factory
-    extern BaseGame* createBaseGame();
+    extern BaseGame* createGame();
 } // RAL
 
 #endif //!RAL_BASEGAME_H

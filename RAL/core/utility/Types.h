@@ -18,7 +18,7 @@
 #include <cstdint>
 
 namespace RAL {
-    namespace types {
+    namespace Types {
         enum class KeyCodes : uint16_t
         {
             //Mouse
