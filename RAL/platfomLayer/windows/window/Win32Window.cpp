@@ -16,6 +16,9 @@
 #include "Win32Window.h"
 
 #include <core/utility/Asserts.h>
+#include <core/events/eventTypes/WindowEvents.h>
+#include <core/events/eventTypes/MouseEvents.h>
+#include <core/events/eventTypes/KeyEvents.h>
 
 namespace RAL::Win32 {
     Win32Window::Win32Window(const WindowSpec &spec) : Window(spec), m_window(nullptr) {}
@@ -33,13 +36,13 @@ namespace RAL::Win32 {
         RAL_ASSERT(m_window, "Cannot update window, window `%s` is not created", m_spec.m_title);
         if(!m_window) return;
         glfwPollEvents();
-        glfwSwapBuffers(m_window);
     }
 
     void Win32Window::makeContextCurrent() {
         RAL_ASSERT(m_window, "Cannot make context current, window `%s` is not created", m_spec.m_title);
         if(!m_window) return;
         glfwMakeContextCurrent(m_window);
+
     }
 
     void Win32Window::setDims(uint16_t width, uint16_t height) {
@@ -67,7 +70,6 @@ namespace RAL::Win32 {
             m_spec.m_created = true;
             return;
         }
-
         RAL_LOG_ERROR("Windows window `%s` creation failed", m_spec.m_title);
     }
 
@@ -79,6 +81,88 @@ namespace RAL::Win32 {
 
     bool Win32Window::getVSync() const {
         return global::glfw.getVSync();
+    }
+
+    void Win32Window::setCallbacks() {
+        // Great for holding custom pointer in glfw
+        glfwSetWindowUserPointer(m_window, &this->m_eventCallback);
+
+        glfwSetKeyCallback(m_window, [](GLFWwindow *window, int key, int scancode, int action, int mods) -> void {
+            Event *event = nullptr;
+            auto callBack = static_cast<EventManager::EventCallback *>(glfwGetWindowUserPointer(window));
+            Types::Codes keyCode = Win32GLFW::getCode(key);
+
+            switch (action) {
+                case GLFW_PRESS:
+                    event = new Events::KeyPressed(keyCode, false);
+                    break;
+                case GLFW_RELEASE:
+                    event = new Events::KeyReleased(keyCode);
+                    break;
+                case GLFW_REPEAT:
+                    event = new Events::KeyPressed(keyCode, true);
+                    break;
+            }
+
+            (*callBack)(event);
+        });
+
+        glfwSetMouseButtonCallback(m_window, [](GLFWwindow *window, int button, int action, int mods) -> void {
+            Event *event = nullptr;
+            auto callBack = static_cast<EventManager::EventCallback *>(glfwGetWindowUserPointer(window));
+            Types::Codes mouseCode = Win32GLFW::getCode(button);
+
+            switch (action) {
+                case GLFW_PRESS:
+                    event = new Events::MousePressed(mouseCode);
+                    break;
+                case GLFW_RELEASE:
+                    event = new Events::MouseReleased(mouseCode);
+                    break;
+            }
+
+            (*callBack)(event);
+        });
+
+        glfwSetCursorPosCallback(m_window, [](GLFWwindow *window, double xPos, double yPos) -> void {
+            auto callBack = static_cast<EventManager::EventCallback *>(glfwGetWindowUserPointer(window));
+            (*callBack)(new Events::MouseMoved(xPos, yPos));
+        });
+
+        glfwSetScrollCallback(m_window, [](GLFWwindow *window, double xOffset, double yOffset) -> void {
+            auto callBack = static_cast<EventManager::EventCallback *>(glfwGetWindowUserPointer(window));
+            (*callBack)(new Events::MouseScrolled(xOffset, yOffset));
+        });
+
+        glfwSetWindowSizeCallback(m_window, [](GLFWwindow *window, int width, int height) -> void {
+            auto callBack = static_cast<EventManager::EventCallback *>(glfwGetWindowUserPointer(window));
+            (*callBack)(new Events::WindowResized(width, height));
+        });
+
+        glfwSetWindowCloseCallback(m_window, [](GLFWwindow *window) -> void {
+            auto callBack = static_cast<EventManager::EventCallback *>(glfwGetWindowUserPointer(window));
+            (*callBack)(new Events::WindowClosed());
+        });
+
+        glfwSetWindowFocusCallback(m_window, [](GLFWwindow *window, int focused) -> void {
+            auto callBack = static_cast<EventManager::EventCallback *>(glfwGetWindowUserPointer(window));
+            if (focused)
+                (*callBack)(new Events::WindowFocus());
+            else
+                (*callBack)(new Events::WindowLostFocus());
+        });
+
+        glfwSetWindowPosCallback(m_window, [](GLFWwindow *window, int xPos, int yPos) -> void {
+            auto callBack = static_cast<EventManager::EventCallback *>(glfwGetWindowUserPointer(window));
+            (*callBack)(new Events::WindowMoved(xPos, yPos));
+        });
+    }
+
+    void Win32Window::swapBuffers()
+    {
+        RAL_ASSERT(m_window, "Cannot call swapBuffers, window `%s` is not created", m_spec.m_title);
+        glfwSwapBuffers(m_window);
+
     }
 } // RAL
 

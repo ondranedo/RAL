@@ -15,8 +15,8 @@ add_library(ral_renderer STATIC
         Renderer.cpp
         Renderer.h)
 
-add_subdirectory(renderer2d)
-target_link_libraries(ral_renderer PUBLIC ral_renderer_renderer2d)
+add_subdirectory(renderer)
+target_link_libraries(ral_renderer PRIVATE ral_renderer_renderer2d)
 
 add_subdirectory(renderingAPI)
-target_link_libraries(ral_renderer PUBLIC ral_renderer_renderingAPI)
+target_link_libraries(ral_renderer PRIVATE ral_renderer_renderingAPI)

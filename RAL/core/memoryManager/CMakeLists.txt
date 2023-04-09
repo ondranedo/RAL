@@ -11,7 +11,7 @@
 # See file `LICENSE` for full license details.        #
 #######################################################
 
-add_library(ral_core_memoryManager
+add_library(ral_core_memoryManager STATIC
         MemoryManager.cpp
         MemoryManager.h
         Overload.cpp

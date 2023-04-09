@@ -11,7 +11,7 @@
 # See file `LICENSE` for full license details.        #
 #######################################################
 
-add_library(ral_renderer_renderer2d STATIC
-    Renderer2D.cpp
-    Renderer2D.h
-        )
+
+add_library(ral_core_FCM STATIC
+        FCM.cpp
+        FCM.h)

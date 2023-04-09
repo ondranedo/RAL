@@ -16,19 +16,19 @@ add_library(ral_platformLayer STATIC
         PlatformLayer.h
         )
 
+add_subdirectory(file)
+target_link_libraries(ral_platformLayer PRIVATE ral_platformLayer_file)
+
+add_subdirectory(window)
+target_link_libraries(ral_platformLayer PRIVATE ral_platformLayer_window)
+
 if(WIN32)
 add_subdirectory(windows)
 target_link_libraries(ral_platformLayer PUBLIC ral_platformLayer_windows)
 endif()
 
 add_subdirectory(memory)
-target_link_libraries(ral_platformLayer PUBLIC ral_platformLayer_memory)
-
-add_subdirectory(window)
-target_link_libraries(ral_platformLayer PUBLIC ral_platformLayer_window)
-
-add_subdirectory(file)
-target_link_libraries(ral_platformLayer PUBLIC ral_platformLayer_file)
+target_link_libraries(ral_platformLayer PRIVATE ral_platformLayer_memory)
 
 add_subdirectory(consoleInterpreter)
-target_link_libraries(ral_platformLayer PUBLIC ral_platformLayer_consoleInterpreter)
+target_link_libraries(ral_platformLayer PRIVATE ral_platformLayer_consoleInterpreter)

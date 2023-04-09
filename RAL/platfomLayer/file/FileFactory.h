@@ -18,11 +18,13 @@
 #include <platfomLayer/file/FileTxt.h>
 
 namespace RAL {
-    class FileFactory : public BaseFactory<File> {
+    class FileFactory : public BaseFactory {
     public:
         // Default for txt file
         File* create() override;
         FileTxt* createTxt();
+        [[nodiscard]] std::string productName() const override;
+
         //FileBin* createbin() override;
         
     };

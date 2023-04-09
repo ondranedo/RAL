@@ -13,14 +13,32 @@
 
 #ifndef RAL_PROJECT_APPLICATION_H
 #define RAL_PROJECT_APPLICATION_H
-#include <core/memoryManager/Overload.h>
+
+#include <core/events/Event.h>
+#include <core/baseClass/BaseGame.h>
+#include <platfomLayer/consoleInterpreter/ConsoleInterpreter.h>
+#include <core/FCM/FCM.h>
 
 namespace RAL {
     class Application {
     public:
-        Application();
+        struct ConstructInfo {
+            MemoryManager* memory;
+            ConsoleInterpreter* consoleInterpreter;
+        };
+
+        Application(const ConstructInfo& info);
         ~Application();
         void run();
+        void onEvent(Event* event);
+
+        void inti();
+        void release();
+
+    private:
+        FCM m_fcm;
+        bool m_running;
+        BaseGame* m_game;
     };
 }; // RAL
 
