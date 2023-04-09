@@ -35,11 +35,11 @@ namespace RAL {
         [[nodiscard]] virtual bool getVSync() const = 0;
         virtual void makeContextCurrent() = 0;
         [[nodiscard]] uint8_t getId() const;
-
         void setEventCallback(const EventManager::EventCallback& callback);
+        virtual void swapBuffers() = 0;
+
     private:
         virtual void setCallbacks() = 0;
-        virtual void swapBuffers() = 0;
 
     protected:
         WindowSpec m_spec;

@@ -22,9 +22,9 @@ namespace RAL {
         global::setMemoryManager(&mgr);
 
         auto app = new RAL::Application({&mgr, info.consoleInterpreter});
-        //app->inti();
+        app->inti();
         app->run();
-       //app->release();
+        app->release();
         delete app;
 
         return 0;
