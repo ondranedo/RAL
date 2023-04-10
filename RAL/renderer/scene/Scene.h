@@ -25,8 +25,8 @@ namespace RAL {
         ~Scene();
 
         void loadTxtScene(const std::string& scenePath);
-        void loadBinScene();
-        void saveBinScene();
+        void loadBinScene(const std::string& scenePath);
+        void saveBinScene(const std::string& scenePath);
 
     private:
         struct intPos{
@@ -37,7 +37,7 @@ namespace RAL {
 
         struct Entity{
             Mesh* m_mesh;
-            std::string name;
+            std::string m_name;
             intPos m_pos;
         };
         std::vector<Entity> m_entities;

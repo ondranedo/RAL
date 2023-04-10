@@ -24,12 +24,94 @@ namespace RAL {
 
     }
 
-    void Scene::loadBinScene() {
+    void Scene::loadBinScene(const std::string& scenePath) {
+        //TODO: switch to File
 
+        FILE* file = fopen(scenePath.c_str(), "rb");
+        size_t tempSize;
+        size_t nOfEntities;
+        std::string tempString;
+        void* buffer;
+        Entity tempEntity;
+
+        //number of entities
+        fread(&nOfEntities, sizeof(size_t), 1, file);
+
+        for(int i = 0; i < nOfEntities; i++){
+            //length of c string
+            fread(&tempSize, sizeof(size_t), 1, file);
+
+            //c string name
+            buffer = new char[tempSize];
+            fread(buffer, sizeof(char), tempSize, file);
+            tempEntity.m_name = reinterpret_cast<char*>(buffer);
+            delete[] reinterpret_cast<char*>(buffer);
+
+            //length of c string
+            fread(&tempSize, sizeof(size_t), 1, file);
+
+            //c string mesh path
+            buffer = new char[tempSize];
+            fread(buffer, sizeof(char), tempSize, file);
+            tempString = reinterpret_cast<char*>(buffer);
+            delete[] reinterpret_cast<char*>(buffer);
+
+            tempEntity.m_mesh = nullptr;
+
+            // optimization: if mesh was used, point to the already loaded one
+            for(auto & entity : m_entities){
+                if(entity.m_mesh->getPath() == tempString){
+                    tempEntity.m_mesh = entity.m_mesh;
+                    break;
+                }
+            }
+
+            if(!tempEntity.m_mesh){
+                tempEntity.m_mesh = new Mesh;
+                tempEntity.m_mesh->openRalms(tempString);
+            }
+
+            //position of object
+            fread(&tempEntity.m_pos, sizeof(intPos), 1, file);
+
+            m_entities.push_back(tempEntity);
+        }
+
+        fclose(file);
     }
 
-    void Scene::saveBinScene() {
+    void Scene::saveBinScene(const std::string& scenePath) {
+        //TODO: switch to File
 
+        FILE* file = fopen(scenePath.c_str(), "wb");
+        size_t pathSize;
+        size_t nameSize;
+        size_t nOfEntities;
+
+        //number of entities
+        nOfEntities = m_entities.size();
+        fwrite(&nOfEntities, sizeof(size_t), 1, file);
+
+        for(auto & entity : m_entities){
+            //length of c string
+            nameSize = entity.m_name.size() + 1;
+            fwrite(&nameSize, sizeof(size_t), 1, file);
+
+            //c string name
+            fwrite(entity.m_name.c_str(), sizeof(char), nameSize, file);
+
+            //length of c string
+            pathSize = entity.m_mesh->getPath().size() + 1;
+            fwrite(&pathSize, sizeof(size_t), 1, file);
+
+            //c string mesh path
+            fwrite(entity.m_mesh->getPath().c_str(), sizeof(char), pathSize, file);
+
+            //position of object
+            fwrite(&entity.m_pos, sizeof(intPos), 1, file);
+        }
+
+        fclose(file);
     }
 
     //is subject to change
@@ -52,8 +134,8 @@ namespace RAL {
             switch (switcher) {
                 case 0:
                     for(auto & entity : m_entities){
-                        if(entity.name == tempLine){
-                            RAL_LOG_INFO("Entity %s already in scene; won't be added", entity.name.c_str());
+                        if(entity.m_name == tempLine){
+                            RAL_LOG_INFO("Entity %s already in scene; won't be added", entity.m_name.c_str());
                             for(int i = 0; i < 4; i++){
                                 file.readLine();
                             }
@@ -61,7 +143,7 @@ namespace RAL {
                             break;
                         }
                     }
-                    tempEntity.name = tempLine.value();
+                    tempEntity.m_name = tempLine.value();
                     break;
                 case 1:
                     tempEntity.m_mesh = nullptr;
