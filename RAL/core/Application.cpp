@@ -13,7 +13,7 @@
 
 
 #include "Application.h"
-#include <vendor/glad/include/glad/glad.h>
+//#include <vendor/glad/include/glad/glad.h>
 
 
 #include <core/FCM/FCM.h>
@@ -24,27 +24,27 @@
 #include <core/events/EventDispatcher.h>
 #include <platfomLayer/window/Window.h>
 
-#include <renderer/renderingAPI/platform/openGL/GLVertexArray.h>
-#include <renderer/renderingAPI/platform/openGL/GLVertexBuffer.h>
-#include <renderer/renderingAPI/platform/openGL/GLIndexBuffer.h>
-#include <renderer/renderingAPI/platform/openGL/GLRenderingAPI.h>
-
+//#include <renderer/renderingAPI/platform/openGL/GLVertexArray.h>
+//#include <renderer/renderingAPI/platform/openGL/GLVertexBuffer.h>
+//#include <renderer/renderingAPI/platform/openGL/GLIndexBuffer.h>
+//#include <renderer/renderingAPI/platform/openGL/GLRenderingAPI.h>
+//
 #include <renderer/renderer2d/Renderer2D.h>
 
 namespace RAL {
 
-    float vertices[] = {
-            // positions         // colors
-            -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,  // bottom left
-            -0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, // top left
-            0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f,  // top right
-            0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom right
-
-    };
-    unsigned int indices[] = {  // note that we start from 0!
-            0, 1, 3,  // first Triangle
-            1, 2, 3   // second Triangle
-    };
+    //float vertices[] = {
+    //        // positions         // colors
+    //        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,  // bottom left
+    //        -0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, // top left
+    //        0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f,  // top right
+    //        0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom right
+//
+    //};
+    //unsigned int indices[] = {  // note that we start from 0!
+    //        0, 1, 3,  // first Triangle
+    //        1, 2, 3   // second Triangle
+    //};
 
 
     Application::Application(const ConstructInfo& info) : m_fcm({}), m_running(true), m_game(nullptr) {
@@ -111,22 +111,23 @@ namespace RAL {
         /// Vojtuv codik
         m_fcm.get<Window>("Window")->makeContextCurrent();
 
-        if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
-        {
-            RAL_LOG_FATAL("Failed to initialize GLAD");
-        }
-        GLRenderingAPI rAPI;
-        rAPI.init();
-        GLVertexArray va;
-        va.bind();
-        GLVertexBuffer vb;
-        vb.setData(vertices, sizeof(vertices), Buffer::DrawUsage::STATIC);
-        GLIndexBuffer ib;
-        ib.setData(indices, sizeof(indices), Buffer::DrawUsage::STATIC);
-        va.setLayout({BufferLayout::LayoutType::FLOAT3,BufferLayout::LayoutType::FLOAT3});
+        ///if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
+        ///{
+        ///    RAL_LOG_FATAL("Failed to initialize GLAD");
+        ///}
+        ///GLRenderingAPI rAPI;
+        ///rAPI.init();
+        ///GLVertexArray va;
+        ///va.bind();
+        ///GLVertexBuffer vb;
+        ///vb.setData(vertices, sizeof(vertices), Buffer::DrawUsage::STATIC);
+        ///GLIndexBuffer ib;
+        ///ib.setData(indices, sizeof(indices), Buffer::DrawUsage::STATIC);
+        ///va.setLayout({BufferLayout::LayoutType::FLOAT3,BufferLayout::LayoutType::FLOAT3});
         ///~Vojtuv codik
 
-        m_fcm.get<Window>("Window")->swapBuffers();
+        Renderer2D renderer;
+        renderer.init();
 
         while(m_running)
         {
@@ -136,15 +137,16 @@ namespace RAL {
             global::mainLogger.print();
 
             /// Vojtuv codik
-            glClearColor(34.0f/255.0f, 34.0f/255.0f, 34.0f/255.0f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
-            rAPI.useDefaultProgram();
-            va.bind();
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            ///glClearColor(34.0f/255.0f, 34.0f/255.0f, 34.0f/255.0f, 1.0f);
+            ///glClear(GL_COLOR_BUFFER_BIT);
+            ///rAPI.useDefaultProgram();
+            ///va.bind();
+            ///glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            ///m_fcm.get<Window>("Window")->swapBuffers();
+            renderer.renderLoop();
             m_fcm.get<Window>("Window")->swapBuffers();
-            //renderer.renderLoop();
         }
 
-        //renderer.release();
+        renderer.release();
     }
 } // RAL
