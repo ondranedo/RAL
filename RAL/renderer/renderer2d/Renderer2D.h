@@ -15,24 +15,22 @@
 
 #include <vector>
 
-#include <platfomLayer/window/Window.h>
+#include <renderer/Renderer.h>
 
 namespace RAL {
-    class Renderer2D {
-    private:
-        struct Data
-        {
-            std::vector<std::pair<float,float>> vertecies;
-            std::vector<unsigned int> indecies;
-        };
-        Data m_Data;
-        Window* m_Window = nullptr;
-
-        void setWindow(Window* window);
-        void setData();
+    class Renderer2D : public Renderer {
     public:
-        void render();
-        void renderLoop();
+        void renderLoop() override;
+        void addData(VertexBuffer *vertex, IndexBuffer* index) override;
+
+        void init() override;
+        void release() override;
+
+        void update() override;
+
+    private:
+        std::vector<VertexBuffer*> m_vertexBuffers;
+        std::vector<IndexBuffer*> m_indexBuffers;
     };
 } // RAL
 

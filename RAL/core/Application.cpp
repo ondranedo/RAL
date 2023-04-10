@@ -15,6 +15,7 @@
 #include "Application.h"
 #include <vendor/glad/include/glad/glad.h>
 
+
 #include <core/FCM/FCM.h>
 #include <core/layers/LayerManagerFactory.h>
 #include <platfomLayer/window/WindowFactory.h>
@@ -28,6 +29,7 @@
 #include <renderer/renderingAPI/platform/openGL/GLIndexBuffer.h>
 #include <renderer/renderingAPI/platform/openGL/GLRenderingAPI.h>
 
+#include <renderer/renderer2d/Renderer2D.h>
 
 namespace RAL {
 
@@ -105,6 +107,7 @@ namespace RAL {
     void Application::run() {
         RAL_LOG_INFO("Engine starting main loop");
 
+
         /// Vojtuv codik
         m_fcm.get<Window>("Window")->makeContextCurrent();
 
@@ -139,7 +142,9 @@ namespace RAL {
             va.bind();
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
             m_fcm.get<Window>("Window")->swapBuffers();
-            ///~Vojtuv codik
+            //renderer.renderLoop();
         }
+
+        //renderer.release();
     }
 } // RAL
