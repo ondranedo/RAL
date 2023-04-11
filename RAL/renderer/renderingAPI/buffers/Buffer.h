@@ -18,21 +18,28 @@ namespace RAL
     class Buffer
     {
     public:
-        virtual void bind() const = 0;
-
-        virtual void unbind() const = 0;
-
         /**
-        1: VOLATILE = GL_STREAM_DRAW Data is set only once and used by the GPU few times
-        2: STATIC = GL_STATIC_DRAW Data is set only once and used many times
-        3: DYNAMIC = GL_DYNAMIC_DRAW Data is changed a lot and used many times
+            1: VOLATILE = Data is set only once and used by the GPU few times.
+            2: STATIC = Data is set only once and used many times.
+            3: DYNAMIC = Data is changed a lot and used many times.
         */
+        Buffer();
+        virtual ~Buffer();
+
         enum class DrawUsage : unsigned char
         {
             STATIC,
             DYNAMIC,
             VOLATILE
         };
+
+        virtual void bind() const = 0;
+        virtual void unbind() const = 0;
+        void setDrawUsage(DrawUsage usage);
+        DrawUsage getDrawUsage() const;
+
+    protected:
+        DrawUsage m_usage;
     };
 
 } // RAL
