@@ -11,7 +11,6 @@
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
 #include "Scene3D.h"
-#include "../../platfomLayer/windows/file/Win32FileTxt.h"
 #include "../../core/utility/Logger.h"
 
 //todo: CODE CLEANUP
@@ -21,16 +20,14 @@ namespace RAL {
 
     Scene3D::~Scene3D() = default;
 
-    void Scene3D::loadBinScene(const std::string& scenePath) {
-        //TODO: switch to File
+    void Scene3D::loadBinObjects(FILE *file) {
 
-        FILE* file = fopen(scenePath.c_str(), "rb");
-        size_t tempSize;
         size_t nOfObjects;
-        int32_t tempPos;
-        std::string tempString;
+        size_t tempSize;
         void* buffer;
         Object3D tempObject;
+        std::string tempString;
+        int32_t tempPos;
 
         //number of entities
         fread(&nOfObjects, sizeof(size_t), 1, file);
@@ -80,6 +77,14 @@ namespace RAL {
 
             m_objects.push_back(tempObject);
         }
+    }
+
+    void Scene3D::loadBinScene(const std::string& scenePath) {
+        //TODO: switch to File
+
+        FILE* file = fopen(scenePath.c_str(), "rb");
+
+        loadBinObjects(file);
 
         fclose(file);
     }
@@ -88,9 +93,39 @@ namespace RAL {
         //TODO: switch to File
 
         FILE* file = fopen(scenePath.c_str(), "wb");
-        size_t pathSize;
-        size_t nameSize;
+        saveBinObjects(file);
+
+        fclose(file);
+    }
+
+    //is subject to change
+    //currently loads six-line entries without separation and in an exact format
+    //entity type
+    //entity name\n
+    //path to its mesh\n
+    //x offset\n
+    //y offset\n
+    //z offset\n
+    //WILL BREAK IF FILE DOESN'T FOLLOW THESE RULES
+    //there is memory leak potential if the scene file doesn't follow the strict guidelines
+    void Scene3D::loadTxtScene(const std::string& scenePath) {
+
+        Win32::Win32FileTxt file;
+        file.RAL::Win32::Win32File::open(scenePath, File::Mode::Read);
+
+        while (auto tempLine = file.readLine()){
+            if(tempLine == "object"){
+                loadTxtObject(file);
+            }
+        }
+        file.RAL::Win32::Win32File::close();
+    }
+
+    void Scene3D::saveBinObjects(FILE *file) {
+
         size_t nOfEntities;
+        size_t nameSize;
+        size_t pathSize;
         int32_t tempPos;
 
         //number of entities
@@ -120,76 +155,52 @@ namespace RAL {
             tempPos = object.getZPos();
             fwrite(&tempPos, sizeof(int32_t), 1, file);
         }
-
-        fclose(file);
     }
 
-    //is subject to change
-    //currently loads five-line entries without separation and in an exact format
-    //entity name\n
-    //path to its mesh\n
-    //x offset\n
-    //y offset\n
-    //z offset\n
-    void Scene3D::loadTxtScene(const std::string& scenePath) {
+    void Scene3D::loadTxtObject(const Win32::Win32FileTxt& file) {
 
-        Win32::Win32FileTxt file;
-        file.RAL::Win32::Win32File::open(scenePath, File::Mode::Read);
-
+        std::string line;
         Object3D tempObject;
-        int8_t switcher = 0;
 
-        //there is memory leak potential if the scene file doesn't follow the strict guidelines
-        while (auto tempLine = file.readLine()){
-            switch (switcher) {
-                case 0:
-                    for(auto & object : m_objects){
-                        if(object.getName() == tempLine){
-                            RAL_LOG_INFO("Entity %s already in scene; won't be added", object.getName().c_str());
-                            for(int i = 0; i < 4; i++){
-                                file.readLine();
-                            }
-                            switcher--;
-                            break;
-                        }
-                    }
-                    tempObject.setName(tempLine.value());
-                    break;
-                case 1:
-                    tempObject.setMesh(nullptr);
-
-                    // optimization: if mesh was used, point to the already loaded one
-                    for(auto & mesh : m_meshes){
-                        if(mesh.getPath() == tempLine.value()){
-                            tempObject.setMesh(&mesh);
-                            break;
-                        }
-                    }
-
-                    if(!tempObject.getMesh()){
-                        tempObject.setMesh(new Mesh3D);
-                        tempObject.getMesh()->openRalms(tempLine.value());
-                        m_meshes.push_back(*tempObject.getMesh());
-                    }
-                    break;
-                case 2:
-                    tempObject.setXPos(std::stoi(tempLine.value()));
-                    break;
-                case 3:
-                    tempObject.setYPos(std::stoi(tempLine.value()));
-                    break;
-                case 4:
-                    tempObject.setZPos(std::stoi(tempLine.value()));
-                    break;
-            }
-            switcher++;
-
-            if(switcher == 5){
-                m_objects.push_back(tempObject);
-                switcher = 0;
+        line = file.readLine().value();
+        for(auto & object : m_objects){
+            if(object.getName() == line){
+                RAL_LOG_INFO("Entity %s already in scene; won't be added", object.getName().c_str());
+                for(int i = 0; i < 4; i++){
+                    file.readLine();
+                }
+                return;
             }
         }
-        file.RAL::Win32::Win32File::close();
+        tempObject.setName(line);
+
+        line = file.readLine().value();
+        tempObject.setMesh(nullptr);
+
+        // optimization: if mesh was used, point to the already loaded one
+        for(auto & mesh : m_meshes){
+            if(mesh.getPath() == line){
+                tempObject.setMesh(&mesh);
+                break;
+            }
+        }
+
+        if(!tempObject.getMesh()){
+            tempObject.setMesh(new Mesh3D);
+            tempObject.getMesh()->openRalms(line);
+            m_meshes.push_back(*tempObject.getMesh());
+        }
+
+        line = file.readLine().value();
+        tempObject.setXPos(std::stoi(line));
+
+        line = file.readLine().value();
+        tempObject.setYPos(std::stoi(line));
+
+        line = file.readLine().value();
+        tempObject.setZPos(std::stoi(line));
+
+        m_objects.push_back(tempObject);
     }
 
 } // RAL

@@ -16,6 +16,7 @@
 #include <vector>
 #include <string>
 #include "../entity/Object3D.h"
+#include "../../platfomLayer/windows/file/Win32FileTxt.h"
 
 namespace RAL {
     class Scene3D {
@@ -24,8 +25,13 @@ namespace RAL {
         ~Scene3D();
 
         void loadTxtScene(const std::string& scenePath);
+        void loadTxtObject(const Win32::Win32FileTxt& file);
+
         void loadBinScene(const std::string& scenePath);
+        void loadBinObjects(FILE* file);
+
         void saveBinScene(const std::string& scenePath);
+        void saveBinObjects(FILE* file);
 
     private:
 
