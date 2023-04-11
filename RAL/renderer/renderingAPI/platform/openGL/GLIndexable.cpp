@@ -14,8 +14,11 @@
 
 namespace RAL
 {
-    GLIndexable::GLIndexable() : m_id(0)
-    {
+    GLIndexable::GLIndexable() : m_id(0){}
+    GLIndexable::~GLIndexable() = default;
 
+    unsigned int GLIndexable::getID() const {
+        return m_id;
     }
+
 } // RAL

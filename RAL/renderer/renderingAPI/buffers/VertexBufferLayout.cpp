@@ -38,9 +38,8 @@ namespace RAL
     }
 
     uint8_t VertexBufferLayout::EntryTypeSize(VertexBufferLayout::LayoutEntryType type) {
-        //uint8_t size = EntryTypeComponents(type) * Types::size(EntryTypeToDataType(type));
-        //return size;
-        return 0;
+        uint8_t size = EntryTypeComponents(type) * Types::size(EntryTypeToDataType(type));
+        return size;
     }
 
     uint8_t VertexBufferLayout::EntryTypeComponents(VertexBufferLayout::LayoutEntryType type) {

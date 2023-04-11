@@ -22,16 +22,10 @@ namespace RAL
     {
     public:
         ~GLIndexBuffer() override;
-
         GLIndexBuffer();
 
-        void setData(unsigned int *indices,unsigned int size,DrawUsage usage) override;
-
         void bind() const override;
-
         void unbind() const override;
-
-    private:
     };
 } // RAL
 

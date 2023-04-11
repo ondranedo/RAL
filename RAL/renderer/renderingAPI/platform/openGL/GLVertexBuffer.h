@@ -23,14 +23,8 @@ namespace RAL
     public:
         ~GLVertexBuffer() override;
 
-        GLVertexBuffer();
-
-        void setData(float *vertices,unsigned int size,DrawUsage usage) override;
-
         void bind() const override;
-
         void unbind() const override;
-
     };
 };
 #endif //!RAL_PROJECT_GLVERTEXBUFFER_H

@@ -27,13 +27,6 @@ namespace RAL
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
     }
 
-    void GLIndexBuffer::setData(unsigned int *indices, unsigned int size, DrawUsage usage)
-    {
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices,
-                     usage == DrawUsage::VOLATILE ? GL_STREAM_DRAW :
-                     usage == DrawUsage::STATIC ? GL_STATIC_DRAW :
-                     GL_DYNAMIC_DRAW);
-    }
 
     void GLIndexBuffer::bind() const
     {
