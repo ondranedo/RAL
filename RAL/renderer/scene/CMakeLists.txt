@@ -12,6 +12,6 @@
 #######################################################
 
 add_library(ral_renderer_scene STATIC
-        Scene.cpp
-        Scene.h
+        Scene3D.cpp
+        Scene3D.h
         )

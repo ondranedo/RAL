@@ -27,13 +27,4 @@ namespace RAL{
     void Object3D::setMesh(Mesh3D *mesh) {
         m_mesh = mesh;
     }
-
-    void Object3D::setMesh(const std::string& path) {
-        if(path.find("ral3d") != std::string::npos){
-            m_mesh->openRalms(path);
-        }
-        else{
-            m_mesh = nullptr;
-        }
-    }
 }

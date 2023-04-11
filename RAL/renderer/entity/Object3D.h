@@ -26,7 +26,6 @@ namespace RAL{
         Mesh3D* getMesh();
 
         void setMesh(Mesh3D* mesh);
-        void setMesh(const std::string& path);
 
     private:
         Mesh3D* m_mesh{};

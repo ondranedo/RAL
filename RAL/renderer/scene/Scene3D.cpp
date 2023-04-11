@@ -10,41 +10,39 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#include "Scene.h"
+#include "Scene3D.h"
 #include "../../platfomLayer/windows/file/Win32FileTxt.h"
 #include "../../core/utility/Logger.h"
 
+//todo: CODE CLEANUP
 namespace RAL {
 
-    Scene::Scene() {
+    Scene3D::Scene3D() = default;
 
-    }
+    Scene3D::~Scene3D() = default;
 
-    Scene::~Scene() {
-
-    }
-
-    void Scene::loadBinScene(const std::string& scenePath) {
+    void Scene3D::loadBinScene(const std::string& scenePath) {
         //TODO: switch to File
 
         FILE* file = fopen(scenePath.c_str(), "rb");
         size_t tempSize;
-        size_t nOfEntities;
+        size_t nOfObjects;
+        int32_t tempPos;
         std::string tempString;
         void* buffer;
-        Entity tempEntity;
+        Object3D tempObject;
 
         //number of entities
-        fread(&nOfEntities, sizeof(size_t), 1, file);
+        fread(&nOfObjects, sizeof(size_t), 1, file);
 
-        for(int i = 0; i < nOfEntities; i++){
+        for(int i = 0; i < nOfObjects; i++){
             //length of c string
             fread(&tempSize, sizeof(size_t), 1, file);
 
             //c string name
             buffer = new char[tempSize];
             fread(buffer, sizeof(char), tempSize, file);
-            tempEntity.m_name = reinterpret_cast<char*>(buffer);
+            tempObject.setName(reinterpret_cast<char*>(buffer));
             delete[] reinterpret_cast<char*>(buffer);
 
             //length of c string
@@ -56,62 +54,71 @@ namespace RAL {
             tempString = reinterpret_cast<char*>(buffer);
             delete[] reinterpret_cast<char*>(buffer);
 
-            tempEntity.m_mesh = nullptr;
-
-            // optimization: if mesh was used, point to the already loaded one
-            for(auto & entity : m_entities){
-                if(entity.m_mesh->getPath() == tempString){
-                    tempEntity.m_mesh = entity.m_mesh;
+            tempObject.setMesh(nullptr);
+            //todo: better way of optimising
+            //optimization: if mesh was used, point to the already loaded one
+            for(auto & mesh : m_meshes){
+                if(mesh.getPath() == tempString){
+                    tempObject.setMesh(&mesh);
                     break;
                 }
             }
 
-            if(!tempEntity.m_mesh){
-                tempEntity.m_mesh = new Mesh;
-                tempEntity.m_mesh->openRalms(tempString);
+            if(!tempObject.getMesh()){
+                tempObject.setMesh(new Mesh3D);
+                tempObject.getMesh()->openRalms(tempString);
+                m_meshes.push_back(*tempObject.getMesh());
             }
 
             //position of object
-            fread(&tempEntity.m_xPos, sizeof(int32_t), 1, file);
-            fread(&tempEntity.m_yPos, sizeof(int32_t), 1, file);
-            fread(&tempEntity.m_zPos, sizeof(int32_t), 1, file);
-            m_entities.push_back(tempEntity);
+            fread(&tempPos, sizeof(int32_t), 1, file);
+            tempObject.setXPos(tempPos);
+            fread(&tempPos, sizeof(int32_t), 1, file);
+            tempObject.setYPos(tempPos);
+            fread(&tempPos, sizeof(int32_t), 1, file);
+            tempObject.setZPos(tempPos);
+
+            m_objects.push_back(tempObject);
         }
 
         fclose(file);
     }
 
-    void Scene::saveBinScene(const std::string& scenePath) {
+    void Scene3D::saveBinScene(const std::string& scenePath) {
         //TODO: switch to File
 
         FILE* file = fopen(scenePath.c_str(), "wb");
         size_t pathSize;
         size_t nameSize;
         size_t nOfEntities;
+        int32_t tempPos;
 
         //number of entities
-        nOfEntities = m_entities.size();
+        nOfEntities = m_objects.size();
         fwrite(&nOfEntities, sizeof(size_t), 1, file);
 
-        for(auto & entity : m_entities){
+        for(auto & object : m_objects){
             //length of c string
-            nameSize = entity.m_name.size() + 1;
+            nameSize = object.getName().size() + 1;
             fwrite(&nameSize, sizeof(size_t), 1, file);
 
             //c string name
-            fwrite(entity.m_name.c_str(), sizeof(char), nameSize, file);
+            fwrite(object.getName().c_str(), sizeof(char), nameSize, file);
 
             //length of c string
-            pathSize = entity.m_mesh->getPath().size() + 1;
+            pathSize = object.getMesh()->getPath().size() + 1;
             fwrite(&pathSize, sizeof(size_t), 1, file);
 
             //c string mesh path
-            fwrite(entity.m_mesh->getPath().c_str(), sizeof(char), pathSize, file);
+            fwrite(object.getMesh()->getPath().c_str(), sizeof(char), pathSize, file);
 
             //position of object
-            fwrite(&entity.m_xPos, sizeof(int32_t), 1, file);
-            fwrite(&entity.m_yPos, sizeof(int32_t), 1, file);
-            fwrite(&entity.m_zPos, sizeof(int32_t), 1, file);
+            tempPos = object.getXPos();
+            fwrite(&tempPos, sizeof(int32_t), 1, file);
+            tempPos = object.getYPos();
+            fwrite(&tempPos, sizeof(int32_t), 1, file);
+            tempPos = object.getZPos();
+            fwrite(&tempPos, sizeof(int32_t), 1, file);
         }
 
         fclose(file);
@@ -124,21 +131,21 @@ namespace RAL {
     //x offset\n
     //y offset\n
     //z offset\n
-    void Scene::loadTxtScene(const std::string& scenePath) {
+    void Scene3D::loadTxtScene(const std::string& scenePath) {
 
         Win32::Win32FileTxt file;
         file.RAL::Win32::Win32File::open(scenePath, File::Mode::Read);
 
-        Entity tempEntity;
+        Object3D tempObject;
         int8_t switcher = 0;
 
         //there is memory leak potential if the scene file doesn't follow the strict guidelines
         while (auto tempLine = file.readLine()){
             switch (switcher) {
                 case 0:
-                    for(auto & entity : m_entities){
-                        if(entity.m_name == tempLine){
-                            RAL_LOG_INFO("Entity %s already in scene; won't be added", entity.m_name.c_str());
+                    for(auto & object : m_objects){
+                        if(object.getName() == tempLine){
+                            RAL_LOG_INFO("Entity %s already in scene; won't be added", object.getName().c_str());
                             for(int i = 0; i < 4; i++){
                                 file.readLine();
                             }
@@ -146,38 +153,39 @@ namespace RAL {
                             break;
                         }
                     }
-                    tempEntity.m_name = tempLine.value();
+                    tempObject.setName(tempLine.value());
                     break;
                 case 1:
-                    tempEntity.m_mesh = nullptr;
+                    tempObject.setMesh(nullptr);
 
                     // optimization: if mesh was used, point to the already loaded one
-                    for(auto & entity : m_entities){
-                        if(entity.m_mesh->getPath() == tempLine.value()){
-                            tempEntity.m_mesh = entity.m_mesh;
+                    for(auto & mesh : m_meshes){
+                        if(mesh.getPath() == tempLine.value()){
+                            tempObject.setMesh(&mesh);
                             break;
                         }
                     }
 
-                    if(!tempEntity.m_mesh){
-                        tempEntity.m_mesh = new Mesh;
-                        tempEntity.m_mesh->openRalms(tempLine.value());
+                    if(!tempObject.getMesh()){
+                        tempObject.setMesh(new Mesh3D);
+                        tempObject.getMesh()->openRalms(tempLine.value());
+                        m_meshes.push_back(*tempObject.getMesh());
                     }
                     break;
                 case 2:
-                    tempEntity.m_xPos = std::stoi(tempLine.value());
+                    tempObject.setXPos(std::stoi(tempLine.value()));
                     break;
                 case 3:
-                    tempEntity.m_yPos = std::stoi(tempLine.value());
+                    tempObject.setYPos(std::stoi(tempLine.value()));
                     break;
                 case 4:
-                    tempEntity.m_zPos = std::stoi(tempLine.value());
+                    tempObject.setZPos(std::stoi(tempLine.value()));
                     break;
             }
             switcher++;
 
             if(switcher == 5){
-                m_entities.push_back(tempEntity);
+                m_objects.push_back(tempObject);
                 switcher = 0;
             }
         }

@@ -10,18 +10,18 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#ifndef RAL_PROJECT_SCENE_H
-#define RAL_PROJECT_SCENE_H
+#ifndef RAL_PROJECT_SCENE3D_H
+#define RAL_PROJECT_SCENE3D_H
 
 #include <vector>
 #include <string>
 #include "../entity/Object3D.h"
 
 namespace RAL {
-    class Scene {
+    class Scene3D {
     public:
-        Scene();
-        ~Scene();
+        Scene3D();
+        ~Scene3D();
 
         void loadTxtScene(const std::string& scenePath);
         void loadBinScene(const std::string& scenePath);
@@ -29,15 +29,9 @@ namespace RAL {
 
     private:
 
-        struct Entity{
-            Mesh* m_mesh;
-            std::string m_name;
-            int32_t m_xPos;
-            int32_t m_yPos;
-            int32_t m_zPos;
-        };
-        std::vector<Entity> m_entities;
+        std::vector<Object3D> m_objects;
+        std::vector<Mesh3D> m_meshes;
     };
 } // RAL
 
-#endif //!RAL_PROJECT_SCENE_H
+#endif //!RAL_PROJECT_SCENE3D_H
