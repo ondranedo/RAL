@@ -21,8 +21,12 @@ namespace RAL {
         Entity3D();
         ~Entity3D();
 
-    private:
-        int32_t m_zPos;
+        [[nodiscard]] int32_t getZPos() const;
+
+        void setZPos(int32_t value);
+
+    protected:
+        int32_t m_zPos{};
     };
 } // RAL
 

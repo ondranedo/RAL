@@ -21,10 +21,18 @@ namespace RAL {
         Entity();
         ~Entity();
 
+        [[nodiscard]] int32_t getXPos() const;
+        [[nodiscard]] int32_t getYPos() const;
+        std::string getName();
+
+        void setXPos(int32_t value);
+        void setYPos(int32_t value);
+        void setName(std::string name);
+
     protected:
         std::string m_name;
-        int32_t m_xPos;
-        int32_t m_yPos;
+        int32_t m_xPos{};
+        int32_t m_yPos{};
     };
 } // RAL
 

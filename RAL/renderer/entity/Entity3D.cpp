@@ -18,4 +18,12 @@ namespace RAL{
     Entity3D::Entity3D() = default;
 
     Entity3D::~Entity3D() = default;
+
+    int32_t Entity3D::getZPos() const {
+        return m_zPos;
+    }
+
+    void Entity3D::setZPos(int32_t value) {
+        m_zPos = value;
+    }
 }
