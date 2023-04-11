@@ -14,4 +14,8 @@
 add_library(ral_renderer_mesh STATIC
         Mesh.cpp
         Mesh.h
+        Mesh2D.cpp
+        Mesh2D.h
+        Mesh3D.cpp
+        Mesh3D.h
         )

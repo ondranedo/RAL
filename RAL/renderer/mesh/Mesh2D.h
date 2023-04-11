@@ -11,20 +11,18 @@
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
 
+#ifndef RAL_PROJECT_MESH2D_H
+#define RAL_PROJECT_MESH2D_H
+
 #include "Mesh.h"
 
-namespace RAL{
+namespace RAL {
+    class Mesh2D : public Mesh{
 
-    void Mesh::openRalms(const std::string& path) {
-        m_path = path;
-    }
+    public:
+        Mesh2D();
+        ~Mesh2D();
+    };
+} // RAL
 
-    std::string Mesh::getPath() {
-        return m_path;
-    }
-
-    Mesh::Mesh() = default;
-
-    Mesh::~Mesh() = default;
-}
-
+#endif //RAL_PROJECT_MESH2D_H
