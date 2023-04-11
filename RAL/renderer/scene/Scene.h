@@ -14,9 +14,8 @@
 #define RAL_PROJECT_SCENE_H
 
 #include <vector>
-#include <cstdint>
 #include <string>
-#include "renderer/mesh/Mesh.h"
+#include "../entity/Object3D.h"
 
 namespace RAL {
     class Scene {
@@ -29,16 +28,13 @@ namespace RAL {
         void saveBinScene(const std::string& scenePath);
 
     private:
-        struct intPos{
-            int32_t x;
-            int32_t y;
-            int32_t z;
-        };
 
         struct Entity{
             Mesh* m_mesh;
             std::string m_name;
-            intPos m_pos;
+            int32_t m_xPos;
+            int32_t m_yPos;
+            int32_t m_zPos;
         };
         std::vector<Entity> m_entities;
     };

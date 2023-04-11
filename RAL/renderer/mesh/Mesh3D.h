@@ -15,6 +15,7 @@
 #define RAL_PROJECT_MESH3D_H
 
 #include "Mesh.h"
+#include <vector>
 
 namespace RAL{
     class Mesh3D : public Mesh{

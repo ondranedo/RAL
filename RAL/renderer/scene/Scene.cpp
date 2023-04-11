@@ -72,8 +72,9 @@ namespace RAL {
             }
 
             //position of object
-            fread(&tempEntity.m_pos, sizeof(intPos), 1, file);
-
+            fread(&tempEntity.m_xPos, sizeof(int32_t), 1, file);
+            fread(&tempEntity.m_yPos, sizeof(int32_t), 1, file);
+            fread(&tempEntity.m_zPos, sizeof(int32_t), 1, file);
             m_entities.push_back(tempEntity);
         }
 
@@ -108,7 +109,9 @@ namespace RAL {
             fwrite(entity.m_mesh->getPath().c_str(), sizeof(char), pathSize, file);
 
             //position of object
-            fwrite(&entity.m_pos, sizeof(intPos), 1, file);
+            fwrite(&entity.m_xPos, sizeof(int32_t), 1, file);
+            fwrite(&entity.m_yPos, sizeof(int32_t), 1, file);
+            fwrite(&entity.m_zPos, sizeof(int32_t), 1, file);
         }
 
         fclose(file);
@@ -162,13 +165,13 @@ namespace RAL {
                     }
                     break;
                 case 2:
-                    tempEntity.m_pos.x = std::stoi(tempLine.value());
+                    tempEntity.m_xPos = std::stoi(tempLine.value());
                     break;
                 case 3:
-                    tempEntity.m_pos.y = std::stoi(tempLine.value());
+                    tempEntity.m_yPos = std::stoi(tempLine.value());
                     break;
                 case 4:
-                    tempEntity.m_pos.z = std::stoi(tempLine.value());
+                    tempEntity.m_zPos = std::stoi(tempLine.value());
                     break;
             }
             switcher++;

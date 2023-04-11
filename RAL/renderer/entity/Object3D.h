@@ -11,27 +11,21 @@
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
 
-#ifndef RAL_PROJECT_MESH_H
-#define RAL_PROJECT_MESH_H
+#ifndef RAL_PROJECT_OBJECT3D_H
+#define RAL_PROJECT_OBJECT3D_H
 
-#include <string>
+#include "Entity3D.h"
+#include "../mesh/Mesh3D.h"
 
-namespace RAL {
-    class Mesh {
-
-        //todo: potentially make a factory for use in model creator
-        //      .obj or other foreign file support
+namespace RAL{
+    class Object3D : public Entity3D{
     public:
-        Mesh();
-        ~Mesh();
+        Object3D();
+        ~Object3D();
 
-        virtual void openRalms(const std::string& path);
-
-        std::string getPath();
-
-    protected:
-        std::string m_path;
+    private:
+        Mesh3D* m_mesh;
     };
-} // RAL
+}
 
-#endif //RAL_PROJECT_MESH_H
+#endif //RAL_PROJECT_OBJECT3D_H
