@@ -13,4 +13,17 @@
 #include "Buffer.h"
 
 namespace RAL {
+    void Buffer::setDrawUsage(Buffer::DrawUsage usage) {
+        m_usage = usage;
+    }
+
+    Buffer::DrawUsage Buffer::getDrawUsage() const {
+        return m_usage;
+    }
+
+    Buffer::Buffer() : m_usage(DrawUsage::STATIC){
+
+    }
+
+    Buffer::~Buffer() = default;
 } // RAL

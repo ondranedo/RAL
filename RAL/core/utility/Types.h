@@ -19,7 +19,7 @@
 
 namespace RAL {
     namespace Types {
-        enum class Codes : uint16_t
+        enum class IOCode : uint16_t
         {
             //Mouse
             MBUTTON_1 = 0,
@@ -154,8 +154,15 @@ namespace RAL {
             MENU = 348
 
         };
+        enum class DataType : uint8_t {
+            VOID,
+            FLOAT,DOUBLE,INT8,INT16,INT32,
+            INT64,UINT8,UINT16,UINT32,UINT64,
+        };
 
-        std::string toString(Codes code);
+        std::string toString(IOCode code);
+        std::string toString(DataType code);
+        uint8_t size(DataType type);
     };
 } // RAL
 

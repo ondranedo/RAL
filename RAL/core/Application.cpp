@@ -30,6 +30,11 @@
 //#include <renderer/renderingAPI/platform/openGL/GLRenderingAPI.h>
 //
 #include <renderer/renderer2d/Renderer2D.h>
+#include <renderer/renderingAPI/platform/openGL/GLVertexArray.h>
+#include <renderer/renderingAPI/platform/openGL/GLVertexBuffer.h>
+#include <renderer/renderingAPI/platform/openGL/GLIndexBuffer.h>
+#include <renderer/renderingAPI/platform/openGL/GLRenderingAPI.h>
+#include <renderer/renderingAPI/buffers/VertexBufferLayout.h>
 
 namespace RAL {
 
@@ -111,19 +116,20 @@ namespace RAL {
         /// Vojtuv codik
         m_fcm.get<Window>("Window")->makeContextCurrent();
 
-        ///if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
-        ///{
-        ///    RAL_LOG_FATAL("Failed to initialize GLAD");
-        ///}
-        ///GLRenderingAPI rAPI;
-        ///rAPI.init();
-        ///GLVertexArray va;
-        ///va.bind();
-        ///GLVertexBuffer vb;
-        ///vb.setData(vertices, sizeof(vertices), Buffer::DrawUsage::STATIC);
-        ///GLIndexBuffer ib;
-        ///ib.setData(indices, sizeof(indices), Buffer::DrawUsage::STATIC);
-        ///va.setLayout({BufferLayout::LayoutType::FLOAT3,BufferLayout::LayoutType::FLOAT3});
+        if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
+        {
+            RAL_LOG_FATAL("Failed to initialize GLAD");
+        }
+        GLRenderingAPI rAPI;
+        rAPI.init();
+
+        GLVertexBuffer vb;
+        vb.setData(vertices, sizeof(vertices), Buffer::DrawUsage::STATIC);
+        GLIndexBuffer ib;
+        ib.setData(indices, sizeof(indices), Buffer::DrawUsage::STATIC);
+        VertexBufferLayout layout;
+        layout.setLayout({VertexBufferLayout::LayoutEntryType::POS_XYZ, VertexBufferLayout::LayoutEntryType::COLOUR_RGB});
+        auto size = layout.getStride();
         ///~Vojtuv codik
 
         Renderer2D renderer;
@@ -137,13 +143,11 @@ namespace RAL {
             global::mainLogger.print();
 
             /// Vojtuv codik
-            ///glClearColor(34.0f/255.0f, 34.0f/255.0f, 34.0f/255.0f, 1.0f);
-            ///glClear(GL_COLOR_BUFFER_BIT);
-            ///rAPI.useDefaultProgram();
-            ///va.bind();
-            ///glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-            ///m_fcm.get<Window>("Window")->swapBuffers();
-            renderer.renderLoop();
+            glClearColor(34.0f/255.0f, 34.0f/255.0f, 34.0f/255.0f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
+            rAPI.useDefaultProgram();
+
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
             m_fcm.get<Window>("Window")->swapBuffers();
         }
 

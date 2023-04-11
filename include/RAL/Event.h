@@ -86,10 +86,10 @@ namespace RAL {
 
     namespace Events {
         struct KeyPressed : public Event {
-            Types::Codes key;
+            Types::IOCode key;
             bool repeat: 1;
 
-            explicit KeyPressed(RAL::Types::Codes _key, bool repeat) : key(_key), repeat(repeat) {
+            explicit KeyPressed(RAL::Types::IOCode _key, bool repeat) : key(_key), repeat(repeat) {
                 m_header.eventHandler = EventHandler::USER;
                 m_header.eventType = EventType::KEY_PRESSED;
             }
@@ -98,9 +98,9 @@ namespace RAL {
         };
 
         struct KeyReleased : public Event {
-            Types::Codes key;
+            Types::IOCode key;
 
-            explicit KeyReleased(Types::Codes _key) : key(_key) {
+            explicit KeyReleased(Types::IOCode _key) : key(_key) {
                 m_header.eventHandler = EventHandler::USER;
                 m_header.eventType = EventType::KEY_RELEASED;
             }
@@ -131,9 +131,9 @@ namespace RAL {
 
         struct MousePressed : public Event
         {
-            Types::Codes button;
+            Types::IOCode button;
 
-            explicit MousePressed(Types::Codes _button) : button(_button){
+            explicit MousePressed(Types::IOCode _button) : button(_button){
                 m_header.eventHandler = EventHandler::USER;
                 m_header.eventType = EventType::MOUSE_PRESSED;
             }
@@ -142,9 +142,9 @@ namespace RAL {
 
         struct MouseReleased : public Event
         {
-            Types::Codes button;
+            Types::IOCode button;
 
-            explicit MouseReleased(Types::Codes _button) : button(_button) {
+            explicit MouseReleased(Types::IOCode _button) : button(_button) {
                 m_header.eventHandler = EventHandler::USER;
                 m_header.eventType = EventType::MOUSE_RELEASED;
             }

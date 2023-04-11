@@ -40,9 +40,9 @@ namespace RAL::Events {
 
     struct MousePressed : public Event
     {
-        Types::Codes button;
+        Types::IOCode button;
 
-        explicit MousePressed(Types::Codes _button) : button(_button){
+        explicit MousePressed(Types::IOCode _button) : button(_button){
             m_header.eventHandler = EventHandler::USER;
             m_header.eventType = EventType::MOUSE_PRESSED;
         }
@@ -51,9 +51,9 @@ namespace RAL::Events {
 
     struct MouseReleased : public Event
     {
-        Types::Codes button;
+        Types::IOCode button;
 
-        explicit MouseReleased(Types::Codes _button) : button(_button) {
+        explicit MouseReleased(Types::IOCode _button) : button(_button) {
             m_header.eventHandler = EventHandler::USER;
             m_header.eventType = EventType::MOUSE_RELEASED;
         }
