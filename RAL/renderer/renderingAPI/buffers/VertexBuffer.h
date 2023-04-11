@@ -14,14 +14,31 @@
 #define RAL_PROJECT_VERTEXBUFFER_H
 
 #include <renderer/renderingAPI/buffers/Buffer.h>
+#include <renderer/renderingAPI/buffers/VertexBufferLayout.h>
 
 namespace RAL
 {
+    // Vertex buffer is a buffer that stores vertex data
+    // It is used to store data that is used to draw objects
+    // data is transferred to GPU memory. Very important thing
+    // is that vertex buffer holds layout of data that is stored
+    // in it. Layout is used to tell GPU (shaders) how to interpret data
+    // that is stored in vertex buffer.
     class VertexBuffer : public virtual Buffer
     {
     public:
-        virtual ~VertexBuffer() = default;
-        virtual void setData(float *vertices,unsigned int size,DrawUsage usage) = 0;
+        VertexBuffer();
+        virtual ~VertexBuffer();
+        // Sets data to vertex buffer
+        // [ptr] is pointer to data
+        // [size] is size of data in bytes!
+        void setData(void* ptr, size_t size);
+        void setLayout(const VertexBufferLayout &layout);
+        void setLayout(VertexBufferLayout &&layout);
+        [[nodiscard]] const VertexBufferLayout& getLayout() const;
+
+    protected:
+        VertexBufferLayout m_layout;
     };
 };
 #endif //!RAL_PROJECT_VERTEXBUFFER_H

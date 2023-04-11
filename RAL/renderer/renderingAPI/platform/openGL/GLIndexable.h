@@ -19,7 +19,8 @@ namespace RAL
     {
     public:
         GLIndexable();
-        virtual ~GLIndexable() = default;
+        virtual ~GLIndexable();
+        [[nodiscard]] unsigned int getID() const;
     protected:
         unsigned int m_id;
     };

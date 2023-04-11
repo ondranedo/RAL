@@ -16,24 +16,7 @@
 
 namespace RAL
 {
-    GLVertexBuffer::~GLVertexBuffer()
-    {
-        glDeleteBuffers(1, &m_id);
-    }
-
-    GLVertexBuffer::GLVertexBuffer()
-    {
-        glGenBuffers(1, &m_id);
-        glBindBuffer(GL_ARRAY_BUFFER, m_id);
-    }
-
-    void GLVertexBuffer::setData(float *vertices, unsigned int size, DrawUsage usage)
-    {
-        glBufferData(GL_ARRAY_BUFFER, size, vertices,
-                     usage == DrawUsage::VOLATILE ? GL_STREAM_DRAW :
-                     usage == DrawUsage::STATIC ? GL_STATIC_DRAW :
-                     GL_DYNAMIC_DRAW);
-    }
+    GLVertexBuffer::~GLVertexBuffer() = default;
 
     void GLVertexBuffer::bind() const
     {

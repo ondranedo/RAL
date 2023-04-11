@@ -20,8 +20,9 @@ namespace RAL
     class IndexBuffer : public virtual Buffer
     {
     public:
-        virtual ~IndexBuffer() = default;
-        virtual void setData(unsigned int *indices,unsigned int size,DrawUsage usage) = 0;
+        virtual ~IndexBuffer();
+        virtual void setData(unsigned int *ptr, unsigned int count);
+
     private:
     };
 } // RAL
