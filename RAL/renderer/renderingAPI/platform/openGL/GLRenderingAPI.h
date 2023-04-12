@@ -20,27 +20,28 @@ namespace RAL
 
     class GLRenderingAPI : public RenderingAPI
     {
+    public:
+        void clear() override;
 
+        void clearColour(uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;
+
+        void init() override;
+
+        void release() override;
+
+        void draw() override;
+
+        void bind(const IndexBuffer &indexBuffer) override;
+
+        void bind(const VertexBuffer &vertexBuffer) override;
+
+        void unbind(const IndexBuffer &indexBuffer) override;
+
+        void unbind(const VertexBuffer &vertexBuffer) override;
     protected:
-        unsigned int vertexShader, fragmentShader, shaderProgram;
-        const char *vertexShaderSource = "#version 460 core\n"
-                                         "layout (location = 0) in vec3 aPos;\n"
-                                         "layout (location = 1) in vec3 aColor;\n"
-                                         "out vec3 ourColor;\n"
-                                         "void main()\n"
-                                         "{\n"
-                                         "   gl_Position = vec4(aPos, 1.0);\n"
-                                         "   ourColor = aColor;\n"
-                                         "}\0";
-
-
-        const char *fragmentShaderSource = "#version 460 core\n"
-                                           "out vec4 FragColor;\n"
-                                           "in vec3 ourColor;\n"
-                                           "void main()\n"
-                                           "{\n"
-                                           "   FragColor = vec4(ourColor, 1.0f);\n"
-                                           "}\n\0";
+        unsigned int m_VA, m_IB, m_VB;
+        uint32_t m_indiciesCount;
+        bool m_isVBDataSet, m_isIBDataSet;
     };
-};
+}
 #endif //!RAL_PROJECT_GLRENDERINGAPI_H

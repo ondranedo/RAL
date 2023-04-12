@@ -14,6 +14,8 @@
 #define RAL_PROJECT_RENDERINGAPI_H
 
 #include <cstdint>
+#include <renderer/renderingAPI/buffers/IndexBuffer.h>
+#include <renderer/renderingAPI/buffers/VertexBuffer.h>
 
 namespace RAL
 {
@@ -31,7 +33,7 @@ namespace RAL
 
         virtual void draw() = 0;
 
-        virtual void bind(const IndeBuffer& indexBuffer) = 0;
+        virtual void bind(const IndexBuffer& indexBuffer) = 0;
         virtual void bind(const VertexBuffer& vertexBuffer) = 0;
 
         virtual void unbind(const IndexBuffer& indexBuffer) = 0;
