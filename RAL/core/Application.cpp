@@ -24,18 +24,6 @@
 #include <core/events/EventDispatcher.h>
 #include <platfomLayer/window/Window.h>
 
-//#include <renderer/renderingAPI/platform/openGL/GLVertexArray.h>
-//#include <renderer/renderingAPI/platform/openGL/GLVertexBuffer.h>
-//#include <renderer/renderingAPI/platform/openGL/GLIndexBuffer.h>
-//#include <renderer/renderingAPI/platform/openGL/GLRenderingAPI.h>
-//
-#include <renderer/renderer2d/Renderer2D.h>
-#include <renderer/renderingAPI/platform/openGL/GLVertexArray.h>
-#include <renderer/renderingAPI/platform/openGL/GLVertexBuffer.h>
-#include <renderer/renderingAPI/platform/openGL/GLIndexBuffer.h>
-#include <renderer/renderingAPI/platform/openGL/GLRenderingAPI.h>
-#include <renderer/renderingAPI/buffers/VertexBufferLayout.h>
-
 namespace RAL {
 
     //float vertices[] = {
@@ -112,43 +100,12 @@ namespace RAL {
     void Application::run() {
         RAL_LOG_INFO("Engine starting main loop");
 
-
-        /// Vojtuv codik
-        m_fcm.get<Window>("Window")->makeContextCurrent();
-
-        if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
-        {
-            RAL_LOG_FATAL("Failed to initialize GLAD");
-        }
-        GLRenderingAPI rAPI;
-        rAPI.init();
-
-        GLVertexBuffer vb;
-        vb.setData(vertices, sizeof(vertices), Buffer::DrawUsage::STATIC);
-        GLIndexBuffer ib;
-        ib.setData(indices, sizeof(indices), Buffer::DrawUsage::STATIC);
-        VertexBufferLayout layout;
-        layout.setLayout({VertexBufferLayout::LayoutEntryType::POS_XYZ, VertexBufferLayout::LayoutEntryType::COLOUR_RGB});
-        auto size = layout.getStride();
-        ///~Vojtuv codik
-
-        Renderer2D renderer;
-        renderer.init();
-
         while(m_running)
         {
             m_game->onUpdate();
             m_fcm.updateComponents();
 
             global::mainLogger.print();
-
-            /// Vojtuv codik
-            glClearColor(34.0f/255.0f, 34.0f/255.0f, 34.0f/255.0f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
-            rAPI.useDefaultProgram();
-
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-            m_fcm.get<Window>("Window")->swapBuffers();
         }
 
         renderer.release();

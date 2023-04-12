@@ -12,7 +12,9 @@
 /////////////////////////////////////////////////////////
 #ifndef RAL_PROJECT_RENDERINGAPI_H
 #define RAL_PROJECT_RENDERINGAPI_H
-//TODO: Factory
+
+#include <cstdint>
+
 namespace RAL
 {
     class RenderingAPI
@@ -24,14 +26,7 @@ namespace RAL
 
         virtual void init() = 0;
 
-        //TODO: MOVE TO SHADER FILE, maybe keep default shader
-        virtual void shaderInit() = 0;
-
-        virtual void compileShaders() = 0;
-
-        virtual void attachShader() = 0;
-
-        virtual void useDefaultProgram() = 0;
+        virtual void setClearColor(uint8_t) = 0;
     };
 } // RAL
 

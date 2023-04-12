@@ -22,6 +22,10 @@ namespace RAL
     // Buffer is implemented by RenderingAPI, because each API has its own way
     // how to bind the buffer into GPUs memory.
     //
+    // Specifies the type of the buffer.
+    // Each RenderingAPI has its own implementation
+    // how to bind the buffer into GPUs memory.
+    //
     // NOTE: Buffer does not have any data, it only stores the data pointer and its size.
     //       The data is stored in RAM and is not copied into the buffer. So the data mustn't
     //       be deleted until the buffer is deleted or cleared.
@@ -39,16 +43,6 @@ namespace RAL
             DYNAMIC, // Data is changed a lot and used many times.
             VOLATILE // Data is changed every frame and used many times.
         };
-
-        // Specifies the type of the buffer.
-        // Each RenderingAPI has its own implementation
-        // how to bind the buffer into GPUs memory.
-        //
-        // Bind the buffer into GPUs memory.
-        virtual void bind() const = 0;
-
-        // Unbind the buffer from GPUs memory.
-        virtual void unbind() const = 0;
 
         // Sets the specified usage of the usage.
         void setDrawUsage(Usage usage);
