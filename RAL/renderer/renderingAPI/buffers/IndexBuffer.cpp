@@ -19,5 +19,9 @@ namespace RAL
         m_size = count * sizeof(unsigned int);
     }
 
+    uint32_t IndexBuffer::getIndeciesCount() const {
+        return m_size / sizeof(unsigned int);
+    }
+
     IndexBuffer::~IndexBuffer() = default;
 } // RAL

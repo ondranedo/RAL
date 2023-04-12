@@ -13,4 +13,7 @@
 #include "RenderingAPI.h"
 
 namespace RAL {
+    RenderingAPI::RenderingAPI() = default;
+
+    RenderingAPI::~RenderingAPI() = default;
 } // RAL
