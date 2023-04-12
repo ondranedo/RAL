@@ -21,8 +21,11 @@ namespace RAL{
 
         uint32_t size;
         void* buffer;
+
+        // TODO: switch to FileIO
         FILE* file = fopen(path.c_str(), "rb");
 
+        //duh
         m_path = path;
 
         //.ral3d has this structure:
@@ -67,7 +70,7 @@ namespace RAL{
         if(index >= m_vertices.size()){
             m_vertices.pop_back();
         } else{
-            //todo: make faster??? maybe?
+            //todo: make faster??? maybe? hashmap? std::erase
             m_vertices[index] = m_vertices[m_vertices.size() - 1];
             m_vertices.pop_back();
         }
@@ -83,7 +86,7 @@ namespace RAL{
         if(index >= m_triangles.size()){
             m_triangles.pop_back();
         } else{
-            //todo: make faster??? maybe?
+            //todo: make faster??? maybe? hashmap? std::erase
             m_triangles[index] = m_triangles[m_triangles.size() - 1];
             m_triangles.pop_back();
         }

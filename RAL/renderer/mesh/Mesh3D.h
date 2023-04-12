@@ -19,6 +19,7 @@
 
 namespace RAL{
     class Mesh3D : public Mesh{
+        // consider using glm::vec3 instead of Vertex
         struct Vertex{
             float x;
             float y;
@@ -38,16 +39,26 @@ namespace RAL{
 
         void openRalms(const std::string& path) override;
 
+        // TODO: Use move semantics to avoid copying,
+        //       const _&, _&& for move semantics; where `_` is a type
         void addVertex(float x, float y, float z);
         void addVertex(Vertex vertex);
         void addVertexTriangle(uint32_t indexA, uint32_t indexB, uint32_t indexC);
         void addVertexTriangle(vertexTriangle triangle);
+
+        // TODO: index may be confusing, consider using iterator
         void removeVertex(uint32_t index);
         void removeVertices(uint32_t beginIndex, uint32_t endIndex);
         void removeVertexTriangle(uint32_t index);
         void removeVertexTriangles(uint32_t beginIndex, uint32_t endIndex);
 
+
+        // TODO: add more methods for getting the number of vertices and triangles
+        // TODO: add iterator begin and end methods for easy iteration
+        //       over triangles
     private:
+
+        // TODO:
         std::vector<Vertex> m_vertices;
         std::vector<vertexTriangle> m_triangles;
     };
