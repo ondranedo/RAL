@@ -38,10 +38,14 @@ namespace RAL {
 
         void openRalms(const std::string& path);
 
+        // Use move semantics, this may resolt in unnecessary copying
+        // of data (hint: const _&; _&&; where `_` is a type)
         void addVertex(float x, float y, float z);
         void addVertex(Vertex vertex);
+
         void addVertexTriangle(uint32_t indexA, uint32_t indexB, uint32_t indexC);
         void addVertexTriangle(vertexTriangle triangle);
+
         void removeVertex(uint32_t index);
         void removeVertices(uint32_t beginIndex, uint32_t endIndex);
         void removeVertexTriangle(uint32_t index);

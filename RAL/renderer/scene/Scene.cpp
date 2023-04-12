@@ -40,7 +40,7 @@ namespace RAL {
     //y offset\n
     //z offset\n
     void Scene::loadTxtScene(const std::string& scenePath) {
-
+        // TODO: Use FileIO
         Win32::Win32FileTxt file;
         file.RAL::Win32::Win32File::open(scenePath, File::Mode::Read);
 

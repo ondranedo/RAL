@@ -18,6 +18,7 @@
 #include <string>
 #include "renderer/mesh/Mesh.h"
 
+// TODO: rename Scene to Level
 namespace RAL {
     class Scene {
     public:
@@ -29,18 +30,22 @@ namespace RAL {
         void saveBinScene();
 
     private:
+        // TODO: use glm::vec3 instead of intPos
         struct intPos{
             int32_t x;
             int32_t y;
             int32_t z;
         };
 
+        // TODO: move to separate file, custom entity class
         struct Entity{
             Mesh* m_mesh;
             std::string name;
             intPos m_pos;
         };
         std::vector<Entity> m_entities;
+
+        // TODO: Add coordinate system, skybox, lights, etc.
     };
 } // RAL
 
