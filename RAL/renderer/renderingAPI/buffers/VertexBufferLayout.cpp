@@ -25,29 +25,29 @@ namespace RAL
     void VertexBufferLayout::setLayout(const Layout& layout){ m_layout = layout; }
     void VertexBufferLayout::setLayout(Layout&& layout){ m_layout = std::move(layout); }
 
-    std::string VertexBufferLayout::EntryTypeToString(VertexBufferLayout::LayoutEntryType type) {
+    std::string VertexBufferLayout::EntryTypeToString(VertexBufferLayout::Entry type) {
         switch (type) {
-            case VertexBufferLayout::LayoutEntryType::COLOUR_RGB: return "Colour RGB";
-            case VertexBufferLayout::LayoutEntryType::COLOUR_RGBA: return "Colour RGB-A";
-            case VertexBufferLayout::LayoutEntryType::POS_XY: return "Position XY";
-            case VertexBufferLayout::LayoutEntryType::POS_XYZ: return "Position XYZ";
+            case VertexBufferLayout::Entry::COLOUR_RGB: return "Colour RGB";
+            case VertexBufferLayout::Entry::COLOUR_RGBA: return "Colour RGB-A";
+            case VertexBufferLayout::Entry::POS_XY: return "Position XY";
+            case VertexBufferLayout::Entry::POS_XYZ: return "Position XYZ";
         }
 
         RAL_LOG_ERROR("Unknown layout entry type to string");
         return "Unknown";
     }
 
-    uint8_t VertexBufferLayout::EntryTypeSize(VertexBufferLayout::LayoutEntryType type) {
+    uint8_t VertexBufferLayout::EntryTypeSize(VertexBufferLayout::Entry type) {
         uint8_t size = EntryTypeComponents(type) * Types::size(EntryTypeToDataType(type));
         return size;
     }
 
-    uint8_t VertexBufferLayout::EntryTypeComponents(VertexBufferLayout::LayoutEntryType type) {
+    uint8_t VertexBufferLayout::EntryTypeComponents(VertexBufferLayout::Entry type) {
         switch (type) {
-            case VertexBufferLayout::LayoutEntryType::COLOUR_RGB:
-            case VertexBufferLayout::LayoutEntryType::POS_XYZ: return 3;
-            case VertexBufferLayout::LayoutEntryType::COLOUR_RGBA: return 4;
-            case VertexBufferLayout::LayoutEntryType::POS_XY: return 2;
+            case VertexBufferLayout::Entry::COLOUR_RGB:
+            case VertexBufferLayout::Entry::POS_XYZ: return 3;
+            case VertexBufferLayout::Entry::COLOUR_RGBA: return 4;
+            case VertexBufferLayout::Entry::POS_XY: return 2;
         }
 
         RAL_LOG_ERROR("Unknown layout component count in entry type");
@@ -63,12 +63,12 @@ namespace RAL
         return stride;
     }
 
-    Types::DataType VertexBufferLayout::EntryTypeToDataType(VertexBufferLayout::LayoutEntryType type) {
+    Types::DataType VertexBufferLayout::EntryTypeToDataType(VertexBufferLayout::Entry type) {
         switch (type) {
-            case VertexBufferLayout::LayoutEntryType::COLOUR_RGB:
-            case VertexBufferLayout::LayoutEntryType::COLOUR_RGBA: return Types::DataType::UINT8;
-            case VertexBufferLayout::LayoutEntryType::POS_XY:
-            case VertexBufferLayout::LayoutEntryType::POS_XYZ: return Types::DataType::FLOAT;
+            case VertexBufferLayout::Entry::COLOUR_RGB:
+            case VertexBufferLayout::Entry::COLOUR_RGBA: return Types::DataType::UINT8;
+            case VertexBufferLayout::Entry::POS_XY:
+            case VertexBufferLayout::Entry::POS_XYZ: return Types::DataType::FLOAT;
         }
 
         RAL_LOG_ERROR("Unknown layout entry type data type");

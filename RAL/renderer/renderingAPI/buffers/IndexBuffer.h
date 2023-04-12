@@ -24,6 +24,8 @@ namespace RAL
     class IndexBuffer final : public Buffer
     {
     public:
+        IndexBuffer(unsigned int *ptr, unsigned int count);
+        IndexBuffer();
         ~IndexBuffer() override;
 
         // Sets data to index buffer, it is very important to set data

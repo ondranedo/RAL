@@ -13,35 +13,37 @@
 #ifndef RAL_PROJECT_GLRENDERINGAPI_H
 #define RAL_PROJECT_GLRENDERINGAPI_H
 
+#include <core/memoryManager/Overload.h>
 #include <renderer/renderingAPI/RenderingAPI.h>
+#include <optional>
+#include <array>
 
 namespace RAL
 {
 
-    class GLRenderingAPI : public RenderingAPI
+    class GLRenderingAPI final: public RenderingAPI
     {
     public:
+        GLRenderingAPI();
+
         void clear() override;
-
-        void clearColour(uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;
-
         void init() override;
-
         void release() override;
-
         void draw() override;
 
         void bind(const IndexBuffer &indexBuffer) override;
-
         void bind(const VertexBuffer &vertexBuffer) override;
 
-        void unbind(const IndexBuffer &indexBuffer) override;
+    private:
+        void setWindowToDraw() override;
+        void setAttributes();
+        void setBindables();
 
-        void unbind(const VertexBuffer &vertexBuffer) override;
+
     protected:
-        unsigned int m_VA, m_IB, m_VB;
-        uint32_t m_indiciesCount;
-        bool m_isVBDataSet, m_isIBDataSet;
+        unsigned int m_vertexArray, m_indexBuffer, m_vertexBuffer;
+        uint32_t m_indicesCount;
+        VertexBufferLayout m_vertexBufferLayout;
     };
 }
 #endif //!RAL_PROJECT_GLRENDERINGAPI_H

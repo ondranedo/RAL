@@ -23,5 +23,11 @@ namespace RAL
         return m_size / sizeof(unsigned int);
     }
 
+    IndexBuffer::IndexBuffer(unsigned int *ptr, unsigned int count) {
+        setData(ptr, count);
+    }
+
+    IndexBuffer::IndexBuffer() = default;
+
     IndexBuffer::~IndexBuffer() = default;
 } // RAL

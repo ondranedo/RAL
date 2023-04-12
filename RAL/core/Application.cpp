@@ -13,7 +13,6 @@
 
 
 #include "Application.h"
-//#include <vendor/glad/include/glad/glad.h>
 
 
 #include <core/FCM/FCM.h>
@@ -24,21 +23,28 @@
 #include <core/events/EventDispatcher.h>
 #include <platfomLayer/window/Window.h>
 
+#include <renderer/renderingAPI/platform/openGL/GLRenderingAPI.h>
+#include <renderer/renderingAPI/buffers/VertexBufferLayout.h>
+#include <renderer/renderingAPI/buffers/IndexBuffer.h>
+#include <renderer/renderingAPI/buffers/VertexBuffer.h>
+
+struct Vertex {
+   float position[3];
+   uint8_t colour[3];
+};
+
 namespace RAL {
 
-    //float vertices[] = {
-    //        // positions         // colors
-    //        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,  // bottom left
-    //        -0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, // top left
-    //        0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f,  // top right
-    //        0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom right
-//
-    //};
-    //unsigned int indices[] = {  // note that we start from 0!
-    //        0, 1, 3,  // first Triangle
-    //        1, 2, 3   // second Triangle
-    //};
-
+    Vertex vertices[4] = {
+            {{-0.5f, -0.5f, 0.0f},{0, 255, 0}},  // bottom left
+            {{-0.5f, 0.5f, 0.0f}, {0, 0, 255}},  // top left
+            {{0.5f, 0.5f, 0.0f},  {0, 255, 0}},  // top right
+            {{0.5f, -0.5f, 0.0f}, {255, 0, 0}}   // bottom right
+    };
+    unsigned int indices[] = {  // note that we start from 0!
+            0, 1, 3,  // first Triangle
+            1, 2, 3   // second Triangle
+    };
 
     Application::Application(const ConstructInfo& info) : m_fcm({}), m_running(true), m_game(nullptr) {
         RAL_LOG_DEBUG("Engine creation");
@@ -100,14 +106,28 @@ namespace RAL {
     void Application::run() {
         RAL_LOG_INFO("Engine starting main loop");
 
+        GLRenderingAPI api;
+        api.setWindow(m_fcm.get<Window>("Window"));
+        api.init();
+        api.clearColour(0x2259ae);
+        IndexBuffer ib(indices, 6);
+        size_t d = sizeof(vertices);
+        VertexBuffer vb(vertices, sizeof(vertices), VertexBufferLayout({VertexBufferLayout::Entry::POS_XYZ, VertexBufferLayout::Entry::COLOUR_RGB}) );
+        api.bind(vb);
+        api.bind(ib);
+
         while(m_running)
         {
             m_game->onUpdate();
             m_fcm.updateComponents();
-
+            ///
+            api.clear();
+            api.draw();
+            m_fcm.get<Window>("Window")->swapBuffers();
+            ///
             global::mainLogger.print();
         }
 
-        renderer.release();
+        api.release();
     }
 } // RAL

@@ -15,87 +15,105 @@
 
 #include <vendor/glad/include/glad/glad.h>
 #include <vendor/glfw/include/GLFW/glfw3.h>
+
+#include <renderer/renderingAPI/platform/openGL/GLTypes.h>
+
 namespace RAL
 {
 
     void GLRenderingAPI::clear()
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    }
-
-    void GLRenderingAPI::clearColour(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
-    {
         auto nor = [](uint8_t num)->float{return static_cast<float>(num)/255.0f;};
-        glClearColor(nor(r),nor(g),nor(b),nor(a));
+        glClearColor(nor(m_clearColour[0]),nor(m_clearColour[1]),nor(m_clearColour[2]),nor(m_clearColour[3]));
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
     void GLRenderingAPI::init()
     {
-        if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)){
-            RAL_LOG_FATAL("Failed to load GLAD");
-            return;
-        }
-        glGenVertexArrays(1, &m_VA);
-        glGenBuffers(1, &m_VB);
-        glGenBuffers(1, &m_IB);
-        glBindVertexArray(m_VA);
+        glGenVertexArrays(1, &m_vertexArray);
+        glGenBuffers(1, &m_vertexBuffer);
+        glGenBuffers(1, &m_indexBuffer);
+        glBindVertexArray(m_vertexArray);
     }
 
     void GLRenderingAPI::release()
     {
-        glDeleteVertexArrays(1,&m_VA);
-        glDeleteBuffers(1,&m_VB);
-        glDeleteBuffers(1,&m_IB);
+        glDeleteVertexArrays(1,&m_vertexArray);
+        glDeleteBuffers(1,&m_vertexBuffer);
+        glDeleteBuffers(1,&m_indexBuffer);
     }
 
     void GLRenderingAPI::draw()
     {
-        if(!(m_isVBDataSet && m_isIBDataSet)){
-            RAL_LOG_FATAL("Cannot draw elements VB or IB is not set");
+        setBindables();
+        // TODO: set shader, !do not compile shader every frame!
+        //       compile shader only when shader is changed, or when shader is not compiled yet
+        //       shader ID should be stored in hashmap of compiled shaders
+        setAttributes();
+
+        glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_indicesCount), GL_UNSIGNED_INT, nullptr);
+    }
+
+    void GLRenderingAPI::setBindables() {
+        RAL_ASSERTRV(m_vertexBuffer, "Cannot draw to window %s VB is not set", m_window->getSpec().m_title);
+        RAL_ASSERTRV(m_indexBuffer, "Cannot draw to window %s IB is not set", m_window->getSpec().m_title);
+
+        glBindVertexArray(m_vertexArray);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
+        glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
+    }
+
+    void GLRenderingAPI::setAttributes() {
+        GLsizei stride = m_vertexBufferLayout.getStride(), offset = 0, index = 0;
+        stride+= 8 - stride %8 ; // padding to 8 bytes
+        // TODO: Get index layout location directly from shader
+        //       https://docs.gl/gl4/glGetAttribLocation
+        for (const auto &element: m_vertexBufferLayout.getLayout()) {
+            glVertexAttribPointer(index,
+                                  VertexBufferLayout::EntryTypeComponents(element),
+                                  GLTypes::getGLType(VertexBufferLayout::EntryTypeToDataType(element)),
+                                  GL_FALSE, // TODO: make this configurable
+                                  stride, reinterpret_cast<void *>(offset));
+            glEnableVertexAttribArray(index++);
+            offset += VertexBufferLayout::EntryTypeSize(element);
         }
-        glBindVertexArray(m_VA);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IB);
-        glBindBuffer(GL_ARRAY_BUFFER, m_VB);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,3* sizeof(float),(void*) 0);
-        glDrawElements(GL_TRIANGLES,static_cast<GLsizei>(m_indiciesCount),GL_UNSIGNED_INT, nullptr);
     }
 
     void GLRenderingAPI::bind(const IndexBuffer &indexBuffer)
     {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IB);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizeiptr>(indexBuffer.getSize()), indexBuffer.getData(),
                      Buffer::Usage::STATIC == indexBuffer.getDrawUsage() ? GL_STATIC_DRAW :
                      Buffer::Usage::DYNAMIC == indexBuffer.getDrawUsage() ? GL_DYNAMIC_DRAW :
                      GL_STREAM_DRAW);
-        m_indiciesCount = indexBuffer.getIndeciesCount();
-        m_isIBDataSet = true;
-
+        m_indicesCount = indexBuffer.getIndeciesCount();
     }
 
     void GLRenderingAPI::bind(const VertexBuffer &vertexBuffer)
     {
-        glBindBuffer(GL_ARRAY_BUFFER, m_VB);
+        glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
         glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(vertexBuffer.getSize()), vertexBuffer.getData(),
                      Buffer::Usage::STATIC == vertexBuffer.getDrawUsage() ? GL_STATIC_DRAW :
                      Buffer::Usage::DYNAMIC == vertexBuffer.getDrawUsage() ? GL_DYNAMIC_DRAW :
                      GL_STREAM_DRAW);
-        m_isVBDataSet = true;
+        m_vertexBufferLayout = vertexBuffer.getLayout();
     }
 
-    void GLRenderingAPI::unbind(const IndexBuffer &indexBuffer)
-    {
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        m_IB = 0;
-        m_indiciesCount = 0;
-        m_isIBDataSet = false;
+    void GLRenderingAPI::setWindowToDraw() {
+        RAL_ASSERTRV(m_window, "Window is not set");
+        m_window->makeContextCurrent();
+        if(!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(m_window->getProcAddress()))){
+            RAL_LOG_FATAL("Failed to load GLAD");
+            return;
+        }
     }
 
-    void GLRenderingAPI::unbind(const VertexBuffer &vertexBuffer)
+    GLRenderingAPI::GLRenderingAPI():
+    m_vertexBufferLayout(),
+    m_indexBuffer(0),
+    m_vertexBuffer(0),
+    m_vertexArray(0),
+    m_indicesCount(0)
     {
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        m_VB = 0;
-        m_isVBDataSet = false;
     }
 }

@@ -46,7 +46,7 @@ namespace RAL
         //       more draw calls.
         //
         // TODO: Add more types, like: POS_XYZW, COLOUR_RGBF, COLOUR_RGBAF, etc.
-        enum class LayoutEntryType : uint8_t {
+        enum class Entry : uint8_t {
             POS_XY,      // Basic 2 x FLOAT, should be used for 2D games and 2D rendering (like GUI)
             POS_XYZ,     // Basic 3 x FLOAT, should be used for 3D games and 3D rendering (like 3D models: .obj, .fbx, etc.)
             COLOUR_RGB,  // Basic 3 x U8CHAR, should be used for RGB colours, !0-255 values only!,
@@ -55,7 +55,7 @@ namespace RAL
 
         // Layout is a vector of LayoutEntryType
         // f.e.: Vector: { POS_XYZ, COLOUR_RGB, COLOUR_RGBA, ... }
-        using Layout = std::vector<LayoutEntryType>;
+        using Layout = std::vector<Entry>;
 
         VertexBufferLayout();
         explicit VertexBufferLayout(const Layout& layout);
@@ -74,15 +74,15 @@ namespace RAL
         [[nodiscard]] uint32_t getStride() const;
 
         // Returns string representation of the type
-        static std::string EntryTypeToString(LayoutEntryType type);
+        static std::string EntryTypeToString(Entry type);
 
         // Returns size of the type in bytes
-        static uint8_t EntryTypeSize(LayoutEntryType type);
+        static uint8_t EntryTypeSize(Entry type);
 
         // Returns number of components of the type
-        static uint8_t EntryTypeComponents(LayoutEntryType type);
+        static uint8_t EntryTypeComponents(Entry type);
 
-        static Types::DataType EntryTypeToDataType(LayoutEntryType type);
+        static Types::DataType EntryTypeToDataType(Entry type);
     protected:
         Layout m_layout;
     };
