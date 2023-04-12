@@ -20,17 +20,6 @@ namespace RAL
 
     class GLRenderingAPI : public RenderingAPI
     {
-    public:
-        void init() override;
-
-        void useDefaultProgram() override;
-
-    private:
-        void shaderInit() override;
-
-        void compileShaders() override;
-
-        void attachShader() override;
 
     protected:
         unsigned int vertexShader, fragmentShader, shaderProgram;

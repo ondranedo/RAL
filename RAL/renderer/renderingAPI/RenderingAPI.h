@@ -20,13 +20,22 @@ namespace RAL
     class RenderingAPI
     {
     public:
-        RenderingAPI() = default;
+        RenderingAPI();
+        virtual ~RenderingAPI();
 
-        virtual ~RenderingAPI() = default;
+        virtual void clear() = 0;
+        virtual void clearColour(uint8_t r, uint8_t g, uint8_t b, uint8_t a) = 0;
 
         virtual void init() = 0;
+        virtual void release() = 0;
 
-        virtual void setClearColor(uint8_t) = 0;
+        virtual void draw() = 0;
+
+        virtual void bind(const IndeBuffer& indexBuffer) = 0;
+        virtual void bind(const VertexBuffer& vertexBuffer) = 0;
+
+        virtual void unbind(const IndexBuffer& indexBuffer) = 0;
+        virtual void unbind(const VertexBuffer& vertexBuffer) = 0;
     };
 } // RAL
 
