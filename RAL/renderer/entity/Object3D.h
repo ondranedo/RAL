@@ -11,20 +11,25 @@
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
 
-#include "Mesh.h"
+#ifndef RAL_PROJECT_OBJECT3D_H
+#define RAL_PROJECT_OBJECT3D_H
+
+#include "Entity3D.h"
+#include "../mesh/Mesh3D.h"
 
 namespace RAL{
+    class Object3D : public Entity3D{
+    public:
+        Object3D();
+        ~Object3D();
 
-    void Mesh::openRalms(const std::string& path) {
-        m_path = path;
-    }
+        Mesh3D* getMesh();
 
-    std::string Mesh::getPath() {
-        return m_path;
-    }
+        void setMesh(Mesh3D* mesh);
 
-    Mesh::Mesh() = default;
-
-    Mesh::~Mesh() = default;
+    private:
+        Mesh3D* m_mesh{};
+    };
 }
 
+#endif //RAL_PROJECT_OBJECT3D_H

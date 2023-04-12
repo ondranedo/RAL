@@ -11,20 +11,12 @@
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
 
-#include "Mesh.h"
+#include "Mesh2D.h"
 
 namespace RAL{
 
-    void Mesh::openRalms(const std::string& path) {
-        m_path = path;
-    }
+    Mesh2D::Mesh2D() = default;
 
-    std::string Mesh::getPath() {
-        return m_path;
-    }
-
-    Mesh::Mesh() = default;
-
-    Mesh::~Mesh() = default;
+    Mesh2D::~Mesh2D() = default;
 }
 

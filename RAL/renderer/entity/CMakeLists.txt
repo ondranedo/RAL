@@ -11,7 +11,11 @@
 # See file `LICENSE` for full license details.        #
 #######################################################
 
-add_library(ral_renderer_scene STATIC
-        Scene3D.cpp
-        Scene3D.h
+add_library(ral_renderer_entity STATIC
+        Entity.cpp
+        Entity.h
+        Entity3D.cpp
+        Entity3D.h
+        Object3D.cpp
+        Object3D.h
         )

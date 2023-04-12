@@ -11,20 +11,37 @@
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
 
-#include "Mesh.h"
+#include "Entity.h"
+
+#include <utility>
 
 namespace RAL{
 
-    void Mesh::openRalms(const std::string& path) {
-        m_path = path;
+    Entity::Entity() = default;
+
+    Entity::~Entity() = default;
+
+    int32_t Entity::getXPos() const {
+        return m_xPos;
     }
 
-    std::string Mesh::getPath() {
-        return m_path;
+    int32_t Entity::getYPos() const {
+        return m_yPos;
     }
 
-    Mesh::Mesh() = default;
+    std::string Entity::getName() {
+        return m_name;
+    }
 
-    Mesh::~Mesh() = default;
+    void Entity::setXPos(int32_t value) {
+        m_xPos = value;
+    }
+
+    void Entity::setYPos(int32_t value) {
+        m_yPos = value;
+    }
+
+    void Entity::setName(std::string name) {
+        m_name = std::move(name);
+    }
 }
-

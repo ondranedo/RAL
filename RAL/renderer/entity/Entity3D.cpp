@@ -11,20 +11,19 @@
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
 
-#include "Mesh.h"
+#include "Entity3D.h"
 
 namespace RAL{
 
-    void Mesh::openRalms(const std::string& path) {
-        m_path = path;
+    Entity3D::Entity3D() = default;
+
+    Entity3D::~Entity3D() = default;
+
+    int32_t Entity3D::getZPos() const {
+        return m_zPos;
     }
 
-    std::string Mesh::getPath() {
-        return m_path;
+    void Entity3D::setZPos(int32_t value) {
+        m_zPos = value;
     }
-
-    Mesh::Mesh() = default;
-
-    Mesh::~Mesh() = default;
 }
-

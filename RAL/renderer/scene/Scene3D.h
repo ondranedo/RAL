@@ -14,39 +14,30 @@
 #define RAL_PROJECT_SCENE_H
 
 #include <vector>
-#include <cstdint>
 #include <string>
-#include "renderer/mesh/Mesh.h"
+#include "../entity/Object3D.h"
+#include "../../platfomLayer/windows/file/Win32FileTxt.h"
 
-// TODO: rename Scene to Level
 namespace RAL {
-    class Scene {
+    class Scene3D {
     public:
-        Scene();
-        ~Scene();
+        Scene3D();
+        ~Scene3D();
 
         void loadTxtScene(const std::string& scenePath);
-        void loadBinScene();
-        void saveBinScene();
+        void loadTxtObject(const Win32::Win32FileTxt& file);
+
+        void loadBinScene(const std::string& scenePath);
+        void loadBinObjects(FILE* file);
+
+        void saveBinScene(const std::string& scenePath);
+        void saveBinObjects(FILE* file);
 
     private:
-        // TODO: use glm::vec3 instead of intPos
-        struct intPos{
-            int32_t x;
-            int32_t y;
-            int32_t z;
-        };
 
-        // TODO: move to separate file, custom entity class
-        struct Entity{
-            Mesh* m_mesh;
-            std::string name;
-            intPos m_pos;
-        };
-        std::vector<Entity> m_entities;
-
-        // TODO: Add coordinate system, skybox, lights, etc.
+        std::vector<Object3D> m_objects;
+        std::vector<Mesh3D> m_meshes;
     };
 } // RAL
 
-#endif //!RAL_PROJECT_SCENE_H
+#endif //!RAL_PROJECT_SCENE3D_H

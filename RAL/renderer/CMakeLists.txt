@@ -26,3 +26,6 @@ target_link_libraries(ral_renderer PUBLIC ral_renderer_scene)
 
 add_subdirectory(mesh)
 target_link_libraries(ral_renderer PUBLIC ral_renderer_mesh)
+
+add_subdirectory(entity)
+target_link_libraries(ral_renderer PUBLIC ral_renderer_entity)

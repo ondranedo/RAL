@@ -11,20 +11,20 @@
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
 
-#include "Mesh.h"
+#include "Object3D.h"
 
 namespace RAL{
 
-    void Mesh::openRalms(const std::string& path) {
-        m_path = path;
+
+    Object3D::Object3D() = default;
+
+    Object3D::~Object3D() = default;
+
+    Mesh3D *Object3D::getMesh() {
+        return m_mesh;
     }
 
-    std::string Mesh::getPath() {
-        return m_path;
+    void Object3D::setMesh(Mesh3D *mesh) {
+        m_mesh = mesh;
     }
-
-    Mesh::Mesh() = default;
-
-    Mesh::~Mesh() = default;
 }
-

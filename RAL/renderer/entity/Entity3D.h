@@ -10,21 +10,24 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
+#ifndef RAL_PROJECT_ENTITY3D_H
+#define RAL_PROJECT_ENTITY3D_H
 
-#include "Mesh.h"
+#include "Entity.h"
 
-namespace RAL{
+namespace RAL {
+    class Entity3D : public Entity {
+    public:
+        Entity3D();
+        ~Entity3D();
 
-    void Mesh::openRalms(const std::string& path) {
-        m_path = path;
-    }
+        [[nodiscard]] int32_t getZPos() const;
 
-    std::string Mesh::getPath() {
-        return m_path;
-    }
+        void setZPos(int32_t value);
 
-    Mesh::Mesh() = default;
+    protected:
+        int32_t m_zPos{};
+    };
+} // RAL
 
-    Mesh::~Mesh() = default;
-}
-
+#endif //!RAL_PROJECT_ENTITY3D_H
