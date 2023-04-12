@@ -15,18 +15,14 @@
 
 namespace RAL{
 
-    void Mesh3D::openRalms(const std::string& path) {
+    void Mesh3D::openRalms() {
         //TODO: switch to File
-        //      ONDRANEDO CODE REVIEW
 
         uint32_t size;
         void* buffer;
 
         // TODO: switch to FileIO
-        FILE* file = fopen(path.c_str(), "rb");
-
-        //duh
-        m_path = path;
+        FILE* file = fopen(getPath().c_str(), "rb");
 
         //.ral3d has this structure:
         /*****************************************************************************/
@@ -104,6 +100,31 @@ namespace RAL{
 
     void Mesh3D::addVertexTriangle(Mesh3D::vertexTriangle triangle) {
         m_triangles.push_back(triangle);
+    }
+
+    void Mesh3D::saveRalms() {
+        //TODO: switch to File
+
+        uint32_t size;
+
+        // TODO: switch to FileIO
+        FILE* file = fopen(getPath().c_str(), "wb");
+
+        //.ral3d has this structure:
+        /*****************************************************************************/
+        //number of verticies followed by them
+        size = m_vertices.size();
+        fwrite(&size, sizeof(uint32_t), 1, file);
+
+        fwrite(m_vertices.data(), sizeof(Vertex), size, file);
+        /********************************************************************************/
+        //number of vertex triangles followed by them
+        size = m_triangles.size();
+        fwrite(&size, sizeof(uint32_t), 1, file);
+
+        fread(m_triangles.data(), sizeof(vertexTriangle), size, file);
+        /********************************************************************************/
+        fclose(file);
     }
 
     Mesh3D::Mesh3D() = default;

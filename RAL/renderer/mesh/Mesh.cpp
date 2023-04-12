@@ -13,14 +13,34 @@
 
 #include "Mesh.h"
 
+#include <utility>
+
 namespace RAL{
 
     void Mesh::openRalms(const std::string& path) {
-        m_path = path;
+        setPath(path);
+        openRalms();
     }
 
     std::string Mesh::getPath() {
         return m_path;
+    }
+
+    void Mesh::setPath(std::string path) {
+        m_path = std::move(path);
+    }
+
+    void Mesh::openRalms() {
+
+    }
+
+    void Mesh::saveRalms() {
+
+    }
+
+    void Mesh::saveRalms(const std::string &path) {
+        setPath(path);
+        saveRalms();
     }
 
     Mesh::Mesh() = default;

@@ -25,9 +25,13 @@ namespace RAL {
         Mesh();
         ~Mesh();
 
-        virtual void openRalms(const std::string& path);
+        virtual void openRalms();
+        void openRalms(const std::string& path);
+        virtual void saveRalms();
+        void saveRalms(const std::string& path);
 
         std::string getPath();
+        void setPath(std::string path);
 
     private:
         std::string m_path;
