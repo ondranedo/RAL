@@ -164,6 +164,13 @@ namespace RAL::Win32 {
         glfwSwapBuffers(m_window);
 
     }
+
+    Window::LoadProc Win32Window::getProcAddress() {
+        if(glfwGetCurrentContext())
+            return reinterpret_cast<LoadProc>(glfwGetProcAddress);
+        RAL_LOG_ERROR("Cannot get proc address, no context is current");
+        return nullptr;
+    }
 } // RAL
 
 #endif //!RAL_WINDOWS
