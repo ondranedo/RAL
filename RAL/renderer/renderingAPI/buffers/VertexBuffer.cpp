@@ -14,6 +14,14 @@
 #include <core/utility/Logger.h>
 namespace RAL{
     VertexBuffer::VertexBuffer() : m_layout() {}
+    VertexBuffer::VertexBuffer(void *ptr, size_t size) : m_layout() { setData(ptr, size); }
+
+    VertexBuffer::VertexBuffer(void *ptr, size_t size, VertexBufferLayout &&layout) {
+        setData(ptr, size);
+        setLayout(std::move(layout));
+    }
+
+
     VertexBuffer::~VertexBuffer() = default;
 
     void VertexBuffer::setLayout(const VertexBufferLayout &layout) {

@@ -56,8 +56,8 @@ add_subdirectory(platfomLayer)
 # Renderer - contains renderer specific code
 add_subdirectory(renderer)
 
-target_link_libraries(${RAL_ENGINE_LIB} PRIVATE ral_renderer)
 target_link_libraries(${RAL_ENGINE_LIB} PRIVATE ral_core)
+target_link_libraries(${RAL_ENGINE_LIB} PRIVATE ral_renderer)
 target_link_libraries(${RAL_ENGINE_LIB} PRIVATE ral_platformLayer)
 
 #######################################################

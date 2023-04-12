@@ -27,6 +27,8 @@ namespace RAL
     class VertexBuffer final : public Buffer
     {
     public:
+        VertexBuffer(void* ptr, size_t size);
+        VertexBuffer(void* ptr, size_t size, VertexBufferLayout &&layout);
         VertexBuffer();
         ~VertexBuffer() override;
         // Sets data to vertex buffer
