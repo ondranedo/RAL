@@ -51,6 +51,7 @@ namespace RAL {
 
         // TODO: Window manager or some similar thing for supporting multiple windows
         uint8_t m_id;
+        bool m_created;
     };
 } // RAL
 

@@ -55,8 +55,8 @@ namespace RAL
     }
 
     void GLRenderingAPI::setBindables() {
-        RAL_ASSERTRV(m_vertexBuffer, "Cannot draw to window %s VB is not set", m_window->getSpec().m_title);
-        RAL_ASSERTRV(m_indexBuffer, "Cannot draw to window %s IB is not set", m_window->getSpec().m_title);
+        RAL_ASSERTRV(m_vertexBuffer, "Cannot draw to window %s VB is not set", m_window->getSpec().title);
+        RAL_ASSERTRV(m_indexBuffer, "Cannot draw to window %s IB is not set", m_window->getSpec().title);
 
         glBindVertexArray(m_vertexArray);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
@@ -65,7 +65,6 @@ namespace RAL
 
     void GLRenderingAPI::setAttributes() {
         GLsizei stride = m_vertexBufferLayout.getStride(), offset = 0, index = 0;
-        stride+= 8 - stride %8 ; // padding to 8 bytes
         // TODO: Get index layout location directly from shader
         //       https://docs.gl/gl4/glGetAttribLocation
         for (const auto &element: m_vertexBufferLayout.getLayout()) {
