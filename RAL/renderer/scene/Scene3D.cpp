@@ -63,7 +63,7 @@ namespace RAL {
 
             if(!tempObject.getMesh()){
                 tempObject.setMesh(new Mesh3D);
-                tempObject.getMesh()->openRalms(tempString);
+                tempObject.getMesh()->Mesh::openRalms(tempString);
                 m_meshes.push_back(*tempObject.getMesh());
             }
 
@@ -187,7 +187,7 @@ namespace RAL {
 
         if(!tempObject.getMesh()){
             tempObject.setMesh(new Mesh3D);
-            tempObject.getMesh()->openRalms(line);
+            tempObject.getMesh()->Mesh::openRalms(line);
             m_meshes.push_back(*tempObject.getMesh());
         }
 

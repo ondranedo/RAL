@@ -67,6 +67,7 @@ namespace RAL{
     private:
 
         std::vector<Vertex> m_vertices;
+        std::vector<uint16_t> m_vertexDependencies;
         std::vector<vertexTriangle> m_triangles;
     };
 }
