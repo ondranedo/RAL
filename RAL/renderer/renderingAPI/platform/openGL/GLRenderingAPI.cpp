@@ -67,6 +67,7 @@ namespace RAL
         GLsizei stride = m_vertexBufferLayout.getStride(), offset = 0, index = 0;
         // TODO: Get index layout location directly from shader
         //       https://docs.gl/gl4/glGetAttribLocation
+        stride += 8 - stride % 8; // TODO: make this configurable
         for (const auto &element: m_vertexBufferLayout.getLayout()) {
             glVertexAttribPointer(index,
                                   VertexBufferLayout::EntryTypeComponents(element),
