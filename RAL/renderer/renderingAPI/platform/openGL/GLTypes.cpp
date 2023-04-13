@@ -4,7 +4,7 @@
 
 #include "GLTypes.h"
 #include <core/utility/Logger.h>
-#include <vendor/glad/include/glad/glad.h>
+#include <vendor/glad/gl_4.0_core_debug/include/glad/gl.h>
 namespace RAL {
     int GLTypes::getGLType(Types::DataType type) {
         switch (type) {
