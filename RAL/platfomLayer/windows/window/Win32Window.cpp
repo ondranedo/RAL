@@ -33,29 +33,29 @@ namespace RAL::Win32 {
     }
 
     void Win32Window::update() {
-        RAL_ASSERT(m_window, "Cannot update window, window `%s` is not created", m_spec.m_title);
+        RAL_ASSERT(m_window, "Cannot update window, window `%s` is not created", m_spec.title);
         if(!m_window) return;
         glfwPollEvents();
     }
 
     void Win32Window::makeContextCurrent() {
-        RAL_ASSERT(m_window, "Cannot make context current, window `%s` is not created", m_spec.m_title);
+        RAL_ASSERT(m_window, "Cannot make context current, window `%s` is not created", m_spec.title);
         if(!m_window) return;
         glfwMakeContextCurrent(m_window);
 
     }
 
     void Win32Window::setDims(uint16_t width, uint16_t height) {
-        RAL_ASSERT(m_window, "Cannot set window dimensions, window `%s` is not created", m_spec.m_title);
+        RAL_ASSERT(m_window, "Cannot set window dimensions, window `%s` is not created", m_spec.title);
         if(!m_window) return;
         glfwSetWindowSize(m_window, width, height);
     }
 
     void Win32Window::setTitle(const std::string &title) {
-        RAL_ASSERT(title.size() > 0, "Window `%s` title cannot be empty", m_spec.m_title);
-        RAL_ASSERT(title.size() < RAL_WINDOW_SPEC_TITLE_SIZE, "Window `%s` title cannot be longer than %d characters", m_spec.m_title, RAL_WINDOW_SPEC_TITLE_SIZE);
+        RAL_ASSERT(title.size() > 0, "Window `%s` title cannot be empty", m_spec.title);
+        RAL_ASSERT(title.size() < RAL_WINDOW_SPEC_TITLE_SIZE, "Window `%s` title cannot be longer than %d characters", m_spec.title, RAL_WINDOW_SPEC_TITLE_SIZE);
         glfwSetWindowTitle(m_window, title.c_str());
-        strcpy(m_spec.m_title,title.c_str());
+        strcpy(m_spec.title, title.c_str());
     }
 
     void Win32Window::setVSync(bool state) {
@@ -63,20 +63,20 @@ namespace RAL::Win32 {
     }
 
     void Win32Window::create() {
-        m_window = glfwCreateWindow(m_spec.m_width, m_spec.m_height, m_spec.m_title, nullptr, nullptr);
+        m_window = glfwCreateWindow(m_spec.width, m_spec.width / WindowRatioValue(m_spec.ratio), m_spec.title, nullptr, nullptr);
         if(m_window)
         {
-            RAL_LOG_DEBUG("Windows window `%s` created", m_spec.m_title);
-            m_spec.m_created = true;
+            RAL_LOG_DEBUG("Windows window `%s` created", m_spec.title);
+            m_created = true;
             return;
         }
-        RAL_LOG_ERROR("Windows window `%s` creation failed", m_spec.m_title);
+        RAL_LOG_ERROR("Windows window `%s` creation failed", m_spec.title);
     }
 
     void Win32Window::destroy() {
-        RAL_LOG_DEBUG("Windows window `%s` destroyed", m_spec.m_title);
+        RAL_LOG_DEBUG("Windows window `%s` destroyed", m_spec.title);
         glfwDestroyWindow(m_window);
-        m_spec.m_created = false;
+        m_created = false;
     }
 
     bool Win32Window::getVSync() const {
@@ -160,7 +160,7 @@ namespace RAL::Win32 {
 
     void Win32Window::swapBuffers()
     {
-        RAL_ASSERT(m_window, "Cannot call swapBuffers, window `%s` is not created", m_spec.m_title);
+        RAL_ASSERT(m_window, "Cannot call swapBuffers, window `%s` is not created", m_spec.title);
         glfwSwapBuffers(m_window);
 
     }

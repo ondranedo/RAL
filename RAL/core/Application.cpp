@@ -53,7 +53,11 @@ namespace RAL {
         m_fcm.addFactory<EventManagerFactory>();
         m_fcm.addFactory<LayerManagerFactory>();
         m_fcm.addFactory<WindowFactory>();
-
+        WindowSpec spec;
+        spec.width = 800;
+        spec.ratio = WindowRatio::RATIO_16_9;
+        strcpy_s(spec.title, "RAL Engine");
+        m_fcm.customComponentCreation<WindowFactory>("Window",spec);
         m_fcm.createComponents();
 
         m_game = createGame();
