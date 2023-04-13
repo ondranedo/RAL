@@ -63,35 +63,19 @@ namespace RAL{
     }
 
     void Mesh3D::removeVertex(uint32_t index) {
-        if(index >= m_vertices.size()){
-            m_vertices.pop_back();
-        } else{
-            //todo: make faster??? maybe? hashmap? std::erase
-            m_vertices[index] = m_vertices[m_vertices.size() - 1];
-            m_vertices.pop_back();
-        }
+        removeVertex(beginVertex() + index);
     }
 
     void Mesh3D::removeVertices(uint32_t beginIndex, uint32_t endIndex) {
-        for(uint32_t i = beginIndex; i <= endIndex; i++){
-            removeVertex(i);
-        }
+        removeVertices(beginVertex() + beginIndex, beginVertex() + endIndex);
     }
 
     void Mesh3D::removeVertexTriangle(uint32_t index) {
-        if(index >= m_triangles.size()){
-            m_triangles.pop_back();
-        } else{
-            //todo: make faster??? maybe? hashmap? std::erase
-            m_triangles[index] = m_triangles[m_triangles.size() - 1];
-            m_triangles.pop_back();
-        }
+        removeVertexTriangle(beginTriangle() + index);
     }
 
     void Mesh3D::removeVertexTriangles(uint32_t beginIndex, uint32_t endIndex) {
-        for(uint32_t i = beginIndex; i <= endIndex; i++){
-            removeVertexTriangle(i);
-        }
+        removeVertexTriangles(beginTriangle() + beginIndex, beginTriangle() + endIndex);
     }
 
     void Mesh3D::addVertex(Mesh3D::Vertex vertex) {
@@ -125,6 +109,82 @@ namespace RAL{
         fread(m_triangles.data(), sizeof(vertexTriangle), size, file);
         /********************************************************************************/
         fclose(file);
+    }
+
+    std::vector<Mesh3D::Vertex>::iterator Mesh3D::beginVertex() {
+        return m_vertices.begin();
+    }
+
+    std::vector<Mesh3D::Vertex>::iterator Mesh3D::endVertex() {
+        return m_vertices.end();
+    }
+
+    std::vector<Mesh3D::vertexTriangle>::iterator Mesh3D::beginTriangle() {
+        return m_triangles.begin();
+    }
+
+    std::vector<Mesh3D::vertexTriangle>::iterator Mesh3D::endTriangle() {
+        return m_triangles.end();
+    }
+
+    size_t Mesh3D::nOfVertices() {
+        return m_vertices.size();
+    }
+
+    size_t Mesh3D::nOfTriangles() {
+        return m_triangles.size();
+    }
+
+    void Mesh3D::removeVertex(std::vector<Vertex>::iterator iterator) {
+        if(iterator > endVertex()){
+            m_vertices.erase(endVertex());
+        }
+        else if(iterator < beginVertex()){
+            m_vertices.erase(beginVertex());
+        }
+        else{
+            m_vertices.erase(iterator);
+        }
+    }
+
+    void
+    Mesh3D::removeVertices(std::vector<Mesh3D::Vertex>::iterator begin, std::vector<Mesh3D::Vertex>::iterator end) {
+        if(begin > end){
+            std::swap(begin, end);
+        }
+        if(begin < beginVertex()){
+            begin = beginVertex();
+        }
+        if(end > endVertex()){
+            end = endVertex();
+        }
+        m_vertices.erase(begin, end);
+    }
+
+    void Mesh3D::removeVertexTriangle(std::vector<vertexTriangle>::iterator iterator) {
+        if(iterator > endTriangle()){
+            m_triangles.erase(endTriangle());
+        }
+        else if(iterator < beginTriangle()){
+            m_triangles.erase(beginTriangle());
+        }
+        else{
+            m_triangles.erase(iterator);
+        }
+    }
+
+    void Mesh3D::removeVertexTriangles(std::vector<Mesh3D::vertexTriangle>::iterator begin,
+                                       std::vector<Mesh3D::vertexTriangle>::iterator end) {
+        if(begin > end){
+            std::swap(begin, end);
+        }
+        if(begin < beginTriangle()){
+            begin = beginTriangle();
+        }
+        if(end > endTriangle()){
+            end = endTriangle();
+        }
+        m_triangles.erase(begin, end);
     }
 
     Mesh3D::Mesh3D() = default;

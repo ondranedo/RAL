@@ -47,19 +47,25 @@ namespace RAL{
         void addVertexTriangle(uint32_t indexA, uint32_t indexB, uint32_t indexC);
         void addVertexTriangle(vertexTriangle triangle);
 
-        // TODO: index may be confusing, consider using iterator
         void removeVertex(uint32_t index);
+        void removeVertex(std::vector<Vertex>::iterator iterator);
         void removeVertices(uint32_t beginIndex, uint32_t endIndex);
+        void removeVertices(std::vector<Vertex>::iterator begin, std::vector<Vertex>::iterator end);
+
         void removeVertexTriangle(uint32_t index);
+        void removeVertexTriangle(std::vector<vertexTriangle>::iterator iterator);
         void removeVertexTriangles(uint32_t beginIndex, uint32_t endIndex);
+        void removeVertexTriangles(std::vector<vertexTriangle>::iterator begin, std::vector<vertexTriangle>::iterator end);
 
+        std::vector<Vertex>::iterator beginVertex();
+        std::vector<Vertex>::iterator endVertex();
+        std::vector<vertexTriangle>::iterator beginTriangle();
+        std::vector<vertexTriangle>::iterator endTriangle();
 
-        // TODO: add more methods for getting the number of vertices and triangles
-        // TODO: add iterator begin and end methods for easy iteration
-        //       over triangles
+        size_t nOfVertices();
+        size_t nOfTriangles();
     private:
 
-        // TODO:
         std::vector<Vertex> m_vertices;
         std::vector<vertexTriangle> m_triangles;
     };

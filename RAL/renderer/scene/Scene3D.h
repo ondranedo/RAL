@@ -40,4 +40,4 @@ namespace RAL {
     };
 } // RAL
 
-#endif //!RAL_PROJECT_SCENE3D_H
+#endif //!RAL_PROJECT_SCENE_H
