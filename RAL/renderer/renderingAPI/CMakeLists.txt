@@ -26,4 +26,4 @@ add_library(ral_renderer_renderingAPI STATIC
         buffers/IndexBuffer.cpp
         buffers/IndexBuffer.h
         buffers/Buffer.cpp
-        buffers/Buffer.h buffers/VertexBufferLayout.cpp buffers/VertexBufferLayout.h)
+        buffers/Buffer.h buffers/VertexBufferLayout.cpp buffers/VertexBufferLayout.h ProgramData.cpp ProgramData.h)
