@@ -13,7 +13,7 @@
 #include "GLRenderingAPI.h"
 #include <core/utility/Logger.h>
 
-#include <vendor/glad/include/glad/glad.h>
+#include <vendor/glad/gl_4.0_core_debug/include/glad/gl.h>
 #include <vendor/glfw/include/GLFW/glfw3.h>
 
 #include <renderer/renderingAPI/platform/openGL/GLTypes.h>
@@ -102,7 +102,7 @@ namespace RAL
     void GLRenderingAPI::setWindowToDraw() {
         RAL_ASSERTRV(m_window, "Window is not set");
         m_window->makeContextCurrent();
-        if(!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(m_window->getProcAddress()))){
+        if(!gladLoadGL(reinterpret_cast<GLADloadfunc>(m_window->getProcAddress()))){
             RAL_LOG_FATAL("Failed to load GLAD");
             return;
         }
