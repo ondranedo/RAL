@@ -160,14 +160,12 @@ namespace RAL{
         if(iterator < beginVertex()){
             iterator = beginVertex();
         }
-        auto tempIndex = iterator - beginVertex();
-        if(m_vertexDependencies[tempIndex]){
-            RAL_LOG_ERROR("Can't remove vertex because it is used by %d triangles", m_vertexDependencies[tempIndex]);
+        if(m_vertexDependencies[iterator - beginVertex()]){
+            RAL_LOG_ERROR("Can't remove vertex because it is used by %d triangles", m_vertexDependencies[iterator - beginVertex()]);
         }
         else{
             m_vertices.erase(iterator);
-            auto tempIt = m_vertexDependencies.begin();
-            m_vertexDependencies.erase(tempIt + tempIndex);
+            m_vertexDependencies.erase(m_vertexDependencies.begin() + (iterator - beginVertex()));
         }
     }
 
@@ -182,7 +180,15 @@ namespace RAL{
         if(end > endVertex()){
             end = endVertex();
         }
-        m_vertices.erase(begin, end);
+        for(auto i = begin; i <= end; i++){
+            if(m_vertexDependencies[i - beginVertex()]){
+                RAL_LOG_ERROR("Can't remove vertex #%d because it is used by %d triangles", i - beginVertex() ,m_vertexDependencies[i - beginVertex()]);
+            }
+            else{
+                m_vertices.erase(i);
+                m_vertexDependencies.erase(m_vertexDependencies.begin() + (i - beginVertex()));
+            }
+        }
     }
 
     void Mesh3D::removeVertexTriangle(std::vector<vertexTriangle>::iterator iterator) {
@@ -208,6 +214,11 @@ namespace RAL{
         }
         if(end > endTriangle()){
             end = endTriangle();
+        }
+        for(auto it = begin; it <= end; it++){
+            m_vertexDependencies[it->indexA]--;
+            m_vertexDependencies[it->indexB]--;
+            m_vertexDependencies[it->indexC]--;
         }
         m_triangles.erase(begin, end);
     }
