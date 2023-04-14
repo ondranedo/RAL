@@ -24,11 +24,31 @@ namespace RAL{
         ~Object3D();
 
         Mesh3D* getMesh();
+        [[nodiscard]] float getXRot() const;
+        [[nodiscard]] float getYRot() const;
+        [[nodiscard]] float getZRot() const;
+        [[nodiscard]] float getXScale() const;
+        [[nodiscard]] float getYScale() const;
+        [[nodiscard]] float getZScale() const;
+        [[nodiscard]] float getScale() const;
 
         void setMesh(Mesh3D* mesh);
+        void setXRot(float value);
+        void setYRot(float value);
+        void setZRot(float value);
+        void setXScale(float value);
+        void setYScale(float value);
+        void setZScale(float value);
+        void setScale(float value);
 
     private:
         Mesh3D* m_mesh{};
+        float m_xRot;
+        float m_yRot;
+        float m_zRot;
+        float m_xScale;
+        float m_yScale;
+        float m_zScale;
     };
 }
 

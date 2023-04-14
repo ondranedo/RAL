@@ -27,4 +27,62 @@ namespace RAL{
     void Object3D::setMesh(Mesh3D *mesh) {
         m_mesh = mesh;
     }
+
+    float Object3D::getXRot() const {
+        return m_xRot;
+    }
+
+    float Object3D::getYRot() const {
+        return m_yRot;
+    }
+
+    float Object3D::getZRot() const {
+        return m_zRot;
+    }
+
+    float Object3D::getXScale() const {
+        return m_xScale;
+    }
+
+    float Object3D::getYScale() const {
+        return m_yScale;
+    }
+
+    float Object3D::getZScale() const {
+        return m_zScale;
+    }
+
+    void Object3D::setXRot(float value) {
+        m_xRot = value;
+    }
+
+    void Object3D::setYRot(float value) {
+        m_yRot = value;
+    }
+
+    void Object3D::setZRot(float value) {
+        m_zRot = value;
+    }
+
+    void Object3D::setXScale(float value) {
+        m_xScale = value;
+    }
+
+    void Object3D::setYScale(float value) {
+        m_yScale = value;
+    }
+
+    void Object3D::setZScale(float value) {
+        m_zScale = value;
+    }
+
+    void Object3D::setScale(float value) {
+        setXScale(value);
+        setYScale(value);
+        setZScale(value);
+    }
+
+    float Object3D::getScale() const {
+        return (getXScale() + getYScale() + getZScale())/3;
+    }
 }
