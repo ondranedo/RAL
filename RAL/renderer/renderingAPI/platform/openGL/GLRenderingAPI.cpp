@@ -17,6 +17,7 @@
 #include <vendor/glfw/include/GLFW/glfw3.h>
 
 #include <renderer/renderingAPI/platform/openGL/GLTypes.h>
+#include <algorithm>
 
 namespace RAL
 {
@@ -41,14 +42,16 @@ namespace RAL
         glDeleteVertexArrays(1,&m_vertexArray);
         glDeleteBuffers(1,&m_vertexBuffer);
         glDeleteBuffers(1,&m_indexBuffer);
+
+        for(auto& program : m_programs)
+            delete program.second;
+        m_programs.clear();
     }
 
     void GLRenderingAPI::draw()
     {
+        m_activeProgram->setActive();
         setBindables();
-        // TODO: set shader, !do not compile shader every frame!
-        //       compile shader only when shader is changed, or when shader is not compiled yet
-        //       shader ID should be stored in hashmap of compiled shaders
         setAttributes();
 
         glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_indicesCount), GL_UNSIGNED_INT, nullptr);
@@ -64,17 +67,25 @@ namespace RAL
     }
 
     void GLRenderingAPI::setAttributes() {
-        GLsizei stride = m_vertexBufferLayout.getStride(), offset = 0, index = 0;
-        // TODO: Get index layout location directly from shader
-        //       https://docs.gl/gl4/glGetAttribLocation
+        GLsizei stride = m_vertexBufferLayout.getStride(), offset = 0;
+        int index;
         stride += 8 - stride % 8; // TODO: make this configurable
         for (const auto &element: m_vertexBufferLayout.getLayout()) {
+            // Get attrib index from program
+            index = m_activeProgram->getAttribLocation(VertexBufferLayout::EntryTypeToString(element));
+            if(index == -1)
+            {
+                RAL_LOG_FATAL("Attribute %s is not found in active GL program", VertexBufferLayout::EntryTypeToString(element).c_str());
+                return;
+            }
+
+            // Setting attribute
             glVertexAttribPointer(index,
                                   VertexBufferLayout::EntryTypeComponents(element),
                                   GLTypes::getGLType(VertexBufferLayout::EntryTypeToDataType(element)),
-                                  GL_FALSE, // TODO: make this configurable
+                                  VertexBufferLayout::EntryTypeShouldBeNormalized(element),
                                   stride, reinterpret_cast<void *>(offset));
-            glEnableVertexAttribArray(index++);
+            glEnableVertexAttribArray(index);
             offset += VertexBufferLayout::EntryTypeSize(element);
         }
     }
@@ -115,5 +126,35 @@ namespace RAL
     m_vertexArray(0),
     m_indicesCount(0)
     {
+    }
+
+    void GLRenderingAPI::setProgram(uint16_t program) {
+        if(m_programs.find(program) == m_programs.end()){
+            RAL_LOG_ERROR("Program %d is not compiled", program);
+            return;
+        }
+        m_activeProgram = m_programs[program];
+    }
+
+    void GLRenderingAPI::compileProgram(uint16_t id, const std::string &vertex, const std::string &fragment) {
+        GLProgram* program = new GLProgram;
+        if(program->compile(vertex, fragment))
+        {
+            m_programs[id] = program;
+            RAL_LOG_DEBUG("Program %d compiled", id);
+        }
+        else
+        {
+            RAL_LOG_ERROR("Program %d compilation failed", id);
+            delete program;
+        }
+    }
+
+    void GLRenderingAPI::sendProgramData(const ProgramData &data) {
+
+    }
+
+    void GLRenderingAPI::sendProgramData(const ProgramData &data, const CustomProgramData &custom_data) {
+
     }
 }
