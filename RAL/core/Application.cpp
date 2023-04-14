@@ -109,15 +109,35 @@ namespace RAL {
     void Application::run() {
         RAL_LOG_INFO("Engine starting main loop");
 
+        std::string vertexShaderSource = "#version 460 core\n"
+                                         "layout (location = 0) in vec3 positionXYZ;\n"
+                                         "layout (location = 1) in vec3 colourRGB;\n"
+                                         "out vec3 ourColor;\n"
+                                         "void main()\n"
+                                         "{\n"
+                                         "   gl_Position = vec4(positionXYZ, 1.0);\n"
+                                         "   ourColor = colourRGB;\n"
+                                         "}";
+
+
+        std::string fragmentShaderSource = "#version 460 core\n"
+                                           "out vec4 FragColor;\n"
+                                           "in vec3 ourColor;\n"
+                                           "void main()\n"
+                                           "{\n"
+                                           "   FragColor = vec4(ourColor, 1.0f);\n"
+                                           "}\n";
+
         GLRenderingAPI api;
         api.setWindow(m_fcm.get<Window>("Window"));
         api.init();
-        api.clearColour(0x2259ae);
+        api.clearColour(0x1e1e1e);
         IndexBuffer ib(indices, 6);
-        size_t d = sizeof(vertices);
         VertexBuffer vb(vertices, sizeof(vertices), VertexBufferLayout({VertexBufferLayout::Entry::POS_XYZ, VertexBufferLayout::Entry::COLOUR_RGB}) );
         api.bind(vb);
         api.bind(ib);
+        api.compileProgram(0, vertexShaderSource, fragmentShaderSource);
+        api.setProgram(0);
 
         while(m_running)
         {

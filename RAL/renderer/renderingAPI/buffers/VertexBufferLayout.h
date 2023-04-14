@@ -82,7 +82,12 @@ namespace RAL
         // Returns number of components of the type
         static uint8_t EntryTypeComponents(Entry type);
 
+        // Returns RAL's data type of the type
         static Types::DataType EntryTypeToDataType(Entry type);
+
+        // Returns wheter the type shlould be normalized
+        static bool EntryTypeShouldBeNormalized(Entry type);
+
     protected:
         Layout m_layout;
     };
