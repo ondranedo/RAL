@@ -75,4 +75,16 @@ namespace RAL{
     void Object3D::setZBoxScale(float value) {
         m_zBoxScale = value;
     }
+
+    void Object3D::setRot(float xValue, float yValue, float zValue) {
+        setXRot(xValue);
+        setYRot(yValue);
+        setZRot(zValue);
+    }
+
+    void Object3D::setBoxScale(float xValue, float yValue, float zValue) {
+        setXBoxScale(xValue);
+        setYBoxScale(yValue);
+        setZBoxScale(zValue);
+    }
 }

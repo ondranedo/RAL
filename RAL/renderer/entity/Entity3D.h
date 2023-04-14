@@ -24,6 +24,7 @@ namespace RAL {
         [[nodiscard]] int32_t getZPos() const;
 
         void setZPos(int32_t value);
+        void setPos(int32_t xValue, int32_t yValue, int32_t zValue);
 
     protected:
         int32_t m_zPos{};

@@ -27,6 +27,7 @@ namespace RAL {
 
         void setXPos(int32_t value);
         void setYPos(int32_t value);
+        void setPos(int32_t xValue, int32_t yValue);
         void setName(std::string name);
 
     protected:

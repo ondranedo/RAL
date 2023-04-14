@@ -44,4 +44,9 @@ namespace RAL{
     void Entity::setName(std::string name) {
         m_name = std::move(name);
     }
+
+    void Entity::setPos(int32_t xValue, int32_t yValue) {
+        setXPos(xValue);
+        setYPos(yValue);
+    }
 }

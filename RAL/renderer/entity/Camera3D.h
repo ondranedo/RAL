@@ -31,6 +31,7 @@ namespace RAL{
         void setXRot(float value);
         void setYRot(float value);
         void setZRot(float value);
+        void setRot(float xValue, float yValue, float zValue);
 
         [[nodiscard]] uint16_t getWidth() const;
         Projection getProjection();

@@ -35,9 +35,11 @@ namespace RAL{
         void setXRot(float value);
         void setYRot(float value);
         void setZRot(float value);
+        void setRot(float xValue, float yValue, float zValue);
         void setXBoxScale(float value);
         void setYBoxScale(float value);
         void setZBoxScale(float value);
+        void setBoxScale(float xValue, float yValue, float zValue);
 
     private:
         Mesh3D* m_mesh{};

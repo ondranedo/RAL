@@ -26,4 +26,9 @@ namespace RAL{
     void Entity3D::setZPos(int32_t value) {
         m_zPos = value;
     }
+
+    void Entity3D::setPos(int32_t xValue, int32_t yValue, int32_t zValue) {
+        Entity::setPos(xValue, yValue);
+        setZPos(zValue);
+    }
 }

@@ -58,4 +58,10 @@ namespace RAL{
     Camera3D::~Camera3D() = default;
 
     Camera3D::Camera3D() : m_projection(Projection::Perspective) {}
+
+    void Camera3D::setRot(float xValue, float yValue, float zValue) {
+        setXRot(xValue);
+        setYRot(yValue);
+        setZRot(zValue);
+    }
 }
