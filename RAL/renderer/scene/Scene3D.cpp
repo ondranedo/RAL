@@ -13,7 +13,6 @@
 #include "Scene3D.h"
 #include "../../core/utility/Logger.h"
 
-//todo: CODE CLEANUP
 namespace RAL {
 
     Scene3D::Scene3D() = default;
@@ -28,6 +27,7 @@ namespace RAL {
         Object3D tempObject;
         std::string tempString;
         int32_t tempPos;
+        float tempFloat;
 
         //number of entities
         fread(&nOfObjects, sizeof(size_t), 1, file);
@@ -75,6 +75,22 @@ namespace RAL {
             fread(&tempPos, sizeof(int32_t), 1, file);
             tempObject.setZPos(tempPos);
 
+            //rotation of object
+            fread(&tempFloat, sizeof(float), 1, file);
+            tempObject.setXRot(tempFloat);
+            fread(&tempFloat, sizeof(float), 1, file);
+            tempObject.setYRot(tempFloat);
+            fread(&tempFloat, sizeof(float), 1, file);
+            tempObject.setZRot(tempFloat);
+
+            //bounding box scale
+            fread(&tempFloat, sizeof(float), 1, file);
+            tempObject.setXBoxScale(tempFloat);
+            fread(&tempFloat, sizeof(float), 1, file);
+            tempObject.setYBoxScale(tempFloat);
+            fread(&tempFloat, sizeof(float), 1, file);
+            tempObject.setZBoxScale(tempFloat);
+
             m_objects.push_back(tempObject);
         }
     }
@@ -99,13 +115,9 @@ namespace RAL {
     }
 
     //is subject to change
-    //currently loads six-line entries without separation and in an exact format
+    //currently loads entries in an exact format, where every parameter is on a different line
     //entity type
-    //entity name\n
-    //path to its mesh\n
-    //x offset\n
-    //y offset\n
-    //z offset\n
+    //entity parameters
     //WILL BREAK IF FILE DOESN'T FOLLOW THESE RULES
     //there is memory leak potential if the scene file doesn't follow the strict guidelines
     void Scene3D::loadTxtScene(const std::string& scenePath) {
@@ -123,29 +135,28 @@ namespace RAL {
 
     void Scene3D::saveBinObjects(FILE *file) {
 
-        size_t nOfEntities;
-        size_t nameSize;
-        size_t pathSize;
+        size_t tempSize;
         int32_t tempPos;
+        float tempFloat;
 
         //number of entities
-        nOfEntities = m_objects.size();
-        fwrite(&nOfEntities, sizeof(size_t), 1, file);
+        tempSize = m_objects.size();
+        fwrite(&tempSize, sizeof(size_t), 1, file);
 
         for(auto & object : m_objects){
             //length of c string
-            nameSize = object.getName().size() + 1;
-            fwrite(&nameSize, sizeof(size_t), 1, file);
+            tempSize = object.getName().size() + 1;
+            fwrite(&tempSize, sizeof(size_t), 1, file);
 
             //c string name
-            fwrite(object.getName().c_str(), sizeof(char), nameSize, file);
+            fwrite(object.getName().c_str(), sizeof(char), tempSize, file);
 
             //length of c string
-            pathSize = object.getMesh()->getPath().size() + 1;
-            fwrite(&pathSize, sizeof(size_t), 1, file);
+            tempSize = object.getMesh()->getPath().size() + 1;
+            fwrite(&tempSize, sizeof(size_t), 1, file);
 
             //c string mesh path
-            fwrite(object.getMesh()->getPath().c_str(), sizeof(char), pathSize, file);
+            fwrite(object.getMesh()->getPath().c_str(), sizeof(char), tempSize, file);
 
             //position of object
             tempPos = object.getXPos();
@@ -154,6 +165,22 @@ namespace RAL {
             fwrite(&tempPos, sizeof(int32_t), 1, file);
             tempPos = object.getZPos();
             fwrite(&tempPos, sizeof(int32_t), 1, file);
+
+            //rotation of object
+            tempFloat = object.getXRot();
+            fwrite(&tempFloat, sizeof(float), 1, file);
+            tempFloat = object.getYRot();
+            fwrite(&tempFloat, sizeof(float), 1, file);
+            tempFloat = object.getZRot();
+            fwrite(&tempFloat, sizeof(float), 1, file);
+
+            //bounding box scale
+            tempFloat = object.getXBoxScale();
+            fwrite(&tempFloat, sizeof(float), 1, file);
+            tempFloat = object.getYBoxScale();
+            fwrite(&tempFloat, sizeof(float), 1, file);
+            tempFloat = object.getZBoxScale();
+            fwrite(&tempFloat, sizeof(float), 1, file);
         }
     }
 
@@ -162,6 +189,7 @@ namespace RAL {
         std::string line;
         Object3D tempObject;
 
+        //name
         line = file.readLine().value();
         for(auto & object : m_objects){
             if(object.getName() == line){
@@ -174,6 +202,7 @@ namespace RAL {
         }
         tempObject.setName(line);
 
+        //mesh
         line = file.readLine().value();
         tempObject.setMesh(nullptr);
 
@@ -191,14 +220,20 @@ namespace RAL {
             m_meshes.push_back(*tempObject.getMesh());
         }
 
-        line = file.readLine().value();
-        tempObject.setXPos(std::stoi(line));
+        //position
+        tempObject.setXPos(std::stoi(file.readLine().value()));
+        tempObject.setYPos(std::stoi(file.readLine().value()));
+        tempObject.setZPos(std::stoi(file.readLine().value()));
 
-        line = file.readLine().value();
-        tempObject.setYPos(std::stoi(line));
+        //rotation
+        tempObject.setXRot(std::stof(file.readLine().value()));
+        tempObject.setYRot(std::stof(file.readLine().value()));
+        tempObject.setZRot(std::stof(file.readLine().value()));
 
-        line = file.readLine().value();
-        tempObject.setZPos(std::stoi(line));
+        //bounding box scale
+        tempObject.setXBoxScale(std::stof(file.readLine().value()));
+        tempObject.setYBoxScale(std::stof(file.readLine().value()));
+        tempObject.setZBoxScale(std::stof(file.readLine().value()));
 
         m_objects.push_back(tempObject);
     }

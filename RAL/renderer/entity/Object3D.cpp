@@ -40,16 +40,16 @@ namespace RAL{
         return m_zRot;
     }
 
-    float Object3D::getXScale() const {
-        return m_xScale;
+    float Object3D::getXBoxScale() const {
+        return m_xBoxScale;
     }
 
-    float Object3D::getYScale() const {
-        return m_yScale;
+    float Object3D::getYBoxScale() const {
+        return m_yBoxScale;
     }
 
-    float Object3D::getZScale() const {
-        return m_zScale;
+    float Object3D::getZBoxScale() const {
+        return m_zBoxScale;
     }
 
     void Object3D::setXRot(float value) {
@@ -64,25 +64,15 @@ namespace RAL{
         m_zRot = value;
     }
 
-    void Object3D::setXScale(float value) {
-        m_xScale = value;
+    void Object3D::setXBoxScale(float value) {
+        m_xBoxScale = value;
     }
 
-    void Object3D::setYScale(float value) {
-        m_yScale = value;
+    void Object3D::setYBoxScale(float value) {
+        m_yBoxScale = value;
     }
 
-    void Object3D::setZScale(float value) {
-        m_zScale = value;
-    }
-
-    void Object3D::setScale(float value) {
-        setXScale(value);
-        setYScale(value);
-        setZScale(value);
-    }
-
-    float Object3D::getScale() const {
-        return (getXScale() + getYScale() + getZScale())/3;
+    void Object3D::setZBoxScale(float value) {
+        m_zBoxScale = value;
     }
 }

@@ -27,28 +27,26 @@ namespace RAL{
         [[nodiscard]] float getXRot() const;
         [[nodiscard]] float getYRot() const;
         [[nodiscard]] float getZRot() const;
-        [[nodiscard]] float getXScale() const;
-        [[nodiscard]] float getYScale() const;
-        [[nodiscard]] float getZScale() const;
-        [[nodiscard]] float getScale() const;
+        [[nodiscard]] float getXBoxScale() const;
+        [[nodiscard]] float getYBoxScale() const;
+        [[nodiscard]] float getZBoxScale() const;
 
         void setMesh(Mesh3D* mesh);
         void setXRot(float value);
         void setYRot(float value);
         void setZRot(float value);
-        void setXScale(float value);
-        void setYScale(float value);
-        void setZScale(float value);
-        void setScale(float value);
+        void setXBoxScale(float value);
+        void setYBoxScale(float value);
+        void setZBoxScale(float value);
 
     private:
         Mesh3D* m_mesh{};
         float m_xRot;
         float m_yRot;
         float m_zRot;
-        float m_xScale;
-        float m_yScale;
-        float m_zScale;
+        float m_xBoxScale;
+        float m_yBoxScale;
+        float m_zBoxScale;
     };
 }
 
