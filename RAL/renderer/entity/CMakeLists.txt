@@ -18,4 +18,6 @@ add_library(ral_renderer_entity STATIC
         Entity3D.h
         Object3D.cpp
         Object3D.h
+        Camera3D.cpp
+        Camera3D.h
         )
