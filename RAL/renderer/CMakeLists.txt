@@ -32,3 +32,6 @@ target_link_libraries(ral_renderer PUBLIC ral_renderer_entity)
 
 add_subdirectory(material)
 target_link_libraries(ral_renderer PUBLIC ral_renderer_material)
+
+add_subdirectory(texture)
+target_link_libraries(ral_renderer PUBLIC ral_renderer_texture)
