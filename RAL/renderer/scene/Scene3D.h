@@ -18,6 +18,9 @@
 #include "../entity/Object3D.h"
 #include "../../platfomLayer/windows/file/Win32FileTxt.h"
 
+//maybe load all assests used in the scene first
+//each object will then have indexes to the mesh/material vector
+
 namespace RAL {
     class Scene3D {
     public:
