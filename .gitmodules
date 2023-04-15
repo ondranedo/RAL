@@ -6,4 +6,4 @@
 	url = https://github.com/g-truc/glm
 [submodule "RAL/vendor/glad"]
 	path = RAL/vendor/glad
-	url = https://www.github.com/ondranedo/glad
+	url = https://github.com/ondranedo/glad
