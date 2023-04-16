@@ -334,4 +334,50 @@ namespace RAL {
         return nullptr;
     }
 
+    void Scene3D::addCamera(const Camera3D& camera) {
+        m_cameras.push_back(camera);
+    }
+
+    void Scene3D::deleteCamera(std::vector<Camera3D>::iterator iterator) {
+        if(iterator > endCamera()){
+            iterator = endCamera();
+        }
+        if(iterator < beginCamera()){
+            iterator = beginCamera();
+        }
+        m_cameras.erase(iterator);
+    }
+
+    void Scene3D::deleteCamera(uint16_t index) {
+        deleteCamera(beginCamera() + index);
+    }
+
+    void Scene3D::deleteCamera(std::string name) {
+        for(auto i = beginCamera(); i < endCamera(); i++){
+            if(i->getName() == name){
+                deleteCamera(i);
+                return;
+            }
+        }
+        RAL_LOG_ERROR("Object %s not found", name.c_str());
+    }
+
+    Camera3D *Scene3D::getCamera(std::string name) {
+        for(auto i = beginCamera(); i < endCamera(); i++){
+            if(i->getName() == name){
+                return i.base();
+            }
+        }
+        RAL_LOG_ERROR("Object %s not found", name.c_str());
+        return nullptr;
+    }
+
+    std::vector<Camera3D>::iterator Scene3D::beginCamera() {
+        return m_cameras.begin();
+    }
+
+    std::vector<Camera3D>::iterator Scene3D::endCamera() {
+        return m_cameras.end();
+    }
+
 } // RAL

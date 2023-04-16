@@ -95,4 +95,8 @@ namespace RAL{
     void Object3D::setMaterial(Material* material) {
         m_material = material;
     }
+
+    PhysicalProperties *Object3D::getPhysicalProperties() {
+        return &m_physicalProperties;
+    }
 }

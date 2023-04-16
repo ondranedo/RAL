@@ -17,6 +17,7 @@
 #include "Entity3D.h"
 #include "../mesh/Mesh3D.h"
 #include "../material/Material.h"
+#include "../physics/Physics.h"
 
 namespace RAL{
     class Object3D : public Entity3D{
@@ -32,6 +33,7 @@ namespace RAL{
         [[nodiscard]] float getXBoxScale() const;
         [[nodiscard]] float getYBoxScale() const;
         [[nodiscard]] float getZBoxScale() const;
+        PhysicalProperties* getPhysicalProperties();
 
         void setMesh(Mesh3D* mesh);
         void setMaterial(Material* material);
@@ -53,6 +55,7 @@ namespace RAL{
         float m_xBoxScale{};
         float m_yBoxScale{};
         float m_zBoxScale{};
+        PhysicalProperties m_physicalProperties;
     };
 }
 

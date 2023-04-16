@@ -17,6 +17,7 @@
 #include <string>
 #include "../entity/Object3D.h"
 #include "../../platfomLayer/windows/file/Win32FileTxt.h"
+#include "../entity/Camera3D.h"
 
 //maybe load all assests used in the scene first
 //each object will then have indexes to the mesh/material vector
@@ -51,6 +52,14 @@ namespace RAL {
         std::vector<Mesh3D>::iterator beginMesh();
         std::vector<Mesh3D>::iterator endMesh();
 
+        void addCamera(const Camera3D& camera);
+        void deleteCamera(uint16_t index);
+        void deleteCamera(std::vector<Camera3D>::iterator iterator);
+        void deleteCamera(std::string name);
+        Camera3D* getCamera(std::string name);
+        std::vector<Camera3D>::iterator beginCamera();
+        std::vector<Camera3D>::iterator endCamera();
+
         uint32_t getMaterialCount();
         std::vector<Material>::iterator beginMaterial();
         std::vector<Material>::iterator endMaterial();
@@ -65,6 +74,7 @@ namespace RAL {
         std::vector<Mesh3D> m_meshes;
         std::vector<Material> m_materials;
         std::vector<Texture> m_textures;
+        std::vector<Camera3D> m_cameras;
     };
 } // RAL
 
