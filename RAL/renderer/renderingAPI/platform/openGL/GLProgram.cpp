@@ -42,6 +42,7 @@ namespace RAL{
                 RAL_LOG_ERROR("Failed to compile %s: %s",type.c_str(), message);
                 return false;
             }
+            return true;
         };
 
         _(vs, const_cast<char*>(vertex.c_str()), "vertex shader");
@@ -84,7 +85,28 @@ namespace RAL{
             m_programAttribLayout.emplace_back(name, location);
         }
 
+
+        // store information about program uniforms
+        int numUniforms;
+        glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &numUniforms);
+        for(GLuint i = 0; i < numUniforms; ++i)
+        {
+            char name[256];
+            int name_len = -1, num = -1;
+            GLenum type = GL_ZERO;
+            glGetActiveUniform(program, i, sizeof(name)-1,
+                              &name_len, &num, &type, name);
+            name[name_len] = 0;
+            int location = glGetUniformLocation(program, name);
+            m_programUniforms[name] = {getDataTypeFromGLType(type), location};
+        }
+
         m_programID = program;
+
+#ifdef RAL_DEBUG
+        printAttribLayout();
+        printUniformLayout();
+#endif
         return true;
     }
 
@@ -106,4 +128,73 @@ namespace RAL{
         RAL_LOG_FATAL("Cannot find attribute %s in GL program %d, thus can't draw", name.c_str(), m_programID);
         return -1;
     }
+
+    void GLProgram::sendData(void *data, size_t size, CustomProgramData::Type type, const std::string &name) {
+        if(!m_programID.has_value()) {
+            RAL_LOG_ERROR("GL Program is not compiled yet!");
+            return;
+        }
+        if(m_programUniforms.find(name) == m_programUniforms.end()) {
+            RAL_LOG_ERROR("Cannot find uniform %s in GL program %d, thus can't send data", name.c_str(), m_programID);
+            return;
+        }
+        auto uniform = m_programUniforms[name];
+
+        if(uniform.first != type){
+            RAL_LOG_ERROR("Uniform %s in GL program %d has different type than the data being sent", name.c_str(), m_programID);
+            return;
+        }
+
+        if(CustomProgramData::typeSize(uniform.first) != size){
+            RAL_LOG_ERROR("Uniform %s in GL program %d has different size than the data being sent", name.c_str(), m_programID);
+            return;
+        }
+
+        switch(type) {
+            case CustomProgramData::Type::FLOAT: glUniform1f(uniform.second, *static_cast<float*>(data)); break;
+            case CustomProgramData::Type::VEC2:  glUniform2fv(uniform.second, 1, static_cast<float*>(data)); break;
+            case CustomProgramData::Type::VEC3:  glUniform3fv(uniform.second, 1, static_cast<float*>(data)); break;
+            case CustomProgramData::Type::VEC4:  glUniform4fv(uniform.second, 1, static_cast<float*>(data)); break;
+            case CustomProgramData::Type::BOOL:
+            case CustomProgramData::Type::INT:   glUniform1i(uniform.second, *static_cast<int*>(data)); break;
+            case CustomProgramData::Type::MAT4:  glUniformMatrix4fv(uniform.second, 1, GL_FALSE, static_cast<float*>(data)); break;
+            case CustomProgramData::Type::UINT:  glUniform1ui(uniform.second, *static_cast<unsigned int*>(data)); break;
+            case CustomProgramData::Type::UVEC2: glUniform2uiv(uniform.second, 1, static_cast<unsigned int*>(data)); break;
+            case CustomProgramData::Type::UVEC3: glUniform3uiv(uniform.second, 1, static_cast<unsigned int*>(data)); break;
+            case CustomProgramData::Type::UVEC4: glUniform4uiv(uniform.second, 1, static_cast<unsigned int*>(data)); break;
+            default:
+                RAL_LOG_ERROR("Unknown uniform data type when sending data to GL program %d", m_programID);
+        }
+    }
+
+    CustomProgramData::Type GLProgram::getDataTypeFromGLType(unsigned int type) {
+        switch (type) {
+            case GL_FLOAT: return CustomProgramData::Type::FLOAT;
+            case GL_FLOAT_VEC2: return CustomProgramData::Type::VEC2;
+            case GL_FLOAT_VEC3: return CustomProgramData::Type::VEC3;
+            case GL_FLOAT_VEC4: return CustomProgramData::Type::VEC4;
+            case GL_INT: return CustomProgramData::Type::INT;
+            case GL_UNSIGNED_INT: return CustomProgramData::Type::UINT;
+            case GL_UNSIGNED_INT_VEC2: return CustomProgramData::Type::UVEC2;
+            case GL_UNSIGNED_INT_VEC3: return CustomProgramData::Type::UVEC3;
+            case GL_UNSIGNED_INT_VEC4: return CustomProgramData::Type::UVEC4;
+            case GL_BOOL: return CustomProgramData::Type::BOOL;
+            case GL_FLOAT_MAT4: return CustomProgramData::Type::MAT4;
+        }
+        RAL_LOG_ERROR("Unknown GL type %d, when converting GL Type to CustomProgramData::Type", type);
+        return CustomProgramData::Type::UNKNOWN;
+    }
+#ifdef  RAL_DEBUG
+    void GLProgram::printUniformLayout() {
+        RAL_LOG_WARNING("Uniforms in GL program %d:", m_programID);
+        for(auto& uniform : m_programUniforms)
+            RAL_LOG_DEBUG("\t%s\t-> %s", uniform.first.c_str(), CustomProgramData::typeToString(uniform.second.first).c_str());
+    }
+
+    void GLProgram::printAttribLayout() {
+        RAL_LOG_WARNING("Attributes in GL program %d:", m_programID);
+        for(auto& attrib : m_programAttribLayout)
+            RAL_LOG_DEBUG("\t%s\t-> location:%d", attrib.first.c_str(), attrib.second);
+    }
+#endif
 }

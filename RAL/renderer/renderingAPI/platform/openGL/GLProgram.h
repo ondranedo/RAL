@@ -15,10 +15,12 @@
 #define RAL_PROJECT_GLPROGRAM_H
 
 #include <core/memoryManager/Overload.h>
+#include <renderer/renderingAPI/ProgramData.h>
 #include <vector>
 #include <tuple>
 #include <string>
 #include <optional>
+#include <unordered_map>
 
 namespace RAL {
     class GLProgram {
@@ -37,9 +39,24 @@ namespace RAL {
         // returns -1 if the attribute is not found
         int getAttribLocation(const std::string& name);
 
+        // Checks if the program is valid and has been compiled successfully,
+        // and sends the data to the program, if the program is not valid,
+        // the data is not sent
+        void sendData(void* data, size_t size, CustomProgramData::Type type, const std::string& name);
+
+        // Converts the given GL symbolic constant type to the CustomProgramData::Type
+        static CustomProgramData::Type getDataTypeFromGLType(unsigned int type);
+
+#ifdef RAL_DEBUG
+        void printUniformLayout();
+        void printAttribLayout();
+#endif
     private:
         std::optional<unsigned int> m_programID;
+        // [] = {name, layout_index}
         std::vector<std::pair<std::string, uint8_t>> m_programAttribLayout;
+        // [] = {name, data_type
+        std::unordered_map<std::string, std::pair<CustomProgramData::Type, uint8_t>> m_programUniforms;
     };
 };
 

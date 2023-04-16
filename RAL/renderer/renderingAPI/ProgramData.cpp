@@ -13,6 +13,7 @@
 
 #include "ProgramData.h"
 #include <cstring>
+#include <core/utility/Types.h>
 
 namespace RAL {
     ProgramData::ProgramData() {
@@ -21,11 +22,47 @@ namespace RAL {
 
     CustomProgramData::CustomProgramData() : m_data() {}
 
-    void CustomProgramData::addData(const std::string &in_shader_name, void *data, size_t size) {
-         m_data.push_back({data, size, in_shader_name});
+    void CustomProgramData::addData(void* data, size_t size, Type type, const std::string& in_shader_name) {
+         m_data.push_back({data, type, size, in_shader_name});
     }
 
     const std::vector<CustomProgramData::Data> &CustomProgramData::getData() const {
         return m_data;
+    }
+
+    uint8_t CustomProgramData::typeSize(CustomProgramData::Type type) {
+        switch (type) {
+            case Type::FLOAT: return sizeof(float);
+            case Type::VEC2: return sizeof(float) * 2;
+            case Type::VEC3: return sizeof(float) * 3;
+            case Type::VEC4: return sizeof(float) * 4;
+            case Type::MAT4: return sizeof(float) * 16;
+            case Type::INT: return sizeof(int);
+            case Type::BOOL: return sizeof(bool);
+            case Type::UINT: return sizeof(uint32_t);
+            case Type::UVEC2: return sizeof(uint32_t) * 2;
+            case Type::UVEC3: return sizeof(uint32_t) * 3;
+            case Type::UVEC4: return sizeof(uint32_t) * 4;
+        }
+        RAL_LOG_ERROR("Unknown CustomProgramData type size");
+        return 0;
+    }
+
+    std::string CustomProgramData::typeToString(CustomProgramData::Type type) {
+        switch (type) {
+            case Type::FLOAT: return "float";
+            case Type::VEC2:  return "vec2";
+            case Type::VEC3:  return "vec3";
+            case Type::VEC4:  return "vec4";
+            case Type::MAT4:  return "mat4";
+            case Type::INT:   return "int";
+            case Type::BOOL:  return "bool";
+            case Type::UINT:  return "unsigned int";
+            case Type::UVEC2: return "uvec2";
+            case Type::UVEC3: return "uvec3";
+            case Type::UVEC4: return "uvec4";
+        }
+        RAL_LOG_ERROR("Unknown CustomProgramData type size");
+        return "unknown";
     }
 } // RAL

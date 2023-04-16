@@ -74,5 +74,5 @@ target_link_libraries(${RAL_ENGINE_LIB} PRIVATE glfw)
 
 #GLAD
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glad)
-target_link_libraries(${RAL_ENGINE_LIB} PRIVATE glad)
+target_link_libraries(${RAL_ENGINE_LIB} PRIVATE gl_4.0_core_debug)
 target_link_libraries(${RAL_ENGINE_LIB} PRIVATE opengl32)

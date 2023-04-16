@@ -17,6 +17,7 @@
 #include <cstdint>
 #include <vector>
 #include <string>
+#include <array>
 #include <renderer/renderingAPI/buffers/IndexBuffer.h>
 #include <renderer/renderingAPI/buffers/VertexBuffer.h>
 
