@@ -24,8 +24,8 @@ namespace RAL
 
     void GLRenderingAPI::clear()
     {
-        auto nor = [](uint8_t num)->float{return static_cast<float>(num)/255.0f;};
-        glClearColor(nor(m_clearColour[0]),nor(m_clearColour[1]),nor(m_clearColour[2]),nor(m_clearColour[3]));
+        auto nor = [](uint8_t num) -> float { return static_cast<float>(num) / 255.0f; };
+        glClearColor(nor(m_clearColour[0]), nor(m_clearColour[1]), nor(m_clearColour[2]), nor(m_clearColour[3]));
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
@@ -110,21 +110,23 @@ namespace RAL
         m_vertexBufferLayout = vertexBuffer.getLayout();
     }
 
-    void GLRenderingAPI::setWindowToDraw() {
+    void GLRenderingAPI::setWindowToDraw()
+    {
         RAL_ASSERTRV(m_window, "Window is not set");
         m_window->makeContextCurrent();
-        if(!gladLoadGL(reinterpret_cast<GLADloadfunc>(m_window->getProcAddress()))){
+        if (!gladLoadGL(reinterpret_cast<GLADloadfunc>(m_window->getProcAddress())))
+        {
             RAL_LOG_FATAL("Failed to load GLAD");
             return;
         }
     }
 
-    GLRenderingAPI::GLRenderingAPI():
-    m_vertexBufferLayout(),
-    m_indexBuffer(0),
-    m_vertexBuffer(0),
-    m_vertexArray(0),
-    m_indicesCount(0)
+    GLRenderingAPI::GLRenderingAPI() :
+            m_vertexBufferLayout(),
+            m_indexBuffer(0),
+            m_vertexBuffer(0),
+            m_vertexArray(0),
+            m_indicesCount(0)
     {
     }
 

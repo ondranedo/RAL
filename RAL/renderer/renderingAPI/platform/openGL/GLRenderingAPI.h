@@ -23,17 +23,21 @@
 namespace RAL
 {
 
-    class GLRenderingAPI final: public RenderingAPI
+    class GLRenderingAPI final : public RenderingAPI
     {
     public:
         GLRenderingAPI();
 
         void clear() override;
+
         void init() override;
+
         void release() override;
+
         void draw() override;
 
         void bind(const IndexBuffer &indexBuffer) override;
+
         void bind(const VertexBuffer &vertexBuffer) override;
 
         // Shader/Program functions
@@ -44,7 +48,9 @@ namespace RAL
 
     private:
         void setWindowToDraw() override;
+
         void setAttributes();
+
         void setBindables();
 
 
