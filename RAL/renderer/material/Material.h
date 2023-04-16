@@ -13,11 +13,20 @@
 
 #ifndef RAL_PROJECT_MATERIAL_H
 #define RAL_PROJECT_MATERIAL_H
+#include "../texture/Texture.h"
 
 namespace RAL{
     class Material{
     public:
+        Material();
+        ~Material();
+
+        void setTexture(Texture* texture);
+
+        Texture* getTexture();
     private:
+        Texture* m_texture{};
+
     };
 }
 

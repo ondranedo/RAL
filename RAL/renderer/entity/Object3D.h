@@ -16,6 +16,7 @@
 
 #include "Entity3D.h"
 #include "../mesh/Mesh3D.h"
+#include "../material/Material.h"
 
 namespace RAL{
     class Object3D : public Entity3D{
@@ -24,6 +25,7 @@ namespace RAL{
         ~Object3D();
 
         Mesh3D* getMesh();
+        Material* getMaterial();
         [[nodiscard]] float getXRot() const;
         [[nodiscard]] float getYRot() const;
         [[nodiscard]] float getZRot() const;
@@ -32,6 +34,7 @@ namespace RAL{
         [[nodiscard]] float getZBoxScale() const;
 
         void setMesh(Mesh3D* mesh);
+        void setMaterial(Material* material);
         void setXRot(float value);
         void setYRot(float value);
         void setZRot(float value);
@@ -43,12 +46,13 @@ namespace RAL{
 
     private:
         Mesh3D* m_mesh{};
-        float m_xRot;
-        float m_yRot;
-        float m_zRot;
-        float m_xBoxScale;
-        float m_yBoxScale;
-        float m_zBoxScale;
+        Material* m_material{};
+        float m_xRot{};
+        float m_yRot{};
+        float m_zRot{};
+        float m_xBoxScale{};
+        float m_yBoxScale{};
+        float m_zBoxScale{};
     };
 }
 

@@ -15,4 +15,15 @@
 
 namespace RAL{
 
+    void Material::setTexture(Texture *texture) {
+        m_texture = texture;
+    }
+
+    Texture *Material::getTexture() {
+        return m_texture;
+    }
+
+    Material::~Material() = default;
+
+    Material::Material() = default;
 }

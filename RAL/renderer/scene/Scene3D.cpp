@@ -238,4 +238,100 @@ namespace RAL {
         m_objects.push_back(tempObject);
     }
 
+    std::vector<Object3D>::iterator Scene3D::beginObject() {
+        return m_objects.begin();
+    }
+
+    std::vector<Object3D>::iterator Scene3D::endObject() {
+        return m_objects.end();
+    }
+
+    uint32_t Scene3D::getObjectCount() {
+        return m_objects.size();
+    }
+
+    std::vector<Mesh3D>::iterator Scene3D::beginMesh() {
+        return m_meshes.begin();
+    }
+
+    std::vector<Mesh3D>::iterator Scene3D::endMesh() {
+        return m_meshes.end();
+    }
+
+    uint32_t Scene3D::getMeshCount() {
+        return m_meshes.size();
+    }
+
+    std::vector<Texture>::iterator Scene3D::beginTexture() {
+        return m_textures.begin();
+    }
+
+    std::vector<Texture>::iterator Scene3D::endTexture() {
+        return m_textures.end();
+    }
+
+    uint32_t Scene3D::getTextureCount() {
+        return m_textures.size();
+    }
+
+    std::vector<Material>::iterator Scene3D::beginMaterial() {
+        return m_materials.begin();
+    }
+
+    std::vector<Material>::iterator Scene3D::endMaterial() {
+        return m_materials.end();
+    }
+
+    uint32_t Scene3D::getMaterialCount() {
+        return m_materials.size();
+    }
+
+    void Scene3D::addObject(const Object3D& object) {
+        m_objects.push_back(object);
+    }
+
+    void Scene3D::deleteObject(std::vector<Object3D>::iterator iterator) {
+        if(iterator > endObject()){
+            iterator = endObject();
+        }
+        if(iterator < beginObject()){
+            iterator = beginObject();
+        }
+        m_objects.erase(iterator);
+    }
+
+    void Scene3D::deleteObject(int32_t index) {
+        deleteObject(beginObject() + index);
+    }
+
+    void Scene3D::deleteObject(const std::string& name) {
+        for(auto i = beginObject(); i < endObject(); i++){
+            if(i->getName() == name){
+                deleteObject(i);
+                return;
+            }
+        }
+        RAL_LOG_ERROR("Object %s not found", name.c_str());
+    }
+
+    Object3D *Scene3D::getObject(const std::string& name) {
+        for(auto i = beginObject(); i < endObject(); i++){
+            if(i->getName() == name){
+                return i.base();
+            }
+        }
+        RAL_LOG_ERROR("Object %s not found", name.c_str());
+        return nullptr;
+    }
+
+    Mesh3D *Scene3D::getMesh(const std::string& path) {
+        for(auto i = beginMesh(); i < endMesh(); i++){
+            if(i->getPath() == path){
+                return i.base();
+            }
+        }
+        RAL_LOG_ERROR("Mesh with the path %s not found", path.c_str());
+        return nullptr;
+    }
+
 } // RAL

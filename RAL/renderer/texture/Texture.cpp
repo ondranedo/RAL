@@ -16,14 +16,24 @@
 namespace RAL{
 
     uint16_t Texture::getWidth() {
-        return m_image.data()->size();
+        return m_image->data()->size();
     }
 
     uint16_t Texture::getHeight() {
-        return m_image.size();
+        return m_image->size();
     }
 
     size_t Texture::getSize() {
         return getWidth() * getHeight() * sizeof(Pixel);
     }
+//todo: check for leaks; still find it difficult to work with objects
+    Texture::~Texture(){
+        for(auto i : *m_image){
+            i.clear();
+        }
+        m_image->clear();
+        delete m_image;
+    }
+
+    Texture::Texture() = default;
 }

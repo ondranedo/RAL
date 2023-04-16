@@ -87,4 +87,12 @@ namespace RAL{
         setYBoxScale(yValue);
         setZBoxScale(zValue);
     }
+
+    Material *Object3D::getMaterial() {
+        return m_material;
+    }
+
+    void Object3D::setMaterial(Material* material) {
+        m_material = material;
+    }
 }

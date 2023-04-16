@@ -35,7 +35,7 @@ namespace RAL{
         size_t getSize();
 
     private:
-        std::vector<std::vector<Pixel>>* m_image;
+        std::vector<std::vector<Pixel>>* m_image{};
     };
 }
 

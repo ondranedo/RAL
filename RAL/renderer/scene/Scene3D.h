@@ -36,10 +36,35 @@ namespace RAL {
         void saveBinScene(const std::string& scenePath);
         void saveBinObjects(FILE* file);
 
-    private:
+//TODO: some O(1) or less than O(n) solution for getting at least objects
+        void addObject(const Object3D& object);
+        void deleteObject(std::vector<Object3D>::iterator iterator);
+        void deleteObject(int32_t index);
+        void deleteObject(const std::string& name);
+        Object3D* getObject(const std::string& name);
+        uint32_t getObjectCount();
+        std::vector<Object3D>::iterator beginObject();
+        std::vector<Object3D>::iterator endObject();
 
+        Mesh3D* getMesh(const std::string& path);
+        uint32_t getMeshCount();
+        std::vector<Mesh3D>::iterator beginMesh();
+        std::vector<Mesh3D>::iterator endMesh();
+
+        uint32_t getMaterialCount();
+        std::vector<Material>::iterator beginMaterial();
+        std::vector<Material>::iterator endMaterial();
+
+        uint32_t getTextureCount();
+        std::vector<Texture>::iterator beginTexture();
+        std::vector<Texture>::iterator endTexture();
+
+    private:
+//TODO: shaders
         std::vector<Object3D> m_objects;
         std::vector<Mesh3D> m_meshes;
+        std::vector<Material> m_materials;
+        std::vector<Texture> m_textures;
     };
 } // RAL
 
