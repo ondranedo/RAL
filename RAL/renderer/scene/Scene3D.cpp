@@ -25,14 +25,14 @@ namespace RAL {
         size_t tempSize;
         void* buffer;
         Object3D tempObject;
-        std::string tempString;
-        int32_t tempPos;
+        int32_t tempInt;
         float tempFloat;
+        PhysicalProperties tempProperties;
 
-        //number of entities
+        //number of objects
         fread(&nOfObjects, sizeof(size_t), 1, file);
 
-        for(int i = 0; i < nOfObjects; i++){
+        for(size_t i = 0; i < nOfObjects; i++){
             //length of c string
             fread(&tempSize, sizeof(size_t), 1, file);
 
@@ -42,38 +42,21 @@ namespace RAL {
             tempObject.setName(reinterpret_cast<char*>(buffer));
             delete[] reinterpret_cast<char*>(buffer);
 
-            //length of c string
+            //mesh index
             fread(&tempSize, sizeof(size_t), 1, file);
+            tempObject.setMesh(beginMesh().base() + tempSize);
 
-            //c string mesh path
-            buffer = new char[tempSize];
-            fread(buffer, sizeof(char), tempSize, file);
-            tempString = reinterpret_cast<char*>(buffer);
-            delete[] reinterpret_cast<char*>(buffer);
-
-            tempObject.setMesh(nullptr);
-            //todo: better way of optimising
-            //optimization: if mesh was used, point to the already loaded one
-            for(auto & mesh : m_meshes){
-                if(mesh.getPath() == tempString){
-                    tempObject.setMesh(&mesh);
-                    break;
-                }
-            }
-
-            if(!tempObject.getMesh()){
-                tempObject.setMesh(new Mesh3D);
-                tempObject.getMesh()->Mesh::openRalms(tempString);
-                m_meshes.push_back(*tempObject.getMesh());
-            }
+            //material index
+            fread(&tempSize, sizeof(size_t), 1, file);
+            tempObject.setMaterial(beginMaterial().base() + tempSize);
 
             //position of object
-            fread(&tempPos, sizeof(int32_t), 1, file);
-            tempObject.setXPos(tempPos);
-            fread(&tempPos, sizeof(int32_t), 1, file);
-            tempObject.setYPos(tempPos);
-            fread(&tempPos, sizeof(int32_t), 1, file);
-            tempObject.setZPos(tempPos);
+            fread(&tempInt, sizeof(int32_t), 1, file);
+            tempObject.setXPos(tempInt);
+            fread(&tempInt, sizeof(int32_t), 1, file);
+            tempObject.setYPos(tempInt);
+            fread(&tempInt, sizeof(int32_t), 1, file);
+            tempObject.setZPos(tempInt);
 
             //rotation of object
             fread(&tempFloat, sizeof(float), 1, file);
@@ -91,7 +74,18 @@ namespace RAL {
             fread(&tempFloat, sizeof(float), 1, file);
             tempObject.setZBoxScale(tempFloat);
 
-            m_objects.push_back(tempObject);
+            //physical properties
+            fread(&tempProperties, sizeof(PhysicalProperties), 1, file);
+            //todo: something better? just add a setPhysicalProperties?
+            tempObject.getPhysicalProperties()->setXVel(tempProperties.getXVel());
+            tempObject.getPhysicalProperties()->setYVel(tempProperties.getYVel());
+            tempObject.getPhysicalProperties()->setZVel(tempProperties.getZVel());
+            tempObject.getPhysicalProperties()->setXAcc(tempProperties.getXAcc());
+            tempObject.getPhysicalProperties()->setYAcc(tempProperties.getYAcc());
+            tempObject.getPhysicalProperties()->setZAcc(tempProperties.getZAcc());
+            tempObject.getPhysicalProperties()->setWeight(tempProperties.getWeight());
+
+            addObject(tempObject);
         }
     }
 
@@ -100,6 +94,7 @@ namespace RAL {
 
         FILE* file = fopen(scenePath.c_str(), "rb");
 
+        loadBinMeshes(file);
         loadBinObjects(file);
 
         fclose(file);
@@ -109,6 +104,8 @@ namespace RAL {
         //TODO: switch to File
 
         FILE* file = fopen(scenePath.c_str(), "wb");
+
+        saveBinMeshes(file);
         saveBinObjects(file);
 
         fclose(file);
@@ -139,10 +136,10 @@ namespace RAL {
     void Scene3D::saveBinObjects(FILE *file) {
 
         size_t tempSize;
-        int32_t tempPos;
+        int32_t tempInt;
         float tempFloat;
 
-        //number of entities
+        //number of objects
         tempSize = m_objects.size();
         fwrite(&tempSize, sizeof(size_t), 1, file);
 
@@ -158,16 +155,21 @@ namespace RAL {
             tempSize = object.getMesh()->getPath().size() + 1;
             fwrite(&tempSize, sizeof(size_t), 1, file);
 
-            //c string mesh path
-            fwrite(object.getMesh()->getPath().c_str(), sizeof(char), tempSize, file);
+            //mesh index
+            tempSize = object.getMesh() - beginMesh().base();
+            fwrite(&tempSize, sizeof(size_t), 1, file);
+
+            //material index
+            tempSize = object.getMaterial() - beginMaterial().base();
+            fwrite(&tempSize, sizeof(size_t), 1, file);
 
             //position of object
-            tempPos = object.getXPos();
-            fwrite(&tempPos, sizeof(int32_t), 1, file);
-            tempPos = object.getYPos();
-            fwrite(&tempPos, sizeof(int32_t), 1, file);
-            tempPos = object.getZPos();
-            fwrite(&tempPos, sizeof(int32_t), 1, file);
+            tempInt = object.getXPos();
+            fwrite(&tempInt, sizeof(int32_t), 1, file);
+            tempInt = object.getYPos();
+            fwrite(&tempInt, sizeof(int32_t), 1, file);
+            tempInt = object.getZPos();
+            fwrite(&tempInt, sizeof(int32_t), 1, file);
 
             //rotation of object
             tempFloat = object.getXRot();
@@ -184,6 +186,9 @@ namespace RAL {
             fwrite(&tempFloat, sizeof(float), 1, file);
             tempFloat = object.getZBoxScale();
             fwrite(&tempFloat, sizeof(float), 1, file);
+
+            //physical properties
+            fwrite(object.getPhysicalProperties(), sizeof(PhysicalProperties), 1, file);
         }
     }
 
@@ -429,6 +434,53 @@ namespace RAL {
 
         //total: 9 lines -> need to skip 8
         m_cameras.push_back(tempCamera);
+    }
+
+    void Scene3D::loadBinMeshes(FILE *file) {
+
+        size_t meshCount;
+        void* buffer;
+        size_t tempSize;
+        Mesh3D tempMesh;
+
+        //number of meshes
+        fread(&meshCount, sizeof(size_t), 1, file);
+
+        for(size_t i = 0; i < meshCount; i++){
+            //length of c string
+            fread(&tempSize, sizeof(size_t), 1, file);
+
+            //c string path
+            buffer = new char[tempSize];
+            fread(buffer, sizeof(char), tempSize, file);
+            tempMesh.Mesh::openRalms(reinterpret_cast<char*>(buffer));
+            delete[] reinterpret_cast<char*>(buffer);
+
+            addMesh(tempMesh);
+        }
+    }
+
+    void Scene3D::addMesh(const Mesh3D& mesh) {
+        m_meshes.push_back(mesh);
+    }
+
+    void Scene3D::saveBinMeshes(FILE *file) {
+
+        size_t tempSize;
+
+        //number of meshes
+        tempSize = getMeshCount();
+        fwrite(&tempSize, sizeof(size_t), 1, file);
+
+        for(auto mesh : m_meshes){
+
+            //length of c string
+            tempSize = mesh.getPath().size();
+            fwrite(&tempSize, sizeof(size_t), 1, file);
+
+            //c string path
+            fwrite(mesh.getPath().c_str(), sizeof(char), tempSize, file);
+        }
     }
 
 } // RAL

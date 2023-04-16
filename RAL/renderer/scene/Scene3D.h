@@ -34,9 +34,17 @@ namespace RAL {
 
         void loadBinScene(const std::string& scenePath);
         void loadBinObjects(FILE* file);
+        void loadBinMeshes(FILE* file);
+        void laodBinMaterials(FILE* file);
+        void loadBinTextures(FILE* file);
+        void loadBinCameras(FILE* file);
 
         void saveBinScene(const std::string& scenePath);
         void saveBinObjects(FILE* file);
+        void saveBinMeshes(FILE* file);
+        void saveBinMaterials(FILE* file);
+        void saveBinTextures(FILE* file);
+        void saveBinCameras(FILE* file);
 
 //TODO: some O(1) or less than O(n) solution for getting at least objects
         void addObject(const Object3D& object);
@@ -48,6 +56,7 @@ namespace RAL {
         std::vector<Object3D>::iterator beginObject();
         std::vector<Object3D>::iterator endObject();
 
+        void addMesh(const Mesh3D& mesh);
         Mesh3D* getMesh(const std::string& path);
         uint32_t getMeshCount();
         std::vector<Mesh3D>::iterator beginMesh();
