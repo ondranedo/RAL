@@ -35,4 +35,4 @@ add_library(ral_renderer_renderingAPI STATIC
         buffers/VertexBufferLayout.cpp
         buffers/VertexBufferLayout.h
         ProgramData.cpp
-        ProgramData.h)
+        ProgramData.h TextureParam.cpp TextureParam.h)

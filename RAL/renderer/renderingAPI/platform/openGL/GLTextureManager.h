@@ -18,52 +18,30 @@
 #include <cstdint>
 #include <unordered_map>
 #include <vector>
-
+#include <renderer/renderingAPI/TextureParam.h>
 namespace RAL
 {
-    enum class DimensionsType : unsigned char
-    {
-        _1D,
-        _2D,
-        _3D
-    };
-
-    enum class WrappingParam : unsigned char
-    {
-        REPEAT,
-        MIRRORED_REPEAT,
-        CLAMP_TO_EDGE
-    };
-
-    enum class FilteringParam : unsigned char
-    {
-        NEAREST,
-        LINEAR,
-        NEAREST_MIPMAP_NEAREST,
-        NEAREST_MIPMAP_LINEAR,
-        LINEAR_MIPMAP_NEAREST,
-        LINEAR_MIPMAP_LINEAR
-    };
-
     class GLTextureManager
     {
     public:
+        GLTextureManager();
+
+        // Stores array of textures to VRAM, if texture is already stored, it will not be stored again
+        void store(const std::vector<TextureParam>& textures_to_store);
+
+        // Stores textures to VRAM, if texture is already stored, it will not be stored again
+        void store(const TextureParam& texture_to_store);
+
         void init();
 
-        void generate(uint16_t id);
-
-        void release();
-
-        void bind(int type,const std::vector<unsigned int>& IDsToBind);
-
-        void sendTexture(void *adr, uint16_t width, uint16_t height, uint16_t depth, uint8_t channels, uint16_t id,
-                         WrappingParam wrappingParam, FilteringParam filteringParam, DimensionsType type);
-
     private:
-        void bind(int type) const;
-        uint32_t m_id,m_TextureUnitID=0;
-        int m_MaxTextureUnitCount;
-        std::unordered_map<uint32_t, uint32_t> activatedTextures;
+        // stores all activated textures, if we want to send texture to GPU,
+        // we need to check if it is already activated
+        // [texture_id] -> [gl_texture_unit]
+        std::unordered_map<uint32_t, uint32_t> m_activatedTextures;
+
+        // Maximum number of texture units that can be used at once
+        uint32_t m_maxTextureUnitCount;
     };
 
 } // RAL

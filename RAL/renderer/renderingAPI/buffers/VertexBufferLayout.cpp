@@ -32,6 +32,7 @@ namespace RAL
             case VertexBufferLayout::Entry::COLOUR_RGBA: return "colourRGBA";
             case VertexBufferLayout::Entry::POS_XY: return "positionXY";
             case VertexBufferLayout::Entry::POS_XYZ: return "positionXYZ";
+            case VertexBufferLayout::Entry::TEXTURE_UV: return "textureUV";
         }
 
         RAL_LOG_ERROR("Unknown layout entry type to string");
@@ -49,6 +50,7 @@ namespace RAL
             case VertexBufferLayout::Entry::POS_XYZ: return 3;
             case VertexBufferLayout::Entry::COLOUR_RGBA: return 4;
             case VertexBufferLayout::Entry::POS_XY: return 2;
+            case VertexBufferLayout::Entry::TEXTURE_UV: return 2;
         }
 
         RAL_LOG_ERROR("Unknown layout component count in entry type");
@@ -70,6 +72,7 @@ namespace RAL
             case VertexBufferLayout::Entry::COLOUR_RGBA: return Types::DataType::UINT8;
             case VertexBufferLayout::Entry::POS_XY:
             case VertexBufferLayout::Entry::POS_XYZ: return Types::DataType::FLOAT;
+            case VertexBufferLayout::Entry::TEXTURE_UV: return Types::DataType::FLOAT;
         }
 
         RAL_LOG_ERROR("Unknown layout entry type data type");
@@ -84,6 +87,7 @@ namespace RAL
             // Position should not be normalized, it is normalized in shader, with MVP matrix
             case VertexBufferLayout::Entry::POS_XY:
             case VertexBufferLayout::Entry::POS_XYZ: return false;
+            case VertexBufferLayout::Entry::TEXTURE_UV: return false;
         }
 
         RAL_LOG_ERROR("Unknown layout entry type normalization");

@@ -47,16 +47,23 @@ namespace RAL {
         // Converts the given GL symbolic constant type to the CustomProgramData::Type
         static CustomProgramData::Type getDataTypeFromGLType(unsigned int type);
 
+        // Returns whether the program is set for textures
+        [[nodiscard]] bool isForTextures() const;
 #ifdef RAL_DEBUG
         void printUniformLayout();
         void printAttribLayout();
 #endif
+
     private:
         std::optional<unsigned int> m_programID;
         // [] = {name, layout_index}
         std::vector<std::pair<std::string, uint8_t>> m_programAttribLayout;
         // [] = {name, data_type
         std::unordered_map<std::string, std::pair<CustomProgramData::Type, uint8_t>> m_programUniforms;
+
+        // location of texture units
+        std::optional<unsigned int> m_textureUnit;
+        bool m_isTextureUVset;
     };
 };
 
