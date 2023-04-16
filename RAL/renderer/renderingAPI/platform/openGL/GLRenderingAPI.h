@@ -17,6 +17,8 @@
 #include <renderer/renderingAPI/RenderingAPI.h>
 #include <optional>
 #include <array>
+#include <unordered_map>
+#include <renderer/renderingAPI/platform/openGL/GLProgram.h>
 
 namespace RAL
 {
@@ -38,6 +40,12 @@ namespace RAL
 
         void bind(const VertexBuffer &vertexBuffer) override;
 
+        // Shader/Program functions
+        void setProgram(uint16_t program) override;
+        void compileProgram(uint16_t id, const std::string &vertex, const std::string &fragment) override;
+        void sendProgramData(const ProgramData &data) override;
+        void sendProgramData(const ProgramData &data, const CustomProgramData &custom_data) override;
+
     private:
         void setWindowToDraw() override;
 
@@ -50,6 +58,9 @@ namespace RAL
         unsigned int m_vertexArray, m_indexBuffer, m_vertexBuffer;
         uint32_t m_indicesCount;
         VertexBufferLayout m_vertexBufferLayout;
+
+        std::unordered_map<uint16_t, GLProgram*> m_programs;
+        GLProgram* m_activeProgram;
     };
 }
 #endif //!RAL_PROJECT_GLRENDERINGAPI_H

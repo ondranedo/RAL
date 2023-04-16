@@ -27,10 +27,11 @@ namespace RAL
 
     std::string VertexBufferLayout::EntryTypeToString(VertexBufferLayout::Entry type) {
         switch (type) {
-            case VertexBufferLayout::Entry::COLOUR_RGB: return "Colour RGB";
-            case VertexBufferLayout::Entry::COLOUR_RGBA: return "Colour RGB-A";
-            case VertexBufferLayout::Entry::POS_XY: return "Position XY";
-            case VertexBufferLayout::Entry::POS_XYZ: return "Position XYZ";
+            // TODO: Document, important for shader creation
+            case VertexBufferLayout::Entry::COLOUR_RGB: return "colourRGB";
+            case VertexBufferLayout::Entry::COLOUR_RGBA: return "colourRGBA";
+            case VertexBufferLayout::Entry::POS_XY: return "positionXY";
+            case VertexBufferLayout::Entry::POS_XYZ: return "positionXYZ";
         }
 
         RAL_LOG_ERROR("Unknown layout entry type to string");
@@ -73,5 +74,19 @@ namespace RAL
 
         RAL_LOG_ERROR("Unknown layout entry type data type");
         return Types::DataType::VOID;
+    }
+
+    bool VertexBufferLayout::EntryTypeShouldBeNormalized(VertexBufferLayout::Entry type) {
+        switch (type) {
+            case VertexBufferLayout::Entry::COLOUR_RGB:
+            case VertexBufferLayout::Entry::COLOUR_RGBA: return true;
+
+            // Position should not be normalized, it is normalized in shader, with MVP matrix
+            case VertexBufferLayout::Entry::POS_XY:
+            case VertexBufferLayout::Entry::POS_XYZ: return false;
+        }
+
+        RAL_LOG_ERROR("Unknown layout entry type normalization");
+        return false;
     }
 } // RAL*

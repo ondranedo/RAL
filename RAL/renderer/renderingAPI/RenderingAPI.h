@@ -13,11 +13,16 @@
 #ifndef RAL_PROJECT_RENDERINGAPI_H
 #define RAL_PROJECT_RENDERINGAPI_H
 
+#include <core/memoryManager/Overload.h>
 #include <cstdint>
+#include <vector>
+#include <string>
+#include <array>
 #include <renderer/renderingAPI/buffers/IndexBuffer.h>
 #include <renderer/renderingAPI/buffers/VertexBuffer.h>
 
 #include <platfomLayer/window/Window.h>
+#include <renderer/renderingAPI/ProgramData.h>
 
 namespace RAL
 {
@@ -66,6 +71,22 @@ namespace RAL
         // Bind functions are used to bind the buffers to the rendering API.
         // In other words, it sends the data from the buffers to the GPU.
         virtual void bind(const VertexBuffer& vertexBuffer) = 0;
+
+        // Bounds the shader to the rendering API, there can be only one shader bound at a time.
+        // Shader must be compiled before it can be bound. You have to call compileShader function.
+        // Rendering API looks into the shader database to find the shader. If the shader is not found, it will crash.
+        virtual void setProgram(uint16_t program) = 0;
+
+        // This function is used to compile a shader, id of the shader is unique and is used to bind the shader.
+        virtual void compileProgram(uint16_t id, const std::string& vertex, const std::string& fragment) = 0;
+
+        // Send data to the shader that is currently bound, the data is sent to the uniform variable.
+        // The data is sent to the shader that is currently bound.
+        virtual void sendProgramData(const ProgramData& data) = 0;
+
+        // Send data and custom data to the shader that is currently bound, the data is sent to the uniform variable.
+        // The data is sent to the shader that is currently bound.
+        virtual void sendProgramData(const ProgramData& data, const CustomProgramData& custom_data) = 0;
 
         // SetWindow function is used to set the window that will be drawn to.
         // This function must be called before init is called. When we change the window,

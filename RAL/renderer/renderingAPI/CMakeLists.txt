@@ -15,7 +15,12 @@ set(openGL
         # path to openGL rendering api files
         platform/openGL/GLRenderingAPI.cpp
         platform/openGL/GLRenderingAPI.h
-        platform/openGL/GLTypes.cpp platform/openGL/GLTypes.h platform/openGL/GLTextureManager.cpp platform/openGL/GLTextureManager.h)
+        platform/openGL/GLTypes.cpp 
+        platform/openGL/GLTypes.h
+        platform/openGL/GLTextureManager.cpp 
+        platform/openGL/GLTextureManager.h
+        platform/openGL/GLProgram.cpp 
+        platform/openGL/GLProgram.h)
 
 add_library(ral_renderer_renderingAPI STATIC
         RenderingAPI.cpp
@@ -26,4 +31,8 @@ add_library(ral_renderer_renderingAPI STATIC
         buffers/IndexBuffer.cpp
         buffers/IndexBuffer.h
         buffers/Buffer.cpp
-        buffers/Buffer.h buffers/VertexBufferLayout.cpp buffers/VertexBufferLayout.h)
+        buffers/Buffer.h
+        buffers/VertexBufferLayout.cpp
+        buffers/VertexBufferLayout.h
+        ProgramData.cpp
+        ProgramData.h)
