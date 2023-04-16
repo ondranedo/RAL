@@ -30,6 +30,7 @@ namespace RAL {
 
         void loadTxtScene(const std::string& scenePath);
         void loadTxtObject(const Win32::Win32FileTxt& file);
+        void loadTxtCamera(const Win32::Win32FileTxt& file);
 
         void loadBinScene(const std::string& scenePath);
         void loadBinObjects(FILE* file);
@@ -55,8 +56,8 @@ namespace RAL {
         void addCamera(const Camera3D& camera);
         void deleteCamera(uint16_t index);
         void deleteCamera(std::vector<Camera3D>::iterator iterator);
-        void deleteCamera(std::string name);
-        Camera3D* getCamera(std::string name);
+        void deleteCamera(const std::string& name);
+        Camera3D* getCamera(const std::string& name);
         std::vector<Camera3D>::iterator beginCamera();
         std::vector<Camera3D>::iterator endCamera();
 

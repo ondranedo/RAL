@@ -129,6 +129,9 @@ namespace RAL {
             if(tempLine == "object"){
                 loadTxtObject(file);
             }
+            else if(tempLine == "camera"){
+                loadTxtCamera(file);
+            }
         }
         file.RAL::Win32::Win32File::close();
     }
@@ -189,12 +192,12 @@ namespace RAL {
         std::string line;
         Object3D tempObject;
 
-        //name
+        //1 - name
         line = file.readLine().value();
         for(auto & object : m_objects){
             if(object.getName() == line){
                 RAL_LOG_INFO("Entity %s already in scene; won't be added", object.getName().c_str());
-                for(int i = 0; i < 4; i++){
+                for(int i = 0; i < 10; i++){
                     file.readLine();
                 }
                 return;
@@ -202,7 +205,7 @@ namespace RAL {
         }
         tempObject.setName(line);
 
-        //mesh
+        //2 - mesh
         line = file.readLine().value();
         tempObject.setMesh(nullptr);
 
@@ -220,21 +223,22 @@ namespace RAL {
             m_meshes.push_back(*tempObject.getMesh());
         }
 
-        //position
+        //3, 4, 5 - position
         tempObject.setXPos(std::stoi(file.readLine().value()));
         tempObject.setYPos(std::stoi(file.readLine().value()));
         tempObject.setZPos(std::stoi(file.readLine().value()));
 
-        //rotation
+        //6, 7, 8 - rotation
         tempObject.setXRot(std::stof(file.readLine().value()));
         tempObject.setYRot(std::stof(file.readLine().value()));
         tempObject.setZRot(std::stof(file.readLine().value()));
 
-        //bounding box scale
+        //9, 10, 11 - bounding box scale
         tempObject.setXBoxScale(std::stof(file.readLine().value()));
         tempObject.setYBoxScale(std::stof(file.readLine().value()));
         tempObject.setZBoxScale(std::stof(file.readLine().value()));
 
+        //total: 11 lines -> need to skip 10
         m_objects.push_back(tempObject);
     }
 
@@ -352,7 +356,7 @@ namespace RAL {
         deleteCamera(beginCamera() + index);
     }
 
-    void Scene3D::deleteCamera(std::string name) {
+    void Scene3D::deleteCamera(const std::string& name) {
         for(auto i = beginCamera(); i < endCamera(); i++){
             if(i->getName() == name){
                 deleteCamera(i);
@@ -362,7 +366,7 @@ namespace RAL {
         RAL_LOG_ERROR("Object %s not found", name.c_str());
     }
 
-    Camera3D *Scene3D::getCamera(std::string name) {
+    Camera3D *Scene3D::getCamera(const std::string& name) {
         for(auto i = beginCamera(); i < endCamera(); i++){
             if(i->getName() == name){
                 return i.base();
@@ -378,6 +382,53 @@ namespace RAL {
 
     std::vector<Camera3D>::iterator Scene3D::endCamera() {
         return m_cameras.end();
+    }
+
+    void Scene3D::loadTxtCamera(const Win32::Win32FileTxt &file) {
+
+        std::string line;
+        Camera3D tempCamera;
+
+        //1 - name
+        line = file.readLine().value();
+        for(auto & camera : m_cameras){
+            if(camera.getName() == line){
+                RAL_LOG_INFO("Camera %s already in scene; won't be added", camera.getName().c_str());
+                for(int i = 0; i < 8; i++){
+                    file.readLine();
+                }
+                return;
+            }
+        }
+        tempCamera.setName(line);
+
+        //2 - projection
+        line = file.readLine().value();
+        if(line == "Orthographic"){
+            tempCamera.setProjection(Camera3D::Projection::Orthographic);
+        }
+        else if(line == "Oblique"){
+            tempCamera.setProjection(Camera3D::Projection::Oblique);
+        }
+        else{
+            tempCamera.setProjection(Camera3D::Projection::Perspective);
+        }
+
+        //3 - width
+        tempCamera.setWidth(std::stoi(file.readLine().value()));
+
+        //4, 5, 6 - position
+        tempCamera.setXPos(std::stoi(file.readLine().value()));
+        tempCamera.setYPos(std::stoi(file.readLine().value()));
+        tempCamera.setZPos(std::stoi(file.readLine().value()));
+
+        //7, 8, 9 - rotation
+        tempCamera.setXRot(std::stof(file.readLine().value()));
+        tempCamera.setYRot(std::stof(file.readLine().value()));
+        tempCamera.setZRot(std::stof(file.readLine().value()));
+
+        //total: 9 lines -> need to skip 8
+        m_cameras.push_back(tempCamera);
     }
 
 } // RAL
