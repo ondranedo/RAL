@@ -96,6 +96,7 @@ namespace RAL {
 
         loadBinMeshes(file);
         loadBinObjects(file);
+        loadBinCameras(file);
 
         fclose(file);
     }
@@ -107,6 +108,7 @@ namespace RAL {
 
         saveBinMeshes(file);
         saveBinObjects(file);
+        saveBinCameras(file);
 
         fclose(file);
     }
@@ -150,10 +152,6 @@ namespace RAL {
 
             //c string name
             fwrite(object.getName().c_str(), sizeof(char), tempSize, file);
-
-            //length of c string
-            tempSize = object.getMesh()->getPath().size() + 1;
-            fwrite(&tempSize, sizeof(size_t), 1, file);
 
             //mesh index
             tempSize = object.getMesh() - beginMesh().base();
@@ -227,7 +225,7 @@ namespace RAL {
             tempObject.getMesh()->Mesh::openRalms(line);
             m_meshes.push_back(*tempObject.getMesh());
         }
-
+        //todo: material support
         //3, 4, 5 - position
         tempObject.setXPos(std::stoi(file.readLine().value()));
         tempObject.setYPos(std::stoi(file.readLine().value()));
@@ -244,7 +242,7 @@ namespace RAL {
         tempObject.setZBoxScale(std::stof(file.readLine().value()));
 
         //total: 11 lines -> need to skip 10
-        m_objects.push_back(tempObject);
+        addObject(tempObject);
     }
 
     std::vector<Object3D>::iterator Scene3D::beginObject() {
@@ -433,7 +431,7 @@ namespace RAL {
         tempCamera.setZRot(std::stof(file.readLine().value()));
 
         //total: 9 lines -> need to skip 8
-        m_cameras.push_back(tempCamera);
+        addCamera(tempCamera);
     }
 
     void Scene3D::loadBinMeshes(FILE *file) {
@@ -480,6 +478,103 @@ namespace RAL {
 
             //c string path
             fwrite(mesh.getPath().c_str(), sizeof(char), tempSize, file);
+        }
+    }
+
+    void Scene3D::saveBinCameras(FILE *file) {
+
+        size_t tempSize;
+        int32_t tempInt;
+        float tempFloat;
+        Camera3D::Projection tempProjection;
+
+        //number of cameras
+        tempSize = m_cameras.size();
+        fwrite(&tempSize, sizeof(size_t), 1, file);
+
+        for(auto camera : m_cameras){
+
+            //length of c string
+            tempSize = camera.getName().size() + 1;
+            fwrite(&tempSize, sizeof(size_t), 1, file);
+
+            //c string name
+            fwrite(camera.getName().c_str(), sizeof(char), tempSize, file);
+
+            //position of camera
+            tempInt = camera.getXPos();
+            fwrite(&tempInt, sizeof(int32_t), 1, file);
+            tempInt = camera.getYPos();
+            fwrite(&tempInt, sizeof(int32_t), 1, file);
+            tempInt = camera.getZPos();
+            fwrite(&tempInt, sizeof(int32_t), 1, file);
+
+            //rotation of camera
+            tempFloat = camera.getXRot();
+            fwrite(&tempFloat, sizeof(float), 1, file);
+            tempFloat = camera.getYRot();
+            fwrite(&tempFloat, sizeof(float), 1, file);
+            tempFloat = camera.getZRot();
+            fwrite(&tempFloat, sizeof(float), 1, file);
+
+            //width
+            tempInt = camera.getWidth();
+            fwrite(&tempInt, sizeof(int16_t), 1, file);
+
+            //projection
+            tempProjection = camera.getProjection();
+            fwrite(&tempProjection, sizeof(Camera3D::Projection), 1, file);
+        }
+    }
+
+    void Scene3D::loadBinCameras(FILE *file) {
+
+        size_t nOfCameras;
+        size_t tempSize;
+        void* buffer;
+        Camera3D tempCamera;
+        int32_t tempInt;
+        float tempFloat;
+        Camera3D::Projection tempProjection;
+
+        //number of cameras
+        fread(&nOfCameras, sizeof(size_t), 1, file);
+
+        for(size_t i = 0; i < nOfCameras; i++){
+            //length of c string
+            fread(&tempSize, sizeof(size_t), 1, file);
+
+            //c string name
+            buffer = new char[tempSize];
+            fread(buffer, sizeof(char), tempSize, file);
+            tempCamera.setName(reinterpret_cast<char*>(buffer));
+            delete[] reinterpret_cast<char*>(buffer);
+
+            //position of camera
+            fread(&tempInt, sizeof(int32_t), 1, file);
+            tempCamera.setXPos(tempInt);
+            fread(&tempInt, sizeof(int32_t), 1, file);
+            tempCamera.setYPos(tempInt);
+            fread(&tempInt, sizeof(int32_t), 1, file);
+            tempCamera.setZPos(tempInt);
+
+            //rotation of camera
+            fread(&tempFloat, sizeof(float), 1, file);
+            tempCamera.setXRot(tempFloat);
+            fread(&tempFloat, sizeof(float), 1, file);
+            tempCamera.setYRot(tempFloat);
+            fread(&tempFloat, sizeof(float), 1, file);
+            tempCamera.setZRot(tempFloat);
+
+            //width
+            fread(&tempInt, sizeof(int16_t), 1, file);
+            tempCamera.setWidth(tempInt);
+
+            //projection
+            fread(&tempProjection, sizeof(Camera3D::Projection), 1, file);
+            tempCamera.setProjection(tempProjection);
+
+            addCamera(tempCamera);
         }
     }
 
