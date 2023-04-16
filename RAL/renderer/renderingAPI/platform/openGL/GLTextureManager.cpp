@@ -17,11 +17,26 @@
 
 namespace RAL
 {
-    void GLTextureManager::init()
-    {
-        glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &m_MaxTextureUnitCount);
+
+    void GLTextureManager::store(const TextureParam &texture_to_store) {
+
     }
 
+    void GLTextureManager::store(const std::vector<TextureParam> &texture_to_store) {
+
+    }
+
+    void GLTextureManager::init()
+    {
+        glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, reinterpret_cast<GLint*>(&m_maxTextureUnitCount));
+    }
+
+    GLTextureManager::GLTextureManager() :
+    m_maxTextureUnitCount(0),
+    m_activatedTextures({})
+    {
+    }
+    /*
     void GLTextureManager::generate(uint16_t id)
     {
         glGenTextures(1, &m_id);
@@ -149,6 +164,5 @@ namespace RAL
         tex(type == DimensionsType::_1D ? GL_TEXTURE_1D ? type == DimensionsType::_2D : GL_TEXTURE_2D
                                         : GL_TEXTURE_3D);
     }
-
-
+     */
 } // RAL

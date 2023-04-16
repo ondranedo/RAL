@@ -55,7 +55,8 @@ namespace RAL {
             UNKNOWN,
             FLOAT, VEC2, VEC3, VEC4,
             MAT4, INT, BOOL,
-            UINT, UVEC2, UVEC3, UVEC4
+            UINT, UVEC2, UVEC3, UVEC4,
+            SAMPLER2D
         };
     private:
         struct Data {

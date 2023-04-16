@@ -15,10 +15,12 @@
 
 #include <vendor/glad/gl_4.0_core_debug/include/glad/gl.h>
 #include <core/utility/Logger.h>
+#include <renderer/renderingAPI/buffers/VertexBufferLayout.h>
+#include <renderer/renderingAPI/platform/openGL/GLTypes.h>
 
 namespace RAL{
 
-    GLProgram::GLProgram() : m_programID{}, m_programAttribLayout() {}
+    GLProgram::GLProgram() : m_programID{}, m_programAttribLayout{},m_textureUnit{},m_isTextureUVset(false) {}
 
     GLProgram::~GLProgram() {
         if(m_programID.has_value())
@@ -82,6 +84,9 @@ namespace RAL{
                               &name_len, &num, &type, name);
             name[name_len] = 0;
             int location = glGetAttribLocation(program, name);
+            // TODO: Important for shader documentation, add support for other texture types
+            if(std::string(name) == VertexBufferLayout::EntryTypeToString(VertexBufferLayout::Entry::TEXTURE_UV))
+                m_isTextureUVset = true;
             m_programAttribLayout.emplace_back(name, location);
         }
 
@@ -98,7 +103,11 @@ namespace RAL{
                               &name_len, &num, &type, name);
             name[name_len] = 0;
             int location = glGetUniformLocation(program, name);
-            m_programUniforms[name] = {getDataTypeFromGLType(type), location};
+            // TODO: add support for other texture types
+            if(std::string(name) == "texture")
+                m_textureUnit = location;
+            else
+                m_programUniforms[name] = {getDataTypeFromGLType(type), location};
         }
 
         m_programID = program;
@@ -106,6 +115,7 @@ namespace RAL{
 #ifdef RAL_DEBUG
         printAttribLayout();
         printUniformLayout();
+        RAL_LOG_WARNING("GL Program is%s valid for textures", m_isTextureUVset ? "" : " not");
 #endif
         return true;
     }
@@ -180,6 +190,7 @@ namespace RAL{
             case GL_UNSIGNED_INT_VEC4: return CustomProgramData::Type::UVEC4;
             case GL_BOOL: return CustomProgramData::Type::BOOL;
             case GL_FLOAT_MAT4: return CustomProgramData::Type::MAT4;
+            case GL_SAMPLER_2D: return CustomProgramData::Type::SAMPLER2D;
         }
         RAL_LOG_ERROR("Unknown GL type %d, when converting GL Type to CustomProgramData::Type", type);
         return CustomProgramData::Type::UNKNOWN;
@@ -196,5 +207,10 @@ namespace RAL{
         for(auto& attrib : m_programAttribLayout)
             RAL_LOG_DEBUG("\t%s\t-> location:%d", attrib.first.c_str(), attrib.second);
     }
+
+    bool GLProgram::isForTextures() const {
+        return m_textureUnit.has_value() && m_isTextureUVset ? true : false;
+    }
+
 #endif
 }

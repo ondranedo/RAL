@@ -23,6 +23,7 @@
 
 #include <platfomLayer/window/Window.h>
 #include <renderer/renderingAPI/ProgramData.h>
+#include <renderer/renderingAPI/TextureParam.h>
 
 namespace RAL
 {
@@ -71,6 +72,9 @@ namespace RAL
         // Bind functions are used to bind the buffers to the rendering API.
         // In other words, it sends the data from the buffers to the GPU.
         virtual void bind(const VertexBuffer& vertexBuffer) = 0;
+
+        // Sends all textures to the rendering API, textures are stored for the current draw call.
+        virtual void sendTextures(const std::vector<TextureParam>& texture_ids) = 0;
 
         // Bounds the shader to the rendering API, there can be only one shader bound at a time.
         // Shader must be compiled before it can be bound. You have to call compileShader function.
