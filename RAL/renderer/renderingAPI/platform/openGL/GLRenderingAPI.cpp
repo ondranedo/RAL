@@ -24,8 +24,8 @@ namespace RAL
 
     void GLRenderingAPI::clear()
     {
-        auto nor = [](uint8_t num)->float{return static_cast<float>(num)/255.0f;};
-        glClearColor(nor(m_clearColour[0]),nor(m_clearColour[1]),nor(m_clearColour[2]),nor(m_clearColour[3]));
+        auto nor = [](uint8_t num) -> float { return static_cast<float>(num) / 255.0f; };
+        glClearColor(nor(m_clearColour[0]), nor(m_clearColour[1]), nor(m_clearColour[2]), nor(m_clearColour[3]));
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
@@ -39,6 +39,7 @@ namespace RAL
 
     void GLRenderingAPI::release()
     {
+<<<<<<< refs/remotes/origin/renderer
         glDeleteVertexArrays(1,&m_vertexArray);
         glDeleteBuffers(1,&m_vertexBuffer);
         glDeleteBuffers(1,&m_indexBuffer);
@@ -46,6 +47,11 @@ namespace RAL
         for(auto& program : m_programs)
             delete program.second;
         m_programs.clear();
+=======
+        glDeleteVertexArrays(1, &m_vertexArray);
+        glDeleteBuffers(1, &m_vertexBuffer);
+        glDeleteBuffers(1, &m_indexBuffer);
+>>>>>>> TextureManager 😁😎🦄🐲
     }
 
     void GLRenderingAPI::draw()
@@ -57,15 +63,23 @@ namespace RAL
         glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_indicesCount), GL_UNSIGNED_INT, nullptr);
     }
 
+<<<<<<< refs/remotes/origin/renderer
     void GLRenderingAPI::setBindables() {
         RAL_ASSERTRV(m_vertexBuffer, "Cannot draw to window %s VB is not set", m_window->getSpec().title);
         RAL_ASSERTRV(m_indexBuffer, "Cannot draw to window %s IB is not set", m_window->getSpec().title);
+=======
+    void GLRenderingAPI::setBindables()
+    {
+        RAL_ASSERTRV(m_vertexBuffer, "Cannot draw to window %s VB is not set", m_window->getSpec().m_title);
+        RAL_ASSERTRV(m_indexBuffer, "Cannot draw to window %s IB is not set", m_window->getSpec().m_title);
+>>>>>>> TextureManager 😁😎🦄🐲
 
         glBindVertexArray(m_vertexArray);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
         glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
     }
 
+<<<<<<< refs/remotes/origin/renderer
     void GLRenderingAPI::setAttributes() {
         GLsizei stride = m_vertexBufferLayout.getStride(), offset = 0;
         int index;
@@ -80,6 +94,16 @@ namespace RAL
             }
 
             // Setting attribute
+=======
+    void GLRenderingAPI::setAttributes()
+    {
+        GLsizei stride = m_vertexBufferLayout.getStride(), offset = 0, index = 0;
+        stride += 8 - stride % 8; // padding to 8 bytes
+        // TODO: Get index layout location directly from shader
+        //       https://docs.gl/gl4/glGetAttribLocation
+        for (const auto &element: m_vertexBufferLayout.getLayout())
+        {
+>>>>>>> TextureManager 😁😎🦄🐲
             glVertexAttribPointer(index,
                                   VertexBufferLayout::EntryTypeComponents(element),
                                   GLTypes::getGLType(VertexBufferLayout::EntryTypeToDataType(element)),
@@ -110,21 +134,23 @@ namespace RAL
         m_vertexBufferLayout = vertexBuffer.getLayout();
     }
 
-    void GLRenderingAPI::setWindowToDraw() {
+    void GLRenderingAPI::setWindowToDraw()
+    {
         RAL_ASSERTRV(m_window, "Window is not set");
         m_window->makeContextCurrent();
-        if(!gladLoadGL(reinterpret_cast<GLADloadfunc>(m_window->getProcAddress()))){
+        if (!gladLoadGL(reinterpret_cast<GLADloadfunc>(m_window->getProcAddress())))
+        {
             RAL_LOG_FATAL("Failed to load GLAD");
             return;
         }
     }
 
-    GLRenderingAPI::GLRenderingAPI():
-    m_vertexBufferLayout(),
-    m_indexBuffer(0),
-    m_vertexBuffer(0),
-    m_vertexArray(0),
-    m_indicesCount(0)
+    GLRenderingAPI::GLRenderingAPI() :
+            m_vertexBufferLayout(),
+            m_indexBuffer(0),
+            m_vertexBuffer(0),
+            m_vertexArray(0),
+            m_indicesCount(0)
     {
     }
 
