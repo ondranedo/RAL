@@ -13,7 +13,7 @@
 #ifndef RAL_PROJECT_GLTEXTUREMANAGER_H
 #define RAL_PROJECT_GLTEXTUREMANAGER_H
 
-
+#include <core/memoryManager/Overload.h>
 
 #include <cstdint>
 #include <unordered_map>
