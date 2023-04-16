@@ -151,10 +151,14 @@ namespace RAL
     }
 
     void GLRenderingAPI::sendProgramData(const ProgramData &data) {
-
+        m_activeProgram->sendData(data.colour, data.colourSize, CustomProgramData::Type::UVEC4, data.colourName);
+        m_activeProgram->sendData(data.MVP, data.MVPSize, CustomProgramData::Type::MAT4, "u_MVP");
+        // TODO: add more data implementations
     }
 
     void GLRenderingAPI::sendProgramData(const ProgramData &data, const CustomProgramData &custom_data) {
-
+        //sendProgramData(data);
+        for(const auto& one_data_entry : custom_data.getData())
+            m_activeProgram->sendData(one_data_entry.data, one_data_entry.size, one_data_entry.type, one_data_entry.uniform_name);
     }
 }
