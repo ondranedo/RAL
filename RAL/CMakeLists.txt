@@ -65,3 +65,6 @@ set(GLFW_BUILD_EXAMPLES OFF)
 set(GLFW_INSTALL OFF)
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glfw)
 target_link_libraries(${RAL_ENGINE_LIB} PRIVATE glfw)
+
+#STB
+include_directories(vendor/stb)
