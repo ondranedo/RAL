@@ -33,7 +33,7 @@ namespace RAL {
         LINEAR
     };
 
-    enum class TextrueChannels : TextureStructBlock {
+    enum class TextureChannels : TextureStructBlock {
         ONE,
         TWO,
         THREE,
@@ -43,7 +43,7 @@ namespace RAL {
     struct TextureParam {
         TextureStructBlock width : 15;
         TextureStructBlock height : 15;
-        TextrueChannels    channels : 2; // 00 - 1; 01 - 2; 10 - 3; 11 - 4
+        TextureChannels    channels : 2; // 00 - 1; 01 - 2; 10 - 3; 11 - 4
         TextureStructBlock id : 16;
         TextureWrapping    wrappingParam : 8;
         TextureFiltering   filteringParam : 8;

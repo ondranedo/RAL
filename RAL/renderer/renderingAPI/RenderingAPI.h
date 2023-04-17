@@ -74,7 +74,7 @@ namespace RAL
         virtual void bind(const VertexBuffer& vertexBuffer) = 0;
 
         // Sends all textures to the rendering API, textures are stored for the current draw call.
-        virtual void sendTextures(const std::vector<TextureParam>& texture_ids) = 0;
+        virtual void sendTexture(const TextureParam& texture_id) = 0;
 
         // Bounds the shader to the rendering API, there can be only one shader bound at a time.
         // Shader must be compiled before it can be bound. You have to call compileShader function.

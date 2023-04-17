@@ -46,6 +46,8 @@ namespace RAL
         void sendProgramData(const ProgramData &data) override;
         void sendProgramData(const ProgramData &data, const CustomProgramData &custom_data) override;
 
+        void sendTexture(const TextureParam& texture_id) override;
+
     private:
         void setWindowToDraw() override;
 
@@ -61,6 +63,7 @@ namespace RAL
 
         std::unordered_map<uint16_t, GLProgram*> m_programs;
         GLProgram* m_activeProgram;
+        unsigned int m_activeTexture;
     };
 }
 #endif //!RAL_PROJECT_GLRENDERINGAPI_H
