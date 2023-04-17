@@ -47,7 +47,7 @@ namespace RAL {
         void saveBinCameras(FILE* file);
 
 //TODO: some O(1) or less than O(n) solution for getting at least objects
-        void addObject(const Object3D& object);
+        void addObject(Object3D object);
         void deleteObject(std::vector<Object3D>::iterator iterator);
         void deleteObject(int32_t index);
         void deleteObject(const std::string& name);
@@ -56,13 +56,13 @@ namespace RAL {
         std::vector<Object3D>::iterator beginObject();
         std::vector<Object3D>::iterator endObject();
 
-        void addMesh(const Mesh3D& mesh);
+        void addMesh(Mesh3D mesh);
         Mesh3D* getMesh(const std::string& path);
         uint32_t getMeshCount();
         std::vector<Mesh3D>::iterator beginMesh();
         std::vector<Mesh3D>::iterator endMesh();
 
-        void addCamera(const Camera3D& camera);
+        void addCamera(Camera3D camera);
         void deleteCamera(uint16_t index);
         void deleteCamera(std::vector<Camera3D>::iterator iterator);
         void deleteCamera(const std::string& name);
@@ -71,12 +71,12 @@ namespace RAL {
         std::vector<Camera3D>::iterator beginCamera();
         std::vector<Camera3D>::iterator endCamera();
 
-        void addMaterial(const Material& material);
+        void addMaterial(Material material);
         uint32_t getMaterialCount();
         std::vector<Material>::iterator beginMaterial();
         std::vector<Material>::iterator endMaterial();
 
-        void addTexture(const Texture& texture);
+        void addTexture(Texture texture);
         uint32_t getTextureCount();
         std::vector<Texture>::iterator beginTexture();
         std::vector<Texture>::iterator endTexture();

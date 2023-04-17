@@ -318,7 +318,13 @@ namespace RAL {
         return m_materials.size();
     }
 
-    void Scene3D::addObject(const Object3D& object) {
+    void Scene3D::addObject(Object3D object) {
+        for(auto & m_object : m_objects){
+            if(object.getName() == m_object.getName()){
+                RAL_LOG_ERROR("Object %s already in scene, won't be added", object.getName().c_str());
+                return;
+            }
+        }
         m_objects.push_back(object);
     }
 
@@ -366,7 +372,13 @@ namespace RAL {
         return nullptr;
     }
 
-    void Scene3D::addCamera(const Camera3D& camera) {
+    void Scene3D::addCamera(Camera3D camera) {
+        for(auto & m_camera : m_cameras){
+            if(m_camera.getName() == camera.getName()){
+                RAL_LOG_ERROR("Camera %s already in scene, won't be added", camera.getName().c_str());
+                return;
+            }
+        }
         m_cameras.push_back(camera);
     }
 
@@ -483,7 +495,13 @@ namespace RAL {
         }
     }
 
-    void Scene3D::addMesh(const Mesh3D& mesh) {
+    void Scene3D::addMesh(Mesh3D mesh) {
+        for(auto & m_mesh : m_meshes){
+            if(m_mesh.getPath() == mesh.getPath()){
+                RAL_LOG_ERROR("Mesh with the path %s already in scene, won't be added", mesh.getPath().c_str());
+                return;
+            }
+        }
         m_meshes.push_back(mesh);
     }
 
@@ -650,11 +668,23 @@ namespace RAL {
         }
     }
 
-    void Scene3D::addTexture(const Texture& texture) {
+    void Scene3D::addTexture(Texture texture) {
+        for(auto & m_texture : m_textures){
+            if(texture.getPath() == m_texture.getPath()){
+                RAL_LOG_ERROR("Texture with the path %s already in scene, won't be added", m_texture.getPath().c_str());
+                return;
+            }
+        }
         m_textures.push_back(texture);
     }
 
-    void Scene3D::addMaterial(const Material &material) {
+    void Scene3D::addMaterial(Material material) {
+        for(auto & m_material : m_materials){
+            if(material.getPath() == m_material.getPath()){
+                RAL_LOG_ERROR("Texture with the path %s already in scene, won't be added", material.getPath().c_str());
+                return;
+            }
+        }
         m_materials.push_back(material);
     }
 
