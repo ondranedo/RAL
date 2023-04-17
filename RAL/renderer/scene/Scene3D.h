@@ -67,6 +67,7 @@ namespace RAL {
         void deleteCamera(std::vector<Camera3D>::iterator iterator);
         void deleteCamera(const std::string& name);
         Camera3D* getCamera(const std::string& name);
+        uint16_t getCameraCount();
         std::vector<Camera3D>::iterator beginCamera();
         std::vector<Camera3D>::iterator endCamera();
 

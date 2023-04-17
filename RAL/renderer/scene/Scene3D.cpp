@@ -489,7 +489,7 @@ namespace RAL {
         Camera3D::Projection tempProjection;
 
         //number of cameras
-        tempSize = m_cameras.size();
+        tempSize = getCameraCount();
         fwrite(&tempSize, sizeof(size_t), 1, file);
 
         for(auto camera : m_cameras){
@@ -576,6 +576,10 @@ namespace RAL {
 
             addCamera(tempCamera);
         }
+    }
+
+    uint16_t Scene3D::getCameraCount() {
+        return m_cameras.size();
     }
 
 } // RAL
