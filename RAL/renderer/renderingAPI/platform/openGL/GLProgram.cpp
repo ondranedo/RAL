@@ -166,6 +166,7 @@ namespace RAL{
             case CustomProgramData::Type::VEC3:  glUniform3fv(uniform.second, 1, static_cast<float*>(data)); break;
             case CustomProgramData::Type::VEC4:  glUniform4fv(uniform.second, 1, static_cast<float*>(data)); break;
             case CustomProgramData::Type::BOOL:
+            case CustomProgramData::Type::SAMPLER2D:
             case CustomProgramData::Type::INT:   glUniform1i(uniform.second, *static_cast<int*>(data)); break;
             case CustomProgramData::Type::MAT4:  glUniformMatrix4fv(uniform.second, 1, GL_FALSE, static_cast<float*>(data)); break;
             case CustomProgramData::Type::UINT:  glUniform1ui(uniform.second, *static_cast<unsigned int*>(data)); break;

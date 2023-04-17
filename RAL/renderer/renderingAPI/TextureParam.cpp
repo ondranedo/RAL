@@ -15,7 +15,7 @@
 
 namespace RAL {
     TextureParam::TextureParam() :
-    width(0),height(0),channels(TextrueChannels::THREE), id(0),
-    wrappingParam(TextureWrapping::REPEAT), filteringParam(TextureFiltering::NEAREST), data(nullptr)
+            width(0), height(0), channels(TextureChannels::THREE), id(0),
+            wrappingParam(TextureWrapping::REPEAT), filteringParam(TextureFiltering::NEAREST), data(nullptr)
     {}
 } // RAL

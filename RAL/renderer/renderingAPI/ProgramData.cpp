@@ -43,7 +43,7 @@ namespace RAL {
             case Type::UVEC2: return sizeof(uint32_t) * 2;
             case Type::UVEC3: return sizeof(uint32_t) * 3;
             case Type::UVEC4: return sizeof(uint32_t) * 4;
-            case Type::SAMPLER2D: return 0;
+            case Type::SAMPLER2D: return sizeof(unsigned int);
         }
         RAL_LOG_ERROR("Unknown CustomProgramData type size");
         return 0;

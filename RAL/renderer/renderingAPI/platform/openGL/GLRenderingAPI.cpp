@@ -54,6 +54,11 @@ namespace RAL
         setBindables();
         setAttributes();
 
+        glBindTexture(GL_TEXTURE_2D, m_activeTexture);
+        glActiveTexture(GL_TEXTURE0);
+        int unit = 0;
+        m_activeProgram->sendData(&unit, sizeof(int), CustomProgramData::Type::SAMPLER2D, "tex2D");
+
         glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_indicesCount), GL_UNSIGNED_INT, nullptr);
     }
 
@@ -163,4 +168,22 @@ namespace RAL
         for(const auto& one_data_entry : custom_data.getData())
             m_activeProgram->sendData(one_data_entry.data, one_data_entry.size, one_data_entry.type, one_data_entry.uniform_name);
     }
+
+    void GLRenderingAPI::sendTexture(const TextureParam &param) {
+        glGenTextures(1, &m_activeTexture);
+        // TODO: more texture per draw call
+        glBindTexture(GL_TEXTURE_2D, m_activeTexture);
+        int wrap = param.wrappingParam == TextureWrapping::REPEAT ? GL_REPEAT :
+                      param.wrappingParam == TextureWrapping::MIRRORED_REPEAT ? GL_MIRRORED_REPEAT : GL_CLAMP_TO_EDGE;
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap);
+
+        int filter = param.filteringParam == TextureFiltering::LINEAR ? GL_LINEAR : GL_NEAREST;
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+
+        int channels = param.channels == TextureChannels::ONE ? GL_RED : param.channels == TextureChannels::TWO ? GL_RG : param.channels == TextureChannels::THREE ? GL_RGB : GL_RGBA;
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, param.width, param.height, 0, GL_RGB, GL_UNSIGNED_BYTE, param.data);
+    }
+
 }
