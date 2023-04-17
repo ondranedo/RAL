@@ -39,6 +39,7 @@ namespace RAL{
 
     void Texture::stbiLoadTexture(const std::string& path) {
         m_image = stbi_load(path.c_str(), &m_width, &m_height, &m_colorChannels, 0);
+        m_path = path;
     }
 
     void Texture::stbiLoadFlippedTexture(const std::string &path) {
@@ -49,6 +50,10 @@ namespace RAL{
 
     uint8_t *Texture::getImage() {
         return m_image;
+    }
+
+    std::string Texture::getPath() {
+        return m_path;
     }
 
     Texture::Texture() = default;

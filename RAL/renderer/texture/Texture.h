@@ -29,6 +29,7 @@ namespace RAL{
         [[nodiscard]] uint8_t getNOfChannels() const;
         [[nodiscard]] size_t getSize() const;
         uint8_t* getImage();
+        std::string getPath();
 
         void stbiLoadTexture(const std::string& path);
         void stbiLoadFlippedTexture(const std::string& path);
@@ -38,6 +39,7 @@ namespace RAL{
         int32_t m_height{};
         int32_t m_width{};
         int32_t m_colorChannels{};
+        std::string m_path;
     };
 }
 

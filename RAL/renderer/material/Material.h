@@ -24,9 +24,9 @@ namespace RAL{
         void setTexture(Texture* texture);
 
         Texture* getTexture();
+
     private:
         Texture* m_texture{};
-
     };
 }
 

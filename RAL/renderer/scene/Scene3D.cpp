@@ -95,6 +95,7 @@ namespace RAL {
         FILE* file = fopen(scenePath.c_str(), "rb");
 
         loadBinMeshes(file);
+        loadBinTextures(file);
         loadBinObjects(file);
         loadBinCameras(file);
 
@@ -107,6 +108,7 @@ namespace RAL {
         FILE* file = fopen(scenePath.c_str(), "wb");
 
         saveBinMeshes(file);
+        loadBinTextures(file);
         saveBinObjects(file);
         saveBinCameras(file);
 
@@ -580,6 +582,53 @@ namespace RAL {
 
     uint16_t Scene3D::getCameraCount() {
         return m_cameras.size();
+    }
+
+    void Scene3D::saveBinTextures(FILE *file) {
+
+        size_t tempSize;
+
+        //number of textures
+        tempSize = getTextureCount();
+        fwrite(&tempSize, sizeof(size_t), 1, file);
+
+        for(auto texture : m_textures){
+
+            //length of c string
+            tempSize = texture.getPath().size() + 1;
+            fwrite(&tempSize, sizeof(size_t), 1, file);
+
+            //c string path
+            fwrite(texture.getPath().c_str(), sizeof(char), tempSize, file);
+        }
+    }
+
+    void Scene3D::loadBinTextures(FILE *file) {
+
+        size_t nOfTextures;
+        size_t tempSize;
+        void* buffer;
+        Texture tempTexture;
+
+        //number of cameras
+        fread(&nOfTextures, sizeof(size_t), 1, file);
+
+        for(size_t i = 0; i < nOfTextures; i++){
+            //length of c string
+            fread(&tempSize, sizeof(size_t), 1, file);
+
+            //c string name
+            buffer = new char[tempSize];
+            fread(buffer, sizeof(char), tempSize, file);
+            tempTexture.stbiLoadTexture(reinterpret_cast<char*>(buffer));
+            delete[] reinterpret_cast<char*>(buffer);
+
+            addTexture(tempTexture);
+        }
+    }
+
+    void Scene3D::addTexture(const Texture& texture) {
+        m_textures.push_back(texture);
     }
 
 } // RAL
