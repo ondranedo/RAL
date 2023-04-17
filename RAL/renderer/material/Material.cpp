@@ -23,6 +23,38 @@ namespace RAL{
         return m_texture;
     }
 
+    void Material::setPath(std::string path) {
+        m_path = path;
+    }
+
+    void Material::openRalmt(std::string path) {
+        setPath(path);
+        openRalmt();
+    }
+
+    void Material::openRalmt() {
+
+        //todo: fileIO
+        FILE* file = fopen(m_path.c_str(), "rb");
+        size_t tempSize;
+        void* buffer;
+
+        //ralmt structure:
+        //length of c string
+        fread(&tempSize, sizeof(size_t), 1, file);
+
+        //c string texture path
+        buffer = new char[tempSize];
+        fread(buffer, sizeof(char), tempSize, file);
+
+
+        fclose(file);
+    }
+
+    std::string Material::getPath() {
+        return m_path;
+    }
+
     Material::~Material() = default;
 
     Material::Material() = default;

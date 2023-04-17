@@ -71,6 +71,7 @@ namespace RAL {
         std::vector<Camera3D>::iterator beginCamera();
         std::vector<Camera3D>::iterator endCamera();
 
+        void addMaterial(const Material& material);
         uint32_t getMaterialCount();
         std::vector<Material>::iterator beginMaterial();
         std::vector<Material>::iterator endMaterial();

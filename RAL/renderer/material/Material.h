@@ -21,12 +21,18 @@ namespace RAL{
         Material();
         ~Material();
 
+        void openRalmt(std::string path);
+        void openRalmt();
+
         void setTexture(Texture* texture);
+        void setPath(std::string path);
 
         Texture* getTexture();
+        std::string getPath();
 
     private:
         Texture* m_texture{};
+        std::string m_path;
     };
 }
 

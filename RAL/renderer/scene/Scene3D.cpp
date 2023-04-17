@@ -93,7 +93,10 @@ namespace RAL {
         //TODO: switch to File
 
         FILE* file = fopen(scenePath.c_str(), "rb");
-
+//todo: nome's thought dump:
+//      load materials before textures
+//      loadTextures will not exist
+//      will be replaced by optimise()
         loadBinMeshes(file);
         loadBinTextures(file);
         loadBinObjects(file);
@@ -196,13 +199,15 @@ namespace RAL {
 
         std::string line;
         Object3D tempObject;
+        Mesh3D tempMesh;
+        Material tempMaterial;
 
         //1 - name
         line = file.readLine().value();
         for(auto & object : m_objects){
             if(object.getName() == line){
                 RAL_LOG_INFO("Entity %s already in scene; won't be added", object.getName().c_str());
-                for(int i = 0; i < 10; i++){
+                for(int i = 0; i < 11; i++){
                     file.readLine();
                 }
                 return;
@@ -223,27 +228,45 @@ namespace RAL {
         }
 
         if(!tempObject.getMesh()){
-            tempObject.setMesh(new Mesh3D);
+            addMesh(tempMesh);
+            tempObject.setMesh(endMesh().base());
             tempObject.getMesh()->Mesh::openRalms(line);
-            m_meshes.push_back(*tempObject.getMesh());
         }
-        //todo: material support
-        //3, 4, 5 - position
+
+        //3 - material
+        line = file.readLine().value();
+        tempObject.setMaterial(nullptr);
+
+        // optimization: if material was used, point to the already loaded one
+        for(auto & material : m_materials){
+            if(material.getPath() == line){
+                tempObject.setMaterial(&material);
+                break;
+            }
+        }
+
+        if(!tempObject.getMaterial()){
+            addMaterial(tempMaterial);
+            tempObject.setMaterial(endMaterial().base());
+            tempObject.getMaterial()->openRalmt(line);
+        }
+
+        //4, 5, 6 - position
         tempObject.setXPos(std::stoi(file.readLine().value()));
         tempObject.setYPos(std::stoi(file.readLine().value()));
         tempObject.setZPos(std::stoi(file.readLine().value()));
 
-        //6, 7, 8 - rotation
+        //7, 8, 9 - rotation
         tempObject.setXRot(std::stof(file.readLine().value()));
         tempObject.setYRot(std::stof(file.readLine().value()));
         tempObject.setZRot(std::stof(file.readLine().value()));
 
-        //9, 10, 11 - bounding box scale
+        //10, 11, 12 - bounding box scale
         tempObject.setXBoxScale(std::stof(file.readLine().value()));
         tempObject.setYBoxScale(std::stof(file.readLine().value()));
         tempObject.setZBoxScale(std::stof(file.readLine().value()));
 
-        //total: 11 lines -> need to skip 10
+        //total: 12 lines -> need to skip 11
         addObject(tempObject);
     }
 
@@ -472,7 +495,7 @@ namespace RAL {
         tempSize = getMeshCount();
         fwrite(&tempSize, sizeof(size_t), 1, file);
 
-        for(auto mesh : m_meshes){
+        for(auto & mesh : m_meshes){
 
             //length of c string
             tempSize = mesh.getPath().size();
@@ -494,7 +517,7 @@ namespace RAL {
         tempSize = getCameraCount();
         fwrite(&tempSize, sizeof(size_t), 1, file);
 
-        for(auto camera : m_cameras){
+        for(auto & camera : m_cameras){
 
             //length of c string
             tempSize = camera.getName().size() + 1;
@@ -592,7 +615,7 @@ namespace RAL {
         tempSize = getTextureCount();
         fwrite(&tempSize, sizeof(size_t), 1, file);
 
-        for(auto texture : m_textures){
+        for(auto & texture : m_textures){
 
             //length of c string
             tempSize = texture.getPath().size() + 1;
@@ -617,7 +640,7 @@ namespace RAL {
             //length of c string
             fread(&tempSize, sizeof(size_t), 1, file);
 
-            //c string name
+            //c string path
             buffer = new char[tempSize];
             fread(buffer, sizeof(char), tempSize, file);
             tempTexture.stbiLoadTexture(reinterpret_cast<char*>(buffer));
@@ -629,6 +652,10 @@ namespace RAL {
 
     void Scene3D::addTexture(const Texture& texture) {
         m_textures.push_back(texture);
+    }
+
+    void Scene3D::addMaterial(const Material &material) {
+        m_materials.push_back(material);
     }
 
 } // RAL
