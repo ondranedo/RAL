@@ -20,22 +20,24 @@
 namespace RAL{
     class Texture{
     public:
-        struct Pixel{
-            uint8_t m_red;
-            uint8_t m_green;
-            uint8_t m_blue;
-            uint8_t m_alpha;
-        };
 
         Texture();
         ~Texture();
 
-        uint16_t getWidth();
-        uint16_t getHeight();
-        size_t getSize();
+        [[nodiscard]] uint16_t getWidth() const;
+        [[nodiscard]] uint16_t getHeight() const;
+        [[nodiscard]] uint8_t getNOfChannels() const;
+        [[nodiscard]] size_t getSize() const;
+        uint8_t* getImage();
+
+        void stbiLoadTexture(const std::string& path);
+        void stbiLoadFlippedTexture(const std::string& path);
 
     private:
-        std::vector<std::vector<Pixel>>* m_image{};
+        uint8_t* m_image{};
+        int32_t m_height{};
+        int32_t m_width{};
+        int32_t m_colorChannels{};
     };
 }
 

@@ -12,27 +12,43 @@
 /////////////////////////////////////////////////////////
 
 #include "Texture.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include "../../vendor/stb/stb_image.h"
 
 namespace RAL{
 
-    uint16_t Texture::getWidth() {
-        return m_image->data()->size();
+    uint16_t Texture::getWidth() const {
+        return m_width;
     }
 
-    uint16_t Texture::getHeight() {
-        return m_image->size();
+    uint16_t Texture::getHeight() const {
+        return m_height;
     }
 
-    size_t Texture::getSize() {
-        return getWidth() * getHeight() * sizeof(Pixel);
+    size_t Texture::getSize() const {
+        return getWidth() * getHeight() * getNOfChannels();
     }
-//todo: check for leaks; still find it difficult to work with objects
+
     Texture::~Texture(){
-        for(auto i : *m_image){
-            i.clear();
-        }
-        m_image->clear();
-        delete m_image;
+        stbi_image_free(m_image);
+    }
+
+    uint8_t Texture::getNOfChannels() const {
+        return m_colorChannels;
+    }
+
+    void Texture::stbiLoadTexture(const std::string& path) {
+        m_image = stbi_load(path.c_str(), &m_width, &m_height, &m_colorChannels, 0);
+    }
+
+    void Texture::stbiLoadFlippedTexture(const std::string &path) {
+        stbi_set_flip_vertically_on_load(true);
+        stbiLoadTexture(path);
+        stbi_set_flip_vertically_on_load(false);
+    }
+
+    uint8_t *Texture::getImage() {
+        return m_image;
     }
 
     Texture::Texture() = default;
