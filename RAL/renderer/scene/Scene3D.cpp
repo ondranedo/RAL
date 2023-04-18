@@ -33,59 +33,60 @@ namespace RAL {
         fread(&nOfObjects, sizeof(size_t), 1, file);
 
         for(size_t i = 0; i < nOfObjects; i++){
+
+            addObject(tempObject);
+
             //length of c string
             fread(&tempSize, sizeof(size_t), 1, file);
 
             //c string name
             buffer = new char[tempSize];
             fread(buffer, sizeof(char), tempSize, file);
-            tempObject.setName(reinterpret_cast<char*>(buffer));
+            endObject().base()->setName(reinterpret_cast<char*>(buffer));
             delete[] reinterpret_cast<char*>(buffer);
 
             //mesh index
             fread(&tempSize, sizeof(size_t), 1, file);
-            tempObject.setMesh(beginMesh().base() + tempSize);
+            endObject().base()->setMesh(beginMesh().base() + tempSize);
 
             //material index
             fread(&tempSize, sizeof(size_t), 1, file);
-            tempObject.setMaterial(beginMaterial().base() + tempSize);
+            endObject().base()->setMaterial(beginMaterial().base() + tempSize);
 
             //position of object
             fread(&tempInt, sizeof(int32_t), 1, file);
-            tempObject.setXPos(tempInt);
+            endObject().base()->setXPos(tempInt);
             fread(&tempInt, sizeof(int32_t), 1, file);
-            tempObject.setYPos(tempInt);
+            endObject().base()->setYPos(tempInt);
             fread(&tempInt, sizeof(int32_t), 1, file);
-            tempObject.setZPos(tempInt);
+            endObject().base()->setZPos(tempInt);
 
             //rotation of object
             fread(&tempFloat, sizeof(float), 1, file);
-            tempObject.setXRot(tempFloat);
+            endObject().base()->setXRot(tempFloat);
             fread(&tempFloat, sizeof(float), 1, file);
-            tempObject.setYRot(tempFloat);
+            endObject().base()->setYRot(tempFloat);
             fread(&tempFloat, sizeof(float), 1, file);
-            tempObject.setZRot(tempFloat);
+            endObject().base()->setZRot(tempFloat);
 
             //bounding box scale
             fread(&tempFloat, sizeof(float), 1, file);
-            tempObject.setXBoxScale(tempFloat);
+            endObject().base()->setXBoxScale(tempFloat);
             fread(&tempFloat, sizeof(float), 1, file);
-            tempObject.setYBoxScale(tempFloat);
+            endObject().base()->setYBoxScale(tempFloat);
             fread(&tempFloat, sizeof(float), 1, file);
-            tempObject.setZBoxScale(tempFloat);
+            endObject().base()->setZBoxScale(tempFloat);
 
             //physical properties
             fread(&tempProperties, sizeof(PhysicalProperties), 1, file);
             //todo: something better? just add a setPhysicalProperties?
-            tempObject.getPhysicalProperties()->setXVel(tempProperties.getXVel());
-            tempObject.getPhysicalProperties()->setYVel(tempProperties.getYVel());
-            tempObject.getPhysicalProperties()->setZVel(tempProperties.getZVel());
-            tempObject.getPhysicalProperties()->setXAcc(tempProperties.getXAcc());
-            tempObject.getPhysicalProperties()->setYAcc(tempProperties.getYAcc());
-            tempObject.getPhysicalProperties()->setZAcc(tempProperties.getZAcc());
-            tempObject.getPhysicalProperties()->setWeight(tempProperties.getWeight());
-
-            addObject(tempObject);
+            endObject().base()->getPhysicalProperties()->setXVel(tempProperties.getXVel());
+            endObject().base()->getPhysicalProperties()->setYVel(tempProperties.getYVel());
+            endObject().base()->getPhysicalProperties()->setZVel(tempProperties.getZVel());
+            endObject().base()->getPhysicalProperties()->setXAcc(tempProperties.getXAcc());
+            endObject().base()->getPhysicalProperties()->setYAcc(tempProperties.getYAcc());
+            endObject().base()->getPhysicalProperties()->setZAcc(tempProperties.getZAcc());
+            endObject().base()->getPhysicalProperties()->setWeight(tempProperties.getWeight());
         }
     }
 
@@ -93,12 +94,8 @@ namespace RAL {
         //TODO: switch to File
 
         FILE* file = fopen(scenePath.c_str(), "rb");
-//todo: nome's thought dump:
-//      load materials before textures
-//      loadTextures will not exist
-//      will be replaced by optimise()
+
         loadBinMeshes(file);
-        loadBinTextures(file);
         loadBinObjects(file);
         loadBinCameras(file);
 
@@ -111,7 +108,6 @@ namespace RAL {
         FILE* file = fopen(scenePath.c_str(), "wb");
 
         saveBinMeshes(file);
-        loadBinTextures(file);
         saveBinObjects(file);
         saveBinCameras(file);
 
@@ -482,16 +478,16 @@ namespace RAL {
         fread(&meshCount, sizeof(size_t), 1, file);
 
         for(size_t i = 0; i < meshCount; i++){
+            addMesh(tempMesh);
+
             //length of c string
             fread(&tempSize, sizeof(size_t), 1, file);
 
             //c string path
             buffer = new char[tempSize];
             fread(buffer, sizeof(char), tempSize, file);
-            tempMesh.Mesh::openRalms(reinterpret_cast<char*>(buffer));
+            endMesh().base()->Mesh::openRalms(reinterpret_cast<char*>(buffer));
             delete[] reinterpret_cast<char*>(buffer);
-
-            addMesh(tempMesh);
         }
     }
 
@@ -584,40 +580,41 @@ namespace RAL {
         fread(&nOfCameras, sizeof(size_t), 1, file);
 
         for(size_t i = 0; i < nOfCameras; i++){
+
+            addCamera(tempCamera);
+
             //length of c string
             fread(&tempSize, sizeof(size_t), 1, file);
 
             //c string name
             buffer = new char[tempSize];
             fread(buffer, sizeof(char), tempSize, file);
-            tempCamera.setName(reinterpret_cast<char*>(buffer));
+            endCamera().base()->setName(reinterpret_cast<char*>(buffer));
             delete[] reinterpret_cast<char*>(buffer);
 
             //position of camera
             fread(&tempInt, sizeof(int32_t), 1, file);
-            tempCamera.setXPos(tempInt);
+            endCamera().base()->setXPos(tempInt);
             fread(&tempInt, sizeof(int32_t), 1, file);
-            tempCamera.setYPos(tempInt);
+            endCamera().base()->setYPos(tempInt);
             fread(&tempInt, sizeof(int32_t), 1, file);
-            tempCamera.setZPos(tempInt);
+            endCamera().base()->setZPos(tempInt);
 
             //rotation of camera
             fread(&tempFloat, sizeof(float), 1, file);
-            tempCamera.setXRot(tempFloat);
+            endCamera().base()->setXRot(tempFloat);
             fread(&tempFloat, sizeof(float), 1, file);
-            tempCamera.setYRot(tempFloat);
+            endCamera().base()->setYRot(tempFloat);
             fread(&tempFloat, sizeof(float), 1, file);
-            tempCamera.setZRot(tempFloat);
+            endCamera().base()->setZRot(tempFloat);
 
             //width
             fread(&tempInt, sizeof(int16_t), 1, file);
-            tempCamera.setWidth(tempInt);
+            endCamera().base()->setWidth(tempInt);
 
             //projection
             fread(&tempProjection, sizeof(Camera3D::Projection), 1, file);
-            tempCamera.setProjection(tempProjection);
-
-            addCamera(tempCamera);
+            endCamera().base()->setProjection(tempProjection);
         }
     }
 
@@ -625,63 +622,10 @@ namespace RAL {
         return m_cameras.size();
     }
 
-    void Scene3D::saveBinTextures(FILE *file) {
-
-        size_t tempSize;
-
-        //number of textures
-        tempSize = getTextureCount();
-        fwrite(&tempSize, sizeof(size_t), 1, file);
-
-        for(auto & texture : m_textures){
-
-            //length of c string
-            tempSize = texture.getPath().size() + 1;
-            fwrite(&tempSize, sizeof(size_t), 1, file);
-
-            //c string path
-            fwrite(texture.getPath().c_str(), sizeof(char), tempSize, file);
-        }
-    }
-
-    void Scene3D::loadBinTextures(FILE *file) {
-
-        size_t nOfTextures;
-        size_t tempSize;
-        void* buffer;
-        Texture tempTexture;
-
-        //number of cameras
-        fread(&nOfTextures, sizeof(size_t), 1, file);
-
-        for(size_t i = 0; i < nOfTextures; i++){
-            //length of c string
-            fread(&tempSize, sizeof(size_t), 1, file);
-
-            //c string path
-            buffer = new char[tempSize];
-            fread(buffer, sizeof(char), tempSize, file);
-            tempTexture.stbiLoadTexture(reinterpret_cast<char*>(buffer));
-            delete[] reinterpret_cast<char*>(buffer);
-
-            addTexture(tempTexture);
-        }
-    }
-
-    void Scene3D::addTexture(Texture texture) {
-        for(auto & m_texture : m_textures){
-            if(texture.getPath() == m_texture.getPath()){
-                RAL_LOG_ERROR("Texture with the path %s already in scene, won't be added", m_texture.getPath().c_str());
-                return;
-            }
-        }
-        m_textures.push_back(texture);
-    }
-
     void Scene3D::addMaterial(Material material) {
         for(auto & m_material : m_materials){
             if(material.getPath() == m_material.getPath()){
-                RAL_LOG_ERROR("Texture with the path %s already in scene, won't be added", material.getPath().c_str());
+                RAL_LOG_ERROR("Material with the path %s already in scene, won't be added", material.getPath().c_str());
                 return;
             }
         }

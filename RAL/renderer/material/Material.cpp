@@ -46,13 +46,18 @@ namespace RAL{
         //c string texture path
         buffer = new char[tempSize];
         fread(buffer, sizeof(char), tempSize, file);
-
+        setPath(reinterpret_cast<char*>(buffer));
+        delete[] reinterpret_cast<char*>(buffer);
 
         fclose(file);
     }
 
     std::string Material::getPath() {
         return m_path;
+    }
+
+    std::string Material::getTexturePath() {
+        return m_texturePath;
     }
 
     Material::~Material() = default;

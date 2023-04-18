@@ -29,9 +29,11 @@ namespace RAL{
 
         Texture* getTexture();
         std::string getPath();
+        std::string getTexturePath();
 
     private:
         Texture* m_texture{};
+        std::string m_texturePath;
         std::string m_path;
     };
 }
