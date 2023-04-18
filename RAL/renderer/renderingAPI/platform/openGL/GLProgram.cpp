@@ -112,11 +112,6 @@ namespace RAL{
 
         m_programID = program;
 
-#ifdef RAL_DEBUG
-        printAttribLayout();
-        printUniformLayout();
-        RAL_LOG_WARNING("GL Program is%s valid for textures", m_isTextureUVset ? "" : " not");
-#endif
         return true;
     }
 

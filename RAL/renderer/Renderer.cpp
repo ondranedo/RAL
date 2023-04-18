@@ -13,27 +13,11 @@
 #include "Renderer.h"
 
 namespace RAL {
-    Renderer::RenderSpec::RenderSpec() : width(0), height(0) {}
+    Renderer::~Renderer() = default;
 
-    Renderer::Renderer(const Renderer::RendererAPI &rendererAPI) : m_rendererAPI(rendererAPI), m_window(nullptr),
-                                                                   m_renderSpec(RenderSpec()) {}
+    Renderer::Renderer() : m_window(nullptr) {};
 
-    Renderer::~Renderer() {
-        if(m_window != nullptr) detachWindow();
-    }
-
-    void Renderer::setToWindow(Window *window) {
-        RAL_ASSERTRV(window != nullptr, "Window is nullptr, when setting renderer to window");
-        RAL_ASSERTRV(m_window == nullptr, "Window is already set to renderer");
+    void Renderer::setWindow(Window *window) {
         m_window = window;
-    }
-
-    void Renderer::detachWindow() {
-        RAL_ASSERTRV(m_window != nullptr, "Window is already detached from renderer");
-        m_window = nullptr;
-    }
-
-    void Renderer::setRenderSpec(const Renderer::RenderSpec &spec) {
-        m_renderSpec = spec;
     }
 } // RAL

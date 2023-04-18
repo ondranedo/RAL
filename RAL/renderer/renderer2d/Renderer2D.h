@@ -21,6 +21,7 @@
 #include <renderer/renderingAPI/platform/openGL/GLIndexBuffer.h>
 
 namespace RAL {
+<<<<<<< refs/remotes/origin/renderer:RAL/renderer/renderer2d/Renderer2D.h
     class Renderer2D : public Renderer {
     public:
         Renderer2D();
@@ -38,6 +39,11 @@ namespace RAL {
         GLVertexArray* m_vertexArray;
         GLVertexBuffer* m_vertexBuffer;
         GLIndexBuffer* m_indexBuffer;
+=======
+    class Renderer2D {
+
+        void renderLoop();
+>>>>>>> cleaning renderer:RAL/renderer/renderer/Renderer2D.h
     };
 } // RAL
 
