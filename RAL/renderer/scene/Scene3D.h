@@ -35,8 +35,10 @@ namespace RAL {
         void loadBinScene(const std::string& scenePath);
         void loadBinObjects(FILE* file);
         void loadBinMeshes(FILE* file);
-        void laodBinMaterials(FILE* file);
+        void loadBinMaterials(FILE* file);
         void loadBinCameras(FILE* file);
+
+        void loadTextures();
 
         void saveBinScene(const std::string& scenePath);
         void saveBinObjects(FILE* file);

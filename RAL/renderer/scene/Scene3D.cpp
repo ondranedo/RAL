@@ -96,6 +96,7 @@ namespace RAL {
         FILE* file = fopen(scenePath.c_str(), "rb");
 
         loadBinMeshes(file);
+        loadBinMaterials(file);
         loadBinObjects(file);
         loadBinCameras(file);
 
@@ -108,6 +109,7 @@ namespace RAL {
         FILE* file = fopen(scenePath.c_str(), "wb");
 
         saveBinMeshes(file);
+        saveBinMaterials(file);
         saveBinObjects(file);
         saveBinCameras(file);
 
@@ -632,4 +634,65 @@ namespace RAL {
         m_materials.push_back(material);
     }
 
+    void Scene3D::saveBinMaterials(FILE *file) {
+
+        size_t tempSize;
+
+        //number of materials
+        tempSize = getMaterialCount();
+        fwrite(&tempSize, sizeof(size_t), 1, file);
+
+        for(auto & material : m_materials){
+
+            //length of c string
+            tempSize = material.getPath().size();
+            fwrite(&tempSize, sizeof(size_t), 1, file);
+
+            //c string path
+            fwrite(material.getPath().c_str(), sizeof(char), tempSize, file);
+        }
+    }
+
+    void Scene3D::loadBinMaterials(FILE *file) {
+
+        size_t materialCount;
+        void* buffer;
+        size_t tempSize;
+        Material tempMaterial;
+
+        //number of materials
+        fread(&materialCount, sizeof(size_t), 1, file);
+
+        for(size_t i = 0; i < materialCount; i++){
+            addMaterial(tempMaterial);
+
+            //length of c string
+            fread(&tempSize, sizeof(size_t), 1, file);
+
+            //c string path
+            buffer = new char[tempSize];
+            fread(buffer, sizeof(char), tempSize, file);
+            endMaterial().base()->openRalmt(reinterpret_cast<char*>(buffer));
+            delete[] reinterpret_cast<char*>(buffer);
+        }
+    }
+
+    void Scene3D::loadTextures() {
+
+        //todo: way for the user to load mirrored textures
+        Texture tempTexture;
+
+        for(auto i = beginMaterial(); i < endMaterial(); i++){
+            if(!i->getTexture()){
+                addTexture(tempTexture);
+                i->setTexture(endTexture().base());
+                i->getTexture()->stbiLoadTexture(i->getTexturePath());
+                for(auto j = i + 1; j < endMaterial(); j++){
+                    if(i->getTexturePath() == j->getTexturePath()){
+                        j->setTexture(i->getTexture());
+                    }
+                }
+            }
+        }
+    }
 } // RAL

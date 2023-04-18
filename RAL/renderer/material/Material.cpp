@@ -13,6 +13,8 @@
 
 #include "Material.h"
 
+#include <utility>
+
 namespace RAL{
 
     void Material::setTexture(Texture *texture) {
@@ -24,7 +26,7 @@ namespace RAL{
     }
 
     void Material::setPath(std::string path) {
-        m_path = path;
+        m_path = std::move(path);
     }
 
     void Material::openRalmt(std::string path) {
