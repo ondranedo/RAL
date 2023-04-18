@@ -19,19 +19,7 @@
 
 namespace RAL {
     class Renderer2D {
-    private:
-        struct Data
-        {
-            std::vector<std::pair<float,float>> vertecies;
-            std::vector<unsigned int> indecies;
-        };
-        Data m_Data;
-        Window* m_Window = nullptr;
 
-        void setWindow(Window* window);
-        void setData();
-    public:
-        void render();
         void renderLoop();
     };
 } // RAL

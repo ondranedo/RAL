@@ -54,10 +54,10 @@ namespace RAL
         setBindables();
         setAttributes();
 
-        glBindTexture(GL_TEXTURE_2D, m_activeTexture);
-        glActiveTexture(GL_TEXTURE0);
-        int unit = 0;
-        m_activeProgram->sendData(&unit, sizeof(int), CustomProgramData::Type::SAMPLER2D, "tex2D");
+        //glBindTexture(GL_TEXTURE_2D, m_activeTexture);
+        //glActiveTexture(GL_TEXTURE0);
+        //int unit = 0;
+        //m_activeProgram->sendData(&unit, sizeof(int), CustomProgramData::Type::SAMPLER2D, "tex2D");
 
         glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_indicesCount), GL_UNSIGNED_INT, nullptr);
     }
@@ -144,14 +144,12 @@ namespace RAL
     }
 
     void GLRenderingAPI::compileProgram(uint16_t id, const std::string &vertex, const std::string &fragment) {
-        GLProgram* program = new GLProgram;
-        if(program->compile(vertex, fragment))
-        {
+        auto* program = new GLProgram;
+        if(program->compile(vertex, fragment)) {
             m_programs[id] = program;
             RAL_LOG_DEBUG("Program %d compiled", id);
         }
-        else
-        {
+        else {
             RAL_LOG_ERROR("Program %d compilation failed", id);
             delete program;
         }
