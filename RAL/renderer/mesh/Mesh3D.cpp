@@ -13,6 +13,7 @@
 
 #include "Mesh3D.h"
 #include "../../core/utility/Logger.h"
+#include "../../platfomLayer/windows/file/Win32FileTxt.h"
 
 namespace RAL{
 
@@ -221,6 +222,47 @@ namespace RAL{
             m_vertexDependencies[it->indexC]--;
         }
         m_triangles.erase(begin, end);
+    }
+
+    void Mesh3D::openObj() {
+        Win32::Win32FileTxt file;
+        file.RAL::Win32::Win32File::open(getPath(), File::Mode::Read);
+        size_t index;
+        Vertex tempVertex{};
+        vertexTriangle tempTriangle{};
+
+        while(auto line = file.readLine()){
+            if(line->starts_with('#')){
+                //nothing - ignoring comments off the bat should increase loading speed
+            }
+            else if(line->starts_with('v')){
+                //loading a vertex
+                index = 1;
+                tempVertex.x = std::stof(line->substr(index), &index);
+                tempVertex.y = std::stof(line->substr(index), &index);
+                tempVertex.z = std::stof(line->substr(index), &index);
+                // ^this converts a portion of the string after index to a float and
+                // stores the index after the last part of the number
+                addVertex(tempVertex);
+            }
+            else if(line->starts_with('f')){
+                //loading a triangle
+                index = 1;
+                tempTriangle.indexA = std::stoi(line->substr(index), &index);
+                tempTriangle.indexB = std::stoi(line->substr(index), &index);
+                tempTriangle.indexC = std::stoi(line->substr(index), &index);
+                addVertexTriangle(tempTriangle);
+            }
+            //todo: potentially more .obj support (normals, texture points)
+            //      multiple polygon face support (convex checks)
+        }
+
+        file.RAL::Win32::Win32File::close();
+    }
+
+    void Mesh3D::openObj(std::string path) {
+        setPath(path);
+        openObj();
     }
 
     Mesh3D::Mesh3D() = default;

@@ -38,6 +38,8 @@ namespace RAL{
         ~Mesh3D();
 
         void openRalms() override;
+        void openObj();
+        void openObj(std::string path);
         void saveRalms() override;
 
         // TODO: Use move semantics to avoid copying,

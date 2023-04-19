@@ -684,7 +684,7 @@ namespace RAL {
 
         for(auto i = beginMaterial(); i < endMaterial(); i++){
             if(!i->getTexture()){
-                addTexture(tempTexture);
+                m_textures.push_back(tempTexture);
                 i->setTexture(endTexture().base());
                 i->getTexture()->stbiLoadTexture(i->getTexturePath());
                 for(auto j = i + 1; j < endMaterial(); j++){

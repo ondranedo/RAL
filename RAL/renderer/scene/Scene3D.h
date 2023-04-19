@@ -76,7 +76,6 @@ namespace RAL {
         std::vector<Material>::iterator beginMaterial();
         std::vector<Material>::iterator endMaterial();
 
-        void addTexture(Texture texture);
         uint32_t getTextureCount();
         std::vector<Texture>::iterator beginTexture();
         std::vector<Texture>::iterator endTexture();
