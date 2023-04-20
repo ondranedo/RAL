@@ -697,4 +697,14 @@ namespace RAL {
             }
         }
     }
+
+    Material *Scene3D::getMaterial(const std::string &path) {
+        for(auto i = beginMaterial(); i < endMaterial(); i++){
+            if(i->getPath() == path){
+                return i.base();
+            }
+        }
+        RAL_LOG_ERROR("Material with the path %s not found", path.c_str());
+        return nullptr;
+    }
 } // RAL
