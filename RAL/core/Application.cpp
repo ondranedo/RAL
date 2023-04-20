@@ -14,7 +14,6 @@
 
 #include "Application.h"
 
-
 #include <core/FCM/FCM.h>
 #include <core/layers/LayerManagerFactory.h>
 #include <platfomLayer/window/WindowFactory.h>
@@ -45,6 +44,7 @@ namespace RAL {
             0, 1, 3,  // first Triangle
             1, 2, 3   // second Triangle
     };
+
 
     Application::Application(const ConstructInfo& info) : m_fcm({}), m_running(true), m_game(nullptr) {
         RAL_LOG_DEBUG("Engine creation");
