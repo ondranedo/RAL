@@ -90,7 +90,7 @@ namespace RAL::Win32 {
         glfwSetKeyCallback(m_window, [](GLFWwindow *window, int key, int scancode, int action, int mods) -> void {
             Event *event = nullptr;
             auto callBack = static_cast<EventManager::EventCallback *>(glfwGetWindowUserPointer(window));
-            Types::Codes keyCode = Win32GLFW::getCode(key);
+            Types::Codes keyCode = Win32::getCode(key);
 
             switch (action) {
                 case GLFW_PRESS:
@@ -110,7 +110,7 @@ namespace RAL::Win32 {
         glfwSetMouseButtonCallback(m_window, [](GLFWwindow *window, int button, int action, int mods) -> void {
             Event *event = nullptr;
             auto callBack = static_cast<EventManager::EventCallback *>(glfwGetWindowUserPointer(window));
-            Types::Codes mouseCode = Win32GLFW::getCode(button);
+            Types::Codes mouseCode = Win32::getCode(button);
 
             switch (action) {
                 case GLFW_PRESS:

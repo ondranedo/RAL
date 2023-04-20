@@ -11,8 +11,8 @@
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
 
-#ifndef RAL_PROJECT_WIN32GLFW_H
-#define RAL_PROJECT_WIN32GLFW_H
+#ifndef RAL_PROJECT_WIN32_H
+#define RAL_PROJECT_WIN32_H
 #ifdef RAL_WINDOWS
 
 #include <core/memoryManager/Overload.h>
@@ -23,10 +23,10 @@
 #include <vendor/glfw/include/GLFW/glfw3.h>
 
 namespace RAL::Win32 {
-    class Win32GLFW {
+    class Win32 {
     public:
-        Win32GLFW();
-        ~Win32GLFW();
+        Win32();
+        ~Win32();
         void init();
         void release();
         void setVSync(bool state);
@@ -39,8 +39,8 @@ namespace RAL::Win32 {
     };
 
     namespace global {
-        extern Win32GLFW glfw;
+        extern Win32 glfw;
     }
 } // RAL
 #endif //!RAL_WINDOWS
-#endif //!RAL_PROJECT_WIN32GLFW_H
+#endif //!RAL_PROJECT_WIN32_H

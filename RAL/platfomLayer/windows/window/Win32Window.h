@@ -17,7 +17,7 @@
 #ifdef RAL_WINDOWS
 
 #include <platfomLayer/window/Window.h>
-#include <platfomLayer/windows/Win32GLFW.h>
+#include <platfomLayer/windows/Win32.h>
 #include <vendor/glfw/include/GLFW/glfw3.h>
 
 namespace RAL::Win32 {

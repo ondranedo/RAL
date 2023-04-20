@@ -13,7 +13,7 @@
 
 #ifdef RAL_WINDOWS
 
-#include "Win32GLFW.h"
+#include "Win32.h"
 
 #include <core/utility/Logger.h>
 #include <core/utility/Asserts.h>
@@ -21,10 +21,10 @@
 
 namespace RAL::Win32 {
     namespace global {
-        Win32GLFW glfw;
+        Win32 glfw;
     }
 
-    Win32GLFW::~Win32GLFW()
+    Win32::~Win32()
     {
         if(m_windowCount) {
             RAL_LOG_WARNING("GLFW is still initialized, terminating");
@@ -32,9 +32,9 @@ namespace RAL::Win32 {
         }
     }
     // TODO: global setting
-    Win32GLFW::Win32GLFW(): m_windowCount(0), m_isVSync(false) {};
+    Win32::Win32(): m_windowCount(0), m_isVSync(false) {};
 
-    void Win32GLFW::init() {
+    void Win32::init() {
         if(m_windowCount++) return;
         glfwInit();
         m_isVSync = true;
@@ -43,26 +43,26 @@ namespace RAL::Win32 {
     }
 
 
-    void Win32GLFW::release() {
+    void Win32::release() {
         if(--m_windowCount) return;
         glfwTerminate();
         RAL_LOG_DEBUG("GLFW terminated");
     }
 
-    void Win32GLFW::setVSync(bool state){
+    void Win32::setVSync(bool state){
         RAL_ASSERT(m_windowCount, "GLFW is not initialized, cannot set VSync");
         if(!m_windowCount)
         glfwSwapInterval(state ? 1 : 0);
         m_isVSync = state;
     }
 
-    bool Win32GLFW::getVSync() const {
+    bool Win32::getVSync() const {
         RAL_ASSERT(m_windowCount, "GLFW is not initialized, cannot get VSync");
         if(!m_windowCount) return false;
         return m_isVSync;
     }
 
-    Types::Codes Win32GLFW::getCode(uint16_t glfwKeyCode) {
+    Types::Codes Win32::getCode(uint16_t glfwKeyCode) {
         switch (glfwKeyCode) {
             case GLFW_MOUSE_BUTTON_1: return Types::Codes::MBUTTON_1;
             case GLFW_MOUSE_BUTTON_2: return Types::Codes::MBUTTON_2;
