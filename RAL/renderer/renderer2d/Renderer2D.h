@@ -13,11 +13,15 @@
 #ifndef RAL_PROJECT_RENDERER2D_H
 #define RAL_PROJECT_RENDERER2D_H
 
+#include <vector>
+
+#include <platfomLayer/window/Window.h>
+
 namespace RAL {
     class Renderer2D {
-    public:
-    private:
+
+        void renderLoop();
     };
 } // RAL
 
-#endif //!RAL_PROJECT_RENDERER2D_H
+#endif //RAL_PROJECT_RENDERER2D_H

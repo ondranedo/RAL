@@ -20,10 +20,12 @@
 #include <core/memoryManager/Overload.h>
 
 namespace RAL {
-    class FileManagerFactory final : public BaseFactory<FileManager> {
+    class FileManagerFactory final : public BaseFactory {
     public:
         FileManagerFactory();
         FileManager* create() override;
+
+        [[nodiscard]] std::string productName() const override;
 
     };
 } // RAL

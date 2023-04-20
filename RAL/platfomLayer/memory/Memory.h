@@ -34,7 +34,7 @@ namespace RAL {
         [[nodiscard]] virtual void*getAlignedBlock(size_t bytes, size_t ali) = 0;
         virtual void freeAlignedBlock(void *block) = 0;
         [[nodiscard]] virtual void *reallocAlignedBlock(void *block, size_t newSize, size_t ali) = 0;
-
+        bool checkMemoryLeak();
 
         [[nodiscard]] size_t getBlocks() const;
         [[nodiscard]] size_t getAllocatedOnHeap() const;

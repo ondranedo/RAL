@@ -4,3 +4,9 @@
 [submodule "RAL/vendor/stb"]
 	path = RAL/vendor/stb
 	url = https://github.com/nothings/stb
+[submodule "RAL/vendor/glm"]
+	path = RAL/vendor/glm
+	url = https://github.com/g-truc/glm
+[submodule "RAL/vendor/glad"]
+	path = RAL/vendor/glad
+	url = https://github.com/ondranedo/glad

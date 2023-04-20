@@ -24,6 +24,9 @@ namespace RAL::Win32 {
     class Win32Window : public Window {
     public:
         Win32Window(const WindowSpec &spec);
+
+        void swapBuffers() override;
+
         Win32Window();
 
         void init() override;
@@ -38,6 +41,11 @@ namespace RAL::Win32 {
         void destroy() override;
 
         bool getVSync() const override;
+
+        LoadProc getProcAddress() override;
+
+    private:
+        void setCallbacks() override;
 
     private:
         GLFWwindow *m_window;

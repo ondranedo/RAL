@@ -13,4 +13,5 @@
 # Core utils, used to provide some basic utilities,
 # such as logging, assertions, data types, data types
 # conversion etc.
-add_library(ral_core_utility Asserts.h Logger.cpp Logger.h LogMsg.h LogMsg.cpp Types.cpp Types.h)
+add_library(ral_core_utility STATIC
+        Asserts.h Logger.cpp Logger.h LogMsg.h LogMsg.cpp Types.cpp Types.h)

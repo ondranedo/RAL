@@ -43,22 +43,28 @@ endif()
 #   Source files  - components                        #
 #######################################################
 
+add_library(${RAL_ENGINE_LIB} STATIC
+        "RAL.cpp"
+        "RAL.h")
+
 # Engines core - main library others libraries link into this one
 add_subdirectory(core)
-# Already linked into core
 
 # Platform layer - contains platform specific code
 add_subdirectory(platfomLayer)
-target_link_libraries(${RAL_ENGINE_LIB} PUBLIC ral_platformLayer)
 
 # Renderer - contains renderer specific code
 add_subdirectory(renderer)
-target_link_libraries(${RAL_ENGINE_LIB} PUBLIC ral_renderer)
+
+target_link_libraries(${RAL_ENGINE_LIB} PRIVATE ral_core)
+target_link_libraries(${RAL_ENGINE_LIB} PRIVATE ral_renderer)
+target_link_libraries(${RAL_ENGINE_LIB} PRIVATE ral_platformLayer)
 
 #######################################################
 #   Vendor libraries                                  #
 #######################################################
 
+#GLFW
 set(GLFW_BUILD_DOCS OFF)
 set(GLFW_BUILD_TESTS OFF)
 set(GLFW_BUILD_EXAMPLES OFF)
@@ -68,3 +74,9 @@ target_link_libraries(${RAL_ENGINE_LIB} PRIVATE glfw)
 
 #STB
 include_directories(vendor/stb)
+
+#GLAD
+add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glad)
+target_link_libraries(${RAL_ENGINE_LIB} PRIVATE gl_4.0_core_debug)
+target_link_libraries(${RAL_ENGINE_LIB} PRIVATE opengl32)
+

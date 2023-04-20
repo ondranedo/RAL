@@ -28,6 +28,7 @@
 #include <cstring>
 #include <cstdio>
 #include <platfomLayer/consoleInterpreter/ConsoleInterpreter.h>
+#include <mutex>
 
 #ifdef RAL_DEBUG
 #define RAL_LOG_MSG_QUEUE_SIZE 32    // DBG opt
@@ -46,6 +47,7 @@ namespace RAL {
         void log(LogMsg::Level level, Args... args);
         void setLevel(LogMsg::Level level);
         void setConsoleInterpreter(ConsoleInterpreter* consoleInterpreter);
+        void detachConsoleInterpreter();
 
     private:
         template<typename ...Args>
@@ -60,6 +62,7 @@ namespace RAL {
 #ifdef RAL_DEBUG
         char& guardByte = m_msgQueue[m_msgQueueSize].m_buff[RAL_LOG_MSG_SIZE-1];
 #endif
+        bool m_logLoop;
     };
     namespace global{
         extern Logger mainLogger;
@@ -68,7 +71,9 @@ namespace RAL {
     template<typename... Args>
     void Logger::log(LogMsg::Level level, Args... args) {
         if(m_level > level) return;
-        if(m_msgQueueSize >= RAL_LOG_MSG_QUEUE_SIZE - 1) print();
+        if(m_msgQueueSize >= RAL_LOG_MSG_QUEUE_SIZE - 2) {
+            print();
+        }
         m_msgQueue[m_msgQueueSize].m_level = level;
 #ifdef RAL_DEBUG
         guardByte = RAL_LOG_MSG_QUEUE_GUARD; // DBG
@@ -79,8 +84,6 @@ namespace RAL {
         if(guardByte != RAL_LOG_MSG_QUEUE_GUARD) // DBG
             log(LogMsg::Level::ERROR, "LogMsg buffer overflow, MSG too long, MSG may be corrupted!");
 #endif
-        if(level == RAL::LogMsg::Level::FATAL)
-            print();
     }
 
     template<typename... Args>

@@ -13,4 +13,11 @@
 #include "Renderer.h"
 
 namespace RAL {
+    Renderer::~Renderer() = default;
+
+    Renderer::Renderer() : m_window(nullptr) {};
+
+    void Renderer::setWindow(Window *window) {
+        m_window = window;
+    }
 } // RAL
