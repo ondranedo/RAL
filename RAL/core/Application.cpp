@@ -108,10 +108,6 @@ namespace RAL {
         /// Vojtuv codik
         m_fcm.get<Window>("Window")->makeContextCurrent();
 
-        if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
-        {
-            RAL_LOG_FATAL("Failed to initialize GLAD");
-        }
         GLRenderingAPI rAPI;
         rAPI.init();
         GLVertexArray va;

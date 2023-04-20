@@ -20,149 +20,172 @@
 #include <core/events/eventTypes/MouseEvents.h>
 #include <core/events/eventTypes/KeyEvents.h>
 
+typedef void (APIENTRY *PFNGLFUNCTION)(void);
+
+PFNGLFUNCTION GetGLFunction(const char* name) {
+    HMODULE module = GetModuleHandle("opengl32.dll");
+    if (module) {
+        return reinterpret_cast<PFNGLFUNCTION>(GetProcAddress(module, name));
+    }
+    return nullptr;
+}
+
+
+LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+    switch (uMsg) {
+        case WM_CREATE: {
+            PIXELFORMATDESCRIPTOR pfd = {
+                    sizeof(PIXELFORMATDESCRIPTOR),  //  size of this pfd
+                    1,                     // version number
+                    PFD_DRAW_TO_WINDOW |   // support window
+                    PFD_SUPPORT_OPENGL |   // support OpenGL
+                    PFD_DOUBLEBUFFER,      // double buffered
+                    PFD_TYPE_RGBA,         // RGBA type
+                    24,                    // 24-bit color depth
+                    0, 0, 0, 0, 0, 0,      // color bits ignored
+                    0,                     // no alpha buffer
+                    0,                     // shift bit ignored
+                    0,                     // no accumulation buffer
+                    0, 0, 0, 0,            // accum bits ignored
+                    32,                    // 32-bit z-buffer
+                    0,                     // no stencil buffer
+                    0,                     // no auxiliary buffer
+                    PFD_MAIN_PLANE,        // main layer
+                    0,                     // reserved
+                    0, 0, 0                // layer masks ignored
+            };
+            HDC hdc;
+            int iPixelFormat;
+            iPixelFormat = ChoosePixelFormat(hdc, &pfd);
+            break;
+        }
+        case WM_CLOSE:
+            DestroyWindow(hWnd);
+            break;
+        case WM_DESTROY:
+            PostQuitMessage(0);
+            return 0;
+        case WM_KEYDOWN: {
+            if (wParam == 0x4A) {
+                RAL_LOG_FATAL("J pressed\n");
+            }
+        }
+    }
+    return DefWindowProc(hWnd, uMsg, wParam, lParam);
+}
+
 namespace RAL::Win32 {
-    Win32Window::Win32Window(const WindowSpec &spec) : Window(spec), m_window(nullptr) {}
-    Win32Window::Win32Window() : Window(WindowSpec()), m_window(nullptr) {}
+    Win32Window::Win32Window() : Window(WindowSpec()), m_window(nullptr), m_hInstance(GetModuleHandle(nullptr))
+    {
+        const char* CLASS_NAME = "Window Class";
+
+        WNDCLASS wndClass = {};
+        wndClass.lpszClassName = CLASS_NAME;
+        wndClass.hInstance = m_hInstance;
+        wndClass.hIcon = LoadIcon(nullptr, IDI_WINLOGO);
+        wndClass.hCursor = LoadCursor(nullptr, IDC_ARROW);
+        wndClass.lpfnWndProc = WindowProc;
+
+        RegisterClass(&wndClass);
+
+        DWORD style = WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU;
+
+        int width = 640;
+        int height =480;
+
+        RECT rect;
+        rect.left = 250;
+        rect.top = 250;
+        rect.right = rect.left + width;
+        rect.bottom = rect.top + height;
+
+        AdjustWindowRect(&rect, style, false);
+
+        m_hWnd = CreateWindowEx(
+                0,
+                CLASS_NAME,
+                "Title",
+                style,
+                rect.left,
+                rect.top,
+                rect.right - rect.left,
+                rect.bottom - rect.top,
+                nullptr,
+                nullptr,
+                m_hInstance,
+                nullptr
+        );
+        SetWindowLong(m_hWnd, GWL_STYLE,GetWindowLong(m_hWnd, GWL_STYLE) | WS_MINIMIZEBOX);
+        SetWindowLong(m_hWnd, GWL_STYLE,GetWindowLong(m_hWnd, GWL_STYLE) | WS_MAXIMIZEBOX);
+        ShowWindow(m_hWnd, SW_SHOW);
+    }
 
     void Win32Window::init() {
-        global::glfw.init();
+        RAL_LOG_DEBUG("Win32Window initialized");
     }
 
     void Win32Window::release() {
-        global::glfw.release();
+        RAL_LOG_DEBUG("Win32Window released");
     }
 
     void Win32Window::update() {
         RAL_ASSERT(m_window, "Cannot update window, window `%s` is not created", m_spec.m_title);
         if(!m_window) return;
-        glfwPollEvents();
+        //TODO glfwPollEvents();
     }
 
     void Win32Window::makeContextCurrent() {
         RAL_ASSERT(m_window, "Cannot make context current, window `%s` is not created", m_spec.m_title);
         if(!m_window) return;
-        glfwMakeContextCurrent(m_window);
+        //TODO glfwMakeContextCurrent(m_window);
 
     }
 
     void Win32Window::setDims(uint16_t width, uint16_t height) {
         RAL_ASSERT(m_window, "Cannot set window dimensions, window `%s` is not created", m_spec.m_title);
         if(!m_window) return;
-        glfwSetWindowSize(m_window, width, height);
+        //TODO glfwSetWindowSize(m_window, width, height);
     }
 
     void Win32Window::setTitle(const std::string &title) {
         RAL_ASSERT(title.size() > 0, "Window `%s` title cannot be empty", m_spec.m_title);
         RAL_ASSERT(title.size() < RAL_WINDOW_SPEC_TITLE_SIZE, "Window `%s` title cannot be longer than %d characters", m_spec.m_title, RAL_WINDOW_SPEC_TITLE_SIZE);
-        glfwSetWindowTitle(m_window, title.c_str());
+        //TODO glfwSetWindowTitle(m_window, title.c_str());
         strcpy(m_spec.m_title,title.c_str());
     }
 
     void Win32Window::setVSync(bool state) {
-        global::glfw.setVSync(state);
+        //TODO global::glfw.setVSync(state);
     }
 
     void Win32Window::create() {
-        m_window = glfwCreateWindow(m_spec.m_width, m_spec.m_height, m_spec.m_title, nullptr, nullptr);
+        m_window = new Win32Window();
         if(m_window)
         {
             RAL_LOG_DEBUG("Windows window `%s` created", m_spec.m_title);
             m_spec.m_created = true;
             return;
         }
-        RAL_LOG_ERROR("Windows window `%s` creation failed", m_spec.m_title);
+        RAL_LOG_DEBUG("Windows window  creation failed");
     }
 
     void Win32Window::destroy() {
         RAL_LOG_DEBUG("Windows window `%s` destroyed", m_spec.m_title);
-        glfwDestroyWindow(m_window);
+        const char* CLASS_NAME = "Window Class";
+        UnregisterClass(CLASS_NAME, m_hInstance);
         m_spec.m_created = false;
     }
 
-    bool Win32Window::getVSync() const {
-        return global::glfw.getVSync();
-    }
-
-    void Win32Window::setCallbacks() {
-        // Great for holding custom pointer in glfw
-        glfwSetWindowUserPointer(m_window, &this->m_eventCallback);
-
-        glfwSetKeyCallback(m_window, [](GLFWwindow *window, int key, int scancode, int action, int mods) -> void {
-            Event *event = nullptr;
-            auto callBack = static_cast<EventManager::EventCallback *>(glfwGetWindowUserPointer(window));
-            Types::Codes keyCode = Win32::getCode(key);
-
-            switch (action) {
-                case GLFW_PRESS:
-                    event = new Events::KeyPressed(keyCode, false);
-                    break;
-                case GLFW_RELEASE:
-                    event = new Events::KeyReleased(keyCode);
-                    break;
-                case GLFW_REPEAT:
-                    event = new Events::KeyPressed(keyCode, true);
-                    break;
-            }
-
-            (*callBack)(event);
-        });
-
-        glfwSetMouseButtonCallback(m_window, [](GLFWwindow *window, int button, int action, int mods) -> void {
-            Event *event = nullptr;
-            auto callBack = static_cast<EventManager::EventCallback *>(glfwGetWindowUserPointer(window));
-            Types::Codes mouseCode = Win32::getCode(button);
-
-            switch (action) {
-                case GLFW_PRESS:
-                    event = new Events::MousePressed(mouseCode);
-                    break;
-                case GLFW_RELEASE:
-                    event = new Events::MouseReleased(mouseCode);
-                    break;
-            }
-
-            (*callBack)(event);
-        });
-
-        glfwSetCursorPosCallback(m_window, [](GLFWwindow *window, double xPos, double yPos) -> void {
-            auto callBack = static_cast<EventManager::EventCallback *>(glfwGetWindowUserPointer(window));
-            (*callBack)(new Events::MouseMoved(xPos, yPos));
-        });
-
-        glfwSetScrollCallback(m_window, [](GLFWwindow *window, double xOffset, double yOffset) -> void {
-            auto callBack = static_cast<EventManager::EventCallback *>(glfwGetWindowUserPointer(window));
-            (*callBack)(new Events::MouseScrolled(xOffset, yOffset));
-        });
-
-        glfwSetWindowSizeCallback(m_window, [](GLFWwindow *window, int width, int height) -> void {
-            auto callBack = static_cast<EventManager::EventCallback *>(glfwGetWindowUserPointer(window));
-            (*callBack)(new Events::WindowResized(width, height));
-        });
-
-        glfwSetWindowCloseCallback(m_window, [](GLFWwindow *window) -> void {
-            auto callBack = static_cast<EventManager::EventCallback *>(glfwGetWindowUserPointer(window));
-            (*callBack)(new Events::WindowClosed());
-        });
-
-        glfwSetWindowFocusCallback(m_window, [](GLFWwindow *window, int focused) -> void {
-            auto callBack = static_cast<EventManager::EventCallback *>(glfwGetWindowUserPointer(window));
-            if (focused)
-                (*callBack)(new Events::WindowFocus());
-            else
-                (*callBack)(new Events::WindowLostFocus());
-        });
-
-        glfwSetWindowPosCallback(m_window, [](GLFWwindow *window, int xPos, int yPos) -> void {
-            auto callBack = static_cast<EventManager::EventCallback *>(glfwGetWindowUserPointer(window));
-            (*callBack)(new Events::WindowMoved(xPos, yPos));
-        });
-    }
-
+    void Win32Window::setCallbacks() {}
     void Win32Window::swapBuffers()
     {
+        m_hDc = GetDC(m_hWnd);
         RAL_ASSERT(m_window, "Cannot call swapBuffers, window `%s` is not created", m_spec.m_title);
-        glfwSwapBuffers(m_window);
+        SwapBuffers(m_hDc);
+    }
 
+    bool Win32Window::getVSync() const {
+        return false;
     }
 } // RAL
 

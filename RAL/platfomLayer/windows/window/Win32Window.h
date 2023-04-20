@@ -17,17 +17,16 @@
 #ifdef RAL_WINDOWS
 
 #include <platfomLayer/window/Window.h>
-#include <platfomLayer/windows/Win32.h>
-#include <vendor/glfw/include/GLFW/glfw3.h>
+#include <Windows.h>
+
+LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 namespace RAL::Win32 {
     class Win32Window : public Window {
     public:
-        Win32Window(const WindowSpec &spec);
+        Win32Window();
 
         void swapBuffers() override;
-
-        Win32Window();
 
         void init() override;
         void release() override;
@@ -46,7 +45,11 @@ namespace RAL::Win32 {
         void setCallbacks() override;
 
     private:
-        GLFWwindow *m_window;
+        Window *m_window;
+
+        HINSTANCE m_hInstance;
+        HWND m_hWnd;
+        HDC m_hDc;
     };
 } // RAL
 #endif //!RAL_WINDOWS

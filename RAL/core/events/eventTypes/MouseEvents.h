@@ -13,7 +13,7 @@
 #ifndef RAL_PROJECT_MOUSEEVENTS_H
 #define RAL_PROJECT_MOUSEEVENTS_H
 
-#include "core/events/Event.h"
+#include <core/events/Event.h>
 
 namespace RAL::Events {
     struct MouseMoved : public Event
@@ -22,9 +22,9 @@ namespace RAL::Events {
 
         MouseMoved(double _x, double _y) : x(_x), y(_y) {
             m_header.eventHandler = EventHandler::USER;
-            m_header.eventType = EventType::MOUSE_MOVED;
+            m_header.eventType = EventType::MOUSE_SCROLLED;//TODO
         }
-        static EventType getEventType() { return EventType::MOUSE_MOVED; }
+        static EventType getEventType() { return EventType::MOUSE_SCROLLED; }//TODO
     };
 
     struct MouseScrolled : public Event
