@@ -28,7 +28,7 @@ namespace RAL {
         Logger mainLogger;
     }
 
-    Logger::Logger() : m_msgQueue(), m_msgQueueSize(0), m_consoleInterpreter(nullptr),
+    Logger::Logger() : m_msgQueue(), m_msgQueueSize(0), m_consoleInterpreter(nullptr), m_logLoop(false),
 #ifdef RAL_DEBUG
         m_level(LogMsg::Level::DEBUG)
 #else
@@ -47,6 +47,7 @@ namespace RAL {
             LogMsg &msg = m_msgQueue[i];
 
             if(m_consoleInterpreter) {
+                m_consoleInterpreter->log("\xB3");
                 m_consoleInterpreter->log(msg.m_buff,colourForegroundArray[static_cast<uint8_t>(msg.m_level)]);
             }
             else
@@ -63,5 +64,10 @@ namespace RAL {
         RAL_ASSERT(m_consoleInterpreter == nullptr, "Console interpreter is not nullptr");
         RAL_ASSERTRV(consoleInterpreter != nullptr, "Console interpreter is nullptr");
         m_consoleInterpreter = consoleInterpreter;
+    }
+
+    void Logger::detachConsoleInterpreter() {
+        RAL_ASSERT(m_consoleInterpreter != nullptr, "Console interpreter is nullptr");
+        m_consoleInterpreter = nullptr;
     }
 } // RAL

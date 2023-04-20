@@ -35,10 +35,19 @@ namespace RAL {
 
     Memory::~Memory()
     {
-        RAL_ASSERT(m_nOfBytesOnHeap == 0 && m_nOfBlocks == 0,
-                   "Memory leak on heap detected - %d byte%s and %d block%s not freed",
-                   m_nOfBytesOnHeap,m_nOfBytesOnHeap>1?"s":"",
-                   m_nOfBlocks,m_nOfBlocks>1?"s":"");
-        RAL_ASSERT(m_nOfAlignedBlocks == 0, "Memory leak on aligned heap detected -  %d blocks not freed", m_nOfAlignedBlocks);
+
+    }
+
+    bool Memory::checkMemoryLeak() {
+        if(m_nOfBytesOnHeap != 0 || m_nOfBlocks != 0 || m_nOfAlignedBlocks != 0) {
+            RAL_ASSERT(m_nOfBytesOnHeap == 0 && m_nOfBlocks == 0,
+                       "Memory leak on heap detected - %d byte%s and %d block%s not freed",
+                       m_nOfBytesOnHeap,m_nOfBytesOnHeap>1?"s":"",
+                       m_nOfBlocks,m_nOfBlocks>1?"s":"");
+            RAL_ASSERT(m_nOfAlignedBlocks == 0, "Memory leak on aligned heap detected -  %d blocks not freed", m_nOfAlignedBlocks);
+            return true;
+        }
+
+        return false;
     }
 } // RAL

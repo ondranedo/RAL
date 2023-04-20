@@ -14,5 +14,7 @@
 
 #include "Types.h"
 
+
 namespace RAL {
+
 } // RAL

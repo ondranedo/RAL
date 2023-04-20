@@ -11,32 +11,16 @@
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
 
+
+#ifndef RAL_PROJECT_WIN32MAIN_H
+#define RAL_PROJECT_WIN32MAIN_H
 #ifdef RAL_WINDOWS
-#include <core/Core.h>
 
-#ifdef RAL_WINDOWS_USE_WINMAIN
-#include "WinMain.h"
-
-#include <core/memoryManager/Overload.h>
-#include <core/Main.h>
-#include <windows.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <iostream>
-
-/**
-int WinMain(HINSTANCE , HINSTANCE, LPSTR, int)
-{
-    DWORD processID;
-    GetWindowThreadProcessId(GetConsoleWindow(), &processID);
-    AllocConsole();
-
-    //RAL::main({});
-
-    while (1);
-    return 1;
+namespace RAL {
+    namespace Win32 {
+        int main();
+    }
 }
-**/
 
-#endif
 #endif //!RAL_WINDOWS
+#endif //!RAL_PROJECT_WIN32MAIN_H

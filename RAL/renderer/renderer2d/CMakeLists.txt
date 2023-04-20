@@ -12,6 +12,5 @@
 #######################################################
 
 add_library(ral_renderer_renderer2d STATIC
-    Renderer2D.cpp
-    Renderer2D.h
-        )
+        Renderer2D.cpp
+        Renderer2D.h)

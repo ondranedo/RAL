@@ -13,10 +13,19 @@
 #ifndef RAL_PROJECT_RENDERER_H
 #define RAL_PROJECT_RENDERER_H
 
+#include <platfomLayer/window/Window.h>
+
 namespace RAL {
-    class Renderer {
+    class Renderer : public BaseComponent {
     public:
+        virtual ~Renderer();
+        Renderer();
+
+        virtual void setWindow(Window* window);
+        //virtual void draw();
+        virtual void renderLoop() = 0;
     private:
+        Window* m_window;
     };
 } // RAL
 
