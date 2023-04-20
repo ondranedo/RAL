@@ -16,5 +16,8 @@ add_library(ral_platformLayer_windows STATIC
         "Win32GLFW.cpp"
         "Win32GLFW.h"
         "Win32Main.cpp"
-        "Win32Main.h")
+        "Win32Main.h"
+        "window/Win32Types.cpp"
+        "window/Win32Types.h"
+        )
 endif(WIN32)
