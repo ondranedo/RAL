@@ -23,18 +23,24 @@ namespace RAL{
 
         void openRalmt(std::string path);
         void openRalmt();
+        void saveRalmt(std::string path);
+        void saveRalmt();
 
         void setTexture(Texture* texture);
+        void setTexturePath(std::string path);
         void setPath(std::string path);
+        void setMirrorFlag(bool val);
 
         Texture* getTexture();
         std::string getPath();
         std::string getTexturePath();
+        [[nodiscard]] bool getMirrorFlag() const;
 
     private:
         Texture* m_texture{};
         std::string m_texturePath;
         std::string m_path;
+        bool m_isTextureMirrored{};
     };
 }
 

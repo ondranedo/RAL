@@ -101,6 +101,7 @@ namespace RAL {
         loadBinCameras(file);
 
         fclose(file);
+        loadTextures();
     }
 
     void Scene3D::saveBinScene(const std::string& scenePath) {
@@ -136,6 +137,7 @@ namespace RAL {
             }
         }
         file.RAL::Win32::Win32File::close();
+        loadTextures();
     }
 
     void Scene3D::saveBinObjects(FILE *file) {

@@ -40,6 +40,7 @@ namespace RAL{
         FILE* file = fopen(m_path.c_str(), "rb");
         size_t tempSize;
         void* buffer;
+        bool tempBool;
 
         //ralmt structure:
         //length of c string
@@ -48,8 +49,12 @@ namespace RAL{
         //c string texture path
         buffer = new char[tempSize];
         fread(buffer, sizeof(char), tempSize, file);
-        setPath(reinterpret_cast<char*>(buffer));
+        setTexturePath(reinterpret_cast<char*>(buffer));
         delete[] reinterpret_cast<char*>(buffer);
+
+        //mirrored texture flag
+        fread(&tempBool, sizeof(bool), 1, file);
+        setMirrorFlag(tempBool);
 
         fclose(file);
     }
@@ -60,6 +65,44 @@ namespace RAL{
 
     std::string Material::getTexturePath() {
         return m_texturePath;
+    }
+
+    void Material::saveRalmt(std::string path) {
+        setPath(path);
+        saveRalmt();
+    }
+
+    void Material::saveRalmt() {
+        //todo: fileIO
+        FILE* file = fopen(getPath().c_str(), "wb");
+        size_t tempSize;
+        bool tempBool;
+
+        //ralmt structure:
+        //length of c string
+        tempSize = getTexturePath().length();
+        fwrite(&tempSize, sizeof(size_t), 1, file);
+
+        //c string texture path
+        fwrite(getTexturePath().c_str(), sizeof(char), tempSize, file);
+
+        //mirrored texture flag
+        tempBool = getMirrorFlag();
+        fwrite(&tempBool, sizeof(bool), 1, file);
+
+        fclose(file);
+    }
+
+    void Material::setTexturePath(std::string path) {
+        m_texturePath = std::move(path);
+    }
+
+    void Material::setMirrorFlag(bool val) {
+        m_isTextureMirrored = val;
+    }
+
+    bool Material::getMirrorFlag() const {
+        return m_isTextureMirrored;
     }
 
     Material::~Material() = default;

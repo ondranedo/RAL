@@ -20,7 +20,6 @@ namespace RAL {
     class Mesh {
 
         //todo: potentially make a factory for use in model creator
-        //      .obj or other foreign file support
     public:
         Mesh();
         ~Mesh();
