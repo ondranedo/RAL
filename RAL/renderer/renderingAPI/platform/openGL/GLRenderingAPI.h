@@ -27,6 +27,7 @@ namespace RAL
     {
     public:
         GLRenderingAPI();
+        ~GLRenderingAPI();
 
         void clear() override;
 

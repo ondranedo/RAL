@@ -20,7 +20,6 @@
 namespace RAL {
     class Renderer2D {
 
-        void renderLoop();
     };
 } // RAL
 

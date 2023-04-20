@@ -178,4 +178,9 @@ namespace RAL
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, param.width, param.height, 0, GL_RGB, GL_UNSIGNED_BYTE, param.data);
     }
 
+    GLRenderingAPI::~GLRenderingAPI() {
+        for(auto& program : m_programs)
+            delete program.second;
+    }
+
 }

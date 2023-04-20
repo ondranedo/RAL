@@ -13,7 +13,7 @@
 
 #include "Texture.h"
 #define STB_IMAGE_IMPLEMENTATION
-#include "../../vendor/stb/stb_image.h"
+#include <vendor/stb/stb_image.h>
 
 namespace RAL{
 
