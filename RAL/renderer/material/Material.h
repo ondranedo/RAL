@@ -10,27 +10,32 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#ifndef RAL_PROJECT_GLVERTEXBUFFER_H
-#define RAL_PROJECT_GLVERTEXBUFFER_H
 
-#include <renderer/renderingAPI/buffers/VertexBuffer.h>
-#include <renderer/renderingAPI/platform/openGL/GLIndexable.h>
+#ifndef RAL_PROJECT_MATERIAL_H
+#define RAL_PROJECT_MATERIAL_H
+#include "../texture/Texture.h"
 
-namespace RAL
-{
-    class GLVertexBuffer final : public virtual VertexBuffer, public virtual GLIndexable
-    {
+namespace RAL{
+    class Material{
     public:
-        ~GLVertexBuffer() override;
+        Material();
+        ~Material();
 
-        GLVertexBuffer();
+        void openRalmt(std::string path);
+        void openRalmt();
 
-        void setData(float *vertices,unsigned int size,DrawUsage usage) override;
+        void setTexture(Texture* texture);
+        void setPath(std::string path);
 
-        void bind() const override;
+        Texture* getTexture();
+        std::string getPath();
+        std::string getTexturePath();
 
-        void unbind() const override;
-
+    private:
+        Texture* m_texture{};
+        std::string m_texturePath;
+        std::string m_path;
     };
-};
-#endif //!RAL_PROJECT_GLVERTEXBUFFER_H
+}
+
+#endif //RAL_PROJECT_MATERIAL_H

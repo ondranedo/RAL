@@ -10,12 +10,43 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#include "GLIndexable.h"
 
-namespace RAL
-{
-    GLIndexable::GLIndexable() : m_id(0)
-    {
+#include "Entity.h"
 
+#include <utility>
+
+namespace RAL{
+
+    Entity::Entity() = default;
+
+    Entity::~Entity() = default;
+
+    int32_t Entity::getXPos() const {
+        return m_xPos;
     }
-} // RAL
+
+    int32_t Entity::getYPos() const {
+        return m_yPos;
+    }
+
+    std::string Entity::getName() {
+        return m_name;
+    }
+
+    void Entity::setXPos(int32_t value) {
+        m_xPos = value;
+    }
+
+    void Entity::setYPos(int32_t value) {
+        m_yPos = value;
+    }
+
+    void Entity::setName(std::string name) {
+        m_name = std::move(name);
+    }
+
+    void Entity::setPos(int32_t xValue, int32_t yValue) {
+        setXPos(xValue);
+        setYPos(yValue);
+    }
+}

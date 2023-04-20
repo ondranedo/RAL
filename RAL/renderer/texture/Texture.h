@@ -10,29 +10,35 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#ifndef RAL_PROJECT_GLINDEXBUFFER_H
-#define RAL_PROJECT_GLINDEXBUFFER_H
 
-#include <renderer/renderingAPI/buffers/IndexBuffer.h>
-#include <renderer/renderingAPI/platform/openGL/GLIndexable.h>
+#ifndef RAL_PROJECT_TEXTURE_H
+#define RAL_PROJECT_TEXTURE_H
 
-namespace RAL
-{
-    class GLIndexBuffer : public virtual IndexBuffer, public virtual GLIndexable
-    {
+#include <vector>
+#include <string>
+
+namespace RAL{
+    class Texture{
     public:
-        ~GLIndexBuffer() override;
 
-        GLIndexBuffer();
+        Texture();
+        ~Texture();
 
-        void setData(unsigned int *indices,unsigned int size,DrawUsage usage) override;
+        [[nodiscard]] uint16_t getWidth() const;
+        [[nodiscard]] uint16_t getHeight() const;
+        [[nodiscard]] uint8_t getNOfChannels() const;
+        [[nodiscard]] size_t getSize() const;
+        uint8_t* getImage();
 
-        void bind() const override;
-
-        void unbind() const override;
+        void stbiLoadTexture(const std::string& path);
+        void stbiLoadFlippedTexture(const std::string& path);
 
     private:
+        uint8_t* m_image{};
+        int32_t m_height{};
+        int32_t m_width{};
+        int32_t m_colorChannels{};
     };
-} // RAL
+}
 
-#endif //!RAL_PROJECT_GLINDEXBUFFER_H
+#endif //RAL_PROJECT_TEXTURE_H

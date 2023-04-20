@@ -10,13 +10,12 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#include "BufferLayout.h"
 
-namespace RAL
-{
+#include "TextureParam.h"
 
-    BufferLayout::BufferLayout() : m_offset{0},m_componentSize{0},m_attributeIndex{0},m_fullLayoutSize{0},m_normalized{0}
-    {
-
-    }
+namespace RAL {
+    TextureParam::TextureParam() :
+            width(0), height(0), channels(TextureChannels::THREE), id(0),
+            wrappingParam(TextureWrapping::REPEAT), filteringParam(TextureFiltering::NEAREST), data(nullptr)
+    {}
 } // RAL

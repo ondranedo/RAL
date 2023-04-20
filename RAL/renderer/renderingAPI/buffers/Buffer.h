@@ -13,26 +13,56 @@
 #ifndef RAL_PROJECT_BUFFER_H
 #define RAL_PROJECT_BUFFER_H
 
+#include <cstdint>
+
 namespace RAL
 {
+    // Base class for all buffers.
+    // Each buffer has its own usage, data and size.
+    // Buffer is implemented by RenderingAPI, because each API has its own way
+    // how to bind the buffer into GPUs memory.
+    //
+    // Specifies the type of the buffer.
+    // Each RenderingAPI has its own implementation
+    // how to bind the buffer into GPUs memory.
+    //
+    // NOTE: Buffer does not have any data, it only stores the data pointer and its size.
+    //       The data is stored in RAM and is not copied into the buffer. So the data mustn't
+    //       be deleted until the buffer is deleted or cleared.
     class Buffer
     {
     public:
-        virtual void bind() const = 0;
+        Buffer();
+        virtual ~Buffer();
 
-        virtual void unbind() const = 0;
-
-        /**
-        1: VOLATILE = GL_STREAM_DRAW Data is set only once and used by the GPU few times
-        2: STATIC = GL_STATIC_DRAW Data is set only once and used many times
-        3: DYNAMIC = GL_DYNAMIC_DRAW Data is changed a lot and used many times
-        */
-        enum class DrawUsage : unsigned char
+        // Specifies how often the data is changed and how often it is used.
+        // This is used to optimize the buffer.
+        enum class Usage : unsigned char
         {
-            STATIC,
-            DYNAMIC,
-            VOLATILE
+            STATIC,  // Data is set only once and used by the GPU few times.
+            DYNAMIC, // Data is changed a lot and used many times.
+            VOLATILE // Data is changed every frame and used many times.
         };
+
+        // Sets the specified usage of the usage.
+        void setDrawUsage(Usage usage);
+
+        // Resets the buffer to its default state. (nullptr, and 0 size)
+        void clear();
+
+        // Get the usage of the buffer
+        [[nodiscard]] Usage getDrawUsage() const;
+
+        // address of the data in RAM
+        [[nodiscard]] const void* getData() const;
+
+        // size of the data in bytes stored in RAM
+        [[nodiscard]] size_t getSize() const;
+
+    protected:
+        Usage m_usage;
+        void* m_data;
+        size_t m_size;
     };
 
 } // RAL

@@ -56,8 +56,9 @@ add_subdirectory(platfomLayer)
 # Renderer - contains renderer specific code
 add_subdirectory(renderer)
 
-target_link_libraries(${RAL_ENGINE_LIB} PRIVATE ral_core ral_platformLayer)
+target_link_libraries(${RAL_ENGINE_LIB} PRIVATE ral_core)
 target_link_libraries(${RAL_ENGINE_LIB} PRIVATE ral_renderer)
+target_link_libraries(${RAL_ENGINE_LIB} PRIVATE ral_platformLayer)
 
 #######################################################
 #   Vendor libraries                                  #
@@ -71,7 +72,11 @@ set(GLFW_INSTALL OFF)
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glfw)
 target_link_libraries(${RAL_ENGINE_LIB} PRIVATE glfw)
 
+#STB
+include_directories(vendor/stb)
+
 #GLAD
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glad)
-target_link_libraries(${RAL_ENGINE_LIB} PRIVATE glad)
+target_link_libraries(${RAL_ENGINE_LIB} PRIVATE gl_4.0_core_debug)
 target_link_libraries(${RAL_ENGINE_LIB} PRIVATE opengl32)
+

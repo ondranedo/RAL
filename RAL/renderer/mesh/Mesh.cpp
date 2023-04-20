@@ -10,19 +10,41 @@
 // License v3.0` license.                              //
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
-#ifndef RAL_PROJECT_GLINDEXABLE_H
-#define RAL_PROJECT_GLINDEXABLE_H
 
-namespace RAL
-{
-    class GLIndexable
-    {
-    public:
-        GLIndexable();
-        virtual ~GLIndexable() = default;
-    protected:
-        unsigned int m_id;
-    };
-} // RAL
+#include "Mesh.h"
 
-#endif //!RAL_PROJECT_GLINDEXABLE_H
+#include <utility>
+
+namespace RAL{
+
+    void Mesh::openRalms(const std::string& path) {
+        setPath(path);
+        openRalms();
+    }
+
+    std::string Mesh::getPath() {
+        return m_path;
+    }
+
+    void Mesh::setPath(std::string path) {
+        m_path = std::move(path);
+    }
+
+    void Mesh::openRalms() {
+
+    }
+
+    void Mesh::saveRalms() {
+
+    }
+
+    void Mesh::saveRalms(const std::string &path) {
+        setPath(path);
+        saveRalms();
+    }
+
+    Mesh::Mesh() = default;
+
+    Mesh::~Mesh() = default;
+}
+

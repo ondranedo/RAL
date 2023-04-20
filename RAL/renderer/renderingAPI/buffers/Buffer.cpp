@@ -12,5 +12,37 @@
 /////////////////////////////////////////////////////////
 #include "Buffer.h"
 
+#include <core/utility/Logger.h>
+
 namespace RAL {
+    void Buffer::setDrawUsage(Buffer::Usage usage) {
+        m_usage = usage;
+    }
+
+    Buffer::Usage Buffer::getDrawUsage() const {
+        return m_usage;
+    }
+
+    Buffer::Buffer() : m_usage(Usage::STATIC), m_data(nullptr), m_size(0) {}
+
+    const void *Buffer::getData() const {
+        if(m_data)
+            return m_data;
+        RAL_LOG_WARNING("Vertex buffer data is null");
+        return nullptr;
+    }
+
+    size_t Buffer::getSize() const {
+        if(m_data)
+            return m_size;
+        RAL_LOG_WARNING("Vertex buffer size is 0");
+        return 0;
+    }
+
+    void Buffer::clear() {
+        m_data = nullptr;
+        m_size = 0;
+    }
+
+    Buffer::~Buffer() = default;
 } // RAL

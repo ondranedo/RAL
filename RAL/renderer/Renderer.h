@@ -15,40 +15,17 @@
 
 #include <platfomLayer/window/Window.h>
 
-// TODO: Remove this, when scene is implemented
-#include <renderer/renderingAPI/buffers/VertexBuffer.h>
-#include <renderer/renderingAPI/buffers/IndexBuffer.h>
-#include <renderer/renderingAPI/buffers/BufferLayout.h>
-#include <renderer/renderingAPI/RenderingAPI.h>
-
 namespace RAL {
     class Renderer : public BaseComponent {
     public:
-        enum class RendererAPI {
-            OpenGL
-        };
-
-        struct RenderSpec {
-            uint16_t width;
-            uint16_t height;
-            RenderSpec();
-        };
-    public:
-        explicit Renderer(const RendererAPI &rendererAPI = RendererAPI::OpenGL);
         virtual ~Renderer();
+        Renderer();
 
-        void setToWindow(Window *window);
-        void detachWindow();
-        void setRenderSpec(const RenderSpec& spec);
-
+        virtual void setWindow(Window* window);
+        //virtual void draw();
         virtual void renderLoop() = 0;
-        virtual void addData(VertexBuffer* vertex, IndexBuffer* index) = 0;
-
-    protected:
-        RendererAPI m_rendererAPI;
-        RenderSpec m_renderSpec;
+    private:
         Window* m_window;
-        RenderingAPI* m_renderingAPI;
     };
 } // RAL
 
