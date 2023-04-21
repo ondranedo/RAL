@@ -688,7 +688,12 @@ namespace RAL {
             if(!i->getTexture()){
                 m_textures.push_back(tempTexture);
                 i->setTexture(endTexture().base());
-                i->getTexture()->stbiLoadTexture(i->getTexturePath());
+                if(i->getMirrorFlag()){
+                    i->getTexture()->stbiLoadFlippedTexture(i->getTexturePath());
+                }
+                else{
+                    i->getTexture()->stbiLoadTexture(i->getTexturePath());
+                }
                 for(auto j = i + 1; j < endMaterial(); j++){
                     if(i->getTexturePath() == j->getTexturePath()){
                         j->setTexture(i->getTexture());
