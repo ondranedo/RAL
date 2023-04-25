@@ -25,9 +25,11 @@ namespace RAL {
         virtual void renderLoop() = 0;
 
     private:
+        static size_t rendererCount;
+
+    protected:
         Window* m_window;
         static RenderingAPI* renderingAPI;
-        static size_t rendererCount;
     };
 } // RAL
 

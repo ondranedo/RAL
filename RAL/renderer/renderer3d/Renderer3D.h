@@ -20,6 +20,7 @@ namespace RAL {
 
     class Renderer3D : public Renderer {
     public:
+        Renderer3D();
         void init() override;
         void release() override;
         void update() override;

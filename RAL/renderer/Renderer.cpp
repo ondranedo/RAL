@@ -39,7 +39,7 @@ namespace RAL {
     };
 
     void Renderer::setWindow(Window *window) {
-        if(window == nullptr){
+        if(m_window == nullptr){
             m_window = window;
             renderingAPI->setWindow(window);
             renderingAPI->init();

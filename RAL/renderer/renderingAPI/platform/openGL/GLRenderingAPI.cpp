@@ -71,7 +71,6 @@ namespace RAL
     void GLRenderingAPI::setAttributes() {
         GLsizei stride = m_vertexBufferLayout.getStride(), offset = 0;
         int index;
-        stride += 8 - stride % 8; // TODO: make this configurable
         for (const auto &element: m_vertexBufferLayout.getLayout()) {
             // Get attrib index from program
             index = m_activeProgram->getAttribLocation(VertexBufferLayout::EntryTypeToString(element));
