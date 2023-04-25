@@ -19,11 +19,12 @@
 #include <platfomLayer/window/Window.h>
 #include <Windows.h>
 
-LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+LRESULT CALLBACK StaticWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 namespace RAL::Win32 {
     class Win32Window : public Window {
     public:
+        LRESULT WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
         Win32Window();
 
         void swapBuffers() override;
@@ -43,13 +44,16 @@ namespace RAL::Win32 {
 
     private:
         void setCallbacks() override;
+        LRESULT CALLBACK static StaticWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
     private:
         Window *m_window;
-
+        int iPixelFormat;
+        PIXELFORMATDESCRIPTOR pfd;
         HINSTANCE m_hInstance;
         HWND m_hWnd;
         HDC m_hDc;
+        HGLRC m_rc;
     };
 } // RAL
 #endif //!RAL_WINDOWS

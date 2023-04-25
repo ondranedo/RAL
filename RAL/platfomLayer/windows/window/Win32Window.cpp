@@ -19,6 +19,7 @@
 #include <core/events/eventTypes/WindowEvents.h>
 #include <core/events/eventTypes/MouseEvents.h>
 #include <core/events/eventTypes/KeyEvents.h>
+#include <vendor/glad/include/glad/glad.h>
 
 typedef void (APIENTRY *PFNGLFUNCTION)(void);
 
@@ -31,7 +32,7 @@ PFNGLFUNCTION GetGLFunction(const char* name) {
 }
 
 
-LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+LRESULT RAL::Win32::Win32Window::WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     switch (uMsg) {
         case WM_CREATE: {
             PIXELFORMATDESCRIPTOR pfd = {
@@ -54,9 +55,8 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
                     0,                     // reserved
                     0, 0, 0                // layer masks ignored
             };
-            HDC hdc;
-            int iPixelFormat;
-            iPixelFormat = ChoosePixelFormat(hdc, &pfd);
+            Win32Window::m_hDc = GetDC(Win32Window::m_hWnd);
+            iPixelFormat = ChoosePixelFormat(m_hDc, &pfd);
             break;
         }
         case WM_CLOSE:
@@ -74,9 +74,35 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
     return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
+LRESULT CALLBACK RAL::Win32::Win32Window::StaticWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+    Win32Window* pWindow = nullptr;
+
+    if (uMsg == WM_NCCREATE) {
+        // Get the pointer to the window instance from the user data of the window
+        CREATESTRUCT* pCreate = (CREATESTRUCT*)lParam;
+        pWindow = (Win32Window*)pCreate->lpCreateParams;
+        SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)pWindow);
+    }
+    else {
+        // Get the pointer to the window instance from the user data of the window
+        pWindow = (Win32Window*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+    }
+
+    if (pWindow) {
+        // Call the non-static member function on the window instance
+        return pWindow->WindowProc(hwnd, uMsg, wParam, lParam);
+    }
+    else {
+        return DefWindowProc(hwnd, uMsg, wParam, lParam);
+    }
+}
+
 namespace RAL::Win32 {
-    Win32Window::Win32Window() : Window(WindowSpec()), m_window(nullptr), m_hInstance(GetModuleHandle(nullptr))
-    {
+    Win32Window::Win32Window() : Window(WindowSpec()), m_window(nullptr), m_hInstance(GetModuleHandle(nullptr)) {}
+
+    void Win32Window::init() {
+        RAL_LOG_DEBUG("Win32Window initialized");
+
         const char* CLASS_NAME = "Window Class";
 
         WNDCLASS wndClass = {};
@@ -84,7 +110,7 @@ namespace RAL::Win32 {
         wndClass.hInstance = m_hInstance;
         wndClass.hIcon = LoadIcon(nullptr, IDI_WINLOGO);
         wndClass.hCursor = LoadCursor(nullptr, IDC_ARROW);
-        wndClass.lpfnWndProc = WindowProc;
+        wndClass.lpfnWndProc = StaticWindowProc;
 
         RegisterClass(&wndClass);
 
@@ -120,10 +146,6 @@ namespace RAL::Win32 {
         ShowWindow(m_hWnd, SW_SHOW);
     }
 
-    void Win32Window::init() {
-        RAL_LOG_DEBUG("Win32Window initialized");
-    }
-
     void Win32Window::release() {
         RAL_LOG_DEBUG("Win32Window released");
     }
@@ -131,20 +153,26 @@ namespace RAL::Win32 {
     void Win32Window::update() {
         RAL_ASSERT(m_window, "Cannot update window, window `%s` is not created", m_spec.m_title);
         if(!m_window) return;
-        //TODO glfwPollEvents();
+        MSG msg = {};
+
+        while(PeekMessage(&msg, nullptr, 0u,0u, PM_REMOVE))
+        {
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
     }
 
     void Win32Window::makeContextCurrent() {
         RAL_ASSERT(m_window, "Cannot make context current, window `%s` is not created", m_spec.m_title);
         if(!m_window) return;
-        //TODO glfwMakeContextCurrent(m_window);
-
+        wglMakeCurrent(m_hDc, m_rc);
+        gladLoadGL();
+        glViewport(0,0, 640, 480);
     }
 
     void Win32Window::setDims(uint16_t width, uint16_t height) {
         RAL_ASSERT(m_window, "Cannot set window dimensions, window `%s` is not created", m_spec.m_title);
         if(!m_window) return;
-        //TODO glfwSetWindowSize(m_window, width, height);
     }
 
     void Win32Window::setTitle(const std::string &title) {
