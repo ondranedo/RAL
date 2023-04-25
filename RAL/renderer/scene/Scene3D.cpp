@@ -102,6 +102,10 @@ namespace RAL {
 
         fclose(file);
         loadTextures();
+        setActiveCamera("mainCamera");
+        if(!getActiveCamera()){
+            setActiveCamera(0);
+        }
     }
 
     void Scene3D::saveBinScene(const std::string& scenePath) {
@@ -138,6 +142,10 @@ namespace RAL {
         }
         file.RAL::Win32::Win32File::close();
         loadTextures();
+        setActiveCamera("mainCamera");
+        if(!getActiveCamera()){
+            setActiveCamera(0);
+        }
     }
 
     void Scene3D::saveBinObjects(FILE *file) {

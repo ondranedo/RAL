@@ -92,7 +92,7 @@ namespace RAL {
         std::vector<Material> m_materials;
         std::vector<Texture> m_textures;
         std::vector<Camera3D> m_cameras;
-        Camera3D* m_activeCamera;
+        Camera3D* m_activeCamera{};
     };
 } // RAL
 
