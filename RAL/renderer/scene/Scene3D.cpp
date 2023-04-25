@@ -403,7 +403,7 @@ namespace RAL {
                 return;
             }
         }
-        RAL_LOG_ERROR("Object %s not found", name.c_str());
+        RAL_LOG_ERROR("Camera %s not found", name.c_str());
     }
 
     Camera3D *Scene3D::getCamera(const std::string& name) {
@@ -412,7 +412,7 @@ namespace RAL {
                 return i.base();
             }
         }
-        RAL_LOG_ERROR("Object %s not found", name.c_str());
+        RAL_LOG_ERROR("Camera %s not found", name.c_str());
         return nullptr;
     }
 
@@ -711,5 +711,33 @@ namespace RAL {
         }
         RAL_LOG_ERROR("Material with the path %s not found", path.c_str());
         return nullptr;
+    }
+
+    Camera3D *Scene3D::getActiveCamera() {
+        return m_activeCamera;
+    }
+
+    void Scene3D::setActiveCamera(const std::string &name) {
+        for(auto i = beginCamera(); i < endCamera(); i++){
+            if(i->getName() == name){
+                setActiveCamera(i);
+                return;
+            }
+        }
+        RAL_LOG_ERROR("Camera %s not found", name.c_str());
+    }
+
+    void Scene3D::setActiveCamera(uint16_t index) {
+        setActiveCamera(beginCamera() + index);
+    }
+
+    void Scene3D::setActiveCamera(std::vector<Camera3D>::iterator iterator) {
+        if(iterator > endCamera()){
+            iterator = endCamera();
+        }
+        if(iterator < beginCamera()){
+            iterator = beginCamera();
+        }
+        m_activeCamera = iterator.base();
     }
 } // RAL
