@@ -21,11 +21,11 @@ namespace RAL{
 
     Entity::~Entity() = default;
 
-    int32_t Entity::getXPos() const {
+    float Entity::getXPos() const {
         return m_xPos;
     }
 
-    int32_t Entity::getYPos() const {
+    float Entity::getYPos() const {
         return m_yPos;
     }
 
@@ -33,11 +33,11 @@ namespace RAL{
         return m_name;
     }
 
-    void Entity::setXPos(int32_t value) {
+    void Entity::setXPos(float value) {
         m_xPos = value;
     }
 
-    void Entity::setYPos(int32_t value) {
+    void Entity::setYPos(float value) {
         m_yPos = value;
     }
 
@@ -45,7 +45,7 @@ namespace RAL{
         m_name = std::move(name);
     }
 
-    void Entity::setPos(int32_t xValue, int32_t yValue) {
+    void Entity::setPos(float xValue, float yValue) {
         setXPos(xValue);
         setYPos(yValue);
     }
