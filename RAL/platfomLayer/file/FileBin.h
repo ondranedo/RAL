@@ -21,8 +21,8 @@ namespace RAL{
     public:
         virtual ~FileBin();
 
-        virtual void readInto(void *dest, size_t elementSize, size_t elementCount) = 0;
-        virtual void readInto(void *dest, size_t elementSize) = 0;
+        virtual size_t readInto(void *dest, size_t elementSize, size_t elementCount) = 0;
+        virtual size_t readInto(void *dest, size_t elementSize) = 0;
 
         virtual void writeFrom(const void *src, size_t elementSize, size_t elementCount) = 0;
         virtual void writeFrom(const void *src, size_t elementSize) = 0;
