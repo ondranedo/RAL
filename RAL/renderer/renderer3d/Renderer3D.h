@@ -13,10 +13,21 @@
 #ifndef RAL_PROJECT_RENDERER3D_H
 #define RAL_PROJECT_RENDERER3D_H
 
+#include <renderer/Renderer.h>
+#include <renderer/scene/Scene3D.h>
+
 namespace RAL {
 
-    class Renderer3D {
-
+    class Renderer3D : public Renderer {
+    public:
+        void init() override;
+        void release() override;
+        void update() override;
+        void renderLoop() override;
+        void setScene(Scene3D* scene);
+        void clearScene();
+    private:
+        Scene3D* m_activeScene;
     };
 
 } // RAL

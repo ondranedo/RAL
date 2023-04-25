@@ -12,12 +12,40 @@
 /////////////////////////////////////////////////////////
 #include "Renderer.h"
 
-namespace RAL {
-    Renderer::~Renderer() = default;
+#include <core/memoryManager/Overload.h>
+#include <renderer/renderingAPI/platform/openGL/GLRenderingAPI.h>
 
-    Renderer::Renderer() : m_window(nullptr) {};
+namespace RAL {
+    RenderingAPI* Renderer::renderingAPI = nullptr;
+    size_t Renderer::rendererCount = 0;
+
+    Renderer::~Renderer()
+    {
+        // TODO: thread safety
+        rendererCount--;
+        if (rendererCount == 0) {
+            delete renderingAPI;
+            renderingAPI = nullptr;
+        }
+    }
+
+    Renderer::Renderer() : m_window(nullptr) {
+        // TODO: thread safety
+        if (renderingAPI == nullptr && rendererCount == 0) {
+            // TODO: change to different API
+            renderingAPI = new GLRenderingAPI;
+        }
+        rendererCount++;
+    };
 
     void Renderer::setWindow(Window *window) {
-        m_window = window;
+        if(window == nullptr){
+            m_window = window;
+            renderingAPI->setWindow(window);
+            renderingAPI->init();
+            return;
+        }
+
+        RAL_LOG_ERROR("Window is not nullptr");
     }
 } // RAL

@@ -31,6 +31,7 @@ namespace RAL
 
     void GLRenderingAPI::init()
     {
+        RAL_LOG_DEBUG("Initializing OpenGL rendering API");
         glGenVertexArrays(1, &m_vertexArray);
         glGenBuffers(1, &m_vertexBuffer);
         glGenBuffers(1, &m_indexBuffer);
@@ -39,6 +40,7 @@ namespace RAL
 
     void GLRenderingAPI::release()
     {
+        RAL_LOG_DEBUG("Releasing OpenGL rendering API");
         glDeleteVertexArrays(1, &m_vertexArray);
         glDeleteBuffers(1, &m_vertexBuffer);
         glDeleteBuffers(1, &m_indexBuffer);

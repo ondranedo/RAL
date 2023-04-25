@@ -14,7 +14,7 @@
 #define RAL_PROJECT_RENDERER_H
 
 #include <platfomLayer/window/Window.h>
-
+#include <renderer/renderingAPI/RenderingAPI.h>
 namespace RAL {
     class Renderer : public BaseComponent {
     public:
@@ -22,10 +22,12 @@ namespace RAL {
         Renderer();
 
         virtual void setWindow(Window* window);
-        //virtual void draw();
         virtual void renderLoop() = 0;
+
     private:
         Window* m_window;
+        static RenderingAPI* renderingAPI;
+        static size_t rendererCount;
     };
 } // RAL
 
