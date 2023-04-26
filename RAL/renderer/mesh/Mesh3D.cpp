@@ -228,6 +228,7 @@ namespace RAL{
         Win32::Win32FileTxt file;
         file.RAL::Win32::Win32File::open(getPath(), File::Mode::Read);
         size_t index;
+        size_t subIndex;
         Vertex tempVertex{};
         vertexTriangle tempTriangle{};
 
@@ -238,9 +239,11 @@ namespace RAL{
             else if(line->starts_with('v')){
                 //loading a vertex
                 index = 1;
-                tempVertex.x = std::stof(line->substr(index), &index);
-                tempVertex.y = std::stof(line->substr(index), &index);
-                tempVertex.z = std::stof(line->substr(index), &index);
+                tempVertex.x = std::stof(line->substr(index), &subIndex);
+                index += subIndex;
+                tempVertex.y = std::stof(line->substr(index), &subIndex);
+                index += subIndex;
+                tempVertex.z = std::stof(line->substr(index));
                 // ^this converts a portion of the string after index to a float and
                 // stores the index after the last part of the number
                 addVertex(tempVertex);
@@ -248,13 +251,65 @@ namespace RAL{
             else if(line->starts_with('f')){
                 //loading a triangle
                 index = 1;
-                tempTriangle.indexA = std::stoi(line->substr(index), &index);
-                tempTriangle.indexB = std::stoi(line->substr(index), &index);
-                tempTriangle.indexC = std::stoi(line->substr(index), &index);
+                tempTriangle.indexA = std::stoi(line->substr(index), &subIndex) - 1;
+                index += subIndex;
+                if(line.value()[index] == '/'){
+                    if(line.value()[index + 1] == '/'){
+                        //normal index without texture index
+                        std::stof(line->substr(index), &subIndex);
+                        index += subIndex;
+                    }
+                    else {
+                        //texture index
+                        std::stof(line->substr(index), &subIndex);
+                        index += subIndex;
+                        if(line.value()[index] == '/'){
+                            //normal index
+                            std::stof(line->substr(index), &subIndex);
+                            index += subIndex;
+                        }
+                    }
+                }
+                tempTriangle.indexB = std::stoi(line->substr(index), &subIndex) - 1;
+                index += subIndex;
+                if(line.value()[index] == '/'){
+                    if(line.value()[index + 1] == '/'){
+                        //normal index without texture index
+                        std::stof(line->substr(index), &subIndex);
+                        index += subIndex;
+                    }
+                    else {
+                        //texture index
+                        std::stof(line->substr(index), &subIndex);
+                        index += subIndex;
+                        if(line.value()[index] == '/'){
+                            //normal index
+                            std::stof(line->substr(index), &subIndex);
+                            index += subIndex;
+                        }
+                    }
+                }
+                tempTriangle.indexC = std::stoi(line->substr(index), &subIndex) - 1;
                 addVertexTriangle(tempTriangle);
+                if(line.value()[index] == '/'){
+                    if(line.value()[index + 1] == '/'){
+                        //normal index without texture index
+                        std::stof(line->substr(index));
+                    }
+                    else {
+                        //texture index
+                        std::stof(line->substr(index), &subIndex);
+                        index += subIndex;
+                        if(line.value()[index] == '/'){
+                            //normal index
+                            std::stof(line->substr(index));
+                        }
+                    }
+                }
             }
             //todo: potentially more .obj support (normals, texture points)
             //      multiple polygon face support (convex checks)
+            //      negative vertex indices support (-1 is the last vertex)
         }
 
         file.RAL::Win32::Win32File::close();
