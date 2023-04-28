@@ -105,7 +105,7 @@ namespace RAL {
     void Application::run() {
         RAL_LOG_INFO("Engine starting main loop");
 
-        // Vojtuv codik
+        /*// Vojtuv codik
         m_fcm.get<Window>("Window")->makeContextCurrent();
 
         GLRenderingAPI rAPI;
@@ -117,7 +117,7 @@ namespace RAL {
         GLIndexBuffer ib;
         ib.setData(indices, sizeof(indices), Buffer::DrawUsage::STATIC);
         va.setLayout({BufferLayout::LayoutType::FLOAT3,BufferLayout::LayoutType::FLOAT3});
-        //~Vojtuv codik
+        //~Vojtuv codik*/
 
         m_fcm.get<Window>("Window")->swapBuffers();
 
@@ -127,7 +127,7 @@ namespace RAL {
             m_fcm.updateComponents();
 
             global::mainLogger.print();
-
+            /*
             // Vojtuv codik
             glClearColor(34.0f/255.0f, 34.0f/255.0f, 34.0f/255.0f, 1.0f);
              glClear(GL_COLOR_BUFFER_BIT);
@@ -135,7 +135,7 @@ namespace RAL {
              va.bind();
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
             m_fcm.get<Window>("Window")->swapBuffers();
-            //~Vojtuv codik
+            //~Vojtuv codik*/
         }
     }
 } // RAL
