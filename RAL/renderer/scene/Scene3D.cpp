@@ -25,7 +25,6 @@ namespace RAL {
         size_t tempSize;
         void* buffer;
         Object3D tempObject;
-        int32_t tempInt;
         float tempFloat;
         PhysicalProperties tempProperties;
 
@@ -54,12 +53,12 @@ namespace RAL {
             endObject().base()->setMaterial(beginMaterial().base() + tempSize);
 
             //position of object
-            fread(&tempInt, sizeof(int32_t), 1, file);
-            endObject().base()->setXPos(tempInt);
-            fread(&tempInt, sizeof(int32_t), 1, file);
-            endObject().base()->setYPos(tempInt);
-            fread(&tempInt, sizeof(int32_t), 1, file);
-            endObject().base()->setZPos(tempInt);
+            fread(&tempFloat, sizeof(float), 1, file);
+            endObject().base()->setXPos(tempFloat);
+            fread(&tempFloat, sizeof(float), 1, file);
+            endObject().base()->setYPos(tempFloat);
+            fread(&tempFloat, sizeof(float), 1, file);
+            endObject().base()->setZPos(tempFloat);
 
             //rotation of object
             fread(&tempFloat, sizeof(float), 1, file);
@@ -101,6 +100,11 @@ namespace RAL {
         loadBinCameras(file);
 
         fclose(file);
+        loadTextures();
+        setActiveCamera("mainCamera");
+        if(!getActiveCamera()){
+            setActiveCamera(0);
+        }
     }
 
     void Scene3D::saveBinScene(const std::string& scenePath) {
@@ -136,12 +140,16 @@ namespace RAL {
             }
         }
         file.RAL::Win32::Win32File::close();
+        loadTextures();
+        setActiveCamera("mainCamera");
+        if(!getActiveCamera()){
+            setActiveCamera(0);
+        }
     }
 
     void Scene3D::saveBinObjects(FILE *file) {
 
         size_t tempSize;
-        int32_t tempInt;
         float tempFloat;
 
         //number of objects
@@ -165,12 +173,12 @@ namespace RAL {
             fwrite(&tempSize, sizeof(size_t), 1, file);
 
             //position of object
-            tempInt = object.getXPos();
-            fwrite(&tempInt, sizeof(int32_t), 1, file);
-            tempInt = object.getYPos();
-            fwrite(&tempInt, sizeof(int32_t), 1, file);
-            tempInt = object.getZPos();
-            fwrite(&tempInt, sizeof(int32_t), 1, file);
+            tempFloat = object.getXPos();
+            fwrite(&tempFloat, sizeof(float), 1, file);
+            tempFloat = object.getYPos();
+            fwrite(&tempFloat, sizeof(float), 1, file);
+            tempFloat = object.getZPos();
+            fwrite(&tempFloat, sizeof(float), 1, file);
 
             //rotation of object
             tempFloat = object.getXRot();
@@ -250,9 +258,9 @@ namespace RAL {
         }
 
         //4, 5, 6 - position
-        tempObject.setXPos(std::stoi(file.readLine().value()));
-        tempObject.setYPos(std::stoi(file.readLine().value()));
-        tempObject.setZPos(std::stoi(file.readLine().value()));
+        tempObject.setXPos(std::stof(file.readLine().value()));
+        tempObject.setYPos(std::stof(file.readLine().value()));
+        tempObject.setZPos(std::stof(file.readLine().value()));
 
         //7, 8, 9 - rotation
         tempObject.setXRot(std::stof(file.readLine().value()));
@@ -401,7 +409,7 @@ namespace RAL {
                 return;
             }
         }
-        RAL_LOG_ERROR("Object %s not found", name.c_str());
+        RAL_LOG_ERROR("Camera %s not found", name.c_str());
     }
 
     Camera3D *Scene3D::getCamera(const std::string& name) {
@@ -410,7 +418,7 @@ namespace RAL {
                 return i.base();
             }
         }
-        RAL_LOG_ERROR("Object %s not found", name.c_str());
+        RAL_LOG_ERROR("Camera %s not found", name.c_str());
         return nullptr;
     }
 
@@ -456,9 +464,9 @@ namespace RAL {
         tempCamera.setWidth(std::stoi(file.readLine().value()));
 
         //4, 5, 6 - position
-        tempCamera.setXPos(std::stoi(file.readLine().value()));
-        tempCamera.setYPos(std::stoi(file.readLine().value()));
-        tempCamera.setZPos(std::stoi(file.readLine().value()));
+        tempCamera.setXPos(std::stof(file.readLine().value()));
+        tempCamera.setYPos(std::stof(file.readLine().value()));
+        tempCamera.setZPos(std::stof(file.readLine().value()));
 
         //7, 8, 9 - rotation
         tempCamera.setXRot(std::stof(file.readLine().value()));
@@ -543,12 +551,12 @@ namespace RAL {
             fwrite(camera.getName().c_str(), sizeof(char), tempSize, file);
 
             //position of camera
-            tempInt = camera.getXPos();
-            fwrite(&tempInt, sizeof(int32_t), 1, file);
-            tempInt = camera.getYPos();
-            fwrite(&tempInt, sizeof(int32_t), 1, file);
-            tempInt = camera.getZPos();
-            fwrite(&tempInt, sizeof(int32_t), 1, file);
+            tempFloat = camera.getXPos();
+            fwrite(&tempFloat, sizeof(float), 1, file);
+            tempFloat = camera.getYPos();
+            fwrite(&tempFloat, sizeof(float), 1, file);
+            tempFloat = camera.getZPos();
+            fwrite(&tempFloat, sizeof(float), 1, file);
 
             //rotation of camera
             tempFloat = camera.getXRot();
@@ -595,12 +603,12 @@ namespace RAL {
             delete[] reinterpret_cast<char*>(buffer);
 
             //position of camera
-            fread(&tempInt, sizeof(int32_t), 1, file);
-            endCamera().base()->setXPos(tempInt);
-            fread(&tempInt, sizeof(int32_t), 1, file);
-            endCamera().base()->setYPos(tempInt);
-            fread(&tempInt, sizeof(int32_t), 1, file);
-            endCamera().base()->setZPos(tempInt);
+            fread(&tempFloat, sizeof(float), 1, file);
+            endCamera().base()->setXPos(tempFloat);
+            fread(&tempFloat, sizeof(float), 1, file);
+            endCamera().base()->setYPos(tempFloat);
+            fread(&tempFloat, sizeof(float), 1, file);
+            endCamera().base()->setZPos(tempFloat);
 
             //rotation of camera
             fread(&tempFloat, sizeof(float), 1, file);
@@ -686,7 +694,12 @@ namespace RAL {
             if(!i->getTexture()){
                 m_textures.push_back(tempTexture);
                 i->setTexture(endTexture().base());
-                i->getTexture()->stbiLoadTexture(i->getTexturePath());
+                if(i->getMirrorFlag()){
+                    i->getTexture()->stbiLoadFlippedTexture(i->getTexturePath());
+                }
+                else{
+                    i->getTexture()->stbiLoadTexture(i->getTexturePath());
+                }
                 for(auto j = i + 1; j < endMaterial(); j++){
                     if(i->getTexturePath() == j->getTexturePath()){
                         j->setTexture(i->getTexture());
@@ -694,5 +707,43 @@ namespace RAL {
                 }
             }
         }
+    }
+
+    Material *Scene3D::getMaterial(const std::string &path) {
+        for(auto i = beginMaterial(); i < endMaterial(); i++){
+            if(i->getPath() == path){
+                return i.base();
+            }
+        }
+        RAL_LOG_ERROR("Material with the path %s not found", path.c_str());
+        return nullptr;
+    }
+
+    Camera3D *Scene3D::getActiveCamera() {
+        return m_activeCamera;
+    }
+
+    void Scene3D::setActiveCamera(const std::string &name) {
+        for(auto i = beginCamera(); i < endCamera(); i++){
+            if(i->getName() == name){
+                setActiveCamera(i);
+                return;
+            }
+        }
+        RAL_LOG_ERROR("Camera %s not found", name.c_str());
+    }
+
+    void Scene3D::setActiveCamera(uint16_t index) {
+        setActiveCamera(beginCamera() + index);
+    }
+
+    void Scene3D::setActiveCamera(std::vector<Camera3D>::iterator iterator) {
+        if(iterator > endCamera()){
+            iterator = endCamera();
+        }
+        if(iterator < beginCamera()){
+            iterator = beginCamera();
+        }
+        m_activeCamera = iterator.base();
     }
 } // RAL

@@ -19,15 +19,15 @@ namespace RAL{
 
     Entity3D::~Entity3D() = default;
 
-    int32_t Entity3D::getZPos() const {
+    float Entity3D::getZPos() const {
         return m_zPos;
     }
 
-    void Entity3D::setZPos(int32_t value) {
+    void Entity3D::setZPos(float value) {
         m_zPos = value;
     }
 
-    void Entity3D::setPos(int32_t xValue, int32_t yValue, int32_t zValue) {
+    void Entity3D::setPos(float xValue, float yValue, float zValue) {
         Entity::setPos(xValue, yValue);
         setZPos(zValue);
     }

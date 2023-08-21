@@ -32,7 +32,6 @@ namespace RAL{
         };
 
         //todo: potentially make a factory for use in model creator
-        //      .obj or other foreign file support
     public:
         Mesh3D();
         ~Mesh3D();

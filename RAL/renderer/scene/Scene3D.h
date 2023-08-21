@@ -70,8 +70,13 @@ namespace RAL {
         uint16_t getCameraCount();
         std::vector<Camera3D>::iterator beginCamera();
         std::vector<Camera3D>::iterator endCamera();
+        Camera3D* getActiveCamera();
+        void setActiveCamera(uint16_t index);
+        void setActiveCamera(std::vector<Camera3D>::iterator iterator);
+        void setActiveCamera(const std::string& name);
 
         void addMaterial(Material material);
+        Material* getMaterial(const std::string& path);
         uint32_t getMaterialCount();
         std::vector<Material>::iterator beginMaterial();
         std::vector<Material>::iterator endMaterial();
@@ -87,6 +92,7 @@ namespace RAL {
         std::vector<Material> m_materials;
         std::vector<Texture> m_textures;
         std::vector<Camera3D> m_cameras;
+        Camera3D* m_activeCamera{};
     };
 } // RAL
 
