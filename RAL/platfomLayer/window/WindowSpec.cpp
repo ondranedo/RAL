@@ -13,13 +13,26 @@
 
 
 #include "WindowSpec.h"
+#include <core/utility/Logger.h>
 
 namespace RAL {
     WindowSpec::WindowSpec():
-        m_title("untitled window"),
-        m_width(800),
-        m_height(600),
-        m_created(false)
+            title("untitled window"),
+            width(800),
+            ratio(WindowRatio::RATIO_16_9)
     {
+    }
+
+    float WindowRatioValue(WindowRatio ratio) {
+        switch (ratio) {
+            case WindowRatio::RATIO_16_9:
+                return 16.0f / 9.0f;
+            case WindowRatio::RATIO_4_3:
+                return 4.0f / 3.0f;
+            case WindowRatio::RATIO_1_1:
+                return 1.0f;
+        }
+        RAL_LOG_ERROR("Unknown window ratio!");
+        return 1.0f;
     }
 } // RAL

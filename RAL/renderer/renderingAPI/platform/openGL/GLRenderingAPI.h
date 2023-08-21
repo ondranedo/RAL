@@ -13,45 +13,58 @@
 #ifndef RAL_PROJECT_GLRENDERINGAPI_H
 #define RAL_PROJECT_GLRENDERINGAPI_H
 
+#include <core/memoryManager/Overload.h>
 #include <renderer/renderingAPI/RenderingAPI.h>
+#include <optional>
+#include <array>
+#include <unordered_map>
+#include <renderer/renderingAPI/platform/openGL/GLProgram.h>
 
 namespace RAL
 {
 
-    class GLRenderingAPI : public RenderingAPI
+    class GLRenderingAPI final : public RenderingAPI
     {
     public:
+        GLRenderingAPI();
+        ~GLRenderingAPI();
+
+        void clear() override;
+
         void init() override;
 
-        void useDefaultProgram() override;
+        void release() override;
+
+        void draw() override;
+
+        void bind(const IndexBuffer &indexBuffer) override;
+
+        void bind(const VertexBuffer &vertexBuffer) override;
+
+        // Shader/Program functions
+        void setProgram(uint16_t program) override;
+        void compileProgram(uint16_t id, const std::string &vertex, const std::string &fragment) override;
+        void sendProgramData(const ProgramData &data) override;
+        void sendProgramData(const ProgramData &data, const CustomProgramData &custom_data) override;
+
+        void sendTexture(const TextureParam& texture_id) override;
 
     private:
-        void shaderInit() override;
+        void setWindowToDraw() override;
 
-        void compileShaders() override;
+        void setAttributes();
 
-        void attachShader() override;
+        void setBindables();
+
 
     protected:
-        unsigned int vertexShader, fragmentShader, shaderProgram;
-        const char *vertexShaderSource = "#version 460 core\n"
-                                         "layout (location = 0) in vec3 aPos;\n"
-                                         "layout (location = 1) in vec3 aColor;\n"
-                                         "out vec3 ourColor;\n"
-                                         "void main()\n"
-                                         "{\n"
-                                         "   gl_Position = vec4(aPos, 1.0);\n"
-                                         "   ourColor = aColor;\n"
-                                         "}\0";
+        unsigned int m_vertexArray, m_indexBuffer, m_vertexBuffer;
+        uint32_t m_indicesCount;
+        VertexBufferLayout m_vertexBufferLayout;
 
-
-        const char *fragmentShaderSource = "#version 460 core\n"
-                                           "out vec4 FragColor;\n"
-                                           "in vec3 ourColor;\n"
-                                           "void main()\n"
-                                           "{\n"
-                                           "   FragColor = vec4(ourColor, 1.0f);\n"
-                                           "}\n\0";
+        std::unordered_map<uint16_t, GLProgram*> m_programs;
+        GLProgram* m_activeProgram;
+        unsigned int m_activeTexture;
     };
-};
+}
 #endif //!RAL_PROJECT_GLRENDERINGAPI_H

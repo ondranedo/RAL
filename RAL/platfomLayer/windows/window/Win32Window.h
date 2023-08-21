@@ -42,6 +42,8 @@ namespace RAL::Win32 {
 
         bool getVSync() const override;
 
+        LoadProc getProcAddress() override;
+
     private:
         void setCallbacks() override;
 

@@ -27,17 +27,24 @@
  *  block[2]:
  *      n0..n15 - width
  *      n16..n31 - height
- *      n33 - created
  */
 #define RAL_WINDOW_SPEC_TITLE_SIZE 64
 
 namespace RAL {
+    using dataBlock = uint64_t;
+
+    enum class WindowRatio : dataBlock {
+        RATIO_16_9,
+        RATIO_4_3,
+        RATIO_1_1
+    };
+
+    float WindowRatioValue(WindowRatio ratio);
+
     struct WindowSpec {
-        using dataBlock = uint64_t;
-        char m_title[RAL_WINDOW_SPEC_TITLE_SIZE]; // 64 char for title
-        dataBlock m_width : 16; // in pixels
-        dataBlock m_height: 16; // in pixels
-        dataBlock m_created : 1; // 0 - not created, 1 - created
+        char title[RAL_WINDOW_SPEC_TITLE_SIZE]; // 64 char for title
+        dataBlock width : 16; // in pixels
+        WindowRatio ratio : 16; // ratio
         WindowSpec();
     };
 } // RAL
