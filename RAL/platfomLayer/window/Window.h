@@ -23,6 +23,9 @@
 namespace RAL {
     class Window : public BaseComponent{
     public:
+        typedef void* (*LoadProc)(const char *name);
+
+
         Window(const WindowSpec& spec);
         virtual ~Window();
         [[nodiscard]] const WindowSpec& getSpec() const;
@@ -37,6 +40,7 @@ namespace RAL {
         [[nodiscard]] uint8_t getId() const;
         void setEventCallback(const EventManager::EventCallback& callback);
         virtual void swapBuffers() = 0;
+        virtual LoadProc getProcAddress() = 0;
 
     private:
         virtual void setCallbacks() = 0;
@@ -47,6 +51,7 @@ namespace RAL {
 
         // TODO: Window manager or some similar thing for supporting multiple windows
         uint8_t m_id;
+        bool m_created;
     };
 } // RAL
 

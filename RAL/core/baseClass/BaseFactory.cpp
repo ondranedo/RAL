@@ -73,11 +73,13 @@ namespace RAL {
 #ifdef RAL_DEBUG
         return m_maxObjectCount;
 #endif //!RAL_DEBUG
+        return 0;
     }
     uint32_t BaseFactory::getObjectCount() const {
 #ifdef RAL_DEBUG
         return m_objectCount;
 #endif //!RAL_DEBUG
+        return 0;
     }
 
 } // RAL

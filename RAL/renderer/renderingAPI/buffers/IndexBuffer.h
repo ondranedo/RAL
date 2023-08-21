@@ -17,12 +17,23 @@
 
 namespace RAL
 {
-    class IndexBuffer : public virtual Buffer
+    // Index buffer class, used for storing indecies of vertices
+    // one of the most important buffers together with vertex buffer.
+    // Index buffer is used for drawing triangles, quads, lines etc.
+    // Has to be bound before every draw call.
+    class IndexBuffer final : public Buffer
     {
     public:
-        virtual ~IndexBuffer() = default;
-        virtual void setData(unsigned int *indices,unsigned int size,DrawUsage usage) = 0;
-    private:
+        IndexBuffer(unsigned int *ptr, unsigned int count);
+        IndexBuffer();
+        ~IndexBuffer() override;
+
+        // Sets data to index buffer, it is very important to set data
+        // before binding index buffer and setting it as !unsigned int!
+        // [count] is number of indecies, not size in bytes!
+        void setData(unsigned int *ptr, unsigned int count);
+
+        [[nodiscard]] uint32_t getIndeciesCount() const;
     };
 } // RAL
 

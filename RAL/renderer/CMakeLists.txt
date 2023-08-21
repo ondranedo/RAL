@@ -15,8 +15,31 @@ add_library(ral_renderer STATIC
         Renderer.cpp
         Renderer.h)
 
-add_subdirectory(renderer)
+add_subdirectory(renderer2d)
 target_link_libraries(ral_renderer PRIVATE ral_renderer_renderer2d)
 
+add_subdirectory(renderer3d)
+target_link_libraries(ral_renderer PRIVATE ral_renderer_renderer3d)
+
 add_subdirectory(renderingAPI)
-target_link_libraries(ral_renderer PRIVATE ral_renderer_renderingAPI)
+
+target_link_libraries(ral_renderer PUBLIC ral_renderer_renderingAPI)
+
+add_subdirectory(scene)
+target_link_libraries(ral_renderer PUBLIC ral_renderer_scene)
+
+add_subdirectory(mesh)
+target_link_libraries(ral_renderer PUBLIC ral_renderer_mesh)
+
+add_subdirectory(entity)
+target_link_libraries(ral_renderer PUBLIC ral_renderer_entity)
+
+add_subdirectory(material)
+target_link_libraries(ral_renderer PUBLIC ral_renderer_material)
+
+add_subdirectory(texture)
+target_link_libraries(ral_renderer PUBLIC ral_renderer_texture)
+
+add_subdirectory(physics)
+target_link_libraries(ral_renderer PUBLIC ral_renderer_physics)
+

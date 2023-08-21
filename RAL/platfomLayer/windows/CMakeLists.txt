@@ -16,5 +16,5 @@ add_library(ral_platformLayer_windows STATIC
         "Win32GLFW.cpp"
         "Win32GLFW.h"
         "Win32Main.cpp"
-        "Win32Main.h")
+        "Win32Main.h" Win32Timer.cpp Win32Timer.h)
 endif(WIN32)

@@ -31,7 +31,7 @@ namespace RAL::Win32 {
         void release();
         void setVSync(bool state);
         [[nodiscard]] bool getVSync() const;
-        [[nodiscard]] static Types::Codes getCode(uint16_t glfwKeyCode);
+        [[nodiscard]] static Types::IOCode getCode(uint16_t glfwKeyCode);
 
     private:
         uint8_t m_windowCount;

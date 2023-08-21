@@ -14,4 +14,20 @@
 
 namespace RAL
 {
+    void IndexBuffer::setData(unsigned int *ptr, unsigned int count) {
+        m_data = ptr;
+        m_size = count * sizeof(unsigned int);
+    }
+
+    uint32_t IndexBuffer::getIndeciesCount() const {
+        return m_size / sizeof(unsigned int);
+    }
+
+    IndexBuffer::IndexBuffer(unsigned int *ptr, unsigned int count) {
+        setData(ptr, count);
+    }
+
+    IndexBuffer::IndexBuffer() = default;
+
+    IndexBuffer::~IndexBuffer() = default;
 } // RAL

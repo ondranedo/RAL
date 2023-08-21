@@ -103,8 +103,10 @@ namespace RAL {
             count++;
 #endif
         }
+#ifdef RAL_DEBUG
         if(count)
         RAL_LOG_DEBUG("Created %zu component%s", count, count > 1 ? "s" : "");
+#endif
     }
 
     void FCM::initComponents() {
@@ -122,8 +124,10 @@ namespace RAL {
             }
             component.wasInitialized = true;
         }
+#ifdef RAL_DEBUG
         if(count)
         RAL_LOG_DEBUG("Initialized %zu component%s", count, count > 1 ? "s" : "");
+#endif
     }
 
     void FCM::releaseComponents() {
@@ -141,8 +145,10 @@ namespace RAL {
             }
             component.wasReleased = true;
         }
+#ifdef RAL_DEBUG
         if(count)
         RAL_LOG_DEBUG("Released %zu component%s", count, count > 1 ? "s" : "");
+#endif
     }
 
     void FCM::updateComponents() {

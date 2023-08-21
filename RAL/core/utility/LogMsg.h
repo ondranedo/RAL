@@ -30,7 +30,17 @@ namespace RAL{
         char m_buff[RAL_LOG_MSG_SIZE];
         // TODO: MSG Time
         LogMsg():m_buff{0}, m_level(Level::DEBUG){}
-        static const char* levelToString(Level level);
+        static const char* levelToString(Level level)
+        {
+            switch(level){
+                case Level::DEBUG:  return "DEBU";
+                case Level::INFO:   return "INFO";
+                case Level::WARNING:return "WARN";
+                case Level::ERROR:  return "ERRO";
+                case Level::FATAL:  return "FATA";
+                default:            return "UNKNOWN";
+            }
+        }
     };
 }
 

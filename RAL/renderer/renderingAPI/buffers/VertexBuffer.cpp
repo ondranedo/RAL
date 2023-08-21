@@ -11,7 +11,34 @@
 // See file `LICENSE` for full license details.        //
 /////////////////////////////////////////////////////////
 #include "VertexBuffer.h"
-
+#include <core/utility/Logger.h>
 namespace RAL{
+    VertexBuffer::VertexBuffer() : m_layout() {}
+    VertexBuffer::VertexBuffer(void *ptr, size_t size) : m_layout() { setData(ptr, size); }
+
+    VertexBuffer::VertexBuffer(void *ptr, size_t size, VertexBufferLayout &&layout) {
+        setData(ptr, size);
+        setLayout(std::move(layout));
+    }
+
+
+    VertexBuffer::~VertexBuffer() = default;
+
+    void VertexBuffer::setLayout(const VertexBufferLayout &layout) {
+        m_layout = layout;
+    }
+
+    void VertexBuffer::setLayout(VertexBufferLayout &&layout) {
+        m_layout = std::move(layout);
+    }
+
+    void VertexBuffer::setData(void *ptr, const size_t size) {
+        m_data = ptr;
+        m_size = size;
+    }
+
+    const VertexBufferLayout &VertexBuffer::getLayout() const {
+        return m_layout;
+    }
 
 };

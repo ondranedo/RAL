@@ -13,10 +13,23 @@
 #ifndef RAL_PROJECT_RENDERER_H
 #define RAL_PROJECT_RENDERER_H
 
+#include <platfomLayer/window/Window.h>
+#include <renderer/renderingAPI/RenderingAPI.h>
 namespace RAL {
-    class Renderer {
+    class Renderer : public BaseComponent {
     public:
+        virtual ~Renderer();
+        Renderer();
+
+        virtual void setWindow(Window* window);
+        virtual void renderLoop() = 0;
+
     private:
+        static size_t rendererCount;
+
+    protected:
+        Window* m_window;
+        static RenderingAPI* renderingAPI;
     };
 } // RAL
 
