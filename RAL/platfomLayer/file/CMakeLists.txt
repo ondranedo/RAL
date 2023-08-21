@@ -16,7 +16,9 @@ if(WIN32)
             ../windows/file/Win32FileTxt.cpp
             ../windows/file/Win32FileTxt.h
             ../windows/file/Win32File.cpp
-            ../windows/file/Win32File.h)
+            ../windows/file/Win32File.h
+            ../windows/file/Win32FileBin.cpp
+            ../windows/file/Win32FileBin.h)
 endif()
 
 add_library(ral_platformLayer_file STATIC
@@ -24,4 +26,4 @@ add_library(ral_platformLayer_file STATIC
     File.h
     FileFactory.cpp
     FileFactory.h
-    ${platform} FileTxt.cpp FileTxt.h)
+    ${platform} FileTxt.cpp FileTxt.h FileBin.cpp FileBin.h)
